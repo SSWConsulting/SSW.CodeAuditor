@@ -12,11 +12,11 @@ const options = yargs
 		type: 'string',
 		demandOption: true,
 	})
-	.option('spa', {
-		describe: 'Scan JS rendered page',
-		type: 'boolean',
-		default: false,
-	})
+	// .option('spa', {
+	// 	describe: 'Scan JS rendered page',
+	// 	type: 'boolean',
+	// 	default: false,
+	// })
 	.option('debug', {
 		describe: 'Turn on debug mode',
 		type: 'boolean',
@@ -78,7 +78,7 @@ function getErrorUrl(file) {
 		writeLog('Result File Not Found');
 		return;
 	}
-
+	const start = new Date();
 	return fs
 		.createReadStream(file)
 		.pipe(csv())
@@ -86,14 +86,20 @@ function getErrorUrl(file) {
 			results.push(row);
 		})
 		.on('end', () => {
-			const badRows = results.filter((x) => x['Status Code'] !== '200');
+			const took = printTimeDiff(new Date(), start);
+			const badRows = results.filter(
+				(x) =>
+					!x['Status Code'].startsWith('2') &&
+					!x['Status Code'].startsWith('3')
+			);
+
 			if (badRows.length === 0) {
 				console.log(
 					boxen(
 						chalk.green(
 							`All ${chalk.green.bold.underline(
 								results.length
-							)} links returned 200 OK`
+							)} links returned 200 OK [${took}]`
 						),
 						{
 							padding: 1,
@@ -105,12 +111,17 @@ function getErrorUrl(file) {
 				);
 			} else {
 				console.log(
-					boxen(chalk.red(`Found ${badRows.length} Bad links`), {
-						padding: 1,
-						margin: 1,
-						borderStyle: 'round',
-						borderColor: 'red',
-					})
+					boxen(
+						chalk.red(
+							`Scanned ${results.length}, found ${badRows.length} Bad links [${took}]`
+						),
+						{
+							padding: 1,
+							margin: 1,
+							borderStyle: 'round',
+							borderColor: 'red',
+						}
+					)
 				);
 				if (options.format.toLowerCase() === 'csv') {
 					outputBadData(badRows);
@@ -146,4 +157,15 @@ function outputBadData(records) {
 	});
 	console.log(`"Source","Destination","Anchor","Status Code","Status"`);
 	console.log(csvStringifier.stringifyRecords(records));
+}
+
+function printTimeDiff(t1, t2) {
+	var dif = t1 - t2;
+	const took =
+		Math.floor(dif / 1000 / 60)
+			.toString()
+			.padStart(2, '0') +
+		':' +
+		(dif % 60).toString().padStart(2, '0');
+	return took;
 }
