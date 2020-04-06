@@ -90,7 +90,8 @@ function getErrorUrl(file) {
 			const badRows = results.filter(
 				(x) =>
 					!x['Status Code'].startsWith('2') &&
-					!x['Status Code'].startsWith('3')
+					!x['Status Code'].startsWith('3') &&
+					x.Status !== 'Blocked by robots.txt'
 			);
 
 			if (badRows.length === 0) {
