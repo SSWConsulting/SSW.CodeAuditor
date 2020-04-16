@@ -89,8 +89,7 @@ function getErrorUrl(file) {
 			const took = printTimeDiff(new Date(), start);
 			const badRows = results.filter(
 				(x) =>
-					!x['Status Code'].startsWith('2') &&
-					!x['Status Code'].startsWith('3') &&
+					(x['Status Code'] === '0' || x['Status Code'] === '404') &&
 					x.Status !== 'Blocked by robots.txt'
 			);
 
