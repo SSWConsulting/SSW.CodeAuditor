@@ -96,7 +96,7 @@
         class="inline-block align-baseline font-bold text-sm text-blue
         hover:text-blue-darker"
         href="/login">
-        Already have account?
+        Already have an account?
       </a>
     </div>
   </div>
