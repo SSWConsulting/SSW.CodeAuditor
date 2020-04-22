@@ -10,5 +10,5 @@
     `docker run sswlinkauditor --url https://www.ssw.com.au/people/ --debug`
 -   run scan (output in JSON)
     `docker run sswlinkauditor --url https://www.ssw.com.au/people/ --format json`
--   run scan in debug mode
+k-   run scan in debug mode
     `docker run sswlinkauditor --url https://www.ssw.com.au/people/ --debug`
