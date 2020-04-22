@@ -5,7 +5,7 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "predeploy": "npm run build",
-    "deploy": "surge public --domain https://specgen.surge.sh",
+    "deploy": "surge public --domain https://sswlinkauditor.surge.sh",
     "start": "sirv public --single"
   },
   "devDependencies": {
@@ -18,6 +18,8 @@
     "svelte": "^3.0.0"
   },
   "dependencies": {
+    "firebase": "^7.14.1",
+    "firebase-tools": "^8.1.1",
     "sirv-cli": "^0.4.4",
     "svelte-router-spa": "^5.5.0"
   }

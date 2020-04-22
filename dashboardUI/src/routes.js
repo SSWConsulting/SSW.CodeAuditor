@@ -1,17 +1,15 @@
 import Login from './containers/Login.svelte';
 import Signup from './containers/Signup.svelte';
 import Dashboard from './containers/Dashboard.svelte';
+import Settings from './containers/Settings.svelte';
 import AppLayout from './containers/Layout.svelte';
 
-function userIsAdmin() {
-    //check if user is admin and returns true or false
-    return false;
-}
+const isLoggedIn = () => !!localStorage.getItem('uid');
 
 const routes = [
 	{
 		name: '/',
-		component: Login,
+		redirectTo: 'home',
 	},
 	{
 		name: '/login',
@@ -24,10 +22,12 @@ const routes = [
 	{
 		name: 'home',
 		component: AppLayout,
-		onlyIf: { guard: userIsAdmin, redirect: '/login' },
-		nestedRoutes: [{ name: 'index', component: Dashboard }],
+		onlyIf: { guard: isLoggedIn, redirect: '/login' },
+		nestedRoutes: [
+			{ name: 'index', component: Dashboard },
+			{ name: 'settings', component: Settings },
+		],
 	},
 ];
-
 
 export { routes };

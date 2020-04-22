@@ -1,14 +1,47 @@
 <script>
   import { createEventDispatcher } from "svelte";
+  import firebase from "firebase/app";
   import { Navigate } from "svelte-router-spa";
   import TextField from "../components/TextField.svelte";
+  import { isValidEmail } from "../utils/validations.js";
+  import { navigateTo } from "svelte-router-spa";
 
   const signup = () => {
-    console.log(username)
+    serverError = "";
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(username, password)
+      .then(x => {
+        console.log("sign up success");
+        navigateTo("/home");
+      })
+      .catch(err => {
+        console.log(err);
+        serverError = err.message;
+      });
   };
+
   let username;
+  let serverError;
   let password;
   let confirmpwd;
+
+  $: emailError =
+    username && !isValidEmail(username) ? "Invalid Email address" : "";
+  $: confirmpwdError =
+    !!password && !!confirmpwd && confirmpwd !== password
+      ? "Password does not match"
+      : "";
+  $: passError =
+    !!password && password.length < 6
+      ? "Password must be at least 6 characters"
+      : "";
+  $: valid =
+    !!username &&
+    !!password &&
+    !!confirmpwd &&
+    confirmpwd === password &&
+    isValidEmail(username);
 </script>
 
 <style>
@@ -21,19 +54,37 @@
       <span class="text-3xl">SSW LinkAuditor</span>
     </div>
     <div class="mb-4">
-      <TextField bind:value={username} label="User Name" />
+      <TextField
+        bind:value={username}
+        label="Email Address"
+        type="email"
+        errorMsg={emailError} />
     </div>
     <div class="mb-4">
-      <TextField bind:value={password} placeholder="" label="Password" />
+      <TextField
+        bind:value={password}
+        placeholder=""
+        label="Password"
+        errorMsg={passError}
+        type="password" />
     </div>
     <div class="mb-6">
       <TextField
         bind:value={confirmpwd}
         placeholder=""
+        type="password"
+        errorMsg={confirmpwdError}
         label="Confirm Password" />
     </div>
+    {#if serverError}
+      <div class="mb-6">
+        <p class="py-4 text-red-500 text-base">{serverError}</p>
+      </div>
+    {/if}
     <div class="flex items-center justify-between">
+
       <button
+        disabled={!valid}
         on:click|preventDefault={signup}
         type="button"
         class="bg-blue-100 hover:bg-blue-500 text-blue-800 font-semibold
