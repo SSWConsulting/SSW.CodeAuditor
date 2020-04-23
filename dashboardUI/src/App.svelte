@@ -39,7 +39,7 @@
 
 {#if loading}
   <div>
-    <p class="text-lg italic">Loading...</p>
+    <p class="text-lg">Loading...</p>
   </div>
 {/if}
 <div class:hidden={loading}>

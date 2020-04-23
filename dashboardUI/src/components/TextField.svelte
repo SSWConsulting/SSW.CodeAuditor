@@ -1,4 +1,7 @@
 <script>
+  import { createEventDispatcher } from "svelte";
+  const dispatch = createEventDispatcher();
+
   export let label;
   export let value;
   export let errorMsg = "";
@@ -6,6 +9,7 @@
   export let required = true;
   export let placeholder = "";
 
+  const enterKey = key => key.code === "Enter" && dispatch("enterKey");
   const handleInput = e => {
     // in here, you can switch on type and implement
     // whatever behaviour you need
@@ -25,7 +29,7 @@
   class:border-red-300={(required && !value) || errorMsg}
   class:focus:border-red-500={(required && !value) || errorMsg}
   on:input={handleInput}
-  
+  on:keydown={enterKey}
   {type} />
 
 {#if required && !value}

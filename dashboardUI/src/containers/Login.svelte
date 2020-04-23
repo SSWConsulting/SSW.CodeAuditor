@@ -5,28 +5,25 @@
   import { Navigate } from "svelte-router-spa";
   import TextField from "../components/TextField.svelte";
 
+  let loading;
   const loginGmail = () => {
     serverError = "";
+    loading = true;
     return firebase
       .auth()
       .signInWithRedirect(new firebase.auth.GoogleAuthProvider())
-      .then(x => {})
-      .catch(err => {
-        console.log(err);
-        serverError = err.message;
-      });
+      .catch(err => (serverError = err.message))
+      .finally(() => (loading = false));
   };
 
   const loginEmailPassword = () => {
+    loading = true;
     serverError = "";
     return firebase
       .auth()
       .signInWithEmailAndPassword(username, password)
-      .then(x => {})
-      .catch(err => {
-        console.log(err);
-        serverError = err.message;
-      });
+      .catch(err => (serverError = err.message))
+      .finally(() => (loading = false));
   };
 
   let serverError;
@@ -48,10 +45,12 @@
       <button
         on:click|preventDefault={loginGmail}
         type="button"
+        disabled={loading}
         class="bg-red-700 hover:bg-blue-500 text-white font-semibold
         hover:text-grey-100 py-2 px-4 border border-blue-500
         hover:border-transparent rounded">
         Sign In Using Google
+        {#if loading}...{/if}
       </button>
     </div>
     <hr class="mb-4" />
@@ -60,9 +59,7 @@
     </div>
     <div class="mb-6">
       <TextField
-        on:keydown={event => {
-          console.log(event);
-        }}
+        on:enterKey={loginEmailPassword}
         bind:value={password}
         placeholder=""
         label="Password"
@@ -77,11 +74,12 @@
       <button
         on:click|preventDefault={loginEmailPassword}
         type="button"
-        disabled={!valid}
+        disabled={!valid || loading}
         class="bg-blue-100 hover:bg-blue-500 text-blue-800 font-semibold
         hover:text-white py-2 px-4 border border-blue-500
         hover:border-transparent rounded">
         Sign In
+        {#if loading}...{/if}
       </button>
       <a
         class="inline-block align-baseline font-bold text-sm text-blue
