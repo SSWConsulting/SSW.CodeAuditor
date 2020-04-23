@@ -3,8 +3,10 @@ import Signup from './containers/Signup.svelte';
 import Dashboard from './containers/Dashboard.svelte';
 import Settings from './containers/Settings.svelte';
 import AppLayout from './containers/Layout.svelte';
+import { isLoggedIn } from './stores.js';
 
-const isLoggedIn = () => !!localStorage.getItem('uid');
+let loggedIn = false;
+isLoggedIn.subscribe((x) => (loggedIn = x));
 
 const routes = [
 	{
@@ -22,7 +24,10 @@ const routes = [
 	{
 		name: 'home',
 		component: AppLayout,
-		onlyIf: { guard: isLoggedIn, redirect: '/login' },
+		onlyIf: {
+			guard: () => loggedIn,
+			redirect: '/login',
+		},
 		nestedRoutes: [
 			{ name: 'index', component: Dashboard },
 			{ name: 'settings', component: Settings },

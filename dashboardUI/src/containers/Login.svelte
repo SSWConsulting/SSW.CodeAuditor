@@ -60,6 +60,9 @@
     </div>
     <div class="mb-6">
       <TextField
+        on:keydown={event => {
+          console.log(event);
+        }}
         bind:value={password}
         placeholder=""
         label="Password"

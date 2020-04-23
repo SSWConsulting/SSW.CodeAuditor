@@ -4,6 +4,7 @@
   import { Router } from "svelte-router-spa";
   import { routes } from "./routes";
   import { navigateTo } from "svelte-router-spa";
+  import { userSession, userName } from "./stores.js";
 
   firebase.initializeApp({
     apiKey: "AIzaSyCHljUPnjRcaQt7lGRDPtZsYWIj3eP4Pok",
@@ -24,11 +25,15 @@
       console.log("user not logged in");
     } else {
       console.log("user is logged in", user);
-      localStorage.setItem("uid", user.uid);
+      userSession.login(user);
       if (window.location.href.indexOf("/login") > 0) {
         navigateTo("/home");
       }
     }
+  });
+
+  userName.subscribe(x => {
+    console.log("session is", x);
   });
 </script>
 

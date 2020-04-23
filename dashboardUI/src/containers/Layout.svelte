@@ -3,14 +3,17 @@
   import firebase from "firebase/app";
   import { Navigate } from "svelte-router-spa";
   import { navigateTo } from "svelte-router-spa";
-
+  import { userSession, userName } from "../stores.js";
   export let currentRoute;
   const params = {};
   const signOut = () => {
     firebase.auth().signOut();
-    localStorage.clear();
+    userSession.logout();
     navigateTo("/login");
   };
+  userName.subscribe(x => {
+    console.log(x);
+  });
 </script>
 
 <main class="container mx-auto">
@@ -19,9 +22,9 @@
       <span class="font-semibold text-xl tracking-tight">SSW Link Auditor</span>
     </div>
     <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-      <div class="text-sm lg:flex-grow">
-      </div>
+      <div class="text-sm lg:flex-grow" />
       <div>
+        <span class="text-white mx-2">{$userName}</span>
         <button
           on:click={signOut}
           type="button"

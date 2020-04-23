@@ -25,6 +25,7 @@
   class:border-red-300={(required && !value) || errorMsg}
   class:focus:border-red-500={(required && !value) || errorMsg}
   on:input={handleInput}
+  
   {type} />
 
 {#if required && !value}
