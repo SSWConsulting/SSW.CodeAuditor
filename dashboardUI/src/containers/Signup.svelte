@@ -6,19 +6,15 @@
   import { isValidEmail } from "../utils/utils.js";
   import { navigateTo } from "svelte-router-spa";
 
+  let loading;
   const signup = () => {
+    loading = true;
     serverError = "";
     firebase
       .auth()
       .createUserWithEmailAndPassword(username, password)
-      .then(x => {
-        console.log("sign up success");
-        navigateTo("/home");
-      })
-      .catch(err => {
-        console.log(err);
-        serverError = err.message;
-      });
+      .catch(err => (serverError = err.message))
+      .finally(() => (loading = false));
   };
 
   let username;
@@ -91,6 +87,7 @@
         hover:text-white py-2 px-4 border border-blue-500
         hover:border-transparent rounded">
         Sign up
+        {#if loading}...{/if}
       </button>
       <a
         class="inline-block align-baseline font-bold text-sm text-blue

@@ -1,6 +1,13 @@
 <script>
   import marked from "marked";
   import { fade, fly } from "svelte/transition";
+  import { isLoggedIn } from "../stores.js";
+  import { navigateTo } from "svelte-router-spa";
+  isLoggedIn.subscribe(x => {
+    if (x) {
+      navigateTo("/home");
+    }
+  });
 
   const instructions = `
   ## SSW Link Auditor - Setup instructions

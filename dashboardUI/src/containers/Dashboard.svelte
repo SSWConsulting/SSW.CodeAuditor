@@ -38,7 +38,7 @@
   $ docker run nvhoanganh1909/sswlinkauditor --url <URL> -buildId <BUILDID> --token ${token}
   \`\`\`
   Where:
-  - **${token}** is your unique token. You can manage your token [here](/tokens)
+  - **${token}** is a unique token assigned to your account
   - **BUILDID** (optional) is your CI build number
   `;
 </script>

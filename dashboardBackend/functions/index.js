@@ -1,6 +1,6 @@
-const createAzureFunctionHandler = require('azure-function-express')
-	.createAzureFunctionHandler;
+const functions = require('firebase-functions');
 const express = require('express');
+
 const azure = require('azure-storage');
 const R = require('ramda');
 const Queue = require('better-queue');
@@ -18,20 +18,19 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.get('/api/config/:api', async (req, res) => {
-	const config = await getConfig(req.params.api);
-	res.json(config);
-});
+app.get('/config/:api', async (req, res) =>
+	res.json(await getConfig(req.params.api))
+);
 
-app.get('/api/scanresult/:api', async (req, res) =>
+app.get('/scanresult/:api', async (req, res) =>
 	res.json(await getSummary(req.params.api))
 );
 
-app.get('/api/scanresult/:api/:buildId', async (req, res) =>
+app.get('/scanresult/:api/:buildId', async (req, res) =>
 	res.json(await getBuildDetails(req.params.api, req.params.buildId))
 );
 
-app.post('/api/scanresult/:api/:buildId', async (req, res) => {
+app.post('/scanresult/:api/:buildId', async (req, res) => {
 	const { badUrls, totalScanned, scanDuration, url } = req.body;
 	const apikey = req.params.api;
 	const buildId = req.params.buildId;
@@ -53,33 +52,51 @@ app.post('/api/scanresult/:api/:buildId', async (req, res) => {
 	await insertScanSummary(apikey, buildId, buildDate, payload);
 
 	// insert each row
-	var q = new Queue(
-		async (task, cb) => {
-			data = await insertScanResult(apikey, buildId, task, buildDate);
-			cb(data);
-		},
-		{ concurrent: 10 }
-	);
-	q.on('drain', () => res.json('OK'));
-	badUrls.forEach((d) => q.push(d));
+	const writeAllQueued = () =>
+		new Promise((resolve) => {
+			var q = new Queue(
+				async (task, cb) => {
+					data = await insertScanResult(
+						apikey,
+						buildId,
+						task,
+						buildDate
+					);
+					cb(data);
+				},
+				{ concurrent: 10 }
+			);
+			badUrls.forEach((d) => q.push(d));
+			q.on('drain', () => {
+				resolve();
+			});
+		});
+
+	// write all
+	await writeAllQueued();
+	res.json('ok');
 });
 
-const getService = () =>
-	azure.createTableService(
-		process.env.AZURE_STORAGE_ACCOUNT,
-		process.env.AZURE_STORAGE_ACCOUNT
+const getService = () => {
+	return azure.createTableService(
+		process.env.AZURE_STORAGE_ACCOUNT ||
+			functions.config().azurestorage.account,
+		process.env.AZURE_STORAGE_ACCESS_KEY ||
+			functions.config().azurestorage.key
 	);
+};
 
 const getConfig = (api) =>
 	new Promise((resolve, reject) => {
-		getService().retrieveEntity(TABLE.Subscriptions, api, api, function (
-			error,
-			result,
-			response
-		) {
-			if (!error) resolve(response.body);
-			else reject(error);
-		});
+		getService().retrieveEntity(
+			TABLE.Subscriptions,
+			api,
+			api,
+			(error, result, response) => {
+				if (!error) resolve(response.body);
+				else reject(error);
+			}
+		);
 	});
 
 const replaceProp = (data, entity) => {
@@ -108,7 +125,7 @@ const insertScanResult = (api, buildId, data, buildDate) => {
 		getService().insertEntity(
 			TABLE.ScanResults,
 			replaceProp(data, entity),
-			function (error, result, response) {
+			(error, result, response) => {
 				if (!error) resolve(response.statusCode);
 				else reject(error);
 			}
@@ -128,7 +145,7 @@ const insertScanSummary = (api, buildId, buildDate, data) => {
 		getService().insertEntity(
 			TABLE.Scans,
 			replaceProp(data, entity),
-			function (error, result, response) {
+			(error, result, response) => {
 				if (!error) resolve(response.statusCode);
 				else reject(error);
 			}
@@ -152,14 +169,15 @@ const getSummary = (api) =>
 
 const getTableRows = (table, query) =>
 	new Promise((resolve, reject) => {
-		getService().queryEntities(table, query, null, function (
-			error,
-			result,
-			response
-		) {
-			if (!error) resolve(response.body.value);
-			else reject(error);
-		});
+		getService().queryEntities(
+			table,
+			query,
+			null,
+			(error, result, response) => {
+				if (!error) resolve(response.body.value);
+				else reject(error);
+			}
+		);
 	});
 
 const newGuid = () => {
@@ -181,7 +199,7 @@ const newGuid = () => {
 	).toLowerCase();
 };
 
-// locally
+// locally debug
 if (process.argv.includes('--debug')) {
 	console.log('running locally');
 	app.listen(3000, () =>
@@ -189,5 +207,5 @@ if (process.argv.includes('--debug')) {
 	);
 }
 
-// Binds the express app to an Azure Function handler
-module.exports = createAzureFunctionHandler(app);
+// Expose Express API as a single Cloud Function:
+exports.api = functions.https.onRequest(app);

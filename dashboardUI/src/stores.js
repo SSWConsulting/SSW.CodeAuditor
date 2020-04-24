@@ -17,23 +17,28 @@ const createUserSession = () => {
 		logout: () => {
 			firebase.auth().signOut();
 			set(null);
-			navigateTo("/login");
+			navigateTo('/login');
 		},
 	};
 };
 export const performingLogin = writable(true);
 export const userSession = createUserSession();
-export const oauthLoginError = writable(null);
-
-export const isLoggedIn = derived(userSession, (session) =>
-	session ? session.uid : ''
+const $session = derived(
+	[userSession, performingLogin],
+	([session, performing]) => (performing ? null : session)
 );
 
-export const userName = derived(userSession, (session) =>
+export const oauthLoginError = writable(null);
+
+export const isLoggedIn = derived($session, (session) => {
+	return !!session;
+});
+
+export const userName = derived($session, (session) =>
 	session ? session.displayName || session.email : ''
 );
 
-export const userApi = derived(userSession, (session) =>
+export const userApi = derived($session, (session) =>
 	session ? session.apiKey : ''
 );
 
@@ -65,7 +70,7 @@ export const loginCompleted = async (user) => {
 		}
 
 		// navigate to home
-		if (window.location.href.indexOf('/login') > 0) {
+		if (window.location.href.match(/(\/login|\/signup)$/)) {
 			navigateTo('/home');
 		}
 	} catch (error) {
