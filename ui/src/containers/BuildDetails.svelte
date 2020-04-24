@@ -30,7 +30,7 @@
 <div class="container mx-auto">
   <div class="bg-white shadow-lg rounded px-8 pt-6 mb-6 flex flex-col">
     {#await promise}
-      <p class="pb-6 mb-6">Loading...</p>
+      <p class="pb-6 mb-6">Downloading report, please wait...</p>
     {:then data}
       <BuildDetails builds={data} />
     {:catch error}
