@@ -116,11 +116,9 @@ const getErrorUrl = (startTime, file) => {
 								chalk.green(
 									`All ${chalk.green.bold.underline(
 										results.length
-									)} links returned 200 OK [${took}]${
+									)} links returned 200 OK [${took}]${getLinkToBuild(
 										runId
-											? ` => https://sswlinkauditor-c1131.web.app/build/${runId}`
-											: ''
-									}`
+									)}`
 								),
 								getBox('green')
 							)
@@ -136,11 +134,9 @@ const getErrorUrl = (startTime, file) => {
 								chalk.red(
 									`Scanned ${results.length}, found ${
 										badUrls.length
-									} Bad links [${took}]${
+									} Bad links [${took}]${getLinkToBuild(
 										runId
-											? ` => https://sswlinkauditor-c1131.web.app/build/${runId}`
-											: ''
-									}`
+									)}`
 								),
 								getBox('red')
 							)
@@ -232,5 +228,12 @@ const getBox = (color) => ({
 	borderColor: color,
 });
 
+const replaceQuote = (s) => s.replace(/"/g, '');
+const getLinkToBuild = (runId) =>
+	runId
+		? ` => https://sswlinkauditor-c1131.web.app/build/${replaceQuote(
+				runId
+		  )}`
+		: '';
 // run
 main();
