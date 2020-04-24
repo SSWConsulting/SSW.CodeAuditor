@@ -84,7 +84,7 @@
                 </a>
               </td>
               <td class="w-3/12 border px-4 py-2 break-all">
-                {val.link || 'in <head>'}
+                {val.link || ''}
               </td>
               <td class="w-1/12 border px-4 py-2 text-right">
                 {val.statuscode || '0'}
@@ -130,7 +130,7 @@
                 </a>
               </td>
               <td class="w-3/12 border px-4 py-2 break-all">
-                {val.link || 'in <head>'}
+                {val.link || ''}
               </td>
               <td class="w-1/12 border px-4 py-2 text-right">
                 {val.statuscode || '0'}

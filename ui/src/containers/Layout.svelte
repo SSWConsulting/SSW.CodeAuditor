@@ -11,14 +11,18 @@
   const signOut = () => userSession.logout();
 </script>
 
+<style>
+  .brand {
+    color: white !important;
+  }
+</style>
+
 <main class="container mx-auto">
   <nav class="flex items-center justify-between flex-wrap bg-gray-800 p-6">
     <div class="flex items-center flex-shrink-0 text-white mr-6">
-      <span
-        class="font-semibold text-xl tracking-tight"
-        on:click={() => navigateTo('/')}>
+      <a href="/" class="font-semibold text-xl tracking-tight brand">
         SSW Link Auditor
-      </span>
+      </a>
     </div>
     <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
       <div class="text-sm lg:flex-grow" />

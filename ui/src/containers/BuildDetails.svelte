@@ -32,6 +32,19 @@
     {#await promise}
       <p class="pb-6 mb-6">Downloading report, please wait...</p>
     {:then data}
+      <p class="pb-2">
+        <a
+          class="inline-block align-baseline text-blue hover:text-blue-darker"
+          href="/home">
+          Builds
+        </a>
+        >
+        <a
+          class="inline-block align-baseline text-blue hover:text-blue-darker"
+          href="/build/{currentRoute.namedParams.id}">
+          {currentRoute.namedParams.id}
+        </a>
+      </p>
       <BuildDetails builds={data} />
     {:catch error}
       <p style="color: red">{error.message}</p>
