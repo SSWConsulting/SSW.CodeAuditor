@@ -2,7 +2,6 @@
   import TextField from "./TextField.svelte";
   import formatDistanceToNow from "date-fns/formatDistanceToNow";
   import { fade, fly } from "svelte/transition";
-
   export let builds = [];
   export let lastBuild;
 

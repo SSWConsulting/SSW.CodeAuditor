@@ -40,13 +40,14 @@ function writeLog(...msg) {
 	options.debug && console.log(...msg);
 }
 const main = () => {
+	const startTime = new Date();
 	const [result, error] = startScan(options);
 	if (error) {
 		writeLog(`Error running command: ${error}`);
 		process.exit(1);
 	}
 	writeLog(`parsing output file at /home/crawls/all_inlinks.csv`);
-	getErrorUrl('/home/crawls/all_inlinks.csv');
+	getErrorUrl(startTime, '/home/crawls/all_inlinks.csv');
 };
 
 const startScan = (options) => {
@@ -76,14 +77,13 @@ const startScan = (options) => {
 	}
 };
 
-const getErrorUrl = (file) => {
+const getErrorUrl = (startTime, file) => {
 	const results = [];
 	if (!fs.existsSync(file)) {
 		writeLog('Result File Not Found');
 		return;
 	}
 
-	const start = new Date();
 	return fs
 		.createReadStream(file)
 		.pipe(csv())
@@ -91,7 +91,8 @@ const getErrorUrl = (file) => {
 			results.push(row);
 		})
 		.on('end', async () => {
-			const [took, sec] = printTimeDiff(new Date(), start);
+			const [took, sec] = printTimeDiff(new Date(), startTime);
+			writeLog(`Took ${sec} seconds`);
 			const badUrls = results
 				.filter(
 					(x) =>
@@ -203,7 +204,9 @@ const printTimeDiff = (t1, t2) => {
 			.toString()
 			.padStart(2, '0') +
 		':' +
-		(dif % 60).toString().padStart(2, '0');
+		Math.floor((dif / 1000) % 60)
+			.toString()
+			.padStart(2, '0');
 	return [took, Math.floor(dif / 1000)];
 };
 

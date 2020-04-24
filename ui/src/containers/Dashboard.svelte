@@ -5,6 +5,7 @@
   import firebase from "firebase/app";
   import BuildList from "../components/BuildList.svelte";
   import { fade, fly } from "svelte/transition";
+  import { sort, descend, prop } from "ramda";
   import { CONSTS } from "../utils/utils.js";
 
   let promise;
@@ -19,7 +20,7 @@
     if (res.ok) {
       showInstruction = !result.length;
       canClose = result.length;
-      return result;
+      return sort(descend(prop("buildDate")), result);
     } else {
       showInstruction = true;
       throw new Error("Failed to load");
