@@ -47,10 +47,10 @@
           </td>
           <td class="border px-4 py-2 text-right">{val.scanDuration}</td>
           <td class="border px-4 py-2 text-right">{val.totalScanned}</td>
-          <td class="border px-4 py-2 text-right">
+          <td class="border px-4 py-2 text-right text-red-600 font-bold">
             {val.uniqueBrokenLinks} / {val.totalBrokenLinks}
           </td>
-          <td class="border px-4 py-2 text-right">{val.totalUnique404}</td>
+          <td class="border px-4 py-2 text-right text-red-600 font-bold">{val.totalUnique404}</td>
           <td class="border px-4 py-2">
             <a
               class="inline-block align-baseline font-bold text-blue-600
