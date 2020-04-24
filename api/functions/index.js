@@ -33,14 +33,23 @@ app.get('/scanresult/:api', async (req, res) =>
 	res.json(await getSummary(req.params.api))
 );
 
-app.get('/scanresult/:api/:buildId', async (req, res) =>
-	res.json(await getBuildDetails(req.params.api, req.params.buildId))
+app.get('/run/:runId', async (req, res) =>
+	res.json(await getScanDetails(req.params.runId))
 );
 
 app.post('/scanresult/:api/:buildId', async (req, res) => {
 	const { badUrls, totalScanned, scanDuration, url } = req.body;
 	const apikey = req.params.api;
+
+	// check api
+	const uid = await getUserIdFromApiKey(apikey);
+	if (!uid) {
+		console.log('invalid key provided');
+		res.send(401, 'Invalid token');
+		return;
+	}
 	const buildId = req.params.buildId;
+	const runId = newGuid(); // unique
 	const buildDate = new Date();
 
 	// insert summary first
@@ -57,24 +66,26 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		).length,
 	};
 	console.log('adding summary', payload);
-	await insertScanSummary(apikey, buildId, buildDate, payload);
+	await insertScanSummary(apikey, buildId, runId, buildDate, payload);
 
 	// insert each row
 	const writeAllQueued = () =>
 		new Promise((resolve) => {
 			var q = new Queue(
-				async (url, cb) => {
-					console.log(`adding ..... ${url}`);
+				async (brokenLinkData, cb) => {
+					console.log(`adding ..... ${brokenLinkData}`);
 					data = await insertScanResult(
 						apikey,
 						buildId,
-						url,
+						runId,
+						brokenLinkData,
 						buildDate
 					);
 					cb(data);
 				},
 				{ concurrent: 10 }
 			);
+
 			badUrls.forEach((d) => q.push(d));
 			q.on('drain', () => {
 				console.log(`done all`);
@@ -83,29 +94,38 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		});
 
 	if (badUrls.length === 0) {
-		await updateLastBuild(apikey);
+		await updateLastBuild(uid, apikey, runId);
 	} else {
 		console.log('adding detailed rows');
 		await writeAllQueued();
-		await updateLastBuild(apikey);
+		await updateLastBuild(uid, apikey, runId);
 	}
-	res.json('ok');
+	res.json(runId);
 });
 
 // methods
-const updateLastBuild = (api) => {
+const updateLastBuild = (userId, apikey, runId) => {
+	return db
+		.collection('users')
+		.doc(userId)
+		.update({
+			lastBuild: new Date(),
+			runId,
+		})
+		.then(() =>
+			db.collection('runs').doc(runId).set({
+				apikey,
+				runId,
+			})
+		);
+};
+
+const getUserIdFromApiKey = (api) => {
 	return db
 		.collection('users')
 		.where('apiKey', '==', api)
 		.get()
-		.then((x) => (x.docs.length === 1 ? x.docs[0].id : null))
-		.then((id) =>
-			id
-				? db.collection('users').doc(id).update({
-						lastBuild: new Date(),
-				  })
-				: null
-		);
+		.then((x) => (x.docs.length === 1 ? x.docs[0].id : null));
 };
 
 const getService = () => {
@@ -144,18 +164,19 @@ const replaceProp = (data, entity) => {
 	return toreturn;
 };
 
-const insertScanResult = (api, buildId, data, buildDate) => {
+const insertScanResult = (api, buildId, runId, brokenLinkData, buildDate) => {
 	const entGen = azure.TableUtilities.entityGenerator;
 	let entity = {
 		PartitionKey: entGen.String(api),
 		RowKey: entGen.String(`${api}-${newGuid()}`),
 		buildId: entGen.String(buildId),
+		runId: entGen.String(runId),
 		buildDate: entGen.DateTime(buildDate),
 	};
 	return new Promise((resolve, reject) => {
 		getService().insertEntity(
 			TABLE.ScanResults,
-			replaceProp(data, entity),
+			replaceProp(brokenLinkData, entity),
 			(error, result, response) => {
 				if (!error) resolve(response.statusCode);
 				else reject(error);
@@ -164,12 +185,13 @@ const insertScanResult = (api, buildId, data, buildDate) => {
 	});
 };
 
-const insertScanSummary = (api, buildId, buildDate, data) => {
+const insertScanSummary = (api, buildId, runId, buildDate, data) => {
 	var entGen = azure.TableUtilities.entityGenerator;
 	var entity = {
 		PartitionKey: entGen.String(api),
 		RowKey: entGen.String(`${api}-${buildId}-${newGuid()}`),
 		buildId: entGen.String(buildId),
+		runId: entGen.String(runId),
 		buildDate: entGen.DateTime(buildDate),
 	};
 	return new Promise((resolve, reject) => {
@@ -184,14 +206,20 @@ const insertScanSummary = (api, buildId, buildDate, data) => {
 	});
 };
 
-const getBuildDetails = (api, buildId) =>
-	getTableRows(
-		TABLE.ScanResults,
-		new azure.TableQuery()
-			.top(50)
-			.where('PartitionKey eq ?', api)
-			.and('buildId eq ?', buildId)
-	);
+const getScanDetails = (runId) =>
+	db
+		.collection('runs')
+		.doc(runId)
+		.get()
+		.then((doc) =>
+			getTableRows(
+				TABLE.ScanResults,
+				new azure.TableQuery()
+					.top(50)
+					.where('PartitionKey eq ?', doc.data().apikey)
+					.and('runId eq ?', doc.data().runId)
+			)
+		);
 
 const getSummary = (api) =>
 	getTableRows(

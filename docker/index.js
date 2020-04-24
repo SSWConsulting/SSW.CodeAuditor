@@ -108,16 +108,19 @@ const getErrorUrl = (startTime, file) => {
 					statusmsg: x.Status,
 				}));
 
-			const printToConsole = () => {
+			const printToConsole = (runId) => {
 				if (badUrls.length === 0) {
-					// no failure
 					if (options.format.toLowerCase() === 'csv') {
 						console.log(
 							boxen(
 								chalk.green(
 									`All ${chalk.green.bold.underline(
 										results.length
-									)} links returned 200 OK [${took}]`
+									)} links returned 200 OK [${took}]${
+										runId
+											? ` => https://sswlinkauditor-c1131.web.app/build/${runId}`
+											: ''
+									}`
 								),
 								getBox('green')
 							)
@@ -131,7 +134,13 @@ const getErrorUrl = (startTime, file) => {
 						console.log(
 							boxen(
 								chalk.red(
-									`Scanned ${results.length}, found ${badUrls.length} Bad links [${took}]`
+									`Scanned ${results.length}, found ${
+										badUrls.length
+									} Bad links [${took}]${
+										runId
+											? ` => https://sswlinkauditor-c1131.web.app/build/${runId}`
+											: ''
+									}`
 								),
 								getBox('red')
 							)
@@ -151,7 +160,14 @@ const getErrorUrl = (startTime, file) => {
 					scanDuration: sec,
 					url: options.url,
 					badUrls,
-				}).then(printToConsole);
+				})
+					.then((runId) => printToConsole(runId))
+					.catch((e) => {
+						console.error(
+							`Error: Unabled to push data to dashboard service => ${e.message}`
+						);
+						printToConsole();
+					});
 			} else {
 				printToConsole();
 			}
@@ -167,10 +183,15 @@ const postData = (data) => {
 		method: 'POST',
 		body: JSON.stringify(data),
 		headers: { 'Content-Type': 'application/json' },
-	})
-		.then((res) => res.text())
-		.then((res) => writeLog(`Got Response: ${res}`))
-		.catch((e) => writeLog(`failed posting data ${e}`));
+	}).then((res) => {
+		if (res.ok) {
+			return res.text();
+		} else {
+			return res.text().then((t) => {
+				throw Error(t);
+			});
+		}
+	});
 };
 
 const outputBadDataCsv = (records) => {

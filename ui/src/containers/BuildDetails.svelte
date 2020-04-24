@@ -1,6 +1,6 @@
 <script>
   import { userApi, userSession$ } from "../stores";
-  import { onDestroy } from "svelte";
+  import { onMount } from "svelte";
   import marked from "marked";
   import firebase from "firebase/app";
   import BuildDetails from "../components/DetailsTable.svelte";
@@ -9,11 +9,12 @@
   import { CONSTS } from "../utils/utils.js";
 
   export let currentRoute;
-
   let promise;
 
-  async function getBuildDetails(api, build) {
-    const res = await fetch(`${CONSTS.API}/api/scanresult/${api}/${build}`);
+  async function getBuildDetails() {
+    const res = await fetch(
+      `${CONSTS.API}/api/run/${currentRoute.namedParams.id}`
+    );
     const result = await res.json();
 
     if (res.ok) {
@@ -23,11 +24,7 @@
     }
   }
 
-  userSession$.subscribe(x => {
-    if (x) {
-      promise = getBuildDetails(x.apiKey, currentRoute.namedParams.id);
-    }
-  });
+  onMount(() => (promise = getBuildDetails()));
 </script>
 
 <div class="container mx-auto">
