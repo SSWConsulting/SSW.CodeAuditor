@@ -23,7 +23,7 @@ export const newGuid = () => {
 	).toLowerCase();
 };
 
-
 export const CONSTS = {
-	USERS : 'users'
-}
+	USERS: 'users',
+	API: 'https://us-central1-sswlinkauditor-c1131.cloudfunctions.net',
+};

@@ -3,14 +3,13 @@
   import marked from "marked";
   import BuildList from "../components/BuildList.svelte";
   import { fade, fly } from "svelte/transition";
+  import { CONSTS } from "../utils/utils.js";
 
   let promise;
   let showInstruction;
   let canClose;
   async function getLastBuilds(api) {
-    const res = await fetch(
-      `https://urlcheckerfunc.azurewebsites.net/api/scanresult/${api}`
-    );
+    const res = await fetch(`${CONSTS.API}/api/scanresult/${api}`);
     const result = await res.json();
 
     if (res.ok) {
