@@ -3,7 +3,8 @@
   import { onMount } from "svelte";
   import marked from "marked";
   import firebase from "firebase/app";
-  import BuildDetails from "../components/DetailsTable.svelte";
+  import DetailsTable from "../components/DetailsTable.svelte";
+  import BuildDetailsCard from "../components/BuildDetailsCard.svelte";
   import { fade, fly } from "svelte/transition";
   import { sort, descend, prop } from "ramda";
   import { CONSTS } from "../utils/utils.js";
@@ -45,7 +46,8 @@
           {currentRoute.namedParams.id}
         </a>
       </p>
-      <BuildDetails builds={data} />
+      <BuildDetailsCard build={data ? data.summary[0] : {}} />
+      <DetailsTable builds={data ? data.brokenLinks : []} />
     {:catch error}
       <p style="color: red">{error.message}</p>
     {/await}

@@ -4,7 +4,6 @@ const admin = require('firebase-admin');
 const azure = require('azure-storage');
 const R = require('ramda');
 const Queue = require('better-queue');
-
 require('dotenv').config();
 
 var cors = require('cors');
@@ -33,9 +32,14 @@ app.get('/scanresult/:api', async (req, res) =>
 	res.json(await getSummary(req.params.api))
 );
 
-app.get('/run/:runId', async (req, res) =>
-	res.json(await getScanDetails(req.params.runId))
-);
+app.get('/run/:runId', async (req, res) => {
+	const summary = await getSummaryById(req.params.runId);
+	const brokenLinks = await getScanDetails(req.params.runId);
+	res.json({
+		summary,
+		brokenLinks,
+	});
+});
 
 app.post('/scanresult/:api/:buildId', async (req, res) => {
 	const { badUrls, totalScanned, scanDuration, url } = req.body;
@@ -207,24 +211,37 @@ const insertScanSummary = (api, buildId, runId, buildDate, data) => {
 };
 
 const getScanDetails = (runId) =>
+	getRun(runId).then((doc) =>
+		getTableRows(
+			TABLE.ScanResults,
+			new azure.TableQuery()
+				.top(50)
+				.where('PartitionKey eq ?', doc.apikey)
+				.and('runId eq ?', doc.runId)
+		)
+	);
+
+const getRun = (runId) =>
 	db
 		.collection('runs')
 		.doc(runId)
 		.get()
-		.then((doc) =>
-			getTableRows(
-				TABLE.ScanResults,
-				new azure.TableQuery()
-					.top(50)
-					.where('PartitionKey eq ?', doc.data().apikey)
-					.and('runId eq ?', doc.data().runId)
-			)
-		);
+		.then((doc) => doc.data());
 
 const getSummary = (api) =>
 	getTableRows(
 		TABLE.Scans,
 		new azure.TableQuery().where('PartitionKey eq ?', api)
+	);
+
+const getSummaryById = (runId) =>
+	getRun(runId).then((doc) =>
+		getTableRows(
+			TABLE.Scans,
+			new azure.TableQuery()
+				.where('PartitionKey eq ?', doc.apikey)
+				.and('runId eq ?', doc.runId)
+		)
 	);
 
 const getTableRows = (table, query) =>
@@ -259,13 +276,4 @@ const newGuid = () => {
 	).toLowerCase();
 };
 
-// locally debug
-if (process.argv.includes('--debug')) {
-	console.log('running locally');
-	app.listen(3000, () =>
-		console.log(`Example app listening at http://localhost:${3000}`)
-	);
-}
-
-// Expose Express API as a single Cloud Function:
 exports.api = functions.https.onRequest(app);

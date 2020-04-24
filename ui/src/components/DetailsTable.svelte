@@ -28,7 +28,7 @@
     There is no broken links in this build!!
   </div>
 {:else}
-  <div class="mb-4 mx-auto">
+  <div class="my-4 mx-auto">
     <div
       class="bg-gray-200 text-sm text-gray-500 leading-none border-2
       border-gray-200 rounded-full inline-flex">
