@@ -57,20 +57,20 @@
           </td>
           <td class="border px-4 py-2 text-right">{val.totalScanned}</td>
           <td
-            class="border px-4 py-2 text-right text-red-600 font-bold"
+            class="border px-4 py-2 text-right text-red-600"
             class:text-red-600={val.totalBrokenLinks > 0}
             class:text-green-600={val.totalBrokenLinks === 0}>
             {val.uniqueBrokenLinks} / {val.totalBrokenLinks}
           </td>
           <td
-            class="border px-4 py-2 text-right text-red-600 font-bold"
+            class="border px-4 py-2 text-right text-red-600"
             class:text-red-600={val.totalUnique404 > 0}
             class:text-green-600={val.totalUnique404 === 0}>
             {val.totalUnique404}
           </td>
           <td class="border px-4 py-2">
             <a
-              class="inline-block align-baseline font-bold text-blue-600
+              class="inline-block align-baseline text-blue-600
               hover:text-blue-800"
               href={`/build/${val.runId}`}>
               View

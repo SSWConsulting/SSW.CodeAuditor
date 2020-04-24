@@ -54,7 +54,7 @@
   {#if displayMode === 's'}
     {#each sourcesKeys as url}
       <div class="mb-3">
-        <span class="font-bold mr-2">>> Broken links on:</span>
+        <span class="font-bold mr-2">>> Found on:</span>
         <a
           class="inline-block align-baseline text-blue-600 hover:text-blue-800"
           target="_blank"
@@ -79,12 +79,12 @@
                   class="inline-block align-baseline text-blue-600
                   hover:text-blue-800"
                   target="_blank"
-                  href={val.dst || ''}>
-                  {val.dst || ''}
+                  href={val.dst}>
+                  {val.dst}
                 </a>
               </td>
               <td class="w-3/12 border px-4 py-2 break-all">
-                {val.link || ''}
+                {val.link || 'in <head>'}
               </td>
               <td class="w-1/12 border px-4 py-2 text-right">
                 {val.statuscode || '0'}
@@ -125,12 +125,12 @@
                   class="inline-block align-baseline text-blue-600
                   hover:text-blue-800"
                   target="_blank"
-                  href={val.src || ''}>
-                  {val.src || ''}
+                  href={val.src}>
+                  {val.src}
                 </a>
               </td>
               <td class="w-3/12 border px-4 py-2 break-all">
-                {val.link || ''}
+                {val.link || 'in <head>'}
               </td>
               <td class="w-1/12 border px-4 py-2 text-right">
                 {val.statuscode || '0'}
