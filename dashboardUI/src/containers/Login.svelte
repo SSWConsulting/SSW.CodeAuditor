@@ -1,53 +1,41 @@
 <script>
   import firebase from "firebase/app";
   import "firebase/auth";
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   import { Navigate } from "svelte-router-spa";
   import TextField from "../components/TextField.svelte";
   import { oauthLoginError } from "../stores.js";
-  
 
   let loading;
-
-  const loginGmail = () => {
+  const login = promise => {
     serverError = "";
     loading = true;
-    return firebase
-      .auth()
-      .signInWithRedirect(new firebase.auth.GoogleAuthProvider())
+    return promise
       .catch(err => (serverError = err.message))
       .finally(() => (loading = false));
   };
+  const loginGmail = () =>
+    login(
+      firebase.auth().signInWithRedirect(new firebase.auth.GoogleAuthProvider())
+    );
 
-  const loginFacebook = () => {
-    serverError = "";
-    loading = true;
-    return firebase
-      .auth()
-      .signInWithRedirect(new firebase.auth.FacebookAuthProvider())
-      .catch(err => (serverError = err.message))
-      .finally(() => (loading = false));
-  };
+  const loginFacebook = () =>
+    login(
+      firebase
+        .auth()
+        .signInWithRedirect(new firebase.auth.FacebookAuthProvider())
+    );
 
-  const loginEmailPassword = () => {
-    loading = true;
-    serverError = "";
-    return firebase
-      .auth()
-      .signInWithEmailAndPassword(username, password)
-      .catch(err => (serverError = err.message))
-      .finally(() => (loading = false));
-  };
+  const loginEmailPassword = () =>
+    login(firebase.auth().signInWithEmailAndPassword(username, password));
 
   let serverError;
   let username;
   let password;
   $: valid = !!username && !!password;
+
+  onMount(() => console.log("loaded login page"));
 </script>
-
-<style>
-
-</style>
 
 <form class="container mx-auto max-w-sm py-12">
   <div class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col">

@@ -3,7 +3,7 @@
   import firebase from "firebase/app";
   import { Navigate } from "svelte-router-spa";
   import TextField from "../components/TextField.svelte";
-  import { isValidEmail } from "../utils/validations.js";
+  import { isValidEmail } from "../utils/utils.js";
   import { navigateTo } from "svelte-router-spa";
 
   const signup = () => {

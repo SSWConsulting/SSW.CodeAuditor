@@ -75,7 +75,7 @@
       </a>
     {/if}
     {#await promise}
-      <p>Loading...</p>
+      <p class="pb-6 mb-6">Loading...</p>
     {:then data}
       <BuildList builds={data} />
     {:catch error}

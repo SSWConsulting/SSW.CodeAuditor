@@ -2,6 +2,7 @@ import Login from './containers/Login.svelte';
 import Signup from './containers/Signup.svelte';
 import Dashboard from './containers/Dashboard.svelte';
 import Settings from './containers/Settings.svelte';
+import Public from './containers/Public.svelte';
 import AppLayout from './containers/Layout.svelte';
 import { isLoggedIn } from './stores.js';
 
@@ -11,7 +12,8 @@ isLoggedIn.subscribe((x) => (loggedIn = x));
 const routes = [
 	{
 		name: '/',
-		redirectTo: 'home',
+		component: Public,
+		layout: AppLayout,
 	},
 	{
 		name: '/login',
@@ -25,7 +27,10 @@ const routes = [
 		name: 'home',
 		component: AppLayout,
 		onlyIf: {
-			guard: () => loggedIn,
+			guard: () => {
+				console.log('checking if user is logged in', loggedIn);
+				return loggedIn;
+			},
 			redirect: '/login',
 		},
 		nestedRoutes: [
