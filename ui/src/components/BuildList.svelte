@@ -72,7 +72,7 @@
             <a
               class="inline-block align-baseline font-bold text-blue-600
               hover:text-blue-800"
-              href={`/build/${val.RowKey}`}>
+              href={`/build/${val.buildId}`}>
               View
             </a>
           </td>
