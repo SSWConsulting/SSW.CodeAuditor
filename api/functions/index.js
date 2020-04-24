@@ -1,12 +1,17 @@
 const functions = require('firebase-functions');
 const express = require('express');
-
+const admin = require('firebase-admin');
 const azure = require('azure-storage');
 const R = require('ramda');
 const Queue = require('better-queue');
+
 require('dotenv').config();
 
 var cors = require('cors');
+
+// initialize firestore database
+admin.initializeApp();
+const db = admin.firestore();
 
 const TABLE = {
 	Scans: 'Scans',
@@ -15,9 +20,11 @@ const TABLE = {
 };
 
 const app = express();
+// middlewares
 app.use(express.json());
 app.use(cors());
 
+// routes
 app.get('/config/:api', async (req, res) =>
 	res.json(await getConfig(req.params.api))
 );
@@ -49,17 +56,19 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 			badUrls.filter((x) => x.statuscode === '404')
 		).length,
 	};
+	console.log('adding summary', payload);
 	await insertScanSummary(apikey, buildId, buildDate, payload);
 
 	// insert each row
 	const writeAllQueued = () =>
 		new Promise((resolve) => {
 			var q = new Queue(
-				async (task, cb) => {
+				async (url, cb) => {
+					console.log(`adding ..... ${url}`);
 					data = await insertScanResult(
 						apikey,
 						buildId,
-						task,
+						url,
 						buildDate
 					);
 					cb(data);
@@ -68,14 +77,36 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 			);
 			badUrls.forEach((d) => q.push(d));
 			q.on('drain', () => {
+				console.log(`done all`);
 				resolve();
 			});
 		});
 
-	// write all
+	if (badUrls.length === 0) {
+		res.json('ok');
+		return;
+	}
+	console.log('adding detailed rows');
 	await writeAllQueued();
+	await updateLastBuild(apikey);
 	res.json('ok');
 });
+
+// methods
+const updateLastBuild = (api) => {
+	return db
+		.collection('users')
+		.where('apiKey', '==', api)
+		.get()
+		.then((x) => (x.docs.length === 1 ? x.docs[0].id : null))
+		.then((id) =>
+			id
+				? db.collection('users').doc(id).update({
+						lastBuild: new Date(),
+				  })
+				: null
+		);
+};
 
 const getService = () => {
 	return azure.createTableService(
@@ -157,6 +188,7 @@ const getBuildDetails = (api, buildId) =>
 	getTableRows(
 		TABLE.ScanResults,
 		new azure.TableQuery()
+			.top(50)
 			.where('PartitionKey eq ?', api)
 			.and('buildId eq ?', buildId)
 	);

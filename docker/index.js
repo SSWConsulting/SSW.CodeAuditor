@@ -173,7 +173,8 @@ const postData = (data) => {
 		body: JSON.stringify(data),
 		headers: { 'Content-Type': 'application/json' },
 	})
-		.then((res) => writeLog(`Got Response ${res.text()}`))
+		.then((res) => res.text())
+		.then((res) => writeLog(`Got Response: ${res}`))
 		.catch((e) => writeLog(`failed posting data ${e}`));
 };
 
