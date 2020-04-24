@@ -1,7 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+**/node_modules
+**/*.cache
 /.pnp
 .pnp.js
 /.vscode
@@ -10,7 +11,7 @@
 /screamingfrog
 # production
 /build
-/output
+/docker/output
 # misc
 .DS_Store
 .env.local
