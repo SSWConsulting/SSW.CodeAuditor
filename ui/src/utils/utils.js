@@ -27,3 +27,12 @@ export const CONSTS = {
 	USERS: 'users',
 	API: 'https://us-central1-sswlinkauditor-c1131.cloudfunctions.net',
 };
+
+export const printTimeDiff = (took) =>
+	Math.floor((took || 0) / 60)
+		.toString()
+		.padStart(2, '0') +
+	':' +
+	Math.floor((took || 0) % 60)
+		.toString()
+		.padStart(2, '0');

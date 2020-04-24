@@ -2,6 +2,7 @@
   import TextField from "./TextField.svelte";
   import formatDistanceToNow from "date-fns/formatDistanceToNow";
   import { fade, fly } from "svelte/transition";
+  import { printTimeDiff } from "../utils/utils";
   export let builds = [];
   export let lastBuild;
 
@@ -26,8 +27,9 @@
     <thead>
       <tr>
         <th class="px-4 py-2">Build #</th>
+        <th class="px-4 py-2">Time</th>
         <th class="px-4 py-2">Url</th>
-        <th class="px-4 py-2">Duration (sec)</th>
+        <th class="px-4 py-2">Duration</th>
         <th class="px-4 py-2">Total Scanned</th>
         <th class="px-4 py-2">Uniq Broken / Total</th>
         <th class="px-4 py-2">404 Links</th>
@@ -38,6 +40,9 @@
       {#each builds as val}
         <tr>
           <td class="border px-4 py-2">{val.buildId}</td>
+          <td class="border px-4 py-2">
+            {formatDistanceToNow(new Date(val.buildDate), { addSuffix: true })}
+          </td>
           <td class="border px-4 py-2 text-center">
             <a
               class="inline-block align-baseline text-blue-600
@@ -47,7 +52,9 @@
               {val.url}
             </a>
           </td>
-          <td class="border px-4 py-2 text-right">{val.scanDuration}</td>
+          <td class="border px-4 py-2 text-right">
+            {printTimeDiff(+val.scanDuration)}
+          </td>
           <td class="border px-4 py-2 text-right">{val.totalScanned}</td>
           <td
             class="border px-4 py-2 text-right text-red-600 font-bold"

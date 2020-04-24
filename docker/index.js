@@ -150,13 +150,7 @@ const getErrorUrl = (startTime, file) => {
 					totalScanned: results.length,
 					scanDuration: sec,
 					url: options.url,
-					badUrls: badUrls.map((x) => ({
-						src: x.Source,
-						dst: x.Destination,
-						link: x.Anchor,
-						statuscode: x['Status Code'],
-						statusmsg: x.Status,
-					})),
+					badUrls,
 				}).then(printToConsole);
 			} else {
 				printToConsole();
@@ -186,11 +180,11 @@ const outputBadDataCsv = (records) => {
 	const csvStringifier = createCsvStringifier({
 		alwaysQuote: true,
 		header: [
-			{ id: 'Source', title: 'Source' },
-			{ id: 'Destination', title: 'Destination' },
-			{ id: 'Anchor', title: 'Anchor' },
-			{ id: 'Status Code', title: 'Status Code' },
-			{ id: 'Status', title: 'Status' },
+			{ id: 'src', title: 'Source' },
+			{ id: 'dst', title: 'Destination' },
+			{ id: 'link', title: 'Anchor' },
+			{ id: 'statuscode', title: 'Status Code' },
+			{ id: 'statusmsg', title: 'Status' },
 		],
 	});
 	console.log(`"Source","Destination","Anchor","Status Code","Status"`);
