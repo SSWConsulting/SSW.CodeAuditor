@@ -35,9 +35,11 @@
   ## SSW Link Auditor - Setup instructions
   Scan any website for broken links by running the following command:
   \`\`\` bash
-  $ docker run nvhoanganh1909/sswlinkauditor --url <URL> --token ${token}
+  $ docker run nvhoanganh1909/sswlinkauditor --url <URL> -buildId <BUILDID> --token ${token}
   \`\`\`
-  Where **${token}** is your unique token. You can manage your token [here](/tokens)
+  Where:
+  - **${token}** is your unique token. You can manage your token [here](/tokens)
+  - **BUILDID** (optional) is your CI build number
   `;
 </script>
 
@@ -62,7 +64,7 @@
     </div>
   {/if}
 
-  <div class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
+  <div class="bg-white shadow-lg rounded px-8 pt-6 mb-6 flex flex-col">
     {#if !showInstruction}
       <a
         class="text-right align-baseline underline text-sm text-blue font-bold

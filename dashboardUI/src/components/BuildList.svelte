@@ -8,7 +8,7 @@
 </script>
 
 {#if numberOfBuilds === 0}
-  <div class="md:flex md:items-center mb-6 italic">You have 0 scans!</div>
+  <div class="md:flex md:items-center mb-6">You have 0 scans!</div>
 {:else}
   <div class="md:flex md:items-center mb-6">
     <div class="md:w-1/8">
@@ -20,7 +20,7 @@
     </div>
     <div class="w-1/8">{numberOfBuilds}</div>
   </div>
-  <table class="table-auto">
+  <table class="table-auto mb-6">
     <thead>
       <tr>
         <th class="px-4 py-2">Build #</th>
