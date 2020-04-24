@@ -1,8 +1,10 @@
 <script>
   import TextField from "./TextField.svelte";
+  import formatDistanceToNow from "date-fns/formatDistanceToNow";
   import { fade, fly } from "svelte/transition";
 
   export let builds = [];
+  export let lastBuild;
 
   $: numberOfBuilds = builds.length;
 </script>
@@ -12,13 +14,14 @@
 {:else}
   <div class="md:flex md:items-center mb-6">
     <div class="md:w-1/8">
-      <label
-        class="block text-gray-900 font-bold md:text-right mb-1 md:mb-0 pr-4"
-        for="inline-full-name">
-        Number of Builds:
-      </label>
+      {#if lastBuild}
+        <label
+          class="block text-gray-900 font-bold md:text-right mb-1 md:mb-0 pr-4"
+          for="inline-full-name">
+          Last build: {formatDistanceToNow(lastBuild, { addSuffix: true })}
+        </label>
+      {/if}
     </div>
-    <div class="w-1/8">{numberOfBuilds}</div>
   </div>
   <table class="table-auto mb-6">
     <thead>
@@ -47,15 +50,23 @@
           </td>
           <td class="border px-4 py-2 text-right">{val.scanDuration}</td>
           <td class="border px-4 py-2 text-right">{val.totalScanned}</td>
-          <td class="border px-4 py-2 text-right text-red-600 font-bold">
+          <td
+            class="border px-4 py-2 text-right text-red-600 font-bold"
+            class:text-red-600={val.totalBrokenLinks > 0}
+            class:text-green-600={val.totalBrokenLinks === 0}>
             {val.uniqueBrokenLinks} / {val.totalBrokenLinks}
           </td>
-          <td class="border px-4 py-2 text-right text-red-600 font-bold">{val.totalUnique404}</td>
+          <td
+            class="border px-4 py-2 text-right text-red-600 font-bold"
+            class:text-red-600={val.totalUnique404 > 0}
+            class:text-green-600={val.totalUnique404 === 0}>
+            {val.totalUnique404}
+          </td>
           <td class="border px-4 py-2">
             <a
               class="inline-block align-baseline font-bold text-blue-600
               hover:text-blue-800"
-              href={`/build/${val.PartitionKey}/${val.RowKey}`}>
+              href={`/build/${val.RowKey}`}>
               View
             </a>
           </td>

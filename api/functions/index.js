@@ -83,12 +83,12 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		});
 
 	if (badUrls.length === 0) {
-		res.json('ok');
-		return;
+		await updateLastBuild(apikey);
+	} else {
+		console.log('adding detailed rows');
+		await writeAllQueued();
+		await updateLastBuild(apikey);
 	}
-	console.log('adding detailed rows');
-	await writeAllQueued();
-	await updateLastBuild(apikey);
 	res.json('ok');
 });
 

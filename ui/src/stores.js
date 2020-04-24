@@ -22,23 +22,24 @@ const createUserSession = () => {
 	};
 };
 export const performingLogin = writable(true);
+export const lastBuilds = writable(null);
 export const userSession = createUserSession();
-const $session = derived(
+export const userSession$ = derived(
 	[userSession, performingLogin],
 	([session, performing]) => (performing ? null : session)
 );
 
 export const oauthLoginError = writable(null);
 
-export const isLoggedIn = derived($session, (session) => {
+export const isLoggedIn = derived(userSession$, (session) => {
 	return !!session;
 });
 
-export const userName = derived($session, (session) =>
+export const userName = derived(userSession$, (session) =>
 	session ? session.displayName || session.email : ''
 );
 
-export const userApi = derived($session, (session) =>
+export const userApi = derived(userSession$, (session) =>
 	session ? session.apiKey : ''
 );
 

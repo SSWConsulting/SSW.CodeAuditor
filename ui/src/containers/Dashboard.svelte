@@ -1,6 +1,8 @@
 <script>
-  import { userApi } from "../stores";
+  import { userApi, userSession$ } from "../stores";
+  import { onDestroy } from "svelte";
   import marked from "marked";
+  import firebase from "firebase/app";
   import BuildList from "../components/BuildList.svelte";
   import { fade, fly } from "svelte/transition";
   import { CONSTS } from "../utils/utils.js";
@@ -8,6 +10,8 @@
   let promise;
   let showInstruction;
   let canClose;
+  let unsubscription;
+  let lastBuild;
   async function getLastBuilds(api) {
     const res = await fetch(`${CONSTS.API}/api/scanresult/${api}`);
     const result = await res.json();
@@ -23,10 +27,28 @@
   }
 
   let token;
-  userApi.subscribe(x => {
+  userSession$.subscribe(x => {
     if (x) {
-      token = x;
-      promise = getLastBuilds(x);
+      // listen for changes
+      unsubscription = firebase
+        .firestore()
+        .collection(CONSTS.USERS)
+        .doc(x.uid)
+        .onSnapshot(usr => {
+          const userD = usr.data();
+          console.log("last build updated", usr.data());
+          if (userD.lastBuild) {
+            lastBuild = userD.lastBuild.toDate();
+          }
+          promise = getLastBuilds(x.apiKey);
+        });
+      token = x.apiKey;
+    }
+  });
+
+  onDestroy(() => {
+    if (unsubscription) {
+      unsubscription();
     }
   });
 
@@ -76,7 +98,8 @@
     {#await promise}
       <p class="pb-6 mb-6">Loading...</p>
     {:then data}
-      <BuildList builds={data} />
+
+      <BuildList builds={data} {lastBuild} />
     {:catch error}
       <p style="color: red">{error.message}</p>
     {/await}
