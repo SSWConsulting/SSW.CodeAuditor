@@ -27,6 +27,12 @@ exports.getScanDetails = (runId) =>
 		)
 	);
 
+exports.getIgnoredUrls = (api) =>
+	getTableRows(
+		TABLE.IgnoredUrls,
+		new azure.TableQuery().where('PartitionKey eq ?', api)
+	);
+
 exports.getSummary = (api) =>
 	getTableRows(
 		TABLE.Scans,

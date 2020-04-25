@@ -15,6 +15,7 @@ const {
 	getSummaryById,
 	getConfig,
 	getScanDetails,
+	getIgnoredUrls,
 } = require('./queries');
 const { newGuid } = require('./utils');
 const { updateLastBuild, getUserIdFromApiKey } = require('./firestore');
@@ -28,9 +29,7 @@ app.use(express.json());
 app.use(cors());
 
 // routes
-app.get('/healthz', async (req, res) =>
-	res.json('ok')
-);
+app.get('/healthz', async (req, res) => res.json('ok'));
 
 app.get('/config/:api', async (req, res) =>
 	res.json(await getConfig(req.params.api))
@@ -38,16 +37,16 @@ app.get('/config/:api', async (req, res) =>
 
 app.post('/config/:api/ignore', async (req, res) => {
 	const { ignoreOn, ignoreDuration, urlToIgnore } = req.body;
-	const apikey = req.params.api;
+	const api = req.params.api;
 
-	await addIgnoreUrl(apikey, {
+	await addIgnoreUrl(api, {
 		ignoreOn,
 		ignoreDuration,
 		urlToIgnore,
 		effectiveFrom: new Date(),
 	});
 
-	res.json('ok');
+	res.json(await getIgnoredUrls(api));
 });
 
 app.get('/scanresult/:api', async (req, res) =>
