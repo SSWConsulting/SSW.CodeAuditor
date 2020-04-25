@@ -3,9 +3,9 @@
   import { printTimeDiff } from "../utils/utils";
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
+  const download = () => dispatch("download");
 
   export let build = {};
-  const download = () => dispatch("download");
 </script>
 
 <!-- eslint-disable -->
