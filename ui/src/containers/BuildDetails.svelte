@@ -12,7 +12,10 @@
 
   export let currentRoute;
   let promise;
+  let showToastr;
   let rawData;
+  let ignoredUrls = [];
+
   const onDownload = () => {
     debugger;
     const options = {
@@ -64,7 +67,11 @@
     const result = await res.json();
 
     if (res.ok) {
-      console.log("response", result);
+      ignoredUrls = result;
+      showToastr = true;
+      setTimeout(() => {
+        showToastr = false;
+      }, 7000);
       return result;
     } else {
       throw new Error("Failed to load");
@@ -127,3 +134,38 @@
     {/await}
   </div>
 </div>
+{#if showToastr}
+  <div
+    in:fly={{ y: 100, duration: 400 }}
+    out:fade={{ y: -100, duration: 250 }}
+    class="mx-auto z-auto mt-6 mr-12 fixed top-0 right-0 bg-teal-100 border-t-4 border-teal-500
+    rounded-b text-teal-900 px-4 py-3 shadow-md toast"
+    role="alert">
+    <div class="flex">
+      <div class="py-1">
+        <svg
+          class="fill-current h-6 w-6 text-teal-500 mr-4"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20">
+          <path
+            d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93
+            17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9
+            11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+        </svg>
+      </div>
+      <div>
+        <p class="font-bold">Added to ignored list!</p>
+        <p class="text-sm">
+          You currently have {ignoredUrls.length} ignored URLs.
+          <a
+            class="inline-block align-baseline font-bold text-sm text-blue
+            hover:text-blue-darker"
+            href="/settings">
+            View
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+  <!-- content here -->
+{/if}

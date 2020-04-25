@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 RUN node -v
-COPY index.js ./
+COPY *.js ./
 
 # base image for screaming frog
 FROM softonic/screamingfrog:12.6

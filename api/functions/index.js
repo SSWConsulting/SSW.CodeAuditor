@@ -93,7 +93,7 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		uniqueBrokenLinks: R.uniqBy(R.prop('dst'), badUrls).length,
 		pagesWithBrokenLink: R.uniqBy(R.prop('src'), badUrls).length,
 		totalUnique404: R.uniqBy(
-			R.prop('src'),
+			R.prop('dst'),
 			badUrls.filter((x) => x.statuscode === '404')
 		).length,
 	};

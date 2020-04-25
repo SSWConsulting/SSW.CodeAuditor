@@ -28,7 +28,8 @@ exports.updateLastBuild = (userId, apikey, runId) => {
 };
 
 exports.getRun = (runId) =>
-	db
+	admin
+		.firestore()
 		.collection(CONSTANTS.runs)
 		.doc(runId)
 		.get()

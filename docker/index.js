@@ -54,7 +54,6 @@ const main = () => {
 		_writeLog(`Error running command: ${error}`);
 		process.exit(1);
 	}
-	_writeLog(result);
 	_getErrorUrl(options, startTime, '/home/crawls/all_inlinks.csv');
 };
 
@@ -222,5 +221,5 @@ const _outputBadDataCsv = (records) => {
 const _writeLog = (...msg) => _args.debug && console.log(...msg);
 
 // run
-// main();
-main_test();
+main();
+// main_test();
