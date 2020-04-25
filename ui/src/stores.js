@@ -1,5 +1,6 @@
 import { writable, derived } from 'svelte/store';
 import { navigateTo } from 'svelte-router-spa';
+
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';

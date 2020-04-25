@@ -30,7 +30,8 @@
         viewBox="0 0 24 24">
         <path d="M9 5l7 7-7 7" />
       </svg>
-      Broken Link:
+      {destinations[url][0].statusmsg} ({destinations[url][0].statuscode || 0}),
+      found in {destinations[url].length} page(s) :
     </span>
     <a
       class="mr-2 inline-block align-baseline text-blue-600 hover:text-blue-800"
@@ -64,9 +65,7 @@
     <thead>
       <tr>
         <th class="w-6/12 px-4 py-2">Found on Page</th>
-        <th class="w-3/12 px-4 py-2">Anchor Text</th>
-        <th class="w-1/12 px-4 py-2 text-right">Status</th>
-        <th class="w-2/12 px-4 py-2 text-right">Message</th>
+        <th class="w-6/12 px-4 py-2">Anchor Text</th>
       </tr>
     </thead>
     <tbody>
@@ -81,13 +80,7 @@
               {val.src}
             </a>
           </td>
-          <td class="w-3/12 border px-4 py-2 break-all">{val.link || ''}</td>
-          <td class="w-1/12 border px-4 py-2 text-right">
-            {val.statuscode || '0'}
-          </td>
-          <td class="w-2/12 border px-4 py-2 text-right">
-            {val.statusmsg || ''}
-          </td>
+          <td class="w-6/12 border px-4 py-2 break-all">{val.link || ''}</td>
         </tr>
       {/each}
     </tbody>

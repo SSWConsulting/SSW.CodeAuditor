@@ -43,7 +43,27 @@
     <tbody>
       {#each builds as val}
         <tr>
-          <td class="border px-4 py-2">{val.buildId}</td>
+          <td class="border px-4 py-2">
+            <a
+              class="inline-block align-middle hover:text-blue-800"
+              href={`/build/${val.runId}`}>
+              <svg
+                fill="none"
+                height="25"
+                width="25"
+                class:text-green-600={val.totalBrokenLinks === 0}
+                class:text-red-600={val.totalBrokenLinks > 0}
+                class="inline-block"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </a>
+            {val.buildId}
+          </td>
           <td class="border px-4 py-2">
             {formatDistanceToNow(new Date(val.buildDate), { addSuffix: true })}
           </td>

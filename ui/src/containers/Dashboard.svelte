@@ -110,7 +110,6 @@
     {#await promise}
       <p class="pb-6 mb-6">Loading...</p>
     {:then data}
-
       <BuildList builds={data} {lastBuild} />
     {:catch error}
       <p style="color: red">{error.message}</p>

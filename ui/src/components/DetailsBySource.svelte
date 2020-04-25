@@ -29,7 +29,7 @@
         viewBox="0 0 24 24">
         <path d="M9 5l7 7-7 7" />
       </svg>
-      Found on:
+      {sources[url].length} broken links on:
     </span>
     <a
       class="inline-block align-baseline text-blue-600 hover:text-blue-800"
@@ -50,7 +50,9 @@
     <tbody>
       {#each sources[url] as val}
         <tr>
-          <td class="whitespace-no-wrap break-all w-6/12 border px-4 py-2 break-all">
+          <td
+            class="whitespace-no-wrap break-all w-6/12 border px-4 py-2
+            break-all">
             <button
               title="Ignore this broken link in the next scan"
               on:click={() => ignore(val.dst)}

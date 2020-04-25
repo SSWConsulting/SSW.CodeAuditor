@@ -29,7 +29,7 @@
         viewBox="0 0 24 24">
         <path d="M9 5l7 7-7 7" />
       </svg>
-      Failure Reason:
+      {reasons[reason].length} destinations with failure reason:
     </span>
     <span class="inline-block align-baseline text-blue-600 hover:text-blue-800">
       {reason}
@@ -57,6 +57,13 @@
             </a>
           </td>
           <td class="w-5/12 border px-4 py-2">
+            <a
+              class="inline-block align-baseline text-blue-600
+              hover:text-blue-800"
+              target="_blank"
+              href={val.dst}>
+              {val.dst}
+            </a>
             <button
               title="Ignore this broken link in the next scan"
               on:click={() => ignore(val.dst)}
@@ -79,13 +86,6 @@
                 <path d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
               </svg>
             </button>
-            <a
-              class="inline-block align-baseline text-blue-600
-              hover:text-blue-800"
-              target="_blank"
-              href={val.dst}>
-              {val.dst}
-            </a>
           </td>
           <td class="w-2/12 border px-4 py-2 break-all">{val.link || ''}</td>
           <td class="w-1/12 border px-4 py-2 text-right">
