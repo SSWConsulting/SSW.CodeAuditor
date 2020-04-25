@@ -1,6 +1,9 @@
 # check for broken links 
 -   build the image
     `docker build -t sswlinkauditor .`
+-   tag and push
+    `docker tag sswlinkauditor nvhoanganh1909/sswlinkauditor`
+    `docker push nvhoanganh1909/sswlinkauditor`
 -   Get Usage
     `docker run sswlinkauditor --help`
 -   run scan (output in CSV)

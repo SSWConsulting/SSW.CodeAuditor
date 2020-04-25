@@ -16,7 +16,7 @@ const options = yargs
 	})
 	.option('token', {
 		describe:
-			'Dashboard token (sign up at https://sswlinkauditor-c1131.web.app/)',
+			'Dashboard token (sign up at https://sswlinkauditor.surge.sh/)',
 		type: 'string',
 		demandOption: false,
 	})
@@ -231,7 +231,7 @@ const getBox = (color) => ({
 const replaceQuote = (s) => s.replace(/"/g, '');
 const getLinkToBuild = (runId) =>
 	runId
-		? ` => https://sswlinkauditor-c1131.web.app/build/${replaceQuote(
+		? ` => https://sswlinkauditor.surge.sh/build/${replaceQuote(
 				runId
 		  )}`
 		: '';
