@@ -52,6 +52,9 @@
     }
   }
 
+  const ignore = (event, user) => {
+    console.log(event.detail, user);
+  };
   onMount(() => (promise = getBuildDetails()));
 </script>
 
@@ -100,6 +103,7 @@
         build={data ? data.summary[0] : {}}
         on:download={onDownload} />
       <DetailsTable
+        on:ignore={event => ignore(event, $userSession$)}
         builds={data ? data.brokenLinks : []}
         {currentRoute}
         summary={data ? data.summary[0] : {}} />

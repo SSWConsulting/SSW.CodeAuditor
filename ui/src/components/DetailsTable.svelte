@@ -8,11 +8,13 @@
   import DetailsBySource from "./DetailsBySource.svelte";
   import DetailsByReason from "./DetailsByReason.svelte";
   import { onMount } from "svelte";
+  import { createEventDispatcher } from "svelte";
 
   export let builds = [];
   export let summary = {};
   export let currentRoute;
 
+  const dispatch = createEventDispatcher();
   const options = [DetailsBySource, DetailsByDest, DetailsByReason];
   const ignoreDurations = [
     { value: 3, label: "3 days" },
@@ -35,8 +37,8 @@
   };
 
   const updateIgnore = () => {
-    console.log("ignore", ignoreOption, selectDuration);
     show = false;
+    dispatch("ignore", { urlToIgnore, selectDuration, ignoreOption });
   };
 
   const ignore = url => {
