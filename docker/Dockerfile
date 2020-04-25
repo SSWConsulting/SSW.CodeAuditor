@@ -26,3 +26,4 @@ COPY --from=builder /usr/src/app .
 
 ENTRYPOINT ["node","."]
 # ENTRYPOINT ["/usr/bin/screamingfrogseospider","--output-folder", "/home/crawls", "--headless", "--bulk-export", "All Inlinks"]
+# ENTRYPOINT ["node",".","--url","https://ssw.com.au/people/","--token", "bbf65654-23d5-4d87-8f68-34d68c30d2e4","--buildId","azure","--debug"]

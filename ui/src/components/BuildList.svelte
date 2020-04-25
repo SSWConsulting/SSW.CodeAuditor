@@ -30,9 +30,13 @@
         <th class="px-4 py-2">Time</th>
         <th class="px-4 py-2">Url</th>
         <th class="px-4 py-2">Duration</th>
-        <th class="px-4 py-2">Total Scanned</th>
-        <th class="px-4 py-2">Uniq Broken / Total</th>
-        <th class="px-4 py-2">404 Links</th>
+        <th class="px-4 py-2">Scanned</th>
+        <th
+          class="px-4 py-2"
+          title="number of unique broken links out of all broken links found">
+          Broken / Total
+        </th>
+        <th class="px-4 py-2">404</th>
         <th class="px-4 py-2" />
       </tr>
     </thead>
@@ -70,10 +74,24 @@
           </td>
           <td class="border px-4 py-2">
             <a
-              class="inline-block align-baseline text-blue-600
-              hover:text-blue-800"
+              class="inline-block align-middle hover:text-blue-800"
               href={`/build/${val.runId}`}>
-              View
+              <svg
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                width="22"
+                height="22"
+                class="align-middle">
+                <path
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0
+                  002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2
+                  2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2
+                  2 0 01-2-2z" />
+              </svg>
             </a>
           </td>
         </tr>

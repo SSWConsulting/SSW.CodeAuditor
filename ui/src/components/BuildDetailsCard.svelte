@@ -20,27 +20,29 @@
       <p class="text-sm text-gray-600 text-center py-3">
         Completed {formatDistanceToNow(new Date(build.buildDate), { addSuffix: true })}
       </p>
-      <p class="text-sm text-gray-600 text-center py-3">
-        <button
-          on:click={download}
-          class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4
-          rounded inline-flex items-center">
-          <svg
-            fill="none"
-            stroke-linecap="round"
-            width="24"
-            height="24"
-            stroke-linejoin="round"
-            stroke-width="2"
-            stroke="currentColor"
-            viewBox="0 0 24 24">
-            <path
-              d="M8 16a5 5 0 01-.916-9.916 5.002 5.002 0 019.832 0A5.002 5.002 0
-              0116 16m-7 3l3 3m0 0l3-3m-3 3V10" />
-          </svg>
-          <span class="ml-2"> Download CSV</span>
-        </button>
-      </p>
+      {#if build.totalBrokenLinks > 0}
+        <p class="text-sm text-gray-600 text-center py-3">
+          <button
+            on:click={download}
+            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2
+            px-4 rounded inline-flex items-center">
+            <svg
+              fill="none"
+              stroke-linecap="round"
+              width="24"
+              height="24"
+              stroke-linejoin="round"
+              stroke-width="2"
+              stroke="currentColor"
+              viewBox="0 0 24 24">
+              <path
+                d="M8 16a5 5 0 01-.916-9.916 5.002 5.002 0 019.832 0A5.002 5.002
+                0 0116 16m-7 3l3 3m0 0l3-3m-3 3V10" />
+            </svg>
+            <span class="ml-2">Download CSV</span>
+          </button>
+        </p>
+      {/if}
     {/if}
   </div>
   <div class="mt-2 pt-1 flex flex-wrap mx-6 border-t">

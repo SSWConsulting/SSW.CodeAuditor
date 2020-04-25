@@ -10,7 +10,7 @@
   });
 
   const instructions = `
-  ## SSW Link Auditor - Setup instructions
+  ## SSW Link Auditor - Scan instructions
   Scan any website for broken links, for free, by running the following command:
   \`\`\` bash
   $ docker run nvhoanganh1909/sswlinkauditor --url <URL> -buildId <BUILDID>

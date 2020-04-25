@@ -54,7 +54,7 @@
   });
 
   const instructions = `
-  ## SSW Link Auditor - Setup instructions
+  ## SSW Link Auditor - Scan instructions
   Scan any website for broken links by running the following command:
   \`\`\` bash
   $ docker run nvhoanganh1909/sswlinkauditor --url <URL> -buildId <BUILDID> --token ${token}
@@ -93,7 +93,7 @@
         hover:text-blue-darker"
         on:click={() => (showInstruction = true)}
         href="javascript:void(0)">
-        Show README.md
+        Show instructions
       </a>
     {/if}
     {#await promise}

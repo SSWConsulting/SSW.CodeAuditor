@@ -1,0 +1,95 @@
+<script>
+  import { groupBy, props } from "ramda";
+  import { createEventDispatcher } from "svelte";
+  export let builds = [];
+  const dispatch = createEventDispatcher();
+  const ignore = url => dispatch("ignore", url);
+
+  let sources;
+  let sourcesKeys = [];
+
+  $: if (builds.length > 0) {
+    sources = groupBy(props(["src"]))(builds);
+    sourcesKeys = Object.keys(sources);
+  }
+</script>
+
+{#each sourcesKeys as url}
+  <div class="mb-3">
+    <span class="font-bold mr-2">
+      <svg
+        class="inline-block"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        stroke="currentColor"
+        height="20"
+        width="20"
+        viewBox="0 0 24 24">
+        <path d="M9 5l7 7-7 7" />
+      </svg>
+      Found on:
+    </span>
+    <a
+      class="inline-block align-baseline text-blue-600 hover:text-blue-800"
+      target="_blank"
+      href={url}>
+      {url}
+    </a>
+  </div>
+  <table class="table-auto mb-8">
+    <thead>
+      <tr>
+        <th class="w-6/12 px-4 py-2">Broken Link</th>
+        <th class="w-3/12 px-4 py-2">Anchor Text</th>
+        <th class="w-1/12 px-4 py-2 text-right">Status</th>
+        <th class="w-2/12 px-4 py-2 text-right">Message</th>
+      </tr>
+    </thead>
+    <tbody>
+      {#each sources[url] as val}
+        <tr>
+          <td class="w-6/12 border px-4 py-2 break-all">
+            <button
+              title="Ignore this broken link in the next scan"
+              on:click={() => ignore(val.dst)}
+              class="hover:bg-gray-400 rounded inline-flex align-middle mr-3">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="24"
+                height="24"
+                stroke-width="2"
+                stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path
+                  d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0
+                  011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0
+                  .891-1.077 1.337-1.707.707L5.586 15z"
+                  clip-rule="evenodd" />
+                <path d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+              </svg>
+            </button>
+            <a
+              class="inline-block align-baseline text-blue-600
+              hover:text-blue-800"
+              target="_blank"
+              href={val.dst}>
+              {val.dst}
+            </a>
+          </td>
+          <td class="w-3/12 border px-4 py-2 break-all">{val.link || ''}</td>
+          <td class="w-1/12 border px-4 py-2 text-right">
+            {val.statuscode || '0'}
+          </td>
+          <td class="w-2/12 border px-4 py-2 text-right">
+            {val.statusmsg || ''}
+          </td>
+        </tr>
+      {/each}
+    </tbody>
+  </table>
+{/each}
