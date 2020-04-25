@@ -2,56 +2,69 @@ const csv = require('csv-parser');
 const fs = require('fs');
 const { execSync } = require('child_process');
 const chalk = require('chalk');
-const fetch = require('node-fetch');
 const boxen = require('boxen');
 const yargs = require('yargs');
-const endpoint = 'https://us-central1-sswlinkauditor-c1131.cloudfunctions.net';
+const { getConfigs, postData } = require('./api');
+const {
+	printTimeDiff,
+	diffInDaysToNow,
+	getBox,
+	getLinkToBuild,
+	readCsv,
+} = require('./utils');
 
-const options = yargs
-	.usage('Usage: -url <url>')
-	.option('url', {
-		describe: 'URL to scan',
-		type: 'string',
-		demandOption: true,
-	})
-	.option('token', {
-		describe:
-			'Dashboard token (sign up at https://sswlinkauditor.surge.sh/)',
-		type: 'string',
-		demandOption: false,
-	})
-	.option('buildId', {
-		describe: 'Build/Run number, e.g. CI Build number',
-		type: 'string',
-		demandOption: false,
-	})
-	.option('debug', {
-		describe: 'Turn on debug mode',
-		type: 'boolean',
-		default: false,
-	})
-	.option('format', {
-		describe: 'Output format: csv | json',
-		type: 'string',
-		default: 'csv',
-	}).argv;
-
-function writeLog(...msg) {
-	options.debug && console.log(...msg);
-}
-const main = () => {
-	const startTime = new Date();
-	const [result, error] = startScan(options);
-	if (error) {
-		writeLog(`Error running command: ${error}`);
-		process.exit(1);
-	}
-	writeLog(`parsing output file at /home/crawls/all_inlinks.csv`);
-	getErrorUrl(startTime, '/home/crawls/all_inlinks.csv');
+let _args = null;
+const _getAgrs = () => {
+	_args = yargs
+		.usage('Usage: -url <url>')
+		.option('url', {
+			describe: 'URL to scan',
+			type: 'string',
+			demandOption: true,
+		})
+		.option('token', {
+			describe:
+				'Dashboard token (sign up at https://sswlinkauditor.surge.sh/)',
+			type: 'string',
+			demandOption: false,
+		})
+		.option('buildId', {
+			describe: 'Build/Run number, e.g. CI Build number',
+			type: 'string',
+			demandOption: false,
+		})
+		.option('debug', {
+			describe: 'Turn on debug mode',
+			type: 'boolean',
+			default: false,
+		})
+		.option('format', {
+			describe: 'Output format: csv | json',
+			type: 'string',
+			default: 'csv',
+		}).argv;
+	return _args;
 };
 
-const startScan = (options) => {
-	writeLog(
+const main = () => {
+	const options = _getAgrs();
+	const startTime = new Date();
+	const [result, error] = _startScan(options);
+	if (error) {
+		_writeLog(`Error running command: ${error}`);
+		process.exit(1);
+	}
+	_writeLog(result);
+	_getErrorUrl(options, startTime, '/home/crawls/all_inlinks.csv');
+};
+
+const main_test = () => {
+	const options = _getAgrs();
+	_getErrorUrl(options, new Date(), 'sample.csv');
+};
+
+const _startScan = (options) => {
+	_writeLog(
 		chalk.yellowBright(
 			`Scanning ${chalk.green(
 				options.url
@@ -63,134 +76,132 @@ const startScan = (options) => {
 		)
 	);
 
-	if (!fs.existsSync('/usr/bin/screamingfrogseospider')) {
-		return [null, 'crawler not found'];
-	}
-
 	try {
 		const comand = `screamingfrogseospider --crawl ${options.url} --headless --output-folder /home/crawls --overwrite --bulk-export "All Inlinks"`;
-		writeLog(`running ${comand}`);
-
 		return [execSync(comand), null];
 	} catch (error) {
 		return [null, error.message];
 	}
 };
 
-const getErrorUrl = (startTime, file) => {
-	const results = [];
-	if (!fs.existsSync(file)) {
-		writeLog('Result File Not Found');
-		return;
+const _getErrorUrl = async (args, startTime, file) => {
+	// closures
+	const __getBadResults = () => {
+		return results
+			.filter(
+				(x) =>
+					(x['Status Code'] === '0' || x['Status Code'] === '404') &&
+					x.Status !== 'Blocked by robots.txt' &&
+					// not in global ignored
+					ignoredUrls
+						.filter(
+							(x) =>
+								x.ignoreOn === 'all' &&
+								diffInDaysToNow(new Date(x.effectiveFrom)) <
+									+x.ignoreDuration
+						)
+						.map((x) => x.urlToIgnore)
+						.indexOf(x.Destination) < 0 &&
+					// not in URL specific ignored
+					ignoredUrls
+						.filter(
+							(x) =>
+								x.ignoreOn === args.url &&
+								diffInDaysToNow(new Date(x.effectiveFrom)) <
+									+x.ignoreDuration
+						)
+						.map((x) => x.urlToIgnore)
+						.indexOf(x.Destination) < 0
+			)
+			.map((x) => ({
+				src: x.Source,
+				dst: x.Destination,
+				link: x.Anchor,
+				statuscode: x['Status Code'],
+				statusmsg: x.Status,
+			}));
+	};
+
+	const __printResultsToConsole = (runId) => {
+		if (badUrls.length === 0) {
+			if (args.format.toLowerCase() === 'csv') {
+				console.log(
+					boxen(
+						chalk.green(
+							`All ${chalk.green.bold.underline(
+								results.length
+							)} links returned 200 OK [${took}]${getLinkToBuild(
+								runId
+							)}`
+						),
+						getBox('green')
+					)
+				);
+			} else {
+				console.log([]);
+			}
+		} else {
+			// we have some failure
+			if (args.format.toLowerCase() === 'csv') {
+				console.log(
+					boxen(
+						chalk.red(
+							`Scanned ${results.length}, found ${
+								badUrls.length
+							} Bad links [${took}]${getLinkToBuild(runId)}`
+						),
+						getBox('red')
+					)
+				);
+				_outputBadDataCsv(badUrls);
+			} else {
+				// print raw JSON
+				console.log(badUrls);
+			}
+			process.exit(1);
+		}
+	};
+
+	const results = await readCsv(file);
+
+	const [took, sec] = printTimeDiff(new Date(), startTime);
+
+	_writeLog(`Took ${sec} seconds`);
+	let ignoredUrls = [];
+	// {"urlToIgnore":"https://rules.ssw.com.au/Pages/default.aspx","ignoreDuration":7,"ignoreOn":"all", "effectiveFrom" : "2020-04-25T13:25:20.957Z"}
+
+	if (args.token) {
+		try {
+			ignoredUrls = await getConfigs(args.token);
+			_writeLog(`Ignored URLs`, ignoredUrls);
+		} catch (error) {
+			console.error('failed to load settings');
+		}
 	}
 
-	return fs
-		.createReadStream(file)
-		.pipe(csv())
-		.on('data', (row) => {
-			results.push(row);
-		})
-		.on('end', async () => {
-			const [took, sec] = printTimeDiff(new Date(), startTime);
-			writeLog(`Took ${sec} seconds`);
-			const badUrls = results
-				.filter(
-					(x) =>
-						(x['Status Code'] === '0' ||
-							x['Status Code'] === '404') &&
-						x.Status !== 'Blocked by robots.txt'
-				)
-				.map((x) => ({
-					src: x.Source,
-					dst: x.Destination,
-					link: x.Anchor,
-					statuscode: x['Status Code'],
-					statusmsg: x.Status,
-				}));
+	const badUrls = __getBadResults();
 
-			const printToConsole = (runId) => {
-				if (badUrls.length === 0) {
-					if (options.format.toLowerCase() === 'csv') {
-						console.log(
-							boxen(
-								chalk.green(
-									`All ${chalk.green.bold.underline(
-										results.length
-									)} links returned 200 OK [${took}]${getLinkToBuild(
-										runId
-									)}`
-								),
-								getBox('green')
-							)
-						);
-					} else {
-						console.log([]);
-					}
-				} else {
-					// we have some failure
-					if (options.format.toLowerCase() === 'csv') {
-						console.log(
-							boxen(
-								chalk.red(
-									`Scanned ${results.length}, found ${
-										badUrls.length
-									} Bad links [${took}]${getLinkToBuild(
-										runId
-									)}`
-								),
-								getBox('red')
-							)
-						);
-						outputBadDataCsv(badUrls);
-					} else {
-						// print raw JSON
-						console.log(badUrls);
-					}
-					process.exit(1);
-				}
-			};
-
-			if (options.token) {
-				postData({
-					totalScanned: results.length,
-					scanDuration: sec,
-					url: options.url,
-					badUrls,
-				})
-					.then((runId) => printToConsole(runId))
-					.catch((e) => {
-						console.error(
-							`Error: Unabled to push data to dashboard service => ${e.message}`
-						);
-						printToConsole();
-					});
-			} else {
-				printToConsole();
-			}
-		});
-};
-
-const postData = (data) => {
-	const url = `${endpoint}/api/scanresult/${options.token}/${
-		options.buildId || 'NA'
-	}`;
-	writeLog(`Posting result to ${url}`, data);
-	return fetch(url, {
-		method: 'POST',
-		body: JSON.stringify(data),
-		headers: { 'Content-Type': 'application/json' },
-	}).then((res) => {
-		if (res.ok) {
-			return res.text();
-		} else {
-			return res.text().then((t) => {
-				throw Error(t);
+	if (args.token) {
+		try {
+			const runId = await postData(args.token, args.buildId, {
+				totalScanned: results.length,
+				scanDuration: sec,
+				url: args.url,
+				badUrls,
 			});
+			__printResultsToConsole(runId);
+		} catch (error) {
+			console.error(
+				`Error: Unabled to push data to dashboard service => ${error.message}`
+			);
+			__printResultsToConsole();
 		}
-	});
+	} else {
+		__printResultsToConsole();
+	}
 };
 
-const outputBadDataCsv = (records) => {
+const _outputBadDataCsv = (records) => {
 	const createCsvStringifier = require('csv-writer')
 		.createObjectCsvStringifier;
 
@@ -208,32 +219,8 @@ const outputBadDataCsv = (records) => {
 	console.log(csvStringifier.stringifyRecords(records));
 };
 
-const printTimeDiff = (t1, t2) => {
-	var dif = t1 - t2;
-	const took =
-		Math.floor(dif / 1000 / 60)
-			.toString()
-			.padStart(2, '0') +
-		':' +
-		Math.floor((dif / 1000) % 60)
-			.toString()
-			.padStart(2, '0');
-	return [took, Math.floor(dif / 1000)];
-};
+const _writeLog = (...msg) => _args.debug && console.log(...msg);
 
-const getBox = (color) => ({
-	padding: 1,
-	margin: 1,
-	borderStyle: 'round',
-	borderColor: color,
-});
-
-const replaceQuote = (s) => s.replace(/"/g, '');
-const getLinkToBuild = (runId) =>
-	runId
-		? ` => https://sswlinkauditor.surge.sh/build/${replaceQuote(
-				runId
-		  )}`
-		: '';
 // run
-main();
+// main();
+main_test();

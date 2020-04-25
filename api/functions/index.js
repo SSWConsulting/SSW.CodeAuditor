@@ -36,6 +36,10 @@ app.get('/config/:api', async (req, res) =>
 	res.json(await getConfig(req.params.api))
 );
 
+app.get('/config/:api/ignore', async (req, res) =>
+	res.json(await getIgnoredUrls(req.params.api))
+);
+
 app.put('/config/:api', async (req, res) =>
 	res.json(await updateConfig(req.params.api, req.body))
 );
