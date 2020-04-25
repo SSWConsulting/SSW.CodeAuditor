@@ -4,68 +4,44 @@
   import { createEventDispatcher, onMount } from "svelte";
   import { Navigate } from "svelte-router-spa";
   import TextField from "../components/TextField.svelte";
+  import SocialLogin from "../components/SocialLogin.svelte";
   import { oauthLoginError } from "../stores.js";
 
   let loading;
-  const login = promise => {
+  const loginEmailPassword = () => {
     serverError = "";
     loading = true;
-    return promise
+    return firebase
+      .auth()
+      .signInWithEmailAndPassword(username, password)
       .catch(err => (serverError = err.message))
       .finally(() => (loading = false));
   };
-  const loginGmail = () =>
-    login(
-      firebase.auth().signInWithRedirect(new firebase.auth.GoogleAuthProvider())
-    );
-
-  const loginFacebook = () =>
-    login(
-      firebase
-        .auth()
-        .signInWithRedirect(new firebase.auth.FacebookAuthProvider())
-    );
-
-  const loginEmailPassword = () =>
-    login(firebase.auth().signInWithEmailAndPassword(username, password));
 
   let serverError;
   let username;
   let password;
   $: valid = !!username && !!password;
-
-  onMount(() => console.log("loaded login page"));
 </script>
 
 <form class="container mx-auto max-w-sm py-12">
   <div class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
     <div class="mb-6 mx-auto">
-      <span class="text-3xl">SSW LinkAuditor</span>
+      <svg
+        fill="none"
+        stroke-linecap="round"
+        class="inline-block text-red-600"
+        height="35"
+        width="35"
+        stroke-linejoin="round"
+        stroke-width="3"
+        stroke="currentColor"
+        viewBox="0 0 24 24">
+        <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+      </svg>
+      <span class="text-3xl align-middle ml-2">SSW LinkAuditor</span>
     </div>
-    <div class="mb-2 mx-auto">
-      <button
-        on:click|preventDefault={loginGmail}
-        type="button"
-        disabled={loading}
-        class="bg-red-700 hover:bg-blue-500 text-white font-semibold block
-        hover:text-grey-100 py-2 px-4 border border-blue-500
-        hover:border-transparent rounded">
-        Sign In Using Google
-        {#if loading}...{/if}
-      </button>
-    </div>
-    <div class="mb-4 mx-auto">
-      <button
-        on:click|preventDefault={loginFacebook}
-        type="button"
-        disabled={loading}
-        class="bg-blue-700 hover:bg-blue-500 text-white font-semibold block
-        hover:text-grey-100 py-2 px-4 border border-blue-500
-        hover:border-transparent rounded">
-        Sign In Using Facebook
-        {#if loading}...{/if}
-      </button>
-    </div>
+    <SocialLogin bind:serverError />
     <hr class="mb-4" />
     <div class="mb-4">
       <TextField

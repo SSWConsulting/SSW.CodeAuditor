@@ -7,6 +7,8 @@
   let destinationsKeys = [];
   let displayMode = "s";
 
+  const ignore = url => {};
+
   $: if (builds.length > 0) {
     sources = groupBy(props(["src"]))(builds);
     sourcesKeys = Object.keys(sources);
@@ -75,6 +77,28 @@
           {#each sources[url] as val}
             <tr>
               <td class="w-6/12 border px-4 py-2 break-all">
+                <button
+                  title="Ignore this broken link in the next scan"
+                  on:click={() => ignore(val.dst)}
+                  class="hover:bg-gray-400 rounded inline-flex align-middle mr-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="24"
+                    height="24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path
+                      d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0
+                      011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0
+                      .891-1.077 1.337-1.707.707L5.586 15z"
+                      clip-rule="evenodd" />
+                    <path d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+                  </svg>
+                </button>
                 <a
                   class="inline-block align-baseline text-blue-600
                   hover:text-blue-800"
@@ -102,11 +126,33 @@
       <div class="mb-3">
         <span class="font-bold mr-2">>> Broken Link:</span>
         <a
-          class="inline-block align-baseline text-blue-600 hover:text-blue-800"
+          class="mr-2 inline-block align-baseline text-blue-600 hover:text-blue-800"
           target="_blank"
           href={url}>
           {url}
         </a>
+        <button
+          title="Ignore this broken link in the next scan"
+          on:click={() => ignore(val.dst)}
+          class="hover:bg-gray-400 rounded inline-flex align-middle mr-3">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            width="24"
+            height="24"
+            stroke-width="2"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0
+              011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077
+              1.337-1.707.707L5.586 15z"
+              clip-rule="evenodd" />
+            <path d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+          </svg>
+        </button>
       </div>
       <table class="table-auto mb-8">
         <thead>
