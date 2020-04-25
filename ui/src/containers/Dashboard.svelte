@@ -77,7 +77,18 @@
           hover:text-blue-darker text-2xl"
           on:click={() => (showInstruction = false)}
           href="javascript:void(0)">
-          X
+          <svg
+            fill="none"
+            class="inline-block"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            width="25"
+            height="25"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path d="M6 18L18 6M6 6l12 12" />
+          </svg>
         </a>
       {/if}
       <article class="markdown-body">
