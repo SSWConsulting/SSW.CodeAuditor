@@ -2,16 +2,27 @@
   import { groupBy, props } from "ramda";
   export let builds = [];
   import DetailsByDest from "./DetailsByDest.svelte";
+  import ParsedQuery from "query-string";
+  import { updateQuery } from "../utils/utils.js";
   import DetailsBySource from "./DetailsBySource.svelte";
   import DetailsByReason from "./DetailsByReason.svelte";
+  import { onMount } from "svelte";
 
   const options = [DetailsBySource, DetailsByDest, DetailsByReason];
   let selected = options[0];
   let displayMode = 0;
+  export let currentRoute;
   const changeMode = m => {
     displayMode = m;
     selected = options[m];
+    updateQuery(ParsedQuery.stringify({ displayMode }));
   };
+
+  onMount(() => {
+    if (currentRoute && currentRoute.queryParams.displayMode) {
+      changeMode(+currentRoute.queryParams.displayMode);
+    }
+  });
 </script>
 
 <style>

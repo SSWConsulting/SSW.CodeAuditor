@@ -99,7 +99,7 @@
       <BuildDetailsCard
         build={data ? data.summary[0] : {}}
         on:download={onDownload} />
-      <DetailsTable builds={data ? data.brokenLinks : []} />
+      <DetailsTable builds={data ? data.brokenLinks : []} {currentRoute} />
     {:catch error}
       <p style="color: red">{error.message}</p>
     {/await}

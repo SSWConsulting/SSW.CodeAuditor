@@ -50,7 +50,7 @@
     <tbody>
       {#each sources[url] as val}
         <tr>
-          <td class="w-6/12 border px-4 py-2 break-all">
+          <td class="whitespace-no-wrap break-all w-6/12 border px-4 py-2 break-all">
             <button
               title="Ignore this broken link in the next scan"
               on:click={() => ignore(val.dst)}

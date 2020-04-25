@@ -56,7 +56,7 @@
               {val.src}
             </a>
           </td>
-          <td class="w-5/12 border px-4 py-2 break-all">
+          <td class="w-5/12 border px-4 py-2">
             <button
               title="Ignore this broken link in the next scan"
               on:click={() => ignore(val.dst)}

@@ -36,3 +36,16 @@ export const printTimeDiff = (took) =>
 	Math.floor((took || 0) % 60)
 		.toString()
 		.padStart(2, '0');
+
+export const updateQuery = (q) => {
+	if (history.pushState) {
+		var newurl =
+			window.location.protocol +
+			'//' +
+			window.location.host +
+			window.location.pathname +
+			'?' +
+			q;
+		window.history.pushState({ path: newurl }, '', newurl);
+	}
+};
