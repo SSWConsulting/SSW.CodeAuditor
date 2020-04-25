@@ -2,6 +2,7 @@
   import { groupBy, props } from "ramda";
   import DetailsByDest from "./DetailsByDest.svelte";
   import Modal from "../components/Modal.svelte";
+  import SelectField from "../components/SelectField.svelte";
   import ParsedQuery from "query-string";
   import { updateQuery } from "../utils/utils.js";
   import DetailsBySource from "./DetailsBySource.svelte";
@@ -13,6 +14,14 @@
   export let currentRoute;
 
   const options = [DetailsBySource, DetailsByDest, DetailsByReason];
+  const ignoreDurations = [
+    { value: 3, label: "3 days" },
+    { value: 7, label: "1 week" },
+    { value: 14, label: "2 weeks" },
+    { value: 30, label: "1 month" },
+    { value: -1, label: "Permanently" }
+  ];
+  let selectDuration = 3;
   let selected = options[0];
   let displayMode = 0;
   let show;
@@ -26,7 +35,7 @@
   };
 
   const updateIgnore = () => {
-    console.log("ignore", ignoreOption);
+    console.log("ignore", ignoreOption, selectDuration);
     show = false;
   };
 
@@ -137,7 +146,8 @@
 {/if}
 <Modal bind:show header="Ignore" mainAction="Save" on:action={updateIgnore}>
   <a
-    class="inline-block align-baseline text-blue-600 hover:text-blue-800 pb-5"
+    class="inline-block align-baseline text-blue-600 hover:text-blue-800 pb-5
+    pl-5 text-lg"
     target="_blank"
     href={urlToIgnore}>
     {urlToIgnore}
@@ -176,5 +186,10 @@
         </label>
       </div>
     </li>
+    <SelectField
+      bind:value={selectDuration}
+      label="For:"
+      allowNull={false}
+      options={ignoreDurations} />
   </ul>
 </Modal>
