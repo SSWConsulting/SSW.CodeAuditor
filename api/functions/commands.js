@@ -18,6 +18,7 @@ exports.insertScanResult = (api, buildId, runId, data, buildDate) => {
 
 exports.updateConfig = (api, data) => {
 	const entGen = azure.TableUtilities.entityGenerator;
+
 	let entity = {
 		PartitionKey: entGen.String(api),
 		RowKey: entGen.String(api),

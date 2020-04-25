@@ -9,6 +9,7 @@ const {
 	addIgnoreUrl,
 	insertScanSummary,
 	insertScanResult,
+	updateConfig,
 } = require('./commands');
 const {
 	getSummary,
@@ -33,6 +34,10 @@ app.get('/healthz', async (req, res) => res.json('ok'));
 
 app.get('/config/:api', async (req, res) =>
 	res.json(await getConfig(req.params.api))
+);
+
+app.put('/config/:api', async (req, res) =>
+	res.json(await updateConfig(req.params.api, req.body))
 );
 
 app.post('/config/:api/ignore', async (req, res) => {
