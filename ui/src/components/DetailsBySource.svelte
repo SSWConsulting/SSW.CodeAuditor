@@ -29,7 +29,7 @@
         viewBox="0 0 24 24">
         <path d="M9 5l7 7-7 7" />
       </svg>
-      {sources[url].length} broken links on:
+      Broken links on:
     </span>
     <a
       class="inline-block align-baseline text-blue-600 hover:text-blue-800"
@@ -41,7 +41,7 @@
   <table class="table-auto mb-8">
     <thead>
       <tr>
-        <th class="w-6/12 px-4 py-2">Broken Link</th>
+        <th class="w-6/12 px-4 py-2">Broken Link ({sources[url].length})</th>
         <th class="w-3/12 px-4 py-2">Anchor Text</th>
         <th class="w-1/12 px-4 py-2 text-right">Status</th>
         <th class="w-2/12 px-4 py-2 text-right">Message</th>

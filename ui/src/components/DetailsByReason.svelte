@@ -29,7 +29,7 @@
         viewBox="0 0 24 24">
         <path d="M9 5l7 7-7 7" />
       </svg>
-      {reasons[reason].length} destinations with failure reason:
+      Failure reason:
     </span>
     <span class="inline-block align-baseline text-blue-600 hover:text-blue-800">
       {reason}
@@ -38,7 +38,7 @@
   <table class="table-auto mb-8">
     <thead>
       <tr>
-        <th class="w-4/12 px-4 py-2">Source</th>
+        <th class="w-4/12 px-4 py-2">Source ({reasons[reason].length}) </th>
         <th class="w-5/12 px-4 py-2">Destination</th>
         <th class="w-2/12 px-4 py-2">Anchor Text</th>
         <th class="w-1/12 px-4 py-2 text-right">Status</th>

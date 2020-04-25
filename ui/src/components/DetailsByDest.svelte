@@ -30,8 +30,8 @@
         viewBox="0 0 24 24">
         <path d="M9 5l7 7-7 7" />
       </svg>
-      {destinations[url][0].statusmsg} ({destinations[url][0].statuscode || 0}),
-      found in {destinations[url].length} page(s) :
+      {destinations[url][0].statusmsg} ({destinations[url][0].statuscode || 0})
+      :
     </span>
     <a
       class="mr-2 inline-block align-baseline text-blue-600 hover:text-blue-800"
@@ -64,7 +64,9 @@
   <table class="table-auto mb-8">
     <thead>
       <tr>
-        <th class="w-6/12 px-4 py-2">Found on Page</th>
+        <th class="w-6/12 px-4 py-2">
+          Found on Page ({destinations[url].length})
+        </th>
         <th class="w-6/12 px-4 py-2">Anchor Text</th>
       </tr>
     </thead>
