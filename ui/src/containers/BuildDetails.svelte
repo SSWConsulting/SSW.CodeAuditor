@@ -52,8 +52,23 @@
     }
   }
 
-  const ignore = (event, user) => {
+  const ignore = async (event, user) => {
     console.log(event.detail, user);
+    const res = await fetch(`${CONSTS.API}/api/config/${user.apiKey}/ignore`, {
+      method: "POST",
+      body: JSON.stringify({
+        ...event.detail
+      }),
+      headers: { "Content-Type": "application/json" }
+    });
+    const result = await res.json();
+
+    if (res.ok) {
+      console.log("response", result);
+      return result;
+    } else {
+      throw new Error("Failed to load");
+    }
   };
   onMount(() => (promise = getBuildDetails()));
 </script>

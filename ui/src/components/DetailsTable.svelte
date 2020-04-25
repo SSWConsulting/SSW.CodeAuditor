@@ -23,12 +23,12 @@
     { value: 30, label: "1 month" },
     { value: -1, label: "Permanently" }
   ];
-  let selectDuration = 3;
+  let ignoreDuration = 3;
   let selected = options[0];
   let displayMode = 0;
   let show;
   let urlToIgnore;
-  let ignoreOption = "all";
+  let ignoreOn = "all";
 
   const changeMode = m => {
     displayMode = m;
@@ -38,7 +38,7 @@
 
   const updateIgnore = () => {
     show = false;
-    dispatch("ignore", { urlToIgnore, selectDuration, ignoreOption });
+    dispatch("ignore", { urlToIgnore, ignoreDuration, ignoreOn });
   };
 
   const ignore = url => {
@@ -162,7 +162,7 @@
           type="radio"
           class="hidden"
           value={'all'}
-          bind:group={ignoreOption} />
+          bind:group={ignoreOn} />
 
         <label for="radio1" class="flex items-center cursor-pointer text-lg">
           <span
@@ -178,7 +178,7 @@
           type="radio"
           class="hidden"
           id="radio2"
-          bind:group={ignoreOption}
+          bind:group={ignoreOn}
           value={summary.url} />
         <label for="radio2" class="flex items-center cursor-pointer text-lg">
           <span
@@ -189,7 +189,7 @@
       </div>
     </li>
     <SelectField
-      bind:value={selectDuration}
+      bind:value={ignoreDuration}
       label="For:"
       allowNull={false}
       options={ignoreDurations} />
