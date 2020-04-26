@@ -1,8 +1,12 @@
 <script>
+  import LoadingCirle from "../components/LoadingCirle.svelte";
+  import { createEventDispatcher } from "svelte";
+
   export let show;
   export let header;
+  export let loading;
   export let mainAction;
-  import { createEventDispatcher } from "svelte";
+  
   const dispatch = createEventDispatcher();
   const action = () => dispatch("action");
 
@@ -85,6 +89,9 @@
             hover:text-white py-2 px-4 border border-blue-500
             hover:border-transparent rounded">
             {mainAction}
+            {#if loading}
+              <LoadingCirle />
+            {/if}
           </button>
         {/if}
         <button

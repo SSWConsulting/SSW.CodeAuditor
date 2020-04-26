@@ -1,23 +1,23 @@
 <script>
   import { userApi, userSession$ } from "../stores";
   import { onMount } from "svelte";
-  import marked from "marked";
-  import firebase from "firebase/app";
   import DetailsTable from "../components/DetailsTable.svelte";
   import Toastr from "../components/Toastr.svelte";
   import BuildDetailsCard from "../components/BuildDetailsCard.svelte";
-  import { fade, fly } from "svelte/transition";
-  import { sort, descend, prop } from "ramda";
   import { CONSTS } from "../utils/utils.js";
   import { ExportToCsv } from "export-to-csv";
   import LoadingFlat from "../components/LoadingFlat.svelte";
+  import Modal from "../components/Modal.svelte";
+  import UpdateIgnoreUrl from "../components/UpdateIgnoreUrl.svelte";
 
   export let currentRoute;
+
   let promise;
-  let addedSuccess;
-  let userNotLogin;
+  let userNotLoginToast;
   let rawData;
-  let ignoredUrls = [];
+
+  let ignoreUrlShown;
+  let urlToIgnore;
 
   const onDownload = () => {
     const csvExporter = new ExportToCsv({
@@ -52,29 +52,15 @@
     }
   }
 
-  const ignore = async (event, user) => {
+  const showIgnore = (url, user) => {
     if (!user) {
-      userNotLogin = true;
+      userNotLoginToast = true;
       return;
     }
-
-    const res = await fetch(`${CONSTS.API}/api/config/${user.apiKey}/ignore`, {
-      method: "POST",
-      body: JSON.stringify({
-        ...event.detail
-      }),
-      headers: { "Content-Type": "application/json" }
-    });
-    const result = await res.json();
-
-    if (res.ok) {
-      ignoredUrls = result;
-      addedSuccess = true;
-      return result;
-    } else {
-      throw new Error("Failed to load");
-    }
+    urlToIgnore = url.detail;
+    ignoreUrlShown = true;
   };
+
   onMount(() => (promise = getBuildDetails()));
 </script>
 
@@ -123,30 +109,16 @@
         build={data ? data.summary[0] : {}}
         on:download={onDownload} />
       <DetailsTable
-        on:ignore={event => ignore(event, $userSession$)}
+        on:ignore={url => showIgnore(url, $userSession$)}
         builds={data ? data.brokenLinks : []}
-        {currentRoute}
-        summary={data ? data.summary[0] : {}} />
+        {currentRoute} />
     {:catch error}
       <p class="text-red-600 mx-auto text-2xl py-8">{error.message}</p>
     {/await}
   </div>
 </div>
 
-<Toastr bind:show={addedSuccess}>
-  <p class="font-bold">Added to ignored list!</p>
-  <p class="text-sm">
-    You currently have {ignoredUrls.length} ignored URLs.
-    <a
-      class="inline-block align-baseline font-bold text-sm text-blue
-      hover:text-blue-darker"
-      href="/settings">
-      View
-    </a>
-  </p>
-</Toastr>
-
-<Toastr bind:show={userNotLogin} timeout={10000} mode="warn">
+<Toastr bind:show={userNotLoginToast} timeout={10000} mode="warn">
   <p>Sign in to unlock this feature!</p>
   <p class="text-sm pt-2">
     <a
@@ -157,3 +129,5 @@
     </a>
   </p>
 </Toastr>
+
+<UpdateIgnoreUrl url={urlToIgnore} show={ignoreUrlShown} user={$userSession$} />
