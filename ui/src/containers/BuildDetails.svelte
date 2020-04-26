@@ -87,7 +87,7 @@
       </svg>
       <a
         class="inline-block align-baseline text-blue hover:text-blue-darker"
-        href="/home">
+        href="/">
         Builds
       </a>
       <svg
