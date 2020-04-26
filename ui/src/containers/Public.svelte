@@ -14,13 +14,13 @@
   ## SSW Link Auditor - Scan instructions
   Scan any website for broken links, for free, by running the following command:
   \`\`\` bash
-  $ docker run nvhoanganh1909/sswlinkauditor --url <URL> -buildId <BUILDID>
+  $ docker run nvhoanganh1909/sswlinkauditor --url <URL> --buildId <BUILDID>
   \`\`\`
   Where: **BUILDID** [optional]: your CI build number
 
   If you [sign up](/signup), you will get a unique token which allow you to store last **100** scan results on this website
   \`\`\` bash
-  $ docker run nvhoanganh1909/sswlinkauditor --url <URL> -buildId <BUILDID> --token <TOKEN>
+  $ docker run nvhoanganh1909/sswlinkauditor --url <URL> --buildId <BUILDID> --token <TOKEN>
   \`\`\`
   `;
 </script>
