@@ -1,5 +1,5 @@
 <script>
-  import { userApi, userSession$ } from "../stores";
+  import { userApi, userSession$, ignoredUrls$ } from "../stores";
   import SelectField from "../components/SelectField.svelte";
   import Toastr from "../components/Toastr.svelte";
   import { CONSTS } from "../utils/utils.js";
@@ -40,6 +40,7 @@
     ignoredUrls = await res.json();
 
     if (res.ok) {
+      ignoredUrls$.set(ignoredUrls);
       loading = false;
       show = false;
       addedSuccessToast = true;

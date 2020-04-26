@@ -1,6 +1,6 @@
 import { writable, derived } from 'svelte/store';
 import { navigateTo } from 'svelte-router-spa';
-
+import slug from 'slug';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -34,6 +34,13 @@ export const oauthLoginError = writable(null);
 
 export const isLoggedIn = derived(userSession$, (session) => {
 	return !!session;
+});
+
+export const ignoredUrls$ = writable([]);
+export const loadingIgnored$ = writable(false);
+
+export const ignoredUrlsList$ = derived(ignoredUrls$, (list) => {
+	return list ? list.map((x) => x.urlToIgnore) : [];
 });
 
 export const userName = derived(userSession$, (session) =>
@@ -77,5 +84,39 @@ export const loginCompleted = async (user) => {
 		}
 	} catch (error) {
 		oauthLoginError.set(error);
+	}
+};
+
+export const getIgnoreList = async (user) => {
+	loadingIgnored$.set(true);
+	try {
+		const res = await fetch(
+			`${CONSTS.API}/api/config/${user.apiKey}/ignore`
+		);
+		const result = await res.json();
+		if (res.ok) {
+			ignoredUrls$.set(result);
+		} else {
+			throw new Error('Failed to load');
+		}
+	} catch (error) {
+	} finally {
+		loadingIgnored$.set(false);
+	}
+};
+
+export const deleteIgnoreUrl = async (url, user) => {
+	try {
+		await fetch(
+			`${CONSTS.API}/api/config/${user.apiKey}/ignore/${
+				slug(url.urlToIgnore) + '_' + slug(url.ignoreOn)
+			}`,
+			{
+				method: 'DELETE',
+			}
+		);
+		await getIgnoreList(user);
+	} catch (error) {
+		throw new Error(error);
 	}
 };

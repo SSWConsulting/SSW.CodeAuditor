@@ -1,31 +1,25 @@
 <script>
   import format from "date-fns/format";
   import Toastr from "./Toastr.svelte";
-  import slug from "slug";
-  import { userSession$ } from "../stores";
-  import { CONSTS } from "../utils/utils.js";
+  import LoadingCirle from "./LoadingCirle.svelte";
+  import { userSession$, deleteIgnoreUrl } from "../stores";
 
   export let builds = [];
 
   $: numberOfBuilds = builds.length;
 
-  let addedSuccessToast;
+  let addedFailedToast;
   let deleteUrl;
+  let loading;
   const deleteIgnore = async (url, user) => {
-    deleteUrl = url;
-    const res = await fetch(
-      `${CONSTS.API}/api/config/${user.apiKey}/ignore/${slug(url.urlToIgnore) +
-        "_" +
-        slug(url.ignoreOn)}`,
-      {
-        method: "DELETE"
-      }
-    );
-    const result = await res.json();
-    if (res.ok) {
-      addedSuccessToast = true;
-    } else {
-      throw new Error("Failed to load");
+    deleteUrl = url.urlToIgnore;
+    loading = true;
+    try {
+      await deleteIgnoreUrl(url, user);
+    } catch (error) {
+      addedFailedToast = true;
+    } finally {
+      loading = false;
     }
   };
 </script>
@@ -78,26 +72,30 @@
             {format(new Date(val.effectiveFrom), 'dd/MM/yyyy')}
           </td>
           <td class="border px-4 py-2">
-            <a
-              href="javascript:void(0)"
-              on:click={() => deleteIgnore(val, $userSession$)}>
-              <svg
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                stroke="currentColor"
-                width="22"
-                height="22"
-                title="Delete"
-                class="align-middle"
-                viewBox="0 0 24 24">
-                <path
-                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0
-                  01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0
-                  00-1 1v3M4 7h16" />
-              </svg>
-            </a>
+            {#if loading && val.urlToIgnore === deleteUrl}
+              <LoadingCirle />
+            {:else}
+              <a
+                href="javascript:void(0)"
+                on:click={() => deleteIgnore(val, $userSession$)}>
+                <svg
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  width="22"
+                  height="22"
+                  title="Delete"
+                  class="align-middle mx-1"
+                  viewBox="0 0 24 24">
+                  <path
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0
+                    01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0
+                    00-1 1v3M4 7h16" />
+                </svg>
+              </a>
+            {/if}
           </td>
         </tr>
       {/each}
@@ -105,7 +103,10 @@
   </table>
 {/if}
 
-<Toastr bind:show={addedSuccessToast}>
-  <p class="font-bold">Success</p>
-  <p class="text-sm">{deleteUrl} removed from ignored list!</p>
+<Toastr bind:show={addedFailedToast}>
+  <p class="font-bold">Failure</p>
+  <p class="text-sm">
+    Failed to remove
+    <span class="font-bold">{deleteUrl}</span>
+  </p>
 </Toastr>

@@ -21,10 +21,15 @@ const _getService = () => {
 
 exports.getTableRows = (table, query) =>
 	new Promise((resolve, reject) => {
-		_getService().queryEntities(table, query, null, (error, _, response) => {
-			if (!error) resolve(response.body.value);
-			else reject(error);
-		});
+		_getService().queryEntities(
+			table,
+			query,
+			null,
+			(error, _, response) => {
+				if (!error) resolve(response.body.value);
+				else reject(error);
+			}
+		);
 	});
 
 exports.insertEntity = (table, data) =>
@@ -40,8 +45,22 @@ exports.insertEntity = (table, data) =>
 exports.updateEntity = (table, data) =>
 	new Promise((resolve, reject) =>
 		_createTableIfNotExists(table).then((service) =>
-			service.insertOrMergeEntity(table, data, (error, result, response) => {
-				if (!error) resolve(response.statusCode);
+			service.insertOrMergeEntity(
+				table,
+				data,
+				(error, result, response) => {
+					if (!error) resolve(response.statusCode);
+					else reject(error);
+				}
+			)
+		)
+	);
+
+exports.deleteEntity = (table, data) =>
+	new Promise((resolve, reject) =>
+		_createTableIfNotExists(table).then((service) =>
+			service.deleteEntity(table, data, (error, result, response) => {
+				if (!error) resolve();
 				else reject(error);
 			})
 		)

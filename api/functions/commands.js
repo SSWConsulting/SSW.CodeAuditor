@@ -1,4 +1,4 @@
-const { insertEntity, updateEntity } = require('./azurestorage');
+const { insertEntity, updateEntity, deleteEntity } = require('./azurestorage');
 const { TABLE } = require('./consts');
 const { replaceProp, newGuid } = require('./utils');
 const azure = require('azure-storage');
@@ -24,6 +24,16 @@ exports.updateConfig = (api, data) => {
 		RowKey: entGen.String(api),
 	};
 	return updateEntity(TABLE.Subscriptions, replaceProp(data, entity));
+};
+
+exports.deleteIgnoreUrl = (api, url) => {
+	const entGen = azure.TableUtilities.entityGenerator;
+
+	let entity = {
+		PartitionKey: entGen.String(api),
+		RowKey: entGen.String(url),
+	};
+	return deleteEntity(TABLE.IgnoredUrls, entity);
 };
 
 exports.addIgnoreUrl = (api, data) => {

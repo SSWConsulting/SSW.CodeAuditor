@@ -9,6 +9,7 @@ const {
 	addIgnoreUrl,
 	insertScanSummary,
 	insertScanResult,
+	deleteIgnoreUrl,
 	updateConfig,
 } = require('./commands');
 const {
@@ -38,6 +39,10 @@ app.get('/config/:api', async (req, res) =>
 
 app.get('/config/:api/ignore', async (req, res) =>
 	res.json(await getIgnoredUrls(req.params.api))
+);
+
+app.delete('/config/:api/ignore/:url', async (req, res) =>
+	res.json(await deleteIgnoreUrl(req.params.api, req.params.url))
 );
 
 app.put('/config/:api', async (req, res) =>

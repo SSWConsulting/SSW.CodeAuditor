@@ -1,11 +1,12 @@
 <script>
   import { groupBy, props } from "ramda";
+  import { ignoredUrlsList$ } from "../stores.js";
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
-  const ignore = url => dispatch("ignore", url);
 
   export let builds = [];
 
+  const ignore = url => dispatch("ignore", url);
   let destinations;
   let destinationsKeys = [];
 
@@ -42,7 +43,8 @@
     <button
       title="Ignore this broken link in the next scan"
       on:click={() => ignore(url)}
-      class="hover:bg-gray-400 rounded inline-flex align-middle mr-3">
+      class="hover:bg-gray-400 rounded inline-flex align-middle mr-3"
+      class:bg-green-400={$ignoredUrlsList$.indexOf(url) >= 0}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
