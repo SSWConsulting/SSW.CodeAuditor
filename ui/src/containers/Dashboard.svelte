@@ -1,5 +1,5 @@
 <script>
-  import { userApi, userSession$ } from "../stores";
+  import { getIgnoreList, userApi, userSession$ } from "../stores";
   import { onDestroy } from "svelte";
   import marked from "marked";
   import firebase from "firebase/app";
@@ -32,6 +32,7 @@
   let token;
   userSession$.subscribe(x => {
     if (x) {
+      getIgnoreList(x);
       // listen for changes
       unsubscription = firebase
         .firestore()
@@ -39,7 +40,6 @@
         .doc(x.uid)
         .onSnapshot(usr => {
           const userD = usr.data();
-          console.log("last build updated", usr.data());
           if (userD.lastBuild) {
             lastBuild = userD.lastBuild.toDate();
           }
@@ -102,8 +102,8 @@
   <div class="bg-white shadow-lg rounded px-8 pt-6 mb-6 flex flex-col">
     {#if !showInstruction}
       <a
-        class="text-right align-baseline underline text-sm text-blue font-bold pb-6
-        hover:text-blue-darker"
+        class="text-right align-baseline underline text-sm text-blue font-bold
+        pb-6 hover:text-blue-darker"
         on:click={() => (showInstruction = true)}
         href="javascript:void(0)">
         Show instructions

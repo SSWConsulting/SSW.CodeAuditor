@@ -6,7 +6,7 @@
 
   export let builds = [];
 
-  $: numberOfBuilds = builds.length;
+  $: numberOfIgnored = builds.length;
 
   let addedFailedToast;
   let deleteUrl;
@@ -24,7 +24,7 @@
   };
 </script>
 
-{#if numberOfBuilds === 0}
+{#if numberOfIgnored === 0}
   <div class="md:flex md:items-center mb-6">You have 0 ignored URLs!</div>
 {:else}
   <table class="table-auto mb-6">
