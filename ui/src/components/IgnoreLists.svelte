@@ -1,0 +1,111 @@
+<script>
+  import format from "date-fns/format";
+  import Toastr from "./Toastr.svelte";
+  import slug from "slug";
+  import { userSession$ } from "../stores";
+  import { CONSTS } from "../utils/utils.js";
+
+  export let builds = [];
+
+  $: numberOfBuilds = builds.length;
+
+  let addedSuccessToast;
+  let deleteUrl;
+  const deleteIgnore = async (url, user) => {
+    deleteUrl = url;
+    const res = await fetch(
+      `${CONSTS.API}/api/config/${user.apiKey}/ignore/${slug(url.urlToIgnore) +
+        "_" +
+        slug(url.ignoreOn)}`,
+      {
+        method: "DELETE"
+      }
+    );
+    const result = await res.json();
+    if (res.ok) {
+      addedSuccessToast = true;
+    } else {
+      throw new Error("Failed to load");
+    }
+  };
+</script>
+
+{#if numberOfBuilds === 0}
+  <div class="md:flex md:items-center mb-6">You have 0 ignored URLs!</div>
+{:else}
+  <table class="table-auto mb-6">
+    <thead>
+      <tr>
+        <th class="px-4 py-2">Ignored Url</th>
+        <th class="px-4 py-2">Apply To</th>
+        <th class="px-4 py-2">Duration</th>
+        <th class="px-4 py-2">From</th>
+        <th class="px-4 py-2" />
+      </tr>
+    </thead>
+    <tbody>
+      {#each builds as val}
+        <tr>
+          <td class="border px-4 py-2">
+            <a
+              class="inline-block align-middle text-blue-500"
+              target="_blank"
+              href={val.urlToIgnore}>
+              {val.urlToIgnore}
+            </a>
+          </td>
+          <td class="border px-4 py-2">
+            {#if val.ignoreOn === 'all'}
+              On all scans
+            {:else}
+              When scanning
+              <a
+                class="inline-block align-middle text-blue-500"
+                target="_blank"
+                href={val.ignoreOn}>
+                {val.ignoreOn}
+              </a>
+            {/if}
+          </td>
+          <td class="border px-4 py-2 text-center">
+            {#if val.ignoreDuration === -1}
+              <span>Permanently</span>
+            {:else}
+              <span>For {val.ignoreDuration} days</span>
+            {/if}
+          </td>
+          <td class="border px-4 py-2 text-right">
+            {format(new Date(val.effectiveFrom), 'dd/MM/yyyy')}
+          </td>
+          <td class="border px-4 py-2">
+            <a
+              href="javascript:void(0)"
+              on:click={() => deleteIgnore(val, $userSession$)}>
+              <svg
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                stroke="currentColor"
+                width="22"
+                height="22"
+                title="Delete"
+                class="align-middle"
+                viewBox="0 0 24 24">
+                <path
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0
+                  01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0
+                  00-1 1v3M4 7h16" />
+              </svg>
+            </a>
+          </td>
+        </tr>
+      {/each}
+    </tbody>
+  </table>
+{/if}
+
+<Toastr bind:show={addedSuccessToast}>
+  <p class="font-bold">Success</p>
+  <p class="text-sm">{deleteUrl} removed from ignored list!</p>
+</Toastr>

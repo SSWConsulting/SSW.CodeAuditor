@@ -96,8 +96,9 @@ const _getErrorUrl = async (args, startTime, file) => {
 						.filter(
 							(x) =>
 								x.ignoreOn === 'all' &&
-								diffInDaysToNow(new Date(x.effectiveFrom)) <
-									+x.ignoreDuration
+								(+x.ignoreDuration === -1 ||
+									diffInDaysToNow(new Date(x.effectiveFrom)) <
+										+x.ignoreDuration)
 						)
 						.map((x) => x.urlToIgnore)
 						.indexOf(x.Destination) < 0 &&
@@ -105,7 +106,7 @@ const _getErrorUrl = async (args, startTime, file) => {
 					ignoredUrls
 						.filter(
 							(x) =>
-								x.ignoreOn === args.url &&
+								+x.ignoreDuration === -1 ||
 								diffInDaysToNow(new Date(x.effectiveFrom)) <
 									+x.ignoreDuration
 						)

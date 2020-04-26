@@ -36,14 +36,13 @@
       }),
       headers: { "Content-Type": "application/json" }
     });
-    const result = await res.json();
+
+    ignoredUrls = await res.json();
 
     if (res.ok) {
       loading = false;
-      ignoredUrls = result;
       show = false;
       addedSuccessToast = true;
-      return result;
     } else {
       throw new Error("Failed to load");
     }
@@ -133,7 +132,7 @@
     <a
       class="inline-block align-baseline font-bold text-sm text-blue
       hover:text-blue-darker"
-      href="/settings">
+      href="/home/settings">
       View
     </a>
   </p>
