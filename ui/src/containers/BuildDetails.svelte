@@ -4,6 +4,7 @@
   import marked from "marked";
   import firebase from "firebase/app";
   import DetailsTable from "../components/DetailsTable.svelte";
+  import Toastr from "../components/Toastr.svelte";
   import BuildDetailsCard from "../components/BuildDetailsCard.svelte";
   import { fade, fly } from "svelte/transition";
   import { sort, descend, prop } from "ramda";
@@ -12,25 +13,19 @@
 
   export let currentRoute;
   let promise;
-  let showToastr;
+  let addedSuccess;
+  let userNotLogin;
   let rawData;
   let ignoredUrls = [];
 
   const onDownload = () => {
-    debugger;
-    const options = {
-      fieldSeparator: ",",
-      quoteStrings: '"',
-      decimalSeparator: ".",
+    const csvExporter = new ExportToCsv({
       showLabels: true,
       showTitle: true,
       title: `URL:,${rawData.summary.url},Duration:,${rawData.summary.scanDuration},URL Scanned:,${rawData.summary.totalScanned}`,
-      useTextFile: false,
-      useBom: true,
       useKeysAsHeaders: true
-    };
+    });
 
-    const csvExporter = new ExportToCsv(options);
     csvExporter.generateCsv(
       rawData.brokenLinks.map(x => {
         delete x["odata.etag"];
@@ -41,6 +36,7 @@
       })
     );
   };
+
   async function getBuildDetails() {
     const res = await fetch(
       `${CONSTS.API}/api/run/${currentRoute.namedParams.id}`
@@ -56,7 +52,11 @@
   }
 
   const ignore = async (event, user) => {
-    console.log(event.detail, user);
+    if (!user) {
+      userNotLogin = true;
+      return;
+    }
+
     const res = await fetch(`${CONSTS.API}/api/config/${user.apiKey}/ignore`, {
       method: "POST",
       body: JSON.stringify({
@@ -68,10 +68,7 @@
 
     if (res.ok) {
       ignoredUrls = result;
-      showToastr = true;
-      setTimeout(() => {
-        showToastr = false;
-      }, 7000);
+      addedSuccess = true;
       return result;
     } else {
       throw new Error("Failed to load");
@@ -134,38 +131,28 @@
     {/await}
   </div>
 </div>
-{#if showToastr}
-  <div
-    in:fly={{ y: 100, duration: 400 }}
-    out:fade={{ y: -100, duration: 250 }}
-    class="mx-auto z-auto mt-6 mr-12 fixed top-0 right-0 bg-teal-100 border-t-4 border-teal-500
-    rounded-b text-teal-900 px-4 py-3 shadow-md toast"
-    role="alert">
-    <div class="flex">
-      <div class="py-1">
-        <svg
-          class="fill-current h-6 w-6 text-teal-500 mr-4"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20">
-          <path
-            d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93
-            17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9
-            11V9h2v6H9v-4zm0-6h2v2H9V5z" />
-        </svg>
-      </div>
-      <div>
-        <p class="font-bold">Added to ignored list!</p>
-        <p class="text-sm">
-          You currently have {ignoredUrls.length} ignored URLs.
-          <a
-            class="inline-block align-baseline font-bold text-sm text-blue
-            hover:text-blue-darker"
-            href="/settings">
-            View
-          </a>
-        </p>
-      </div>
-    </div>
-  </div>
-  <!-- content here -->
-{/if}
+
+<Toastr bind:show={addedSuccess}>
+  <p class="font-bold">Added to ignored list!</p>
+  <p class="text-sm">
+    You currently have {ignoredUrls.length} ignored URLs.
+    <a
+      class="inline-block align-baseline font-bold text-sm text-blue
+      hover:text-blue-darker"
+      href="/settings">
+      View
+    </a>
+  </p>
+</Toastr>
+
+<Toastr bind:show={userNotLogin} timeout={10000} mode="warn">
+  <p>Sign in to unlock this feature!</p>
+  <p class="text-sm pt-2">
+    <a
+      class="inline-block align-baseline font-bold text-sm text-blue
+      hover:text-blue-darker"
+      href="/login">
+      Sign in
+    </a>
+  </p>
+</Toastr>

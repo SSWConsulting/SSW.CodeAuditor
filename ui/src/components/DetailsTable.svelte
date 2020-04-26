@@ -146,14 +146,18 @@
 
   <svelte:component this={selected} {builds} on:ignore={ignore} />
 {/if}
-<Modal bind:show header="Ignore" mainAction="Save" on:action={updateIgnore}>
+<Modal
+  bind:show
+  header="Ignore the following URL"
+  mainAction="Save"
+  on:action={updateIgnore}>
   <a
-    class="inline-block align-baseline text-blue-600 hover:text-blue-800 pb-5
-    pl-5 text-lg"
+    class="inline-block hover:text-blue-800 pb-5 pl-5 text-lg"
     target="_blank"
     href={urlToIgnore}>
     {urlToIgnore}
   </a>
+
   <ul class="ml-5">
     <li class="pb-3">
       <div class="flex items-center mr-4 mb-4">
@@ -164,9 +168,9 @@
           value={'all'}
           bind:group={ignoreOn} />
 
-        <label for="radio1" class="flex items-center cursor-pointer text-lg">
+        <label for="radio1" class="flex items-center cursor-pointer">
           <span
-            class="w-6 h-6 inline-block mr-2 rounded-full border border-grey
+            class="w-5 h-5 inline-block mr-2 rounded-full border border-grey
             flex-no-shrink" />
           For all new builds
         </label>
@@ -180,9 +184,9 @@
           id="radio2"
           bind:group={ignoreOn}
           value={summary.url} />
-        <label for="radio2" class="flex items-center cursor-pointer text-lg">
+        <label for="radio2" class="flex items-center cursor-pointer">
           <span
-            class="w-6 h-6 inline-block mr-2 rounded-full border border-grey
+            class="w-5 h-5 inline-block mr-2 rounded-full border border-grey
             flex-no-shrink" />
           Only when {summary.url} is scanned
         </label>
