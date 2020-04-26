@@ -1,5 +1,5 @@
 <script>
-  import { userApi, userSession$ } from "../stores";
+  import { userApi, userSession$, getIgnoreList } from "../stores";
   import { onMount } from "svelte";
   import DetailsTable from "../components/DetailsTable.svelte";
   import Toastr from "../components/Toastr.svelte";
@@ -63,6 +63,11 @@
   };
 
   onMount(() => (promise = getBuildDetails()));
+  userSession$.subscribe(x => {
+    if (x) {
+      getIgnoreList(x);
+    }
+  });
 </script>
 
 <div class="container mx-auto">

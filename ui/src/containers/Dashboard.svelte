@@ -1,5 +1,5 @@
 <script>
-  import { getIgnoreList, userApi, userSession$ } from "../stores";
+  import { userApi, userSession$ } from "../stores";
   import { onDestroy } from "svelte";
   import marked from "marked";
   import firebase from "firebase/app";
@@ -32,8 +32,6 @@
   let token;
   userSession$.subscribe(x => {
     if (x) {
-      getIgnoreList(x);
-      // listen for changes
       unsubscription = firebase
         .firestore()
         .collection(CONSTS.USERS)
