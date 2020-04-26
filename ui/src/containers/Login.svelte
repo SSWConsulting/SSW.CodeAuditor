@@ -3,7 +3,7 @@
   import "firebase/auth";
   import LoadingCirle from "../components/LoadingCirle.svelte";
   import { createEventDispatcher, onMount } from "svelte";
-  import { Navigate } from "svelte-router-spa";
+  import { Navigate, navigateTo } from "svelte-router-spa";
   import TextField from "../components/TextField.svelte";
   import SocialLogin from "../components/SocialLogin.svelte";
   import { oauthLoginError } from "../stores.js";
@@ -40,7 +40,9 @@
         viewBox="0 0 24 24">
         <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
       </svg>
-      <span class="text-3xl align-middle ml-2">SSW LinkAuditor</span>
+      <span on:click={() => navigateTo('/')} class="text-3xl align-middle ml-2">
+        SSW LinkAuditor
+      </span>
     </div>
     <SocialLogin bind:serverError />
     <hr class="mb-4" />

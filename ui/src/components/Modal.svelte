@@ -6,11 +6,12 @@
   export let header;
   export let loading;
   export let mainAction;
-  
+
   const dispatch = createEventDispatcher();
   const action = () => dispatch("action");
 
   const dismiss = () => {
+    dispatch("dismiss");
     show = false;
   };
 

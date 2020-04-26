@@ -18,7 +18,7 @@
 
   let ignoreUrlShown;
   let urlToIgnore;
-
+  let scanUrl;
   const onDownload = () => {
     const csvExporter = new ExportToCsv({
       showLabels: true,
@@ -46,6 +46,7 @@
 
     if (res.ok) {
       rawData = { summary: result.summary[0], brokenLinks: result.brokenLinks };
+      scanUrl = rawData.summary.url;
       return result;
     } else {
       throw new Error("Failed to load");
@@ -130,4 +131,8 @@
   </p>
 </Toastr>
 
-<UpdateIgnoreUrl url={urlToIgnore} show={ignoreUrlShown} user={$userSession$} />
+<UpdateIgnoreUrl
+  url={urlToIgnore}
+  {scanUrl}
+  bind:show={ignoreUrlShown}
+  user={$userSession$} />

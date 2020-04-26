@@ -6,6 +6,7 @@
   import Modal from "../components/Modal.svelte";
 
   export let url;
+  export let scanUrl;
   export let show;
   export let user;
 
@@ -23,7 +24,7 @@
     { value: 30, label: "1 month" },
     { value: -1, label: "Permanently" }
   ];
-
+  const dismiss = () => (show = false);
   const updateIgnore = async () => {
     loading = true;
     const res = await fetch(`${CONSTS.API}/api/config/${user.apiKey}/ignore`, {
@@ -74,7 +75,8 @@
   bind:loading
   header="Ignore the following URL"
   mainAction="Save"
-  on:action={updateIgnore}>
+  on:action={updateIgnore}
+  on:dismiss={dismiss}>
   <a
     class="inline-block hover:text-blue-800 pb-5 pl-5 text-lg"
     target="_blank"
@@ -112,7 +114,7 @@
           <span
             class="w-5 h-5 inline-block mr-2 rounded-full border border-grey
             flex-no-shrink" />
-          Only when {url} is scanned
+          Only when {scanUrl} is scanned
         </label>
       </div>
     </li>
