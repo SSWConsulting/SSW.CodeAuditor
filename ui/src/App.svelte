@@ -1,6 +1,7 @@
 <script>
   import firebase from "firebase/app";
   import "firebase/auth";
+  import Spinner from "./components/Spinner.svelte";
   import { Router } from "svelte-router-spa";
   import { routes } from "./routes";
   import {
@@ -30,8 +31,8 @@
 </script>
 
 {#if $performingLogin}
-  <div>
-    <p class="text-lg">Loading...</p>
+  <div class="h-full flex items-center container mx-auto">
+    <Spinner />
   </div>
 {/if}
 <div class:hidden={$performingLogin}>

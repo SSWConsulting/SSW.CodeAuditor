@@ -1,6 +1,7 @@
 <script>
   import firebase from "firebase/app";
   import "firebase/auth";
+  import LoadingCirle from "../components/LoadingCirle.svelte";
   import { createEventDispatcher, onMount } from "svelte";
   import { Navigate } from "svelte-router-spa";
   import TextField from "../components/TextField.svelte";
@@ -76,8 +77,10 @@
         class="bg-blue-100 hover:bg-blue-500 text-blue-800 font-semibold
         hover:text-white py-2 px-4 border border-blue-500
         hover:border-transparent rounded">
-        Sign In
-        {#if loading}...{/if}
+        Login
+        {#if loading}
+          <LoadingCirle />
+        {/if}
       </button>
       <a
         class="inline-block align-baseline font-bold text-sm text-blue

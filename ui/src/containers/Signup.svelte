@@ -5,6 +5,7 @@
   import TextField from "../components/TextField.svelte";
   import { isValidEmail } from "../utils/utils.js";
   import SocialLogin from "../components/SocialLogin.svelte";
+  import LoadingCirle from "../components/LoadingCirle.svelte";
   import { navigateTo } from "svelte-router-spa";
 
   let loading;
@@ -101,8 +102,10 @@
         class="bg-blue-100 hover:bg-blue-500 text-blue-800 font-semibold
         hover:text-white py-2 px-4 border border-blue-500
         hover:border-transparent rounded">
+        {#if loading}
+          <LoadingCirle />
+        {/if}
         Sign up
-        {#if loading}...{/if}
       </button>
       <a
         class="inline-block align-baseline font-bold text-sm text-blue

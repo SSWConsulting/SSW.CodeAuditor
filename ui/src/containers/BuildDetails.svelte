@@ -10,6 +10,7 @@
   import { sort, descend, prop } from "ramda";
   import { CONSTS } from "../utils/utils.js";
   import { ExportToCsv } from "export-to-csv";
+  import LoadingFlat from "../components/LoadingFlat.svelte";
 
   export let currentRoute;
   let promise;
@@ -79,45 +80,45 @@
 
 <div class="container mx-auto">
   <div class="bg-white shadow-lg rounded px-8 pt-6 mb-6 flex flex-col">
+    <p class="pb-2">
+      <svg
+        class="inline-block"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        stroke="currentColor"
+        height="20"
+        width="20"
+        viewBox="0 0 24 24">
+        <path d="M9 5l7 7-7 7" />
+      </svg>
+      <a
+        class="inline-block align-baseline text-blue hover:text-blue-darker"
+        href="/home">
+        Builds
+      </a>
+      <svg
+        class="inline-block"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        stroke="currentColor"
+        height="20"
+        width="20"
+        viewBox="0 0 24 24">
+        <path d="M9 5l7 7-7 7" />
+      </svg>
+      <a
+        class="inline-block align-baseline text-blue hover:text-blue-darker"
+        href="/build/{currentRoute.namedParams.id}">
+        {currentRoute.namedParams.id}
+      </a>
+    </p>
     {#await promise}
-      <p class="pb-6 mb-6">Downloading report, please wait...</p>
+      <LoadingFlat />
     {:then data}
-      <p class="pb-2">
-        <svg
-          class="inline-block"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          stroke="currentColor"
-          height="20"
-          width="20"
-          viewBox="0 0 24 24">
-          <path d="M9 5l7 7-7 7" />
-        </svg>
-        <a
-          class="inline-block align-baseline text-blue hover:text-blue-darker"
-          href="/home">
-          Builds
-        </a>
-        <svg
-          class="inline-block"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          stroke="currentColor"
-          height="20"
-          width="20"
-          viewBox="0 0 24 24">
-          <path d="M9 5l7 7-7 7" />
-        </svg>
-        <a
-          class="inline-block align-baseline text-blue hover:text-blue-darker"
-          href="/build/{currentRoute.namedParams.id}">
-          {currentRoute.namedParams.id}
-        </a>
-      </p>
       <BuildDetailsCard
         build={data ? data.summary[0] : {}}
         on:download={onDownload} />
@@ -127,7 +128,7 @@
         {currentRoute}
         summary={data ? data.summary[0] : {}} />
     {:catch error}
-      <p style="color: red">{error.message}</p>
+      <p class="text-red-600 mx-auto text-2xl py-8">{error.message}</p>
     {/await}
   </div>
 </div>

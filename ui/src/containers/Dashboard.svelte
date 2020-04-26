@@ -4,6 +4,8 @@
   import marked from "marked";
   import firebase from "firebase/app";
   import BuildList from "../components/BuildList.svelte";
+  import LoadingFlat from "../components/LoadingFlat.svelte";
+
   import { fade, fly } from "svelte/transition";
   import { sort, descend, prop } from "ramda";
   import { CONSTS } from "../utils/utils.js";
@@ -13,10 +15,10 @@
   let canClose;
   let unsubscription;
   let lastBuild;
+
   async function getLastBuilds(api) {
     const res = await fetch(`${CONSTS.API}/api/scanresult/${api}`);
     const result = await res.json();
-
     if (res.ok) {
       showInstruction = !result.length;
       canClose = result.length;
@@ -100,7 +102,7 @@
   <div class="bg-white shadow-lg rounded px-8 pt-6 mb-6 flex flex-col">
     {#if !showInstruction}
       <a
-        class="text-right align-baseline underline text-sm text-blue font-bold
+        class="text-right align-baseline underline text-sm text-blue font-bold pb-6
         hover:text-blue-darker"
         on:click={() => (showInstruction = true)}
         href="javascript:void(0)">
@@ -108,9 +110,11 @@
       </a>
     {/if}
     {#await promise}
-      <p class="pb-6 mb-6">Loading...</p>
+      <LoadingFlat />
     {:then data}
-      <BuildList builds={data} {lastBuild} />
+      {#if data}
+        <BuildList builds={data} {lastBuild} />
+      {/if}
     {:catch error}
       <p style="color: red">{error.message}</p>
     {/await}

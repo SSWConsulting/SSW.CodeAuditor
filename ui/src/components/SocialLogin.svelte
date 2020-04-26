@@ -1,6 +1,7 @@
 <script>
   import firebase from "firebase/app";
   import "firebase/auth";
+  import LoadingCirle from "../components/LoadingCirle.svelte";
   import { createEventDispatcher, onMount } from "svelte";
   import { Navigate } from "svelte-router-spa";
   import TextField from "../components/TextField.svelte";
@@ -32,7 +33,7 @@
 
 <style>
   .social {
-    width: 250px;
+    width: 270px;
   }
 </style>
 
@@ -75,7 +76,9 @@
         fill="#EB4335" />
     </svg>
     Sign In Using Google
-    {#if loading}...{/if}
+    {#if loading}
+      <LoadingCirle />
+    {/if}
   </button>
 </div>
 <div class="mb-4 mx-auto">
@@ -100,6 +103,8 @@
         fill="#3c5a9a" />
     </svg>
     Sign In Using Facebook
-    {#if loading}...{/if}
+    {#if loading}
+      <LoadingCirle />
+    {/if}
   </button>
 </div>
