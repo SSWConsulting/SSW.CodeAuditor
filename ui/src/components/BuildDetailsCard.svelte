@@ -11,15 +11,11 @@
 <!-- eslint-disable -->
 
 <div
-  class="bg-gray-200 pb-3 my-3 w-full justify-center items-center
-  overflow-hidden max-w-2xl rounded-lg shadow-sm mx-auto">
+  class="mx-5 bg-gray-200 pb-3 my-3 w-full justify-center items-center
+  overflow-hidden rounded-lg shadow-sm mx-auto">
   <div class="my-4">
     <h1 class="text-3xl text-center font-semibold">{build.url}</h1>
     {#if build.buildDate}
-      <!-- content here -->
-      <p class="text-sm text-gray-600 text-center py-3">
-        Completed {formatDistanceToNow(new Date(build.buildDate), { addSuffix: true })}
-      </p>
       {#if build.totalBrokenLinks > 0}
         <p class="text-sm text-gray-600 text-center py-3">
           <button
@@ -45,7 +41,16 @@
       {/if}
     {/if}
   </div>
-  <div class="mt-2 pt-1 flex flex-wrap mx-6 border-t">
+  <div
+    class="mt-3 pt-1 flex flex-wrap mx-6 border-t justify-center items-center">
+    {#if build.buildDate}
+      <div
+        class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
+        text-green-600 border-green-600 hover:bg-green-600 hover:text-green-100
+        cursor-default">
+        {formatDistanceToNow(new Date(build.buildDate), { addSuffix: true })}
+      </div>
+    {/if}
     <div
       class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
       text-green-600 border-green-600 hover:bg-green-600 hover:text-green-100
