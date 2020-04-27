@@ -141,4 +141,4 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 	res.json(runId);
 });
 
-exports.api = functions.https.onRequest(app);
+exports.api = functions.region('asia-northeast1').https.onRequest(app);
