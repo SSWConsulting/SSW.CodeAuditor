@@ -2,6 +2,7 @@
   import { userApi, userSession$, ignoredUrls$ } from "../stores";
   import SelectField from "../components/SelectField.svelte";
   import Toastr from "../components/Toastr.svelte";
+  import { Navigate, navigateTo } from "svelte-router-spa";
   import { CONSTS } from "../utils/utils.js";
   import Modal from "../components/Modal.svelte";
 
@@ -130,11 +131,10 @@
   <p class="font-bold">Added to ignored list!</p>
   <p class="text-sm">
     You currently have {ignoredUrls.length} ignored URLs.
-    <a
+    <span
       class="inline-block align-baseline font-bold text-sm text-blue
-      hover:text-blue-darker"
-      href="/home/settings">
-      View
-    </a>
+      hover:text-blue-darker">
+      <Navigate to="/home/settings">View</Navigate>
+    </span>
   </p>
 </Toastr>

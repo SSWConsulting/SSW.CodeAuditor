@@ -1,6 +1,7 @@
 <script>
   import TextField from "./TextField.svelte";
   import formatDistanceToNow from "date-fns/formatDistanceToNow";
+  import { Navigate, navigateTo } from "svelte-router-spa";
   import { fade, fly } from "svelte/transition";
   import { printTimeDiff } from "../utils/utils";
   export let builds = [];
@@ -44,24 +45,24 @@
       {#each builds as val}
         <tr>
           <td class="border px-4 py-2">
-            <a
-              class="inline-block align-middle hover:text-blue-800"
-              href={`/build/${val.runId}`}>
-              <svg
-                fill="none"
-                height="25"
-                width="25"
-                class:text-green-600={val.totalBrokenLinks === 0}
-                class:text-red-600={val.totalBrokenLinks > 0}
-                class="inline-block"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                stroke="currentColor"
-                viewBox="0 0 24 24">
-                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </a>
+            <span class="inline-block align-middle hover:text-blue-800">
+              <Navigate to={`/build/${val.runId}`}>
+                <svg
+                  fill="none"
+                  height="25"
+                  width="25"
+                  class:text-green-600={val.totalBrokenLinks === 0}
+                  class:text-red-600={val.totalBrokenLinks > 0}
+                  class="inline-block"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </Navigate>
+            </span>
             {val.buildId}
           </td>
           <td class="border px-4 py-2">
@@ -93,26 +94,26 @@
             {val.totalUnique404}
           </td>
           <td class="border px-4 py-2">
-            <a
-              class="inline-block align-middle hover:text-blue-800"
-              href={`/build/${val.runId}`}>
-              <svg
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                width="22"
-                height="22"
-                class="align-middle">
-                <path
-                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0
-                  002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2
-                  2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2
-                  2 0 01-2-2z" />
-              </svg>
-            </a>
+            <span class="inline-block align-middle hover:text-blue-800">
+              <Navigate to={`/build/${val.runId}`}>
+                <svg
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  width="22"
+                  height="22"
+                  class="align-middle">
+                  <path
+                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2
+                    0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002
+                    2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0
+                    01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </Navigate>
+            </span>
           </td>
         </tr>
       {/each}

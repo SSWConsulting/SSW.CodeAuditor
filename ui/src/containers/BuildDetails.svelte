@@ -6,6 +6,7 @@
   import BuildDetailsCard from "../components/BuildDetailsCard.svelte";
   import { CONSTS } from "../utils/utils.js";
   import { ExportToCsv } from "export-to-csv";
+  import { Navigate, navigateTo } from "svelte-router-spa";
   import LoadingFlat from "../components/LoadingFlat.svelte";
   import Modal from "../components/Modal.svelte";
   import UpdateIgnoreUrl from "../components/UpdateIgnoreUrl.svelte";
@@ -102,11 +103,10 @@
         viewBox="0 0 24 24">
         <path d="M9 5l7 7-7 7" />
       </svg>
-      <a
-        class="inline-block align-baseline text-blue hover:text-blue-darker"
-        href="/build/{currentRoute.namedParams.id}">
+      <span
+        class="inline-block align-baseline text-blue hover:text-blue-darker">
         {currentRoute.namedParams.id}
-      </a>
+      </span>
     </p>
     {#await promise}
       <LoadingFlat />
@@ -127,12 +127,11 @@
 <Toastr bind:show={userNotLoginToast} timeout={10000} mode="warn">
   <p>Sign in to unlock this feature!</p>
   <p class="text-sm pt-2">
-    <a
+    <span
       class="inline-block align-baseline font-bold text-sm text-blue
-      hover:text-blue-darker"
-      href="/login">
-      Sign in
-    </a>
+      hover:text-blue-darker">
+      <Navigate to="/login">Sign in</Navigate>
+    </span>
   </p>
 </Toastr>
 

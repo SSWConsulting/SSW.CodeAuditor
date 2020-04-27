@@ -1,8 +1,7 @@
 <script>
   import { Route } from "svelte-router-spa";
   import firebase from "firebase/app";
-  import { Navigate } from "svelte-router-spa";
-  import { navigateTo } from "svelte-router-spa";
+  import { Navigate, navigateTo } from "svelte-router-spa";
   import { userSession, userName, isLoggedIn } from "../stores.js";
 
   export let currentRoute;
@@ -41,7 +40,7 @@
       {#if $isLoggedIn}
         <div>
           <span class="text-white mx-2">{$userName}</span>
-          <a href="/home/settings" class="">
+          <Navigate to="/home/settings">
             <svg
               fill="none"
               class="inline-block text-white mx-1 cursor-pointer"
@@ -65,8 +64,7 @@
                 2.572-1.065z" />
               <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
-          </a>
-
+          </Navigate>
           <button
             on:click={signOut}
             type="button"
@@ -92,12 +90,9 @@
         </div>
       {:else}
         <div>
-          <a
-            on:click={() => navigateTo('/signup')}
-            href="javascript:void(0)"
-            class="text-white mx-2">
-            Sign Up
-          </a>
+          <span class="text-white mx-2">
+            <Navigate to="/signup">Sign Up</Navigate>
+          </span>
           <button
             on:click={() => navigateTo('/login')}
             type="button"
