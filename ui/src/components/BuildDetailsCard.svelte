@@ -14,7 +14,9 @@
   class="mx-5 bg-gray-200 pb-3 my-3 w-full justify-center items-center
   overflow-hidden rounded-lg shadow-sm mx-auto">
   <div class="my-4">
-    <h1 class="text-3xl text-center font-semibold">{build.url}</h1>
+    <a href={build.url} target="_blank">
+      <h1 class="text-3xl text-center font-semibold">{build.url}</h1>
+    </a>
     {#if build.buildDate}
       {#if build.totalBrokenLinks > 0}
         <p class="text-sm text-gray-600 text-center py-3">
