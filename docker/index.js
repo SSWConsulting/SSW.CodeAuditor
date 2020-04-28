@@ -138,13 +138,18 @@ const _getErrorUrl = async (args, startTime, file) => {
 				: `Scanned ${results.length}, found ${badUrls.length} Bad links [${took}]`,
 			badUrls.length === 0 ? 'green' : 'red'
 		);
+		
 		if (runId) {
+			// pushed to cloud, no need to output the CSV
 			consoleBox(getLinkToBuild(runId), 'green');
 		} else {
 			if (badUrls.length > 0) {
 				_outputBadDataCsv(badUrls);
-				process.exit(1);
 			}
+		}
+
+		if (badUrls.length > 0) {
+			process.exit(1);
 		}
 	};
 
