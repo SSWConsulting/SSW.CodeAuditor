@@ -1,12 +1,16 @@
 <script>
+  import { updateQuery } from "../utils/utils.js";
+  import ParsedQuery from "query-string";
+  import { navigateTo } from 'svelte-router-spa';
   export let value = {};
+  export let run;
   export let showLabel = false;
 </script>
 
 {#if value.performanceScore}
   <!-- content here -->
   <div class="pt-3 border-t px-2 py-2">
-    <div class="grid grid-cols-3 gap-1 row-gap-1">
+    <div class="grid grid-cols-3 gap-2 row-gap-2">
       <div class="text-center">
         <svg
           fill="none"
@@ -123,8 +127,8 @@
           fill="none"
           class="inline-block"
           height="24"
-          title="PWA"
           width="24"
+          title="PWA"
           stroke-linecap="round"
           stroke-linejoin="round"
           stroke-width="2"

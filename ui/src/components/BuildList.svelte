@@ -77,7 +77,7 @@
               href={val.url}>
               {val.url}
             </a>
-            <LighthouseSummary value={val} />
+            <LighthouseSummary run={val.runId} value={val} />
           </td>
           <td class="border px-4 py-2 text-right">
             {printTimeDiff(+val.scanDuration)}

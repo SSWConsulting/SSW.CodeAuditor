@@ -1,8 +1,8 @@
 <script>
   import { groupBy, props } from "ramda";
   import DetailsByDest from "./DetailsByDest.svelte";
-  import ParsedQuery from "query-string";
   import { updateQuery } from "../utils/utils.js";
+  import ParsedQuery from "query-string";
   import DetailsBySource from "./DetailsBySource.svelte";
   import DetailsByReason from "./DetailsByReason.svelte";
   import { onMount } from "svelte";

@@ -2,7 +2,7 @@
   import formatDistanceToNow from "date-fns/formatDistanceToNow";
   import { printTimeDiff } from "../utils/utils";
   import Modal from "./Modal.svelte";
-
+  import { navigateTo } from "svelte-router-spa";
   import LighthouseSummary from "./LighthouseSummary.svelte";
   import Toastr from "./Toastr.svelte";
   import { createEventDispatcher } from "svelte";
@@ -60,10 +60,10 @@
       {/if}
       {#if build.performanceScore}
         <div class="mx-auto px-12 py-8">
-          <LighthouseSummary value={build} showLabel={true} />
+          <LighthouseSummary run={build.runId} value={build} showLabel={true} />
           <div class="text-center py-3">
             <button
-              on:click={() => downloadLighthouse(build.runId)}
+              on:click={() => (window.location.href = '/lighthouse/' + build.runId)}
               class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2
               px-4 rounded inline-flex items-center text-center">
               <svg
@@ -75,11 +75,10 @@
                 stroke-width="2"
                 stroke="currentColor"
                 viewBox="0 0 24 24">
-                <path
-                  d="M8 16a5 5 0 01-.916-9.916 5.002 5.002 0 019.832 0A5.002
-                  5.002 0 0116 16m-7 3l3 3m0 0l3-3m-3 3V10" />
+                <path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+                <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
               </svg>
-              <span class="ml-2">Download Lighthouse Report</span>
+              <span class="ml-2">View Lighthouse Report</span>
             </button>
           </div>
         </div>
@@ -129,10 +128,7 @@
   </div>
 </div>
 
-<Modal
-  bind:show={showInstruction}
-  header="View Report At"
-  on:dismiss={dismiss}>
+<Modal bind:show={showInstruction} header="View Report At" on:dismiss={dismiss}>
   <a
     href="https://googlechrome.github.io/lighthouse/viewer/"
     target="_blank"

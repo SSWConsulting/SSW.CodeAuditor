@@ -4,6 +4,7 @@ import Dashboard from './containers/Dashboard.svelte';
 import Settings from './containers/Settings.svelte';
 import BuildDetails from './containers/BuildDetails.svelte';
 import Public from './containers/Public.svelte';
+import LighthouseReport from './containers/LighthouseReport.svelte';
 import AppLayout from './containers/Layout.svelte';
 import { isLoggedIn } from './stores.js';
 
@@ -27,6 +28,11 @@ const routes = [
 	{
 		name: '/build/:id',
 		component: BuildDetails,
+		layout: AppLayout
+	},
+	{
+		name: '/lighthouse/:run',
+		component: LighthouseReport,
 		layout: AppLayout
 	},
 	{
