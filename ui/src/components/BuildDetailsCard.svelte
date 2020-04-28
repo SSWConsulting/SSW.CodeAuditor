@@ -10,22 +10,7 @@
   const download = () => dispatch("download");
 
   export let build = {};
-  let showInstruction;
-  let dontShowAgain;
-  const dismiss = () => {
-    if (dontShowAgain) {
-      localStorage.setItem("dontShowAgain", "1");
-    }
-  };
-  const downloadLighthouse = run => {
-    window.location.href = `https://urlchecker.blob.core.windows.net/lhr/${run}.json`;
-    if (!localStorage.getItem("dontShowAgain")) {
-      showInstruction = true;
-    }
-  };
 </script>
-
-<!-- eslint-disable -->
 
 <div
   class="mx-5 bg-gray-200 pb-3 my-3 w-full justify-center items-center
@@ -127,35 +112,3 @@
 
   </div>
 </div>
-
-<Modal bind:show={showInstruction} header="View Report At" on:dismiss={dismiss}>
-  <a
-    href="https://googlechrome.github.io/lighthouse/viewer/"
-    target="_blank"
-    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4
-    rounded inline-flex items-center">
-    <svg
-      fill="none"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
-      height="25"
-      width="25"
-      class="inline-block mr-2"
-      stroke="currentColor"
-      viewBox="0 0 24 24">
-      <path
-        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0
-        0v6m0-6L10 14" />
-    </svg>
-    https://googlechrome.github.io/lighthouse/viewer/
-  </a>
-  <label class="block text-gray-500 font-bold py-5">
-    <input
-      class="mr-2 leading-tight"
-      type="checkbox"
-      bind:checked={dontShowAgain} />
-    <span class="text-sm">Don't show again</span>
-  </label>
-
-</Modal>
