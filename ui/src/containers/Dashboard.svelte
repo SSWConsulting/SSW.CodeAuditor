@@ -59,6 +59,14 @@
   \`\`\` bash
   $ docker run nvhoanganh1909/sswlinkauditor --url <URL> --buildId <BUILDID> --token ${token}
   \`\`\`
+  
+  Include [Lighthouse](https://developers.google.com/web/tools/lighthouse) key performance score by running
+  \`\`\` bash
+  $ docker container run --rm --cap-add=SYS_ADMIN nvhoanganh1909/sswlinkauditor --url <URL> --lighthouse --token ${token}
+  \`\`\`
+
+  Why **--cap-add=SYS_ADMIN** option? [Read here](https://github.com/GoogleChrome/lighthouse-ci/tree/master/docs/recipes/docker-client)
+
   Where:
   - **${token}** is a unique token assigned to your account
   - **BUILDID** (optional) is your CI build number
