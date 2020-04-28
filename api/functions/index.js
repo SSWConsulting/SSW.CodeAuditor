@@ -11,6 +11,7 @@ const {
 	insertScanResult,
 	deleteIgnoreUrl,
 	updateConfig,
+	uploadLighthouseReport,
 } = require('./commands');
 const {
 	getSummary,
@@ -102,10 +103,10 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 
 	// insert summary first
 	const payload = {
+		...lhrSummary,
 		totalScanned,
 		scanDuration,
 		url,
-		lhrSummary,
 		totalBrokenLinks: badUrls.length,
 		uniqueBrokenLinks: R.uniqBy(R.prop('dst'), badUrls).length,
 		pagesWithBrokenLink: R.uniqBy(R.prop('src'), badUrls).length,
@@ -117,6 +118,11 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 
 	console.log('adding summary', payload);
 	await insertScanSummary(apikey, buildId, runId, buildDate, payload);
+	if (lhr) {
+		console.log('uploading to Blob storage');
+		await uploadLighthouseReport(runId, lhr);
+		console.log('uploading to Blob storage - completed');
+	}
 
 	// insert each row
 	const writeAllQueued = () =>

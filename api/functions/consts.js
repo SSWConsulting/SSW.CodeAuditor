@@ -10,3 +10,7 @@ exports.TABLE = {
 	Subscriptions: 'Subscriptions',
 	ScanResults: 'ScanResults',
 };
+
+exports.BLOB = {
+	lhr: 'lhr',
+};

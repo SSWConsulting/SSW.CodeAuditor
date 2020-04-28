@@ -1,5 +1,10 @@
-const { insertEntity, updateEntity, deleteEntity } = require('./azurestorage');
-const { TABLE } = require('./consts');
+const {
+	uploadBlob,
+	insertEntity,
+	updateEntity,
+	deleteEntity,
+} = require('./azurestorage');
+const { BLOB, TABLE } = require('./consts');
 const { replaceProp, newGuid } = require('./utils');
 const azure = require('azure-storage');
 const slug = require('slug');
@@ -58,3 +63,6 @@ exports.insertScanSummary = (api, buildId, runId, buildDate, data) => {
 	};
 	return insertEntity(TABLE.Scans, replaceProp(data, entity));
 };
+
+exports.uploadLighthouseReport = (runId, lhr) =>
+	uploadBlob(BLOB.lhr, `${runId}.json`, JSON.stringify(lhr));

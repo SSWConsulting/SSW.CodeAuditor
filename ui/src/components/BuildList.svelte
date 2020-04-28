@@ -3,6 +3,7 @@
   import formatDistanceToNow from "date-fns/formatDistanceToNow";
   import { Navigate, navigateTo } from "svelte-router-spa";
   import { fade, fly } from "svelte/transition";
+  import LighthouseSummary from "./LighthouseSummary.svelte";
   import { printTimeDiff } from "../utils/utils";
   export let builds = [];
   export let lastBuild;
@@ -76,6 +77,7 @@
               href={val.url}>
               {val.url}
             </a>
+            <LighthouseSummary value={val} />
           </td>
           <td class="border px-4 py-2 text-right">
             {printTimeDiff(+val.scanDuration)}
@@ -93,6 +95,7 @@
             class:text-green-600={val.totalUnique404 === 0}>
             {val.totalUnique404}
           </td>
+
           <td class="border px-4 py-2">
             <span class="inline-block align-middle hover:text-blue-800">
               <Navigate to={`/build/${val.runId}`}>

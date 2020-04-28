@@ -4,14 +4,38 @@ const azure = require('azure-storage');
 const _createTableIfNotExists = (table) =>
 	new Promise((resolve, reject) => {
 		const tbservice = _getService();
-		_getService().createTableIfNotExists(table, (error) => {
+		tbservice.createTableIfNotExists(table, (error) => {
 			if (!error) resolve(tbservice);
 			else reject(error);
 		});
 	});
 
+const _createBlobContainerIfNotExists = (container) =>
+	new Promise((resolve, reject) => {
+		const svc = _getBlobService();
+		svc.createContainerIfNotExists(
+			container,
+			{
+				publicAccessLevel: 'blob',
+			},
+			(error) => {
+				if (!error) resolve(svc);
+				else reject(error);
+			}
+		);
+	});
+
 const _getService = () => {
 	return azure.createTableService(
+		process.env.AZURE_STORAGE_ACCOUNT ||
+			functions.config().azurestorage.account,
+		process.env.AZURE_STORAGE_ACCESS_KEY ||
+			functions.config().azurestorage.key
+	);
+};
+
+const _getBlobService = () => {
+	return azure.createBlobService(
 		process.env.AZURE_STORAGE_ACCOUNT ||
 			functions.config().azurestorage.account,
 		process.env.AZURE_STORAGE_ACCESS_KEY ||
@@ -39,6 +63,21 @@ exports.insertEntity = (table, data) =>
 				if (!error) resolve(response.statusCode);
 				else reject(error);
 			})
+		)
+	);
+
+exports.uploadBlob = (container, name, data) =>
+	new Promise((resolve, reject) =>
+		_createBlobContainerIfNotExists(container).then((service) =>
+			service.createBlockBlobFromText(
+				container,
+				name,
+				data,
+				(error, result, response) => {
+					if (!error) resolve(response.statusCode);
+					else reject(error);
+				}
+			)
 		)
 	);
 
