@@ -1,12 +1,28 @@
 <script>
   import formatDistanceToNow from "date-fns/formatDistanceToNow";
   import { printTimeDiff } from "../utils/utils";
+  import Modal from "./Modal.svelte";
+
   import LighthouseSummary from "./LighthouseSummary.svelte";
+  import Toastr from "./Toastr.svelte";
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   const download = () => dispatch("download");
 
   export let build = {};
+  let showInstruction;
+  let dontShowAgain;
+  const dismiss = () => {
+    if (dontShowAgain) {
+      localStorage.setItem("dontShowAgain", "1");
+    }
+  };
+  const downloadLighthouse = run => {
+    window.location.href = `https://urlchecker.blob.core.windows.net/lhr/${run}.json`;
+    if (!localStorage.getItem("dontShowAgain")) {
+      showInstruction = true;
+    }
+  };
 </script>
 
 <!-- eslint-disable -->
@@ -45,6 +61,27 @@
       {#if build.performanceScore}
         <div class="mx-auto px-12 py-8">
           <LighthouseSummary value={build} showLabel={true} />
+          <div class="text-center py-3">
+            <button
+              on:click={() => downloadLighthouse(build.runId)}
+              class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2
+              px-4 rounded inline-flex items-center text-center">
+              <svg
+                fill="none"
+                stroke-linecap="round"
+                width="24"
+                height="24"
+                stroke-linejoin="round"
+                stroke-width="2"
+                stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path
+                  d="M8 16a5 5 0 01-.916-9.916 5.002 5.002 0 019.832 0A5.002
+                  5.002 0 0116 16m-7 3l3 3m0 0l3-3m-3 3V10" />
+              </svg>
+              <span class="ml-2">Download Lighthouse Report</span>
+            </button>
+          </div>
         </div>
       {/if}
     {/if}
@@ -91,3 +128,38 @@
 
   </div>
 </div>
+
+<Modal
+  bind:show={showInstruction}
+  header="View Report At"
+  on:dismiss={dismiss}>
+  <a
+    href="https://googlechrome.github.io/lighthouse/viewer/"
+    target="_blank"
+    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4
+    rounded inline-flex items-center">
+    <svg
+      fill="none"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      height="25"
+      width="25"
+      class="inline-block mr-2"
+      stroke="currentColor"
+      viewBox="0 0 24 24">
+      <path
+        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0
+        0v6m0-6L10 14" />
+    </svg>
+    https://googlechrome.github.io/lighthouse/viewer/
+  </a>
+  <label class="block text-gray-500 font-bold py-5">
+    <input
+      class="mr-2 leading-tight"
+      type="checkbox"
+      bind:checked={dontShowAgain} />
+    <span class="text-sm">Don't show again</span>
+  </label>
+
+</Modal>
