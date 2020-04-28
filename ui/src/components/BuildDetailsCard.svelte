@@ -1,6 +1,7 @@
 <script>
   import formatDistanceToNow from "date-fns/formatDistanceToNow";
   import { printTimeDiff } from "../utils/utils";
+  import LighthouseSummary from "./LighthouseSummary.svelte";
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   const download = () => dispatch("download");
@@ -40,6 +41,11 @@
             <span class="ml-2">Download CSV</span>
           </button>
         </p>
+      {/if}
+      {#if build.performanceScore}
+        <div class="mx-auto px-12 py-8">
+          <LighthouseSummary value={build} showLabel={true} />
+        </div>
       {/if}
     {/if}
   </div>
