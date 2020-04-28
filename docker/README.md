@@ -1,10 +1,8 @@
 # check for broken links
 
 -   build the image
-    `docker build -t sswlinkauditor .`
+    `docker build -t sswconsulting/sswlinkauditor .`
 -   tag and push
-    `docker tag sswlinkauditor sswconsulting/sswlinkauditor`
-    `docker push sswconsulting/sswlinkauditor`
     `docker push sswconsulting/sswlinkauditor`
 -   Get Usage
     `docker run sswlinkauditor --help`
