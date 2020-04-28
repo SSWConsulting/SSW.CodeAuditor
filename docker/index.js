@@ -1,15 +1,13 @@
-const csv = require('csv-parser');
 const fs = require('fs');
 const { execSync } = require('child_process');
 const chalk = require('chalk');
-const boxen = require('boxen');
 const yargs = require('yargs');
 const { getConfigs, postData } = require('./api');
 const {
 	printTimeDiff,
 	diffInDaysToNow,
-	getBox,
 	getLinkToBuild,
+	consoleBox,
 	readCsv,
 } = require('./utils');
 
@@ -23,6 +21,7 @@ const _getAgrs = () => {
 			demandOption: true,
 		})
 		.option('token', {
+			alias: 't',
 			describe:
 				'Dashboard token (sign up at https://sswlinkauditor.surge.sh/)',
 			type: 'string',
@@ -38,23 +37,35 @@ const _getAgrs = () => {
 			type: 'boolean',
 			default: false,
 		})
-		.option('format', {
-			describe: 'Output format: csv | json',
-			type: 'string',
-			default: 'csv',
+		.option('lighthouse', {
+			describe: 'Include Lighthouse audit',
+			type: 'boolean',
+			default: false,
 		}).argv;
 	return _args;
 };
 
 const main = () => {
 	const options = _getAgrs();
+
 	const startTime = new Date();
 	const [result, error] = _startScan(options);
+	_writeLog(`scan finished`, result);
+
+	if (options.lighthouse) {
+		_writeLog(`start lighthouse`);
+		try {
+			execSync(`lhci collect --url="${options.url}" -n 1`);
+			_writeLog(`lighthouse check finished`);
+		} catch (error) {
+			_writeLog(`lighthouse check failed`, error);
+		}
+	}
 	if (error) {
 		_writeLog(`Error running command: ${error}`);
 		process.exit(1);
 	}
-	_getErrorUrl(options, startTime, '/home/crawls/all_inlinks.csv');
+	_getErrorUrl(options, startTime, '/home/lhci/all_inlinks.csv');
 };
 
 const main_test = () => {
@@ -63,21 +74,11 @@ const main_test = () => {
 };
 
 const _startScan = (options) => {
-	_writeLog(
-		chalk.yellowBright(
-			`Scanning ${chalk.green(
-				options.url
-			)} with Javascript Rendered Page option turned ${
-				options.spa
-					? chalk.red.bold('On')
-					: chalk.greenBright.bold('Off')
-			}`
-		)
-	);
+	_writeLog(chalk.yellowBright(`Scanning ${chalk.green(options.url)}`));
 
 	try {
-		const comand = `screamingfrogseospider --crawl ${options.url} --headless --output-folder /home/crawls --overwrite --bulk-export "All Inlinks"`;
-		return [execSync(comand), null];
+		const comand = `screamingfrogseospider --crawl ${options.url} --headless --output-folder /home/lhci --overwrite --bulk-export "All Inlinks"`;
+		return [execSync(comand).toString(), null];
 	} catch (error) {
 		return [null, error.message];
 	}
@@ -122,43 +123,28 @@ const _getErrorUrl = async (args, startTime, file) => {
 			}));
 	};
 
-	const __printResultsToConsole = (runId) => {
-		if (badUrls.length === 0) {
-			if (args.format.toLowerCase() === 'csv') {
-				console.log(
-					boxen(
-						chalk.green(
-							`All ${chalk.green.bold.underline(
-								results.length
-							)} links returned 200 OK [${took}]${getLinkToBuild(
-								runId
-							)}`
-						),
-						getBox('green')
-					)
-				);
-			} else {
-				console.log([]);
-			}
+	const __printResultsToConsole = (lh, runId) => {
+		lh &&
+			consoleBox(
+				`Performance=${lh.performanceScore} Accessibility=${lh.accessibilityScore} Best practices=${lh.bestPracticesScore} SEO=${lh.seoScore} PWA=${lh.pwaScore}`,
+				'green'
+			);
+
+		consoleBox(
+			badUrls.length === 0
+				? `All ${chalk.green.bold.underline(
+						results.length
+				  )} links returned 200 OK [${took}]`
+				: `Scanned ${results.length}, found ${badUrls.length} Bad links [${took}]`,
+			badUrls.length === 0 ? 'green' : 'red'
+		);
+		if (runId) {
+			consoleBox(getLinkToBuild(runId), 'green');
 		} else {
-			// we have some failure
-			if (args.format.toLowerCase() === 'csv') {
-				console.log(
-					boxen(
-						chalk.red(
-							`Scanned ${results.length}, found ${
-								badUrls.length
-							} Bad links [${took}]${getLinkToBuild(runId)}`
-						),
-						getBox('red')
-					)
-				);
+			if (badUrls.length > 0) {
 				_outputBadDataCsv(badUrls);
-			} else {
-				// print raw JSON
-				console.log(badUrls);
+				process.exit(1);
 			}
-			process.exit(1);
 		}
 	};
 
@@ -179,6 +165,34 @@ const _getErrorUrl = async (args, startTime, file) => {
 		}
 	}
 
+	let lhrSummary;
+	let lhr;
+	if (args.lighthouse) {
+		let lhFiles = fs.readdirSync('/home/lhci/src/.lighthouseci/');
+		if (lhFiles.filter((x) => x.endsWith('.json')).length > 0) {
+			const jsonReport = lhFiles
+				.filter((x) => x.endsWith('.json'))
+				.splice(-1)[0];
+
+			_writeLog(
+				`Include Lighthouse report in the payload as well: ${jsonReport}`
+			);
+			lhr = JSON.parse(
+				fs
+					.readFileSync(`/home/lhci/src/.lighthouseci/${jsonReport}`)
+					.toString()
+			);
+			lhrSummary = {
+				performanceScore: lhr.categories.performance.score,
+				accessibilityScore: lhr.categories.accessibility.score,
+				bestPracticesScore: lhr.categories['best-practices'].score,
+				seoScore: lhr.categories.seo.score,
+				pwaScore: lhr.categories.pwa.score,
+			};
+		}
+		_writeLog(`Lighthouse reports output`, lhFiles);
+	}
+
 	const badUrls = __getBadResults();
 
 	if (args.token) {
@@ -188,16 +202,17 @@ const _getErrorUrl = async (args, startTime, file) => {
 				scanDuration: sec,
 				url: args.url,
 				badUrls,
+				lhr,
 			});
-			__printResultsToConsole(runId);
+			__printResultsToConsole(lhrSummary, runId);
 		} catch (error) {
 			console.error(
 				`Error: Unabled to push data to dashboard service => ${error.message}`
 			);
-			__printResultsToConsole();
+			__printResultsToConsole(lhrSummary);
 		}
 	} else {
-		__printResultsToConsole();
+		__printResultsToConsole(lhrSummary);
 	}
 };
 

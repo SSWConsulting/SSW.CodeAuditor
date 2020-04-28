@@ -77,7 +77,18 @@ app.get('/run/:runId', async (req, res) => {
 });
 
 app.post('/scanresult/:api/:buildId', async (req, res) => {
-	const { badUrls, totalScanned, scanDuration, url } = req.body;
+	const { badUrls, totalScanned, scanDuration, url, lhr } = req.body;
+	let lhrSummary;
+	if (lhr) {
+		lhrSummary = {
+			performanceScore: lhr.categories.performance.score,
+			accessibilityScore: lhr.categories.accessibility.score,
+			bestPracticesScore: lhr.categories['best-practices'].score,
+			seoScore: lhr.categories.seo.score,
+			pwaScore: lhr.categories.pwa.score,
+		};
+		console.log('lighthouse score:', lhrSummary);
+	}
 	const apikey = req.params.api;
 	const buildId = req.params.buildId;
 	const runId = newGuid();
@@ -94,6 +105,7 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		totalScanned,
 		scanDuration,
 		url,
+		lhrSummary,
 		totalBrokenLinks: badUrls.length,
 		uniqueBrokenLinks: R.uniqBy(R.prop('dst'), badUrls).length,
 		pagesWithBrokenLink: R.uniqBy(R.prop('src'), badUrls).length,

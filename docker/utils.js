@@ -1,17 +1,20 @@
 const _replaceQuote = (s) => s.replace(/"/g, '');
 const fs = require('fs');
 const csv = require('csv-parser');
+const chalk = require('chalk');
+const boxen = require('boxen');
 
-exports.getBox = (color) => ({
-	padding: 1,
-	margin: 1,
-	borderStyle: 'round',
-	borderColor: color,
-});
+exports.consoleBox = (text, color) =>
+	console.log(boxen(chalk[color](text), {
+		padding: 1,
+		margin: 1,
+		borderStyle: 'single',
+		borderColor: color,
+	}));
 
 exports.getLinkToBuild = (runId) =>
 	runId
-		? ` => https://sswlinkauditor.surge.sh/build/${_replaceQuote(runId)}`
+		? `URL => https://sswlinkauditor.surge.sh/build/${_replaceQuote(runId)}`
 		: '';
 
 exports.printTimeDiff = (t1, t2) => {

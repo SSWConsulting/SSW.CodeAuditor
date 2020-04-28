@@ -1,11 +1,5 @@
-const csv = require('csv-parser');
-const fs = require('fs');
-const { execSync } = require('child_process');
-const chalk = require('chalk');
 const fetch = require('node-fetch');
-const boxen = require('boxen');
-const yargs = require('yargs');
-const endpoint = 'https://us-central1-sswlinkauditor-c1131.cloudfunctions.net';
+const endpoint = 'https://asia-northeast1-sswlinkauditor-c1131.cloudfunctions.net';
 
 exports.postData = (api, buildId, data) => {
 	const url = `${endpoint}/api/scanresult/${api}/${buildId || '-'}`;
