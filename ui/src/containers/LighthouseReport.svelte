@@ -2,11 +2,20 @@
   import { onMount, onDestroy } from "svelte";
   import { Navigate, navigateTo } from "svelte-router-spa";
   import LoadingFlat from "../components/LoadingFlat.svelte";
+  import {
+    getBuildDetails,
+    userApi,
+    userSession$,
+    getIgnoreList
+  } from "../stores";
+  import LighthouseDetailsCard from "../components/LighthouseDetailsCard.svelte";
   export let currentRoute;
   let loading;
+
+  let promise = getBuildDetails(currentRoute.namedParams.run);
   let runId;
+
   onMount(() => {
-    console.log("loading", currentRoute.namedParams.run);
     if (currentRoute && currentRoute.namedParams.run) {
       loading = true;
       runId = currentRoute.namedParams.run;
@@ -23,9 +32,6 @@
         });
     }
   });
-  const downloadLighthouse = () => {
-    window.location.href = `https://urlchecker.blob.core.windows.net/lhr/${runId}.json`;
-  };
 </script>
 
 <div class="container mx-auto">
@@ -86,27 +92,15 @@
     {#if loading}
       <LoadingFlat />
     {:else}
-      <div class="text-center py-3">
-        <button
-          on:click={downloadLighthouse}
-          class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4
-          rounded inline-flex items-center text-center">
-          <svg
-            fill="none"
-            stroke-linecap="round"
-            width="24"
-            height="24"
-            stroke-linejoin="round"
-            stroke-width="2"
-            stroke="currentColor"
-            viewBox="0 0 24 24">
-            <path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-            <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-          </svg>
-          <span class="ml-2">Download Lighthouse Report</span>
-        </button>
-      </div>
+      {#await promise}
+        <LoadingFlat />
+      {:then data}
+        <LighthouseDetailsCard build={data ? data.summary : {}} />
+      {:catch error}
+        <p class="text-red-600 mx-auto text-2xl py-8">{error.message}</p>
+      {/await}
     {/if}
+    <!-- this is where the lighthouse report will go -->
     <main id="report" />
   </div>
 </div>

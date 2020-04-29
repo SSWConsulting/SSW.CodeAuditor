@@ -120,3 +120,19 @@ export const deleteIgnoreUrl = async (url, user) => {
 		throw new Error(error);
 	}
 };
+
+export const getBuildDetails = async (runId) => {
+	const res = await fetch(
+		`${CONSTS.API}/api/run/${runId}`
+	);
+	const result = await res.json();
+
+	if (res.ok) {
+		return {
+			summary: result.summary[0],
+			brokenLinks: result.brokenLinks,
+		};
+	} else {
+		throw new Error('Failed to load');
+	}
+};

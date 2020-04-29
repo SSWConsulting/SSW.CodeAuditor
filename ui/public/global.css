@@ -60,3 +60,8 @@ button:not(:disabled):active {
 button:focus {
 	border-color: #666;
 }
+
+
+.lh-sticky-header {
+	display: none !important;
+}

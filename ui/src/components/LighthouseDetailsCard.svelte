@@ -1,15 +1,12 @@
 <script>
   import formatDistanceToNow from "date-fns/formatDistanceToNow";
   import { printTimeDiff } from "../utils/utils";
-  import Modal from "./Modal.svelte";
-  import { navigateTo } from "svelte-router-spa";
   import LighthouseSummary from "./LighthouseSummary.svelte";
-  import Toastr from "./Toastr.svelte";
-  import { createEventDispatcher } from "svelte";
-  const dispatch = createEventDispatcher();
-  const download = () => dispatch("download");
-
   export let build = {};
+
+  const download = id => {
+    window.location.href = `https://urlchecker.blob.core.windows.net/lhr/${id}.json`;
+  };
 </script>
 
 <div
@@ -17,15 +14,15 @@
   overflow-hidden rounded-lg shadow-sm mx-auto">
   <div class="m-8">
     <a href={build.url} target="_blank">
-      <h1 class="text-3xl text-center font-semibold py-4">{build.url}</h1>
+      <h1 class="text-3xl text-center font-semibold">{build.url}</h1>
     </a>
     {#if build.buildDate}
       {#if build.totalBrokenLinks > 0}
-        <p class="text-sm text-gray-600 text-center py-6">
+        <div class="text-center pt-6">
           <button
-            on:click={download}
+            on:click={() => download(build.runId)}
             class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2
-            px-4 rounded inline-flex items-center">
+            px-4 rounded inline-flex items-center text-center">
             <svg
               fill="none"
               stroke-linecap="round"
@@ -35,37 +32,11 @@
               stroke-width="2"
               stroke="currentColor"
               viewBox="0 0 24 24">
-              <path
-                d="M8 16a5 5 0 01-.916-9.916 5.002 5.002 0 019.832 0A5.002 5.002
-                0 0116 16m-7 3l3 3m0 0l3-3m-3 3V10" />
+              <path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+              <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
             </svg>
-            <span class="ml-2">Download CSV</span>
+            <span class="ml-2">Download Report</span>
           </button>
-        </p>
-      {/if}
-      {#if build.performanceScore}
-        <div class="mx-auto px-12 pb-8">
-          <LighthouseSummary run={build.runId} value={build} showLabel={true} />
-          <div class="text-center pt-4">
-            <button
-              on:click={() => navigateTo('/lighthouse/' + build.runId)}
-              class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2
-              px-4 rounded inline-flex items-center text-center">
-              <svg
-                fill="none"
-                stroke-linecap="round"
-                width="24"
-                height="24"
-                stroke-linejoin="round"
-                stroke-width="2"
-                stroke="currentColor"
-                viewBox="0 0 24 24">
-                <path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-                <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-              </svg>
-              <span class="ml-2">View Lighthouse Report</span>
-            </button>
-          </div>
         </div>
       {/if}
     {/if}

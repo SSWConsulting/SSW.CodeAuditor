@@ -1,5 +1,10 @@
 <script>
-  import { userApi, userSession$, getIgnoreList } from "../stores";
+  import {
+    getBuildDetails,
+    userApi,
+    userSession$,
+    getIgnoreList
+  } from "../stores";
   import { onMount } from "svelte";
   import DetailsTable from "../components/DetailsTable.svelte";
   import Toastr from "../components/Toastr.svelte";
@@ -13,23 +18,23 @@
 
   export let currentRoute;
 
-  let promise;
+  let promise = getBuildDetails(currentRoute.namedParams.id);
   let userNotLoginToast;
-  let rawData;
 
   let ignoreUrlShown;
   let urlToIgnore;
   let scanUrl;
-  const onDownload = () => {
+
+  const onDownload = data => {
     const csvExporter = new ExportToCsv({
       showLabels: true,
       showTitle: true,
-      title: `URL:,${rawData.summary.url},Duration:,${rawData.summary.scanDuration},URL Scanned:,${rawData.summary.totalScanned}`,
+      title: `URL:,${data.summary.url},Duration:,${data.summary.scanDuration},URL Scanned:,${data.summary.totalScanned}`,
       useKeysAsHeaders: true
     });
 
     csvExporter.generateCsv(
-      rawData.brokenLinks.map(x => {
+      data.brokenLinks.map(x => {
         delete x["odata.etag"];
         delete x["PartitionKey"];
         delete x["RowKey"];
@@ -39,31 +44,17 @@
     );
   };
 
-  async function getBuildDetails() {
-    const res = await fetch(
-      `${CONSTS.API}/api/run/${currentRoute.namedParams.id}`
-    );
-    const result = await res.json();
-
-    if (res.ok) {
-      rawData = { summary: result.summary[0], brokenLinks: result.brokenLinks };
-      scanUrl = rawData.summary.url;
-      return result;
-    } else {
-      throw new Error("Failed to load");
-    }
-  }
-
-  const showIgnore = (url, user) => {
+  const showIgnore = (mainUrl, url, user) => {
+    
     if (!user) {
       userNotLoginToast = true;
       return;
     }
+    scanUrl = mainUrl;
     urlToIgnore = url.detail;
     ignoreUrlShown = true;
   };
 
-  onMount(() => (promise = getBuildDetails()));
   userSession$.subscribe(x => {
     if (x) {
       getIgnoreList(x);
@@ -112,10 +103,10 @@
       <LoadingFlat />
     {:then data}
       <BuildDetailsCard
-        build={data ? data.summary[0] : {}}
-        on:download={onDownload} />
+        build={data ? data.summary : {}}
+        on:download={() => onDownload(data)} />
       <DetailsTable
-        on:ignore={url => showIgnore(url, $userSession$)}
+        on:ignore={url => showIgnore(data.summary.url, url, $userSession$)}
         builds={data ? data.brokenLinks : []}
         {currentRoute} />
     {:catch error}
