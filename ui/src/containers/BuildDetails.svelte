@@ -64,17 +64,14 @@
         `${CONSTS.API}/api/config/${user.apiKey}/perfthreshold/${slug(scanUrl)}`
       );
       const result = await res.json();
-      threshold =
-        result.length > 0
-          ? result[0]
-          : {
-              performanceScore: 0,
-              pwaScore: 0,
-              seoScore: 0,
-              accessibilityScore: 0,
-              bestPracticesScore: 0,
-              average: 0
-            };
+      threshold = result || {
+        performanceScore: 0,
+        pwaScore: 0,
+        seoScore: 0,
+        accessibilityScore: 0,
+        bestPracticesScore: 0,
+        average: 0
+      };
       console.log("threshold", threshold);
     } catch (error) {
       threshold = getPerfScore(summary);

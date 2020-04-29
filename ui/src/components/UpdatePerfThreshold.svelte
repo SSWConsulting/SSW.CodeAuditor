@@ -116,7 +116,10 @@
         type="range"
         min="0"
         max="100" />
-      <div class="pt-8 pb-6 text-lg"><span class="font-bold text-xl">0</span> = ignore criteria</div>
+      <div class="pt-8 pb-6 text-lg">
+        <span class="font-bold text-xl">0</span>
+        = ignore criteria
+      </div>
       <div class="text-center">
         <button
           on:click={clearAll}
@@ -143,5 +146,10 @@
 </Modal>
 
 <Toastr bind:show={addedSuccess}>
-  <p class="font-bold">Performance Threshold Updated!</p>
+  <p class="font-bold">Performance threshold updated for</p>
+  <span
+    class="inline-block align-baseline font-bold text-sm text-blue
+    hover:text-blue-darker">
+    <a href={url} target="_blank">{url}</a>
+  </span>
 </Toastr>

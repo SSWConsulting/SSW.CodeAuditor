@@ -34,13 +34,18 @@ exports.getIgnoredUrls = (api) =>
 		new azure.TableQuery().where('PartitionKey eq ?', api)
 	);
 
-exports.getPerformanceThreshold = (api, url) =>
-	getTableRows(
+exports.getPerformanceThreshold = (api, url) => {
+	const val = getTableRows(
 		TABLE.PerformanceThreshold,
 		new azure.TableQuery()
 			.where('PartitionKey eq ?', api)
 			.and('RowKey eq ?', slug(url))
 	);
+
+	if (val && val.length > 0) {
+		return val[0];
+	}
+};
 
 exports.getSummary = (api) =>
 	getTableRows(

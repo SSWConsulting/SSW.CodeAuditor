@@ -1,9 +1,10 @@
 const fetch = require('node-fetch');
-const endpoint = 'https://asia-northeast1-sswlinkauditor-c1131.cloudfunctions.net';
+const slug = require('slug');
+const endpoint =
+	'https://asia-northeast1-sswlinkauditor-c1131.cloudfunctions.net';
 
 exports.postData = (api, buildId, data) => {
-	const url = `${endpoint}/api/scanresult/${api}/${buildId || '-'}`;
-	return fetch(url, {
+	return fetch(`${endpoint}/api/scanresult/${api}/${buildId || '-'}`, {
 		method: 'POST',
 		body: JSON.stringify(data),
 		headers: { 'Content-Type': 'application/json' },
@@ -19,8 +20,19 @@ exports.postData = (api, buildId, data) => {
 };
 
 exports.getConfigs = (api) => {
-	const url = `${endpoint}/api/config/${api}/ignore`;
-	return fetch(url).then((res) => {
+	return fetch(`${endpoint}/api/config/${api}/ignore`).then((res) => {
+		if (res.ok) {
+			return res.json();
+		} else {
+			throw Error('Failed to load config');
+		}
+	});
+};
+
+exports.getPerfThreshold = (api, url) => {
+	return fetch(
+		`${endpoint}/api/config/${api}/perfthreshold/${slug(url)}`
+	).then((res) => {
 		if (res.ok) {
 			return res.json();
 		} else {

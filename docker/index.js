@@ -2,9 +2,10 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const chalk = require('chalk');
 const yargs = require('yargs');
-const { getConfigs, postData } = require('./api');
+const { getConfigs, getPerfThreshold, postData } = require('./api');
 const {
 	printTimeDiff,
+	getPerfScore,
 	diffInDaysToNow,
 	getLinkToBuild,
 	consoleBox,
@@ -123,10 +124,19 @@ const _getErrorUrl = async (args, startTime, file) => {
 			}));
 	};
 
-	const __printResultsToConsole = (lh, runId) => {
-		lh &&
+	const __printResultsToConsole = (lh, runId, thres) => {
+		let lhScaled;
+		if (lh) {
+			lhScaled = getPerfScore(lh);
+		}
+
+		lhScaled &&
 			consoleBox(
-				`Performance=${lh.performanceScore} Accessibility=${lh.accessibilityScore} Best practices=${lh.bestPracticesScore} SEO=${lh.seoScore} PWA=${lh.pwaScore}`,
+				`AVG=${lhScaled.average.toFixed(1)} Performance=${
+					lhScaled.performanceScore
+				} Accessibility=${lhScaled.accessibilityScore} Best practices=${
+					lhScaled.bestPracticesScore
+				} SEO=${lhScaled.seoScore} PWA=${lhScaled.pwaScore}`,
 				'green'
 			);
 
@@ -138,7 +148,35 @@ const _getErrorUrl = async (args, startTime, file) => {
 				: `Scanned ${results.length}, found ${badUrls.length} Bad links [${took}]`,
 			badUrls.length === 0 ? 'green' : 'red'
 		);
-		
+
+		// check if
+		let failedThreshold = false;
+		if (lhScaled && thres) {
+			if (
+				(thres.performanceScore &&
+					lhScaled.performanceScore < thres.performanceScore) ||
+				(thres.accessibilityScore &&
+					lhScaled.accessibilityScore < thres.accessibilityScore) ||
+				(thres.bestPracticesScore &&
+					lhScaled.bestPracticesScore < thres.bestPracticesScore) ||
+				(thres.seoScore && lhScaled.seoScore < thres.seoScore) ||
+				(thres.pwaScore && lhScaled.pwaScore < thres.pwaScore) ||
+				(thres.average && lhScaled.average < thres.average)
+			) {
+				consoleBox(
+					`! FAILED required threshold: AVG=${thres.average.toFixed(
+						1
+					)} Performance=${thres.performanceScore} Accessibility=${
+						thres.accessibilityScore
+					} Best practices=${thres.bestPracticesScore} SEO=${
+						thres.seoScore
+					} PWA=${thres.pwaScore}`,
+					'red'
+				);
+				failedThreshold = true;
+			}
+		}
+
 		if (runId) {
 			// pushed to cloud, no need to output the CSV
 			consoleBox(getLinkToBuild(runId), 'green');
@@ -148,7 +186,7 @@ const _getErrorUrl = async (args, startTime, file) => {
 			}
 		}
 
-		if (badUrls.length > 0) {
+		if (badUrls.length > 0 || failedThreshold) {
 			process.exit(1);
 		}
 	};
@@ -159,8 +197,10 @@ const _getErrorUrl = async (args, startTime, file) => {
 
 	_writeLog(`Took ${sec} seconds`);
 	let ignoredUrls = [];
+	let perfThreshold;
 	// {"urlToIgnore":"https://rules.ssw.com.au/Pages/default.aspx","ignoreDuration":7,"ignoreOn":"all", "effectiveFrom" : "2020-04-25T13:25:20.957Z"}
 
+	// get ignored
 	if (args.token) {
 		try {
 			ignoredUrls = await getConfigs(args.token);
@@ -170,8 +210,19 @@ const _getErrorUrl = async (args, startTime, file) => {
 		}
 	}
 
+	// get performance threshold
+	if (args.token && args.lighthouse) {
+		_writeLog(`getting perf threshold for `, args.url);
+		try {
+			perfThreshold = await getPerfThreshold(args.token, args.url);
+			perfThreshold && _writeLog(`Performance Threshold`, perfThreshold);
+		} catch (error) {
+			console.error('failed to load perfthreshold');
+		}
+	}
 	let lhrSummary;
 	let lhr;
+	let runId;
 	if (args.lighthouse) {
 		let lhFiles = fs.readdirSync('/home/lhci/src/.lighthouseci/');
 		if (lhFiles.filter((x) => x.endsWith('.json')).length > 0) {
@@ -202,23 +253,20 @@ const _getErrorUrl = async (args, startTime, file) => {
 
 	if (args.token) {
 		try {
-			const runId = await postData(args.token, args.buildId, {
+			runId = await postData(args.token, args.buildId, {
 				totalScanned: results.length,
 				scanDuration: sec,
 				url: args.url,
 				badUrls,
 				lhr,
 			});
-			__printResultsToConsole(lhrSummary, runId);
 		} catch (error) {
 			console.error(
 				`Error: Unabled to push data to dashboard service => ${error.message}`
 			);
-			__printResultsToConsole(lhrSummary);
 		}
-	} else {
-		__printResultsToConsole(lhrSummary);
 	}
+	__printResultsToConsole(lhrSummary, runId, perfThreshold);
 };
 
 const _outputBadDataCsv = (records) => {

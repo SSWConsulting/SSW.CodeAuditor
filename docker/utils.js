@@ -14,7 +14,7 @@ exports.consoleBox = (text, color) =>
 
 exports.getLinkToBuild = (runId) =>
 	runId
-		? `URL => https://sswlinkauditor.surge.sh/build/${_replaceQuote(runId)}`
+		? `Report URL => https://sswlinkauditor.surge.sh/build/${_replaceQuote(runId)}`
 		: '';
 
 exports.printTimeDiff = (t1, t2) => {
@@ -43,3 +43,20 @@ exports.readCsv = (file) => {
 			.on('end', () => resolve(results));
 	});
 };
+
+exports.getPerfScore = (value) => ({
+	performanceScore: Math.round(value.performanceScore * 100),
+	pwaScore: Math.round(value.pwaScore * 100),
+	seoScore: Math.round(value.seoScore * 100),
+	accessibilityScore: Math.round(value.accessibilityScore * 100),
+	bestPracticesScore: Math.round(value.bestPracticesScore * 100),
+	average: Math.round(
+		((value.performanceScore +
+			value.seoScore +
+			value.bestPracticesScore +
+			value.accessibilityScore +
+			value.pwaScore) /
+			5) *
+			100
+	),
+});
