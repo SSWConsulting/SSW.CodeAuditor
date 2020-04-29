@@ -34,8 +34,8 @@ exports.getIgnoredUrls = (api) =>
 		new azure.TableQuery().where('PartitionKey eq ?', api)
 	);
 
-exports.getPerformanceThreshold = (api, url) => {
-	const val = getTableRows(
+exports.getPerformanceThreshold = async (api, url) => {
+	const val = await getTableRows(
 		TABLE.PerformanceThreshold,
 		new azure.TableQuery()
 			.where('PartitionKey eq ?', api)

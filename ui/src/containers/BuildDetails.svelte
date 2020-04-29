@@ -49,7 +49,14 @@
       })
     );
   };
-
+  const blank = {
+    performanceScore: 0,
+    pwaScore: 0,
+    seoScore: 0,
+    accessibilityScore: 0,
+    bestPracticesScore: 0,
+    average: 0
+  };
   const showPerfThreshold = async (summary, user) => {
     if (!user) {
       userNotLoginToast = true;
@@ -64,17 +71,10 @@
         `${CONSTS.API}/api/config/${user.apiKey}/perfthreshold/${slug(scanUrl)}`
       );
       const result = await res.json();
-      threshold = result || {
-        performanceScore: 0,
-        pwaScore: 0,
-        seoScore: 0,
-        accessibilityScore: 0,
-        bestPracticesScore: 0,
-        average: 0
-      };
-      console.log("threshold", threshold);
+      threshold = result || blank;
     } catch (error) {
-      threshold = getPerfScore(summary);
+      console.error("error getting threshold", error);
+      threshold = blank;
     } finally {
       loadingPerfSettings = false;
     }
