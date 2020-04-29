@@ -164,13 +164,13 @@ const _getErrorUrl = async (args, startTime, file) => {
 				(thres.average && lhScaled.average < thres.average)
 			) {
 				consoleBox(
-					`! FAILED required threshold: AVG=${thres.average.toFixed(
+					`!!! FAILED Required Threshold: AVG=${thres.average.toFixed(
 						1
 					)} Performance=${thres.performanceScore} Accessibility=${
 						thres.accessibilityScore
 					} Best practices=${thres.bestPracticesScore} SEO=${
 						thres.seoScore
-					} PWA=${thres.pwaScore}`,
+					} PWA=${thres.pwaScore} !!!`,
 					'red'
 				);
 				failedThreshold = true;
