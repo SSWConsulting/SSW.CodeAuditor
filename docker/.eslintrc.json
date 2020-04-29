@@ -4,7 +4,7 @@
 		"ecmaVersion": 2018
 	},
 	"plugins": ["promise"],
-	"env": { "node": true, "browser": true, "es6": true },
+	"env": { "node": true, "es6": true },
 	"extends": "eslint:recommended",
 	"rules": {
 		// Removed rule "disallow the use of console" from recommended eslint rules
@@ -62,7 +62,7 @@
 		"no-floating-decimal": 2,
 
 		// Warn against shorthand type conversions
-		"no-implicit-coercion": 1,
+		"no-implicit-coercion": "off",
 
 		// Warn against function declarations and expressions inside loop statements
 		"no-loop-func": 1,

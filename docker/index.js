@@ -1,6 +1,7 @@
 const fs = require('fs');
 const { execSync } = require('child_process');
 const chalk = require('chalk');
+const minimatch = require('minimatch');
 const yargs = require('yargs');
 const { getConfigs, getPerfThreshold, postData } = require('./api');
 const {
@@ -10,8 +11,12 @@ const {
 	getLinkToBuild,
 	consoleBox,
 	readCsv,
+	outputBadDataCsv,
 } = require('./utils');
 
+// const p = 'http://www.internal-northwind/**';
+// console.log(minimatch('http://www.internal-northwind/orders.aspx', p));
+// return;
 let _args = null;
 const _getAgrs = () => {
 	_args = yargs
@@ -38,6 +43,11 @@ const _getAgrs = () => {
 			type: 'boolean',
 			default: false,
 		})
+		.option('whitelist', {
+			describe: 'List of URL glob pattern to Ignore in CSV format',
+			type: 'string',
+			demandOption: false,
+		})
 		.option('lighthouse', {
 			describe: 'Include Lighthouse audit',
 			type: 'boolean',
@@ -58,8 +68,8 @@ const main = () => {
 		try {
 			execSync(`lhci collect --url="${options.url}" -n 1`);
 			_writeLog(`lighthouse check finished`);
-		} catch (error) {
-			_writeLog(`lighthouse check failed`, error);
+		} catch (e) {
+			_writeLog(`lighthouse check failed`, e);
 		}
 	}
 	if (error) {
@@ -67,11 +77,6 @@ const main = () => {
 		process.exit(1);
 	}
 	_getErrorUrl(options, startTime, '/home/lhci/all_inlinks.csv');
-};
-
-const main_test = () => {
-	const options = _getAgrs();
-	_getErrorUrl(options, new Date(), 'sample.csv');
 };
 
 const _startScan = (options) => {
@@ -86,34 +91,14 @@ const _startScan = (options) => {
 };
 
 const _getErrorUrl = async (args, startTime, file) => {
-	// closures
-	const __getBadResults = () => {
-		return results
+	// Closures:
+	const __getBadResults = (allUrls) => {
+		return allUrls
 			.filter(
-				(x) =>
-					(x['Status Code'] === '0' || x['Status Code'] === '404') &&
-					x.Status !== 'Blocked by robots.txt' &&
-					// not in global ignored
-					ignoredUrls
-						.filter(
-							(x) =>
-								x.ignoreOn === 'all' &&
-								(+x.ignoreDuration === -1 ||
-									diffInDaysToNow(new Date(x.effectiveFrom)) <
-										+x.ignoreDuration)
-						)
-						.map((x) => x.urlToIgnore)
-						.indexOf(x.Destination) < 0 &&
-					// not in URL specific ignored
-					ignoredUrls
-						.filter(
-							(x) =>
-								+x.ignoreDuration === -1 ||
-								diffInDaysToNow(new Date(x.effectiveFrom)) <
-									+x.ignoreDuration
-						)
-						.map((x) => x.urlToIgnore)
-						.indexOf(x.Destination) < 0
+				(url) =>
+					(url['Status Code'] === '0' ||
+						url['Status Code'] === '404') &&
+					url.Status !== 'Blocked by robots.txt'
 			)
 			.map((x) => ({
 				src: x.Source,
@@ -124,12 +109,48 @@ const _getErrorUrl = async (args, startTime, file) => {
 			}));
 	};
 
-	const __printResultsToConsole = (lh, runId, thres) => {
+	const __getUniqIgnoredUrls = (badUrls, whitelistedUrls) => {
+		// check the scan URL, effective DATE and pattern match
+		const isInIgnoredList = (url, ignoreOn) => {
+			return (
+				whitelistedUrls
+					.filter(
+						(ig) =>
+							ig.ignoreOn === ignoreOn &&
+							(+ig.ignoreDuration === -1 ||
+								diffInDaysToNow(new Date(ig.effectiveFrom)) <
+									+ig.ignoreDuration)
+					)
+					.map((ig) => ig.urlToIgnore)
+					.filter((ignorePattern) => minimatch(url, ignorePattern))
+					.length > 0
+			);
+		};
+
+		// return the URL only
+		const all = badUrls
+			.filter(
+				(url) =>
+					isInIgnoredList(url.dst, 'all', whitelistedUrls) ||
+					isInIgnoredList(url.dst, args.url, whitelistedUrls)
+			)
+			.map((x) => x.dst);
+		return [...new Set(all)];
+	};
+
+	const __printResultsToConsole = (
+		lh,
+		runId,
+		requiredThreshold,
+		badLinks,
+		matchedIgnored
+	) => {
 		let lhScaled;
 		if (lh) {
 			lhScaled = getPerfScore(lh);
 		}
 
+		// output Lighthouse Score Box
 		lhScaled &&
 			consoleBox(
 				`AVG=${lhScaled.average.toFixed(1)} Performance=${
@@ -140,37 +161,56 @@ const _getErrorUrl = async (args, startTime, file) => {
 				'green'
 			);
 
+		// output broken links reports
+		const _ignoreLbl = () =>
+			`${
+				matchedIgnored.length > 0
+					? `, ${matchedIgnored.length} URLs in Ignored list`
+					: ''
+			}`;
 		consoleBox(
-			badUrls.length === 0
+			badLinks.length === 0
 				? `All ${chalk.green.bold.underline(
 						results.length
-				  )} links returned 200 OK [${took}]`
-				: `Scanned ${results.length}, found ${badUrls.length} Bad links [${took}]`,
-			badUrls.length === 0 ? 'green' : 'red'
+				  )} links returned 200 OK [${took}]${_ignoreLbl()}`
+				: `Scanned ${results.length}, found ${
+						badLinks.length
+				  } Bad links [${took}]${_ignoreLbl()}`,
+			badLinks.length === 0 ? 'green' : 'red'
 		);
 
-		// check if
+		// check if pass perf threshold or not
 		let failedThreshold = false;
-		if (lhScaled && thres) {
+		if (lhScaled && requiredThreshold) {
 			if (
-				(thres.performanceScore &&
-					lhScaled.performanceScore < thres.performanceScore) ||
-				(thres.accessibilityScore &&
-					lhScaled.accessibilityScore < thres.accessibilityScore) ||
-				(thres.bestPracticesScore &&
-					lhScaled.bestPracticesScore < thres.bestPracticesScore) ||
-				(thres.seoScore && lhScaled.seoScore < thres.seoScore) ||
-				(thres.pwaScore && lhScaled.pwaScore < thres.pwaScore) ||
-				(thres.average && lhScaled.average < thres.average)
+				(requiredThreshold.performanceScore &&
+					lhScaled.performanceScore <
+						requiredThreshold.performanceScore) ||
+				(requiredThreshold.accessibilityScore &&
+					lhScaled.accessibilityScore <
+						requiredThreshold.accessibilityScore) ||
+				(requiredThreshold.bestPracticesScore &&
+					lhScaled.bestPracticesScore <
+						requiredThreshold.bestPracticesScore) ||
+				(requiredThreshold.seoScore &&
+					lhScaled.seoScore < requiredThreshold.seoScore) ||
+				(requiredThreshold.pwaScore &&
+					lhScaled.pwaScore < requiredThreshold.pwaScore) ||
+				(requiredThreshold.average &&
+					lhScaled.average < requiredThreshold.average)
 			) {
 				consoleBox(
-					`!!! FAILED Required Threshold: AVG=${thres.average.toFixed(
+					`!!! FAILED Required Threshold: AVG=${requiredThreshold.average.toFixed(
 						1
-					)} Performance=${thres.performanceScore} Accessibility=${
-						thres.accessibilityScore
-					} Best practices=${thres.bestPracticesScore} SEO=${
-						thres.seoScore
-					} PWA=${thres.pwaScore} !!!`,
+					)} Performance=${
+						requiredThreshold.performanceScore
+					} Accessibility=${
+						requiredThreshold.accessibilityScore
+					} Best practices=${
+						requiredThreshold.bestPracticesScore
+					} SEO=${requiredThreshold.seoScore} PWA=${
+						requiredThreshold.pwaScore
+					} !!!`,
 					'red'
 				);
 				failedThreshold = true;
@@ -181,75 +221,111 @@ const _getErrorUrl = async (args, startTime, file) => {
 			// pushed to cloud, no need to output the CSV
 			consoleBox(getLinkToBuild(runId), 'green');
 		} else {
-			if (badUrls.length > 0) {
-				_outputBadDataCsv(badUrls);
+			if (badLinks.length > 0) {
+				outputBadDataCsv(badLinks);
 			}
 		}
 
-		if (badUrls.length > 0 || failedThreshold) {
+		if (badLinks.length > 0 || failedThreshold) {
+			consoleBox(
+				`AUDIT FAIL${badLinks.length > 0 ? ' [Broken Links]' : ''}${
+					failedThreshold ? ' [Performance]' : ''
+				}`,
+				'red'
+			);
 			process.exit(1);
 		}
 	};
+	// closures ends
+
+	let ignoredUrls;
+	let perfThreshold;
+	let lhrSummary;
+	let lhr;
+	let runId;
 
 	const results = await readCsv(file);
 
 	const [took, sec] = printTimeDiff(new Date(), startTime);
 
 	_writeLog(`Took ${sec} seconds`);
-	let ignoredUrls = [];
-	let perfThreshold;
-	// {"urlToIgnore":"https://rules.ssw.com.au/Pages/default.aspx","ignoreDuration":7,"ignoreOn":"all", "effectiveFrom" : "2020-04-25T13:25:20.957Z"}
 
-	// get ignored
+	// retrieve information about the token
 	if (args.token) {
+		_writeLog(`Retrieving config for token`, args.token);
+
 		try {
 			ignoredUrls = await getConfigs(args.token);
 			_writeLog(`Ignored URLs`, ignoredUrls);
 		} catch (error) {
 			console.error('failed to load settings');
 		}
-	}
 
-	// get performance threshold
-	if (args.token && args.lighthouse) {
-		_writeLog(`getting perf threshold for `, args.url);
-		try {
-			perfThreshold = await getPerfThreshold(args.token, args.url);
-			perfThreshold && _writeLog(`Performance Threshold`, perfThreshold);
-		} catch (error) {
-			console.error('failed to load perfthreshold');
+		if (args.lighthouse) {
+			_writeLog(`getting perf threshold for `, args.url);
+			try {
+				perfThreshold = await getPerfThreshold(args.token, args.url);
+				perfThreshold &&
+					_writeLog(`Performance Threshold`, perfThreshold);
+			} catch (error) {
+				console.error('failed to load perfthreshold');
+			}
+
+			_writeLog(`Reading Lighthouse report file`);
+			let lhFiles = fs.readdirSync('/home/lhci/src/.lighthouseci/');
+			if (lhFiles.filter((x) => x.endsWith('.json')).length > 0) {
+				const jsonReport = lhFiles
+					.filter((x) => x.endsWith('.json'))
+					.splice(-1)[0];
+
+				_writeLog(
+					`Include Lighthouse report in the payload as well: ${jsonReport}`
+				);
+
+				lhr = JSON.parse(
+					fs
+						.readFileSync(
+							`/home/lhci/src/.lighthouseci/${jsonReport}`
+						)
+						.toString()
+				);
+
+				lhrSummary = {
+					performanceScore: lhr.categories.performance.score,
+					accessibilityScore: lhr.categories.accessibility.score,
+					bestPracticesScore: lhr.categories['best-practices'].score,
+					seoScore: lhr.categories.seo.score,
+					pwaScore: lhr.categories.pwa.score,
+				};
+			}
+			_writeLog(`Lighthouse reports output`, lhFiles);
 		}
 	}
-	let lhrSummary;
-	let lhr;
-	let runId;
-	if (args.lighthouse) {
-		let lhFiles = fs.readdirSync('/home/lhci/src/.lighthouseci/');
-		if (lhFiles.filter((x) => x.endsWith('.json')).length > 0) {
-			const jsonReport = lhFiles
-				.filter((x) => x.endsWith('.json'))
-				.splice(-1)[0];
 
-			_writeLog(
-				`Include Lighthouse report in the payload as well: ${jsonReport}`
-			);
-			lhr = JSON.parse(
-				fs
-					.readFileSync(`/home/lhci/src/.lighthouseci/${jsonReport}`)
-					.toString()
-			);
-			lhrSummary = {
-				performanceScore: lhr.categories.performance.score,
-				accessibilityScore: lhr.categories.accessibility.score,
-				bestPracticesScore: lhr.categories['best-practices'].score,
-				seoScore: lhr.categories.seo.score,
-				pwaScore: lhr.categories.pwa.score,
-			};
-		}
-		_writeLog(`Lighthouse reports output`, lhFiles);
+	const allBadUrls = __getBadResults(results);
+	let whiteListed = [];
+	if (ignoredUrls && ignoredUrls.length > 0) {
+		_writeLog('There are whitelisted URLs configured in online');
+		whiteListed = __getUniqIgnoredUrls(allBadUrls, ignoredUrls);
 	}
 
-	const badUrls = __getBadResults();
+	if (args.whitelist) {
+		_writeLog('Got the whitelist from command ARGs');
+		// .filter((ignorePattern) => minimatch(url, ignorePattern))
+		const whitelistList = args.whitelist.split(',');
+		const inWhiteListFromArgs = (url) =>
+			whitelistList.filter((ignorePattern) =>
+				minimatch(url, ignorePattern)
+			).length > 0;
+
+		const whiteListedArgs = allBadUrls
+			.filter((u) => inWhiteListFromArgs(u.dst))
+			.map((x) => x.dst);
+
+		whiteListed = whiteListed.concat(whiteListedArgs);
+	}
+	_writeLog('Url found in WhiteList are', whiteListed);
+	const badUrls = allBadUrls.filter((x) => whiteListed.indexOf(x.dst) < 0);
 
 	if (args.token) {
 		try {
@@ -258,6 +334,7 @@ const _getErrorUrl = async (args, startTime, file) => {
 				scanDuration: sec,
 				url: args.url,
 				badUrls,
+				whiteListed,
 				lhr,
 			});
 		} catch (error) {
@@ -266,26 +343,16 @@ const _getErrorUrl = async (args, startTime, file) => {
 			);
 		}
 	}
-	__printResultsToConsole(lhrSummary, runId, perfThreshold);
+	__printResultsToConsole(
+		lhrSummary,
+		runId,
+		perfThreshold,
+		badUrls,
+		whiteListed
+	);
 };
 
-const _outputBadDataCsv = (records) => {
-	const createCsvStringifier = require('csv-writer')
-		.createObjectCsvStringifier;
-
-	const csvStringifier = createCsvStringifier({
-		alwaysQuote: true,
-		header: [
-			{ id: 'src', title: 'Source' },
-			{ id: 'dst', title: 'Destination' },
-			{ id: 'link', title: 'Anchor' },
-			{ id: 'statuscode', title: 'Status Code' },
-			{ id: 'statusmsg', title: 'Status' },
-		],
-	});
-	console.log(`"Source","Destination","Anchor","Status Code","Status"`);
-	console.log(csvStringifier.stringifyRecords(records));
-};
+// utils
 
 const _writeLog = (...msg) => _args.debug && console.log(...msg);
 

@@ -60,3 +60,22 @@ exports.getPerfScore = (value) => ({
 			100
 	),
 });
+
+
+exports.outputBadDataCsv = (records) => {
+	const createCsvStringifier = require('csv-writer')
+		.createObjectCsvStringifier;
+
+	const csvStringifier = createCsvStringifier({
+		alwaysQuote: true,
+		header: [
+			{ id: 'src', title: 'Source' },
+			{ id: 'dst', title: 'Destination' },
+			{ id: 'link', title: 'Anchor' },
+			{ id: 'statuscode', title: 'Status Code' },
+			{ id: 'statusmsg', title: 'Status' },
+		],
+	});
+	console.log(`"Source","Destination","Anchor","Status Code","Status"`);
+	console.log(csvStringifier.stringifyRecords(records));
+};

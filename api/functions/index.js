@@ -88,7 +88,14 @@ app.get('/run/:runId', async (req, res) => {
 });
 
 app.post('/scanresult/:api/:buildId', async (req, res) => {
-	const { badUrls, totalScanned, scanDuration, url, lhr } = req.body;
+	const {
+		badUrls,
+		totalScanned,
+		scanDuration,
+		url,
+		lhr,
+		whiteListed,
+	} = req.body;
 	let lhrSummary;
 	if (lhr) {
 		lhrSummary = {
@@ -115,6 +122,7 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 	const payload = {
 		...lhrSummary,
 		totalScanned,
+		whiteListed,
 		scanDuration,
 		url,
 		totalBrokenLinks: badUrls.length,
@@ -140,7 +148,7 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 			var q = new Queue(
 				async (brokenLinkData, cb) => {
 					console.log(`adding ..... ${brokenLinkData}`);
-					data = await insertScanResult(
+					const data = await insertScanResult(
 						apikey,
 						buildId,
 						runId,

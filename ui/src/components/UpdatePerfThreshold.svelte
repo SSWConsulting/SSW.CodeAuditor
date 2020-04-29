@@ -140,7 +140,7 @@
       </div>
 
     </div>
-    <div class="text-center text-2xl py-4 pt-6">Last Build</div>
+    <div class="text-center text-2xl py-4 pt-6">This Build</div>
     <LighthouseSummary value={lastBuild} showLabel={false} />
   {/if}
 </Modal>

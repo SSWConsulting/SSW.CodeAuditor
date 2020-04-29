@@ -15,7 +15,6 @@
   let ignoredUrls = [];
 
   let ignoreOn = "all";
-  let useGlob;
   let ignoreDuration = 3;
   let loading;
   let addedSuccessToast;
@@ -35,7 +34,6 @@
       body: JSON.stringify({
         urlToIgnore: url,
         ignoreOn,
-        useGlob,
         ignoreDuration
       }),
       headers: { "Content-Type": "application/json" }
@@ -83,13 +81,7 @@
   on:dismiss={dismiss}>
   <div class="ml-5">
     <TextField bind:value={url} placeholder="" label="URL" type="text" />
-    <label class="md:w-2/3 block py-2">
-      <input
-        class="mr-2 leading-tight"
-        type="checkbox"
-        bind:checked={useGlob} />
-      <span class="text-sm">Use Glob Matching</span>
-    </label>
+    <div>You can use glob matching, e.g. http://twitter.com/** will match with http://twitter.com/users/john or http://twitter.com/login </div>
     <label class="block uppercase text-xs mb-2 py-2">For</label>
     <ul>
       <li class="pb-3">
