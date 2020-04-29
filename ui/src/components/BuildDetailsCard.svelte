@@ -45,7 +45,7 @@
       {/if}
       {#if build.performanceScore}
         <div class="mx-auto px-12 pb-8">
-          <LighthouseSummary run={build.runId} value={build} showLabel={true} />
+          <LighthouseSummary value={build} showLabel={true} />
           <div class="text-center pt-4">
             <button
               on:click={() => navigateTo('/lighthouse/' + build.runId)}

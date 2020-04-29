@@ -29,16 +29,9 @@
     <thead>
       <tr>
         <th class="px-4 py-2">Build #</th>
-        <th class="px-4 py-2">Time</th>
         <th class="px-4 py-2">Url</th>
-        <th class="px-4 py-2">Duration</th>
-        <th class="px-4 py-2">Scanned</th>
-        <th
-          class="px-4 py-2"
-          title="number of unique broken links out of all broken links found">
-          Broken / Total
-        </th>
-        <th class="px-4 py-2">404</th>
+        <th class="px-4 py-2">Links</th>
+        <th class="px-4 py-2">Performance</th>
         <th class="px-4 py-2" />
       </tr>
     </thead>
@@ -67,9 +60,6 @@
             {val.buildId}
           </td>
           <td class="border px-4 py-2">
-            {formatDistanceToNow(new Date(val.buildDate), { addSuffix: true })}
-          </td>
-          <td class="border px-4 py-2 text-center">
             <a
               class="inline-block align-baseline text-blue-600
               hover:text-blue-800"
@@ -77,25 +67,42 @@
               href={val.url}>
               {val.url}
             </a>
-            <LighthouseSummary run={val.runId} value={val} />
+            <div class="text-sm pt-2">
+              {formatDistanceToNow(new Date(val.buildDate), {
+                addSuffix: true
+              })}, took
+              <span class="font-bold">{printTimeDiff(+val.scanDuration)}</span>
+            </div>
           </td>
           <td class="border px-4 py-2 text-right">
-            {printTimeDiff(+val.scanDuration)}
+            <div class="grid grid-cols-3 gap-2 row-gap-2">
+              <div class="text-center">
+                <span class="block font-mono">Scanned</span>
+                <span class="font-bold text-xl block">{val.totalScanned}</span>
+              </div>
+              <div class="text-center">
+                <span class="block whitespace-no-wrap font-mono">Bad</span>
+                <span
+                  class="font-bold text-xl whitespace-no-wrap"
+                  class:text-red-600={val.totalBrokenLinks > 0}
+                  class:text-green-600={val.totalBrokenLinks === 0}>
+                  {val.uniqueBrokenLinks} / {val.totalBrokenLinks}
+                </span>
+              </div>
+              <div class="text-center">
+                <span class="block whitespace-no-wrap font-mono">404</span>
+                <span
+                  class="font-bold text-xl"
+                  class:text-red-600={val.totalUnique404 > 0}
+                  class:text-green-600={val.totalUnique404 === 0}>
+                  {val.totalUnique404}
+                </span>
+              </div>
+            </div>
           </td>
-          <td class="border px-4 py-2 text-right">{val.totalScanned}</td>
-          <td
-            class="border px-4 py-2 text-right text-red-600"
-            class:text-red-600={val.totalBrokenLinks > 0}
-            class:text-green-600={val.totalBrokenLinks === 0}>
-            {val.uniqueBrokenLinks} / {val.totalBrokenLinks}
+          <td class="border px-4 py-2 text-center">
+            <LighthouseSummary value={val} />
           </td>
-          <td
-            class="border px-4 py-2 text-right text-red-600"
-            class:text-red-600={val.totalUnique404 > 0}
-            class:text-green-600={val.totalUnique404 === 0}>
-            {val.totalUnique404}
-          </td>
-
           <td class="border px-4 py-2">
             <span class="inline-block align-middle hover:text-blue-800">
               <Navigate to={`/build/${val.runId}`}>
