@@ -66,3 +66,22 @@ export const getPerfScore = (value) => ({
 			100
 	),
 });
+
+export const isInIgnored = (url, list) => {
+	function glob(pattern, input) {
+		var re = new RegExp(
+			pattern
+				.replace(/([.?+^$[\]\\(){}|\/-])/g, '\\$1')
+				.replace(/\*/g, '.*')
+		);
+		return re.test(input);
+	}
+	for (let index = 0; index < list.length; index++) {
+		const pattern = list[index];
+		if (glob(pattern, url)) {
+			console.log('matched using glob', url, pattern);
+			return true;
+		}
+	}
+	return false;
+};

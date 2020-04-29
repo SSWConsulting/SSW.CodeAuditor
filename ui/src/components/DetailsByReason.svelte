@@ -1,5 +1,6 @@
 <script>
   import { groupBy, props } from "ramda";
+  import { isInIgnored } from "../utils/utils.js";
   import { ignoredUrlsList$ } from "../stores.js";
   import { createEventDispatcher } from "svelte";
 
@@ -14,6 +15,8 @@
     reasons = groupBy(props(["statusmsg"]))(builds);
     reasonsKeys = Object.keys(reasons);
   }
+  let ignoredPatterns = [];
+  ignoredUrlsList$.subscribe(x => (ignoredPatterns = x));
 </script>
 
 {#each reasonsKeys as reason}
@@ -66,7 +69,7 @@
               href={val.dst}>
               {val.dst}
             </a>
-            {#if $ignoredUrlsList$.indexOf(val.dst) >= 0}
+            {#if isInIgnored(val.dst, ignoredPatterns)}
               <span
                 title="This is URL is in the ignored lists. Go to Settings to
                 remove it">
