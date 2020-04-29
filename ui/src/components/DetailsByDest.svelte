@@ -1,4 +1,5 @@
 <script>
+  import { fade, fly } from "svelte/transition";
   import { groupBy, props } from "ramda";
   import { ignoredUrlsList$, deleteIgnoreUrl } from "../stores.js";
   import { isInIgnored } from "../utils/utils.js";
@@ -18,13 +19,18 @@
 
   let ignoredPatterns = [];
   ignoredUrlsList$.subscribe(x => (ignoredPatterns = x));
+
+  let hiddenRows = {};
+  const hideShow = key =>
+    (hiddenRows[key] = key in hiddenRows ? !hiddenRows[key] : true);
 </script>
 
 {#each destinationsKeys as url}
   <div class="mb-3">
     <span class="font-bold mr-2">
       <svg
-        class="inline-block"
+        class="inline-block cursor-pointer"
+        on:click={() => hideShow(url)}
         fill="none"
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -33,7 +39,11 @@
         height="20"
         width="20"
         viewBox="0 0 24 24">
-        <path d="M9 5l7 7-7 7" />
+        {#if !hiddenRows[url]}
+          <path d="M19 9l-7 7-7-7" />
+        {:else}
+          <path d="M9 5l7 7-7 7" />
+        {/if}
       </svg>
       {destinations[url][0].statusmsg} ({destinations[url][0].statuscode || 0})
       :
@@ -44,7 +54,7 @@
       href={url}>
       {url}
     </a>
-    {#if isInIgnored(url, ignoredPatterns) }
+    {#if isInIgnored(url, ignoredPatterns)}
       <span
         title="This is URL is in the ignored lists. Go to Settings to remove it">
         <svg
@@ -88,30 +98,36 @@
     {/if}
 
   </div>
-  <table class="table-auto mb-8">
-    <thead>
-      <tr>
-        <th class="w-6/12 px-4 py-2">
-          Found on Page ({destinations[url].length})
-        </th>
-        <th class="w-6/12 px-4 py-2">Anchor Text</th>
-      </tr>
-    </thead>
-    <tbody>
-      {#each destinations[url] as val}
+
+  {#if !hiddenRows[url]}
+    <table
+      class="table-auto mb-8"
+      in:fade={{ y: 100, duration: 400 }}
+      out:fade={{ y: -100, duration: 200 }}>
+      <thead>
         <tr>
-          <td class="w-6/12 border px-4 py-2 break-all">
-            <a
-              class="inline-block align-baseline text-blue-600
-              hover:text-blue-800"
-              target="_blank"
-              href={val.src}>
-              {val.src}
-            </a>
-          </td>
-          <td class="w-6/12 border px-4 py-2 break-all">{val.link || ''}</td>
+          <th class="w-6/12 px-4 py-2">
+            Found on Page ({destinations[url].length})
+          </th>
+          <th class="w-6/12 px-4 py-2">Anchor Text</th>
         </tr>
-      {/each}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {#each destinations[url] as val}
+          <tr>
+            <td class="w-6/12 border px-4 py-2 break-all">
+              <a
+                class="inline-block align-baseline text-blue-600
+                hover:text-blue-800"
+                target="_blank"
+                href={val.src}>
+                {val.src}
+              </a>
+            </td>
+            <td class="w-6/12 border px-4 py-2 break-all">{val.link || ''}</td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  {/if}
 {/each}

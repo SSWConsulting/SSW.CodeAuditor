@@ -79,7 +79,6 @@ export const isInIgnored = (url, list) => {
 	for (let index = 0; index < list.length; index++) {
 		const pattern = list[index];
 		if (glob(pattern, url)) {
-			console.log('matched using glob', url, pattern);
 			return true;
 		}
 	}
