@@ -105,7 +105,6 @@ export const getIgnoreList = async (user) => {
 	}
 };
 
-
 export const deleteIgnoreUrl = async (url, user) => {
 	try {
 		await fetch(
@@ -128,7 +127,12 @@ export const getBuildDetails = async (runId) => {
 
 	if (res.ok) {
 		return {
-			summary: result.summary[0],
+			summary: {
+				...result.summary,
+				whiteListed: result.summary.whiteListed
+					? JSON.parse(result.summary.whiteListed)
+					: [],
+			},
 			brokenLinks: result.brokenLinks,
 		};
 	} else {

@@ -130,6 +130,12 @@
       hover:text-indigo-100 cursor-default">
       Unique Bad: {build.uniqueBrokenLinks}
     </div>
+    <div
+      class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
+      text-indigo-600 border-indigo-600 hover:bg-indigo-600
+      hover:text-indigo-100 cursor-default">
+      Whitelisted: {build.whiteListed.length}
+    </div>
 
   </div>
 </div>

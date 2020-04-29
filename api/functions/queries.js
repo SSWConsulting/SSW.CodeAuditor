@@ -45,6 +45,7 @@ exports.getPerformanceThreshold = async (api, url) => {
 	if (val && val.length > 0) {
 		return val[0];
 	}
+	return null;
 };
 
 exports.getSummary = (api) =>
@@ -53,8 +54,8 @@ exports.getSummary = (api) =>
 		new azure.TableQuery().where('PartitionKey eq ?', api)
 	);
 
-exports.getSummaryById = (runId) =>
-	getRun(runId).then((doc) =>
+exports.getSummaryById = async (runId) => {
+	const val = await getRun(runId).then((doc) =>
 		getTableRows(
 			TABLE.Scans,
 			new azure.TableQuery()
@@ -62,3 +63,8 @@ exports.getSummaryById = (runId) =>
 				.and('runId eq ?', doc.runId)
 		)
 	);
+	if (val && val.length > 0) {
+		return val[0];
+	}
+	return null;
+};
