@@ -49,3 +49,20 @@ export const updateQuery = (q) => {
 		window.history.pushState({ path: newurl }, '', newurl);
 	}
 };
+
+export const getPerfScore = (value) => ({
+	performanceScore: Math.round(value.performanceScore * 100),
+	pwaScore: Math.round(value.pwaScore * 100),
+	seoScore: Math.round(value.seoScore * 100),
+	accessibilityScore: Math.round(value.accessibilityScore * 100),
+	bestPracticesScore: Math.round(value.bestPracticesScore * 100),
+	average: Math.round(
+		((value.performanceScore +
+			value.seoScore +
+			value.bestPracticesScore +
+			value.accessibilityScore +
+			value.pwaScore) /
+			5) *
+			100
+	),
+});

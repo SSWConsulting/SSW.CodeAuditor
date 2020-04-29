@@ -52,6 +52,17 @@ exports.addIgnoreUrl = (api, data) => {
 	return updateEntity(TABLE.IgnoredUrls, replaceProp(data, entity));
 };
 
+exports.addPerformanceThreshold = (api, data) => {
+	const entGen = azure.TableUtilities.entityGenerator;
+	return updateEntity(
+		TABLE.PerformanceThreshold,
+		replaceProp(data, {
+			PartitionKey: entGen.String(api),
+			RowKey: entGen.String(slug(data.url)),
+		})
+	);
+};
+
 exports.insertScanSummary = (api, buildId, runId, buildDate, data) => {
 	var entGen = azure.TableUtilities.entityGenerator;
 	var entity = {

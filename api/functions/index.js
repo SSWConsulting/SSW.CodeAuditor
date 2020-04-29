@@ -12,11 +12,13 @@ const {
 	deleteIgnoreUrl,
 	updateConfig,
 	uploadLighthouseReport,
+	addPerformanceThreshold,
 } = require('./commands');
 const {
 	getSummary,
 	getSummaryById,
 	getConfig,
+	getPerformanceThreshold,
 	getScanDetails,
 	getIgnoredUrls,
 } = require('./queries');
@@ -48,6 +50,14 @@ app.delete('/config/:api/ignore/:url', async (req, res) =>
 
 app.put('/config/:api', async (req, res) =>
 	res.json(await updateConfig(req.params.api, req.body))
+);
+
+app.put('/config/:api/perfthreshold', async (req, res) =>
+	res.json(await addPerformanceThreshold(req.params.api, req.body))
+);
+
+app.get('/config/:api/perfthreshold/:url', async (req, res) =>
+	res.json(await getPerformanceThreshold(req.params.api, req.params.url))
 );
 
 app.post('/config/:api/ignore', async (req, res) => {

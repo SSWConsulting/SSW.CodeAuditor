@@ -26,6 +26,7 @@
   rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white
   focus:border-gray-500"
   {placeholder}
+  {value}
   class:border-red-300={(required && !value) || errorMsg}
   class:focus:border-red-500={(required && !value) || errorMsg}
   on:input={handleInput}

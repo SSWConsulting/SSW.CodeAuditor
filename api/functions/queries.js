@@ -1,3 +1,4 @@
+const slug = require('slug');
 const { getService, getTableRows } = require('./azurestorage');
 const { getRun } = require('./firestore');
 const { TABLE } = require('./consts');
@@ -31,6 +32,14 @@ exports.getIgnoredUrls = (api) =>
 	getTableRows(
 		TABLE.IgnoredUrls,
 		new azure.TableQuery().where('PartitionKey eq ?', api)
+	);
+
+exports.getPerformanceThreshold = (api, url) =>
+	getTableRows(
+		TABLE.PerformanceThreshold,
+		new azure.TableQuery()
+			.where('PartitionKey eq ?', api)
+			.and('RowKey eq ?', slug(url))
 	);
 
 exports.getSummary = (api) =>

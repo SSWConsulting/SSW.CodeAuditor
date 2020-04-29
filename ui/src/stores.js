@@ -105,6 +105,7 @@ export const getIgnoreList = async (user) => {
 	}
 };
 
+
 export const deleteIgnoreUrl = async (url, user) => {
 	try {
 		await fetch(
@@ -122,9 +123,7 @@ export const deleteIgnoreUrl = async (url, user) => {
 };
 
 export const getBuildDetails = async (runId) => {
-	const res = await fetch(
-		`${CONSTS.API}/api/run/${runId}`
-	);
+	const res = await fetch(`${CONSTS.API}/api/run/${runId}`);
 	const result = await res.json();
 
 	if (res.ok) {

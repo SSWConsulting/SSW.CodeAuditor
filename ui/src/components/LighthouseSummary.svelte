@@ -1,20 +1,13 @@
 <script>
-  import { updateQuery } from "../utils/utils.js";
+  import { getPerfScore, updateQuery } from "../utils/utils.js";
   import ParsedQuery from "query-string";
   import { navigateTo } from "svelte-router-spa";
   export let value = {};
   export let showLabel = false;
-  $: avg =
-    ((value.performanceScore +
-      value.seoScore +
-      value.bestPracticesScore +
-      value.accessibilityScore +
-      value.pwaScore) /
-      5) *
-    100;
+  $: perf = getPerfScore(value);
 </script>
 
-{#if value.performanceScore}
+{#if perf.performanceScore}
   <!-- content here -->
   <div class="pt-3 px-2 py-2">
     <div class="grid grid-cols-3 gap-2 row-gap-2">
@@ -23,10 +16,10 @@
         <span
           class="font-bold text-lg inline-block"
           title="Average"
-          class:text-red-400={avg < 50}
-          class:text-orange-400={avg >= 50 && avg <= 80}
-          class:text-green-400={avg > 80}>
-          {avg.toFixed(1)}
+          class:text-red-400={perf.average < 50}
+          class:text-orange-400={perf.average >= 50 && perf.average <= 80}
+          class:text-green-400={perf.average > 80}>
+          {perf.average.toFixed(1)}
         </span>
       </div>
       <div class="text-center">
@@ -34,10 +27,10 @@
         <span
           title="Performance"
           class="font-bold text-lg"
-          class:text-red-400={value.performanceScore * 100 < 50}
-          class:text-orange-400={value.performanceScore * 100 >= 50 && value.performanceScore * 100 <= 80}
-          class:text-green-400={value.performanceScore * 100 > 80}>
-          {Math.round(value.performanceScore * 100)}
+          class:text-red-400={perf.performanceScore < 50}
+          class:text-orange-400={perf.performanceScore >= 50 && perf.performanceScore <= 80}
+          class:text-green-400={perf.performanceScore > 80}>
+          {perf.performanceScore}
         </span>
       </div>
       <div class="text-center">
@@ -64,10 +57,10 @@
         <span
           class="font-bold text-lg"
           title="Accessibility"
-          class:text-red-400={value.accessibilityScore * 100 < 50}
-          class:text-orange-400={value.accessibilityScore * 100 >= 50 && value.accessibilityScore * 100 <= 80}
-          class:text-green-400={value.accessibilityScore * 100 > 80}>
-          {Math.round(value.accessibilityScore * 100)}
+          class:text-red-400={perf.accessibilityScore < 50}
+          class:text-orange-400={perf.accessibilityScore >= 50 && perf.accessibilityScore <= 80}
+          class:text-green-400={perf.accessibilityScore > 80}>
+          {perf.accessibilityScore}
         </span>
       </div>
 
@@ -76,10 +69,10 @@
         <span
           title="SEO"
           class="font-bold text-lg"
-          class:text-red-400={value.seoScore * 100 < 50}
-          class:text-orange-400={value.seoScore * 100 >= 50 && value.seoScore * 100 <= 80}
-          class:text-green-400={value.seoScore * 100 > 80}>
-          {Math.round(value.seoScore * 100)}
+          class:text-red-400={perf.seoScore < 50}
+          class:text-orange-400={perf.seoScore >= 50 && perf.seoScore <= 80}
+          class:text-green-400={perf.seoScore > 80}>
+          {perf.seoScore}
         </span>
       </div>
       <div class="text-center">
@@ -87,10 +80,10 @@
         <span
           class="font-bold text-lg"
           title="PWA"
-          class:text-red-400={value.pwaScore * 100 < 50}
-          class:text-orange-400={value.pwaScore * 100 >= 50 && value.pwaScore * 100 <= 80}
-          class:text-green-400={value.pwaScore * 100 > 80}>
-          {Math.round(value.pwaScore * 100)}
+          class:text-red-400={perf.pwaScore < 50}
+          class:text-orange-400={perf.pwaScore >= 50 && perf.pwaScore <= 80}
+          class:text-green-400={perf.pwaScore > 80}>
+          {perf.pwaScore}
         </span>
       </div>
       <div class="text-center">
@@ -117,10 +110,10 @@
         <span
           class="font-bold text-lg"
           title="Best Practice"
-          class:text-red-400={value.bestPracticesScore * 100 < 50}
-          class:text-orange-400={value.bestPracticesScore * 100 >= 50 && value.bestPracticesScore * 100 <= 80}
-          class:text-green-400={value.bestPracticesScore * 100 > 80}>
-          {Math.round(value.bestPracticesScore * 100)}
+          class:text-red-400={perf.bestPracticesScore < 50}
+          class:text-orange-400={perf.bestPracticesScore >= 50 && perf.bestPracticesScore <= 80}
+          class:text-green-400={perf.bestPracticesScore > 80}>
+          {perf.bestPracticesScore}
         </span>
       </div>
     </div>

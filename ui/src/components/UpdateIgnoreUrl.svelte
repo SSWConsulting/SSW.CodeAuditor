@@ -2,6 +2,7 @@
   import { userApi, userSession$, ignoredUrls$ } from "../stores";
   import SelectField from "../components/SelectField.svelte";
   import Toastr from "../components/Toastr.svelte";
+  import TextField from "../components/TextField.svelte";
   import { Navigate, navigateTo } from "svelte-router-spa";
   import { CONSTS } from "../utils/utils.js";
   import Modal from "../components/Modal.svelte";
@@ -14,6 +15,7 @@
   let ignoredUrls = [];
 
   let ignoreOn = "all";
+  let useGlob;
   let ignoreDuration = 3;
   let loading;
   let addedSuccessToast;
@@ -33,6 +35,7 @@
       body: JSON.stringify({
         urlToIgnore: url,
         ignoreOn,
+        useGlob,
         ignoreDuration
       }),
       headers: { "Content-Type": "application/json" }
@@ -78,53 +81,57 @@
   mainAction="Save"
   on:action={updateIgnore}
   on:dismiss={dismiss}>
-  <a
-    class="inline-block hover:text-blue-800 pb-5 pl-5 text-lg"
-    target="_blank"
-    href={url}>
-    {url}
-  </a>
+  <div class="ml-5">
+    <TextField bind:value={url} placeholder="" label="URL" type="text" />
+    <label class="md:w-2/3 block py-2">
+      <input
+        class="mr-2 leading-tight"
+        type="checkbox"
+        bind:checked={useGlob} />
+      <span class="text-sm">Use Glob Matching</span>
+    </label>
+    <label class="block uppercase text-xs mb-2 py-2">For</label>
+    <ul>
+      <li class="pb-3">
+        <div class="flex items-center mr-4 mb-4">
+          <input
+            id="radio1"
+            type="radio"
+            class="hidden"
+            value={'all'}
+            bind:group={ignoreOn} />
 
-  <ul class="ml-5">
-    <li class="pb-3">
-      <div class="flex items-center mr-4 mb-4">
-        <input
-          id="radio1"
-          type="radio"
-          class="hidden"
-          value={'all'}
-          bind:group={ignoreOn} />
-
-        <label for="radio1" class="flex items-center cursor-pointer">
-          <span
-            class="w-5 h-5 inline-block mr-2 rounded-full border border-grey
-            flex-no-shrink" />
-          For all new builds
-        </label>
-      </div>
-    </li>
-    <li>
-      <div class="flex items-center mr-4 mb-4">
-        <input
-          type="radio"
-          class="hidden"
-          id="radio2"
-          bind:group={ignoreOn}
-          value={url} />
-        <label for="radio2" class="flex items-center cursor-pointer">
-          <span
-            class="w-5 h-5 inline-block mr-2 rounded-full border border-grey
-            flex-no-shrink" />
-          Only when {scanUrl} is scanned
-        </label>
-      </div>
-    </li>
+          <label for="radio1" class="flex items-center cursor-pointer">
+            <span
+              class="w-5 h-5 inline-block mr-2 rounded-full border border-grey
+              flex-no-shrink" />
+            All new builds
+          </label>
+        </div>
+      </li>
+      <li>
+        <div class="flex items-center mr-4 mb-4">
+          <input
+            type="radio"
+            class="hidden"
+            id="radio2"
+            bind:group={ignoreOn}
+            value={url} />
+          <label for="radio2" class="flex items-center cursor-pointer">
+            <span
+              class="w-5 h-5 inline-block mr-2 rounded-full border border-grey
+              flex-no-shrink" />
+            Only when {scanUrl} is scanned
+          </label>
+        </div>
+      </li>
+    </ul>
     <SelectField
       bind:value={ignoreDuration}
-      label="For:"
+      label="Ignore Duration:"
       allowNull={false}
       options={ignoreDurations} />
-  </ul>
+  </div>
 </Modal>
 
 <Toastr bind:show={addedSuccessToast}>

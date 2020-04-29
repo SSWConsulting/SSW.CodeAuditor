@@ -7,14 +7,16 @@
   } from "../stores";
   import { onMount } from "svelte";
   import DetailsTable from "../components/DetailsTable.svelte";
+  import slug from "slug";
   import Toastr from "../components/Toastr.svelte";
   import BuildDetailsCard from "../components/BuildDetailsCard.svelte";
-  import { CONSTS } from "../utils/utils.js";
+  import { CONSTS, getPerfScore } from "../utils/utils.js";
   import { ExportToCsv } from "export-to-csv";
   import { Navigate, navigateTo } from "svelte-router-spa";
   import LoadingFlat from "../components/LoadingFlat.svelte";
   import Modal from "../components/Modal.svelte";
   import UpdateIgnoreUrl from "../components/UpdateIgnoreUrl.svelte";
+  import UpdatePerfThreshold from "../components/UpdatePerfThreshold.svelte";
 
   export let currentRoute;
 
@@ -22,8 +24,12 @@
   let userNotLoginToast;
 
   let ignoreUrlShown;
+  let perfThresholdShown;
   let urlToIgnore;
   let scanUrl;
+  let lastBuild;
+  let loadingPerfSettings;
+  let threshold = {};
 
   const onDownload = data => {
     const csvExporter = new ExportToCsv({
@@ -44,8 +50,40 @@
     );
   };
 
+  const showPerfThreshold = async (summary, user) => {
+    if (!user) {
+      userNotLoginToast = true;
+      return;
+    }
+    scanUrl = summary.url;
+    lastBuild = summary;
+    perfThresholdShown = true;
+    loadingPerfSettings = true;
+    try {
+      const res = await fetch(
+        `${CONSTS.API}/api/config/${user.apiKey}/perfthreshold/${slug(scanUrl)}`
+      );
+      const result = await res.json();
+      threshold =
+        result.length > 0
+          ? result[0]
+          : {
+              performanceScore: 0,
+              pwaScore: 0,
+              seoScore: 0,
+              accessibilityScore: 0,
+              bestPracticesScore: 0,
+              average: 0
+            };
+      console.log("threshold", threshold);
+    } catch (error) {
+      threshold = getPerfScore(summary);
+    } finally {
+      loadingPerfSettings = false;
+    }
+  };
+
   const showIgnore = (mainUrl, url, user) => {
-    
     if (!user) {
       userNotLoginToast = true;
       return;
@@ -55,7 +93,7 @@
     ignoreUrlShown = true;
   };
 
-  userSession$.subscribe(x => {
+  userSession$.subscribe(async x => {
     if (x) {
       getIgnoreList(x);
     }
@@ -104,7 +142,8 @@
     {:then data}
       <BuildDetailsCard
         build={data ? data.summary : {}}
-        on:download={() => onDownload(data)} />
+        on:download={() => onDownload(data)}
+        on:perfThreshold={() => showPerfThreshold(data.summary, $userSession$)} />
       <DetailsTable
         on:ignore={url => showIgnore(data.summary.url, url, $userSession$)}
         builds={data ? data.brokenLinks : []}
@@ -130,4 +169,12 @@
   url={urlToIgnore}
   {scanUrl}
   bind:show={ignoreUrlShown}
+  user={$userSession$} />
+
+<UpdatePerfThreshold
+  url={scanUrl}
+  loading={loadingPerfSettings}
+  {lastBuild}
+  {threshold}
+  bind:show={perfThresholdShown}
   user={$userSession$} />

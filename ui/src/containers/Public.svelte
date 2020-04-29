@@ -13,13 +13,13 @@
   # SSW Link Auditor
   Scan any website for broken links, for free, by running the following command:
   \`\`\` bash
-  $ docker run sswconsulting/sswlinkauditor --url <URL> --buildId <BUILDID>
+  $ docker run sswconsulting/sswlinkauditor --url <URL> --buildId [BUILDID]
   \`\`\`
   Where: **BUILDID** [optional]: your CI build number
 
   You can also get [Lighthouse](https://developers.google.com/web/tools/lighthouse) key performance score by running
   \`\`\` bash
-  $ docker container run --rm --cap-add=SYS_ADMIN sswconsulting/sswlinkauditor --url <URL> --lighthouse
+  $ docker container run --rm --cap-add=SYS_ADMIN sswconsulting/sswlinkauditor --lighthouse --url <URL> 
   \`\`\`
 
   Why **--cap-add=SYS_ADMIN** option? [Read here](https://github.com/GoogleChrome/lighthouse-ci/tree/master/docs/recipes/docker-client)
@@ -28,11 +28,11 @@
   ## Why not sign up? It's free
   If you [sign up](/signup), you will get a unique token which allow you to store last **100** scan results on this website
   \`\`\` bash
-  $ docker run sswconsulting/sswlinkauditor --url <URL> --buildId <BUILDID> --token <TOKEN>
+  $ docker run sswconsulting/sswlinkauditor --url <URL> --token <TOKEN> --buildId [BUILDID]
   \`\`\`
   Or with Lighthouse options
   \`\`\` bash
-  $ docker container run --rm --cap-add=SYS_ADMIN sswconsulting/sswlinkauditor --url <URL> --lighthouse --buildId <BUILDID> --token <TOKEN>
+  $ docker container run --rm --cap-add=SYS_ADMIN sswconsulting/sswlinkauditor --lighthouse --url <URL> --token <TOKEN> --buildId [BUILDID]
   \`\`\`
 
   Powered by [Lighthouse](https://developers.google.com/web/tools/lighthouse) and [ScreamingFrog](https://www.screamingfrog.co.uk/)

@@ -7,6 +7,7 @@ exports.CONSTANTS = {
 exports.TABLE = {
 	Scans: 'Scans',
 	IgnoredUrls: 'IgnoredUrls',
+	PerformanceThreshold: 'PerformanceThreshold',
 	Subscriptions: 'Subscriptions',
 	ScanResults: 'ScanResults',
 };
