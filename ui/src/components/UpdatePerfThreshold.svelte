@@ -135,7 +135,7 @@
           class="bg-grey-100 hover:bg-blue-500 text-blue-800 font-semibold ml-1
           hover:text-white py-2 px-4 border border-blue-500
           hover:border-transparent rounded">
-          Use Last Build Stats
+          Use This Build Stats
         </button>
       </div>
 
