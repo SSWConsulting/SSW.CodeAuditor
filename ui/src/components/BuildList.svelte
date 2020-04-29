@@ -27,19 +27,20 @@
   </div>
   <table class="table-auto mb-6">
     <thead>
-      <tr>
-        <th class="px-4 py-2">Build #</th>
-        <th class="px-4 py-2">Url</th>
-        <th class="px-4 py-2">Links</th>
-        <th class="px-4 py-2">Performance</th>
-        <th class="px-4 py-2" />
+      <tr class="flex">
+        <th class="w-1/12 px-4 py-2">Build #</th>
+        <th class="w-5/12 py-2 px-5">Url</th>
+        <th class="w-3/12 px-4 py-2">Links</th>
+        <th class="w-3/12 px-4 py-2">Performance</th>
       </tr>
     </thead>
     <tbody>
       {#each builds as val}
-        <tr>
-          <td class="border px-4 py-2">
-            <span class="inline-block align-middle hover:text-blue-800">
+        <tr
+          class="flex hover:bg-gray-200 cursor-pointer"
+          on:click={() => navigateTo(`/build/${val.runId}`)}>
+          <td class="border px-4 py-2 w-1/12">
+            <span class="block align-middle hover:text-blue-800 text-center">
               <Navigate to={`/build/${val.runId}`}>
                 <svg
                   fill="none"
@@ -57,9 +58,9 @@
                 </svg>
               </Navigate>
             </span>
-            {val.buildId}
+            <span class="block text-center">{val.buildId}</span>
           </td>
-          <td class="border px-4 py-2">
+          <td class="border px-4 py-2 w-5/12">
             <a
               class="inline-block align-baseline text-blue-600
               hover:text-blue-800"
@@ -74,7 +75,7 @@
               <span class="font-bold">{printTimeDiff(+val.scanDuration)}</span>
             </div>
           </td>
-          <td class="border px-4 py-2 text-right">
+          <td class="border px-4 py-2 text-right w-3/12">
             <div class="grid grid-cols-3 gap-2 row-gap-2">
               <div class="text-center">
                 <span class="block font-mono">Scanned</span>
@@ -100,30 +101,8 @@
               </div>
             </div>
           </td>
-          <td class="border px-4 py-2 text-center">
+          <td class="border px-4 py-2 text-center w-3/12">
             <LighthouseSummary value={val} />
-          </td>
-          <td class="border px-4 py-2">
-            <span class="inline-block align-middle hover:text-blue-800">
-              <Navigate to={`/build/${val.runId}`}>
-                <svg
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  width="22"
-                  height="22"
-                  class="align-middle">
-                  <path
-                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2
-                    0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002
-                    2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0
-                    01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-              </Navigate>
-            </span>
           </td>
         </tr>
       {/each}
