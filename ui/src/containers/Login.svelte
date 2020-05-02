@@ -20,8 +20,8 @@
   };
 
   let serverError;
-  let username;
-  let password;
+  let username = "";
+  let password = "";
   $: valid = !!username && !!password;
 </script>
 

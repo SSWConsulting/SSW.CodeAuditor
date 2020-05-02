@@ -22,7 +22,6 @@
     measurementId: "G-2EFQW0NCSJ"
   });
 
-  let options = { gaPageviews: true };
   firebase.auth().onAuthStateChanged(user => loginCompleted(user));
   // handle error from OAUTH redirect
   firebase
@@ -37,5 +36,5 @@
   </div>
 {/if}
 <div class:hidden={$performingLogin}>
-  <Router {routes} {options} />
+  <Router {routes} />
 </div>
