@@ -76,11 +76,21 @@ export const isInIgnored = (url, list) => {
 		);
 		return re.test(input);
 	}
+	const date = new Date();
 	for (let index = 0; index < list.length; index++) {
-		const pattern = list[index];
+		const item = list[index];
+		const pattern = item.urlToIgnore;
 		if (glob(pattern, url)) {
-			return true;
+			const effectiveFrom = new Date(item.effectiveFrom);
+			const timelapsed = (date - effectiveFrom) / 86400000;
+			if (
+				(item.ignoreDuration > 0 && timelapsed < item.ignoreDuration) ||
+				item.ignoreDuration === -1
+			) {
+				console.log('Remaing days', item.ignoreDuration - timelapsed);
+				return true;
+			}
 		}
 	}
-	return false;
+	return null;
 };

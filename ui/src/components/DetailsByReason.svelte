@@ -1,7 +1,7 @@
 <script>
   import { groupBy, props } from "ramda";
   import { isInIgnored } from "../utils/utils.js";
-  import { ignoredUrlsList$ } from "../stores.js";
+  import { ignoredUrls$ } from "../stores.js";
   import { createEventDispatcher } from "svelte";
   import { fade, fly } from "svelte/transition";
   import Icon from "./Icon.svelte";
@@ -18,7 +18,7 @@
     reasonsKeys = Object.keys(reasons);
   }
   let ignoredPatterns = [];
-  ignoredUrlsList$.subscribe(x => (ignoredPatterns = x));
+  ignoredUrls$.subscribe(x => (ignoredPatterns = x));
 
   const hideShow = key =>
     (hiddenRows[key] = key in hiddenRows ? !hiddenRows[key] : true);

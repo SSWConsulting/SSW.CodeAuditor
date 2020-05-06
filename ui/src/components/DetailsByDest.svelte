@@ -2,7 +2,7 @@
   import { fade, fly } from "svelte/transition";
   import Icon from "./Icon.svelte";
   import { groupBy, props } from "ramda";
-  import { ignoredUrlsList$, deleteIgnoreUrl } from "../stores.js";
+  import { ignoredUrls$, deleteIgnoreUrl } from "../stores.js";
   import { isInIgnored } from "../utils/utils.js";
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
@@ -19,7 +19,7 @@
   }
 
   let ignoredPatterns = [];
-  ignoredUrlsList$.subscribe(x => (ignoredPatterns = x));
+  ignoredUrls$.subscribe(x => (ignoredPatterns = x));
 
   let hiddenRows = {};
   const hideShow = key =>
