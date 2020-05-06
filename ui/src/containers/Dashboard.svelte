@@ -55,7 +55,7 @@
   });
 
   const instructions = `
-  ## SSW Link Auditor - Scan instructions
+  ## SSW Auditor - Scan instructions
   Scan any website for broken links by running the following command:
   \`\`\` bash
   $ docker run sswconsulting/sswlinkauditor --token ${token} --url <URL> --buildId [BUILDID]

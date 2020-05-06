@@ -33,7 +33,7 @@
       <tr class="flex">
         <th class="w-1/12 px-4 py-2">Build #</th>
         <th class="w-5/12 py-2 px-5">Url</th>
-        <th class="w-3/12 px-4 py-2 font-mono">SEO</th>
+        <th class="w-3/12 px-4 py-2 font-mono">Links</th>
         <th class="w-3/12 px-4 py-2 font-mono">Code</th>
         <th class="w-3/12 px-4 py-2 font-mono">Performance</th>
       </tr>
