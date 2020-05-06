@@ -10,12 +10,12 @@
 
 {#if perf.performanceScore}
   <!-- content here -->
-  <div class="pt-3 px-2 py-2">
-    <div class="grid grid-cols-3 gap-2 row-gap-2">
+  <div>
+    <div class="grid grid-cols-2 gap-1 row-gap-2 md:grid-cols-3">
       <div class="text-center whitespace-no-wrap">
-        <span class="text-lg font-mono">AVG</span>
+        <span class="font-mono">AVG</span>
         <span
-          class="font-bold text-lg inline-block"
+          class="font-bold block md:inline-block"
           title="Average"
           class:text-red-400={perf.average < 50}
           class:text-orange-400={perf.average >= 50 && perf.average <= 80}
@@ -24,10 +24,10 @@
         </span>
       </div>
       <div class="text-center">
-        <span class="text-lg font-mono">PERF</span>
+        <span class="font-mono">PERF</span>
         <span
           title="Performance"
-          class="font-bold text-lg"
+          class="font-bold"
           class:text-red-400={perf.performanceScore < 50}
           class:text-orange-400={perf.performanceScore >= 50 && perf.performanceScore <= 80}
           class:text-green-400={perf.performanceScore > 80}>
@@ -35,9 +35,8 @@
         </span>
       </div>
       <div class="text-center">
-
         {#if showLabel}
-          <span class="text-lg font-mono">Accessibility</span>
+          <span class="font-mono">Accessibility</span>
         {:else}
           <Icon cssClass="inline-block">
             <path
@@ -46,7 +45,7 @@
           </Icon>
         {/if}
         <span
-          class="font-bold text-lg"
+          class="font-bold"
           title="Accessibility"
           class:text-red-400={perf.accessibilityScore < 50}
           class:text-orange-400={perf.accessibilityScore >= 50 && perf.accessibilityScore <= 80}
@@ -56,10 +55,10 @@
       </div>
 
       <div class="text-center">
-        <span class="text-lg font-mono">SEO</span>
+        <span class="font-mono">SEO</span>
         <span
           title="SEO"
-          class="font-bold text-lg"
+          class="font-bold "
           class:text-red-400={perf.seoScore < 50}
           class:text-orange-400={perf.seoScore >= 50 && perf.seoScore <= 80}
           class:text-green-400={perf.seoScore > 80}>
@@ -67,9 +66,9 @@
         </span>
       </div>
       <div class="text-center">
-        <span class="text-lg font-mono">PWA</span>
+        <span class="font-mono">PWA</span>
         <span
-          class="font-bold text-lg"
+          class="font-bold "
           title="PWA"
           class:text-red-400={perf.pwaScore < 50}
           class:text-orange-400={perf.pwaScore >= 50 && perf.pwaScore <= 80}
@@ -80,7 +79,7 @@
       <div class="text-center">
 
         {#if showLabel}
-          <span class="text-lg font-mono">Best Practice</span>
+          <span class="font-mono">Best Practice</span>
         {:else}
           <Icon cssClass="inline-block">
             <path
@@ -89,7 +88,7 @@
           </Icon>
         {/if}
         <span
-          class="font-bold text-lg"
+          class="font-bold "
           title="Best Practice"
           class:text-red-400={perf.bestPracticesScore < 50}
           class:text-orange-400={perf.bestPracticesScore >= 50 && perf.bestPracticesScore <= 80}

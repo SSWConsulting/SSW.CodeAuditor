@@ -4,6 +4,8 @@
   import { Navigate, navigateTo } from "svelte-router-spa";
   import { fade, fly } from "svelte/transition";
   import LighthouseSummary from "./LighthouseSummary.svelte";
+  import LinkSummary from "./LinkSummary.svelte";
+  import CodeSummary from "./CodeSummary.svelte";
   import Icon from "./Icon.svelte";
   import { printTimeDiff } from "../utils/utils";
   export let builds = [];
@@ -31,8 +33,9 @@
       <tr class="flex">
         <th class="w-1/12 px-4 py-2">Build #</th>
         <th class="w-5/12 py-2 px-5">Url</th>
-        <th class="w-3/12 px-4 py-2">Links</th>
-        <th class="w-3/12 px-4 py-2">Performance</th>
+        <th class="w-3/12 px-4 py-2 font-mono">SEO</th>
+        <th class="w-3/12 px-4 py-2 font-mono">Code</th>
+        <th class="w-3/12 px-4 py-2 font-mono">Performance</th>
       </tr>
     </thead>
     <tbody>
@@ -49,12 +52,14 @@
                 </Icon>
               </Navigate>
             </span>
-            <span class="block text-center">{val.buildId}</span>
+            <span class="block text-center text-sm truncate">
+              {val.buildId}
+            </span>
           </td>
           <td class="border px-4 py-2 w-5/12">
             <a
               class="inline-block align-baseline text-blue-600
-              hover:text-blue-800"
+              hover:text-blue-800 truncate max-w-xs text-sm"
               target="_blank"
               href={val.url}>
               {val.url}
@@ -65,32 +70,13 @@
               })}, took
               <span class="font-bold">{printTimeDiff(+val.scanDuration)}</span>
             </div>
+
           </td>
           <td class="border px-4 py-2 text-right w-3/12">
-            <div class="grid grid-cols-3 gap-2 row-gap-2">
-              <div class="text-center">
-                <span class="block font-mono">Scanned</span>
-                <span class="font-bold text-xl block">{val.totalScanned}</span>
-              </div>
-              <div class="text-center">
-                <span class="block whitespace-no-wrap font-mono">Bad</span>
-                <span
-                  class="font-bold text-xl whitespace-no-wrap"
-                  class:text-red-600={val.totalBrokenLinks > 0}
-                  class:text-green-600={val.totalBrokenLinks === 0}>
-                  {val.uniqueBrokenLinks} / {val.totalBrokenLinks}
-                </span>
-              </div>
-              <div class="text-center">
-                <span class="block whitespace-no-wrap font-mono">404</span>
-                <span
-                  class="font-bold text-xl"
-                  class:text-red-600={val.totalUnique404 > 0}
-                  class:text-green-600={val.totalUnique404 === 0}>
-                  {val.totalUnique404}
-                </span>
-              </div>
-            </div>
+            <LinkSummary value={val} />
+          </td>
+          <td class="border px-4 py-2 text-center w-3/12">
+            <CodeSummary value={val} />
           </td>
           <td class="border px-4 py-2 text-center w-3/12">
             <LighthouseSummary value={val} />
