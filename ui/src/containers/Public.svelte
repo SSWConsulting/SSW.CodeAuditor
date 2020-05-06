@@ -104,8 +104,9 @@
         class="rounded-lg shadow-2xl border-2 border-gray-600 border-solid" />
     </div>
     <div class="col-span-1">
-      <div class="text-center text-3xl">Keep your last 100 scan results</div>
-      <div class="text-center text-6xl text-bold">for FREE</div>
+      <div class="text-center text-2xl">
+        Keep your last 100 scan results for FREE
+      </div>
     </div>
 
     <div class="col-span-1">

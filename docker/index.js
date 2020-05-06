@@ -14,10 +14,8 @@ const {
 	outputBadDataCsv,
 } = require('./utils');
 
-// const p = 'http://www.internal-northwind/**';
-// console.log(minimatch('http://www.internal-northwind/orders.aspx', p));
-// return;
 let _args = null;
+let _cloc;
 const _getAgrs = () => {
 	_args = yargs
 		.usage('Usage: -url <url>')
@@ -43,6 +41,11 @@ const _getAgrs = () => {
 			type: 'boolean',
 			default: false,
 		})
+		.option('cloc', {
+			describe: 'Count lines of codes',
+			type: 'boolean',
+			default: false,
+		})
 		.option('whitelist', {
 			describe: 'List of URL glob pattern to Ignore in CSV format',
 			type: 'string',
@@ -58,8 +61,20 @@ const _getAgrs = () => {
 
 const main = () => {
 	const options = _getAgrs();
-
 	const startTime = new Date();
+
+	if (options.cloc) {
+		const [result, error] = _countLineOfCodes();
+		if (error) {
+			_writeLog(`Error running command: ${error}`);
+			process.exit(1);
+		}
+		_cloc = result;
+		consoleBox(
+			`Codes: Files=${result.header.n_files} Lines=${result.header.n_lines}`,
+			'green'
+		);
+	}
 	const [result, error] = _startScan(options);
 	_writeLog(`scan finished`, result);
 
@@ -76,7 +91,7 @@ const main = () => {
 		_writeLog(`Error running command: ${error}`);
 		process.exit(1);
 	}
-	_getErrorUrl(options, startTime, '/home/lhci/all_inlinks.csv');
+	_processAndUpload(options, startTime, '/home/lhci/all_inlinks.csv');
 };
 
 const _startScan = (options) => {
@@ -90,7 +105,21 @@ const _startScan = (options) => {
 	}
 };
 
-const _getErrorUrl = async (args, startTime, file) => {
+const _countLineOfCodes = () => {
+	_writeLog(chalk.yellowBright(`Counting lines of codes`));
+
+	try {
+		const json = execSync(
+			`cloc /home/lhci/src/root --fullpath --not-match-d node_modules --json`
+		).toString();
+		const d = JSON.parse(json);
+		return [d, null];
+	} catch (error) {
+		return [null, error.message];
+	}
+};
+
+const _processAndUpload = async (args, startTime, file) => {
 	// Closures:
 	const __getBadResults = (allUrls) => {
 		return allUrls
@@ -336,6 +365,7 @@ const _getErrorUrl = async (args, startTime, file) => {
 				badUrls,
 				whiteListed,
 				lhr,
+				cloc: _cloc
 			});
 		} catch (error) {
 			console.error(

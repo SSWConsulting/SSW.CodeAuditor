@@ -95,6 +95,7 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		url,
 		lhr,
 		whiteListed,
+		cloc,
 	} = req.body;
 	let lhrSummary;
 	if (lhr) {
@@ -125,6 +126,7 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		whiteListed,
 		scanDuration,
 		url,
+		cloc,
 		totalBrokenLinks: badUrls.length,
 		uniqueBrokenLinks: R.uniqBy(R.prop('dst'), badUrls).length,
 		pagesWithBrokenLink: R.uniqBy(R.prop('src'), badUrls).length,

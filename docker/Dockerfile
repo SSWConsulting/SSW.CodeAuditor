@@ -36,11 +36,15 @@ RUN apt-get install -y google-chrome-stable --no-install-recommends
 # Install Lighthouse CI
 RUN npm install -g @lhci/cli@0.3.13
 RUN npm install -g lighthouse
+RUN npm install -g cloc
+
+# Install cloc
 
 # Setup a user to avoid doing everything as root
 RUN groupadd --system lhci && \
   useradd --system --create-home --gid lhci lhci && \
   mkdir --parents /home/lhci/src && \
+  mkdir --parents /home/lhci/src/root && \
   chown --recursive lhci:lhci /home/lhci
 
 # give lhci user access to /root/.ScreamingFrogSEOSpider folder
@@ -52,9 +56,10 @@ COPY spider.config /home/lhci/.ScreamingFrogSEOSpider/spider.config
 COPY licence.txt /home/lhci/.ScreamingFrogSEOSpider/licence.txt
 COPY spa.seospiderconfig /home/lhci/spa.seospiderconfig
 
-RUN ls /home/lhci/.ScreamingFrogSEOSpider
+# RUN ls /home/lhci/.ScreamingFrogSEOSpider
 
 COPY --from=builder /usr/src/app /home/lhci/src
+# RUN ls /home/lhci/src/node_modules
 
 ENTRYPOINT ["node","."]
 # ENTRYPOINT ["lhci"]
