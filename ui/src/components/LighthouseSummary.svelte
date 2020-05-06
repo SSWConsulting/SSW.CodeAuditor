@@ -39,7 +39,7 @@
         {#if showLabel}
           <span class="text-lg font-mono">Accessibility</span>
         {:else}
-          <Icon>
+          <Icon cssClass="inline-block">
             <path
               d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0
               00-7-7z" />
@@ -82,7 +82,7 @@
         {#if showLabel}
           <span class="text-lg font-mono">Best Practice</span>
         {:else}
-          <Icon>
+          <Icon cssClass="inline-block">
             <path
               d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714
               2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
