@@ -1,6 +1,7 @@
 <script>
   import { createEventDispatcher } from "svelte";
   import firebase from "firebase/app";
+  import Icon from "../components/Icon.svelte";
   import { Navigate, navigateTo } from "svelte-router-spa";
   import TextField from "../components/TextField.svelte";
   import { isValidEmail } from "../utils/utils.js";
@@ -18,7 +19,7 @@
       .finally(() => (loading = false));
   };
 
-  let username;
+  let username = "";
   let serverError;
   let password;
   let confirmpwd;
@@ -48,18 +49,9 @@
 <form class="container mx-auto max-w-sm py-12">
   <div class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
     <div class="mb-8 mx-auto">
-      <svg
-        fill="none"
-        stroke-linecap="round"
-        class="inline-block text-red-600"
-        height="35"
-        width="35"
-        stroke-linejoin="round"
-        stroke-width="3"
-        stroke="currentColor"
-        viewBox="0 0 24 24">
+      <Icon cssClass="inline-block text-red-600" height="35" width="35">
         <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-      </svg>
+      </Icon>
       <span on:click={() => navigateTo('/')} class="text-3xl align-middle ml-2">
         SSW LinkAuditor
       </span>

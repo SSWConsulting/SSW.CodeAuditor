@@ -4,6 +4,7 @@
   import Modal from "./Modal.svelte";
   import { navigateTo } from "svelte-router-spa";
   import LighthouseSummary from "./LighthouseSummary.svelte";
+  import Icon from "./Icon.svelte";
   import Toastr from "./Toastr.svelte";
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
@@ -27,19 +28,11 @@
             on:click={download}
             class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2
             px-4 rounded inline-flex items-center">
-            <svg
-              fill="none"
-              stroke-linecap="round"
-              width="24"
-              height="24"
-              stroke-linejoin="round"
-              stroke-width="2"
-              stroke="currentColor"
-              viewBox="0 0 24 24">
+            <Icon cssClass="">
               <path
                 d="M8 16a5 5 0 01-.916-9.916 5.002 5.002 0 019.832 0A5.002 5.002
                 0 0116 16m-7 3l3 3m0 0l3-3m-3 3V10" />
-            </svg>
+            </Icon>
             <span class="ml-2">Download CSV</span>
           </button>
         </p>
@@ -52,38 +45,22 @@
               on:click={() => navigateTo('/lighthouse/' + build.runId)}
               class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2
               px-4 rounded inline-flex items-center text-center">
-              <svg
-                fill="none"
-                stroke-linecap="round"
-                width="24"
-                height="24"
-                stroke-linejoin="round"
-                stroke-width="2"
-                stroke="currentColor"
-                viewBox="0 0 24 24">
+              <Icon cssClass="">
                 <path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
                 <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-              </svg>
+              </Icon>
               <span class="ml-2">Lighthouse Report</span>
             </button>
             <button
               on:click={perfThreshold}
               class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2
               mx-2 px-4 rounded inline-flex items-center text-center">
-              <svg
-                fill="none"
-                stroke-linecap="round"
-                width="24"
-                height="24"
-                stroke-linejoin="round"
-                stroke-width="2"
-                stroke="currentColor"
-                viewBox="0 0 24 24">
+              <Icon cssClass="">
                 <path
                   d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6
                   2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3
                   9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
-              </svg>
+              </Icon>
               <span class="ml-2">Performance Threshold</span>
             </button>
           </div>

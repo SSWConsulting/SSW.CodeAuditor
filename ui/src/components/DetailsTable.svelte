@@ -2,6 +2,7 @@
   import { groupBy, props } from "ramda";
   import DetailsByDest from "./DetailsByDest.svelte";
   import { updateQuery } from "../utils/utils.js";
+  import Icon from "./Icon.svelte";
   import ParsedQuery from "query-string";
   import DetailsBySource from "./DetailsBySource.svelte";
   import DetailsByReason from "./DetailsByReason.svelte";
@@ -37,35 +38,17 @@
 
 {#if builds.length === 0}
   <div class="mb-6 text-center text-xl py-8">
-    <svg
-      fill="none"
-      width="27"
-      height="27"
-      class="text-yellow-800 inline-block"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
-      stroke="currentColor"
-      viewBox="0 0 24 24">
+    <Icon cssClass="text-yellow-800 inline-block">
       <path
         d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13
         21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-    </svg>
+    </Icon>
     There is no broken links in this build!!
-    <svg
-      fill="none"
-      width="27"
-      height="27"
-      class="text-yellow-800 inline-block"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
-      stroke="currentColor"
-      viewBox="0 0 24 24">
+    <Icon cssClass="text-yellow-800 inline-block">
       <path
         d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13
         21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-    </svg>
+    </Icon>
   </div>
 {:else}
   <div class="my-4 mx-auto">

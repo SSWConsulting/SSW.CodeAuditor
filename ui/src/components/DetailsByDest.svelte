@@ -1,5 +1,6 @@
 <script>
   import { fade, fly } from "svelte/transition";
+  import Icon from "./Icon.svelte";
   import { groupBy, props } from "ramda";
   import { ignoredUrlsList$, deleteIgnoreUrl } from "../stores.js";
   import { isInIgnored } from "../utils/utils.js";
@@ -28,23 +29,15 @@
 {#each destinationsKeys as url}
   <div class="mb-3">
     <span class="font-bold mr-2">
-      <svg
-        class="inline-block cursor-pointer"
-        on:click={() => hideShow(url)}
-        fill="none"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        stroke="currentColor"
-        height="20"
-        width="20"
-        viewBox="0 0 24 24">
+      <Icon
+        cssClass="inline-block cursor-pointer"
+        on:click={() => hideShow(url)}>
         {#if !hiddenRows[url]}
           <path d="M19 9l-7 7-7-7" />
         {:else}
           <path d="M9 5l7 7-7 7" />
         {/if}
-      </svg>
+      </Icon>
       {destinations[url][0].statusmsg} ({destinations[url][0].statuscode || 0})
       :
     </span>
@@ -57,43 +50,25 @@
     {#if isInIgnored(url, ignoredPatterns)}
       <span
         title="This is URL is in the ignored lists. Go to Settings to remove it">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          width="24"
-          height="24"
-          class="text-red-400 inline-block"
-          stroke-width="2"
-          stroke="currentColor"
-          viewBox="0 0 24 24">
+        <Icon cssClass="text-red-600 inline-block">
           <path
             d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923
             3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
             clip-rule="evenodd" />
           <path d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
-        </svg>
+        </Icon>
       </span>
     {:else}
       <button
         title="Ignore this broken link in the next scan"
         on:click={() => ignore(url)}
         class="hover:bg-gray-400 rounded inline-flex align-middle mr-3">
-        <svg
-          fill="none"
-          stroke-linecap="round"
-          width="24"
-          height="24"
-          stroke-linejoin="round"
-          stroke-width="2"
-          stroke="currentColor"
-          viewBox="0 0 24 24">
+        <Icon>
           <path
             d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586
             15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12
             4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-        </svg>
+        </Icon>
       </button>
     {/if}
 

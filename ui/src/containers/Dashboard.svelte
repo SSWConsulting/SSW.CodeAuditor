@@ -2,6 +2,7 @@
   import { userApi, userSession$ } from "../stores";
   import { onDestroy } from "svelte";
   import marked from "marked";
+  import Icon from "../components/Icon.svelte";
   import firebase from "firebase/app";
   import BuildList from "../components/BuildList.svelte";
   import LoadingFlat from "../components/LoadingFlat.svelte";
@@ -85,18 +86,9 @@
           hover:text-blue-darker text-2xl"
           on:click={() => (showInstruction = false)}
           href="javascript:void(0)">
-          <svg
-            fill="none"
-            class="inline-block"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            width="25"
-            height="25"
-            stroke="currentColor"
-            viewBox="0 0 24 24">
+          <Icon cssClass="inline-block">
             <path d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          </Icon>
         </a>
       {/if}
       <article class="markdown-body">

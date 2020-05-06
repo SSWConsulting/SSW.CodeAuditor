@@ -4,6 +4,7 @@
   import { fade, fly } from "svelte/transition";
   import { ignoredUrlsList$ } from "../stores.js";
   import { createEventDispatcher } from "svelte";
+  import Icon from "./Icon.svelte";
   export let builds = [];
   const dispatch = createEventDispatcher();
   const ignore = url => dispatch("ignore", url);
@@ -27,19 +28,15 @@
 {#each sourcesKeys as url}
   <div class="mb-3">
     <span class="font-bold mr-2">
-      <svg
-        class="inline-block cursor-pointer"
+      <Icon
         on:click={() => hideShow(url)}
-        fill="none"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        stroke="currentColor"
-        height="20"
-        width="20"
-        viewBox="0 0 24 24">
-        <path d="M9 5l7 7-7 7" />
-      </svg>
+        cssClass="inline-block cursor-pointer">
+        {#if !hiddenRows[url]}
+          <path d="M19 9l-7 7-7-7" />
+        {:else}
+          <path d="M9 5l7 7-7 7" />
+        {/if}
+      </Icon>
       Broken links on:
     </span>
     <a
@@ -49,7 +46,6 @@
       {url}
     </a>
   </div>
-
   {#if !hiddenRows[url]}
     <table
       class="table-auto mb-8"
@@ -71,47 +67,30 @@
               break-all">
               {#if isInIgnored(val.dst, ignoredPatterns)}
                 <span
+                  class="text-red-600 inline-block align-middle"
                   title="This is URL is in the ignored lists. Go to Settings to
                   remove it">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    width="24"
-                    height="24"
-                    class="text-red-400 inline-block"
-                    stroke-width="2"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24">
+                  <Icon>
                     <path
                       d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0
                       011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0
                       .891-1.077 1.337-1.707.707L5.586 15z"
                       clip-rule="evenodd" />
                     <path d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
-                  </svg>
+                  </Icon>
                 </span>
               {:else}
                 <button
                   title="Ignore this broken link in the next scan"
                   on:click={() => ignore(val.dst)}
                   class="hover:bg-gray-400 rounded inline-flex align-middle mr-3">
-                  <svg
-                    fill="none"
-                    stroke-linecap="round"
-                    width="24"
-                    height="24"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24">
+                  <Icon>
                     <path
                       d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010
                       12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0
                       011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0
                       .891-1.077 1.337-1.707.707L5.586 15z" />
-                  </svg>
+                  </Icon>
                 </button>
               {/if}
               <a

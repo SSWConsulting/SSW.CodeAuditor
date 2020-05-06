@@ -3,9 +3,10 @@
   const dispatch = createEventDispatcher();
 
   export let label;
-  export let value;
+  export let value = "";
   export let errorMsg = "";
   export let type = "text";
+  export let autocomplete = "";
   export let required = true;
   export let placeholder = "";
 
@@ -26,6 +27,7 @@
   rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white
   focus:border-gray-500"
   {placeholder}
+  {autocomplete}
   {value}
   class:border-red-300={(required && !value) || errorMsg}
   class:focus:border-red-500={(required && !value) || errorMsg}

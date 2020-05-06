@@ -6,6 +6,7 @@
     "dev": "rollup -c -w",
     "predeploy": "npm run build && cp public/index.html public/200.html",
     "deploy": "surge public --domain https://sswlinkauditor.surge.sh",
+    "count": "npx cloc --force-lang=\"HTML\",svelte src",
     "start": "sirv public --single"
   },
   "devDependencies": {

@@ -6,6 +6,7 @@
     getIgnoreList
   } from "../stores";
   import { onMount } from "svelte";
+  import Icon from "../components/Icon.svelte";
   import DetailsTable from "../components/DetailsTable.svelte";
   import slug from "slug";
   import Toastr from "../components/Toastr.svelte";
@@ -100,35 +101,17 @@
 <div class="container mx-auto">
   <div class="bg-white shadow-lg rounded px-8 pt-6 mb-6 flex flex-col">
     <p class="pb-2">
-      <svg
-        class="inline-block"
-        fill="none"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        stroke="currentColor"
-        height="20"
-        width="20"
-        viewBox="0 0 24 24">
+      <Icon cssClass="inline-block" height="20" width="20">
         <path d="M9 5l7 7-7 7" />
-      </svg>
+      </Icon>
       <a
         class="inline-block align-baseline text-blue hover:text-blue-darker"
         href="/">
         Builds
       </a>
-      <svg
-        class="inline-block"
-        fill="none"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        stroke="currentColor"
-        height="20"
-        width="20"
-        viewBox="0 0 24 24">
+      <Icon cssClass="inline-block" height="20" width="20">
         <path d="M9 5l7 7-7 7" />
-      </svg>
+      </Icon>
       <span
         class="inline-block align-baseline text-blue hover:text-blue-darker">
         {currentRoute.namedParams.id}

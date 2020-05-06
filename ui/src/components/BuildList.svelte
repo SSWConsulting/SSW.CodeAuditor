@@ -4,6 +4,7 @@
   import { Navigate, navigateTo } from "svelte-router-spa";
   import { fade, fly } from "svelte/transition";
   import LighthouseSummary from "./LighthouseSummary.svelte";
+  import Icon from "./Icon.svelte";
   import { printTimeDiff } from "../utils/utils";
   export let builds = [];
   export let lastBuild;
@@ -39,23 +40,13 @@
         <tr
           class="flex hover:bg-gray-200 cursor-pointer"
           on:click={() => navigateTo(`/build/${val.runId}`)}>
-          <td class="border px-4 py-2 w-1/12">
+          <td class="border py-2 w-1/12 mx-auto">
             <span class="block align-middle hover:text-blue-800 text-center">
               <Navigate to={`/build/${val.runId}`}>
-                <svg
-                  fill="none"
-                  height="25"
-                  width="25"
-                  class:text-green-600={val.totalBrokenLinks === 0}
-                  class:text-red-600={val.totalBrokenLinks > 0}
-                  class="inline-block"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24">
+                <Icon
+                  cssClass={val.totalBrokenLinks === 0 ? 'inline-block text-green-600' : 'inline-block text-red-600'}>
                   <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+                </Icon>
               </Navigate>
             </span>
             <span class="block text-center">{val.buildId}</span>

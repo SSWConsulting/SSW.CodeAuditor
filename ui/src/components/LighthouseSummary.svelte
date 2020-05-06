@@ -1,6 +1,7 @@
 <script>
   import { getPerfScore, updateQuery } from "../utils/utils.js";
   import ParsedQuery from "query-string";
+  import Icon from "./Icon.svelte";
   import { navigateTo } from "svelte-router-spa";
   export let value = {};
   export let showLabel = false;
@@ -38,21 +39,11 @@
         {#if showLabel}
           <span class="text-lg font-mono">Accessibility</span>
         {:else}
-          <svg
-            fill="none"
-            class="inline-block"
-            height="24"
-            title="Accessibility"
-            width="24"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            stroke="currentColor"
-            viewBox="0 0 24 24">
+          <Icon>
             <path
               d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0
               00-7-7z" />
-          </svg>
+          </Icon>
         {/if}
         <span
           class="font-bold text-lg"
@@ -91,21 +82,11 @@
         {#if showLabel}
           <span class="text-lg font-mono">Best Practice</span>
         {:else}
-          <svg
-            class="inline-block"
-            height="24"
-            width="24"
-            title="Best Practices"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            stroke="currentColor"
-            viewBox="0 0 24 24">
+          <Icon>
             <path
               d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714
               2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-          </svg>
+          </Icon>
         {/if}
         <span
           class="font-bold text-lg"
