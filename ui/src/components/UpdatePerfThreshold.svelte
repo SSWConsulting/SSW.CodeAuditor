@@ -116,10 +116,7 @@
         type="range"
         min="0"
         max="100" />
-      <div class="pt-8 pb-6 text-lg">
-        <span class="font-bold text-xl">0</span>
-        = ignore criteria
-      </div>
+      <div class="pt-6 pb-6 italic text-center">0 = ignore criteria</div>
       <div class="text-center">
         <button
           on:click={clearAll}
@@ -140,8 +137,9 @@
       </div>
 
     </div>
-    <div class="text-center text-2xl py-4 pt-6">This Build</div>
-    <LighthouseSummary value={lastBuild} showLabel={false} />
+    <div class="pt-3">
+      <LighthouseSummary value={lastBuild} showLabel={false} />
+    </div>
   {/if}
 </Modal>
 
