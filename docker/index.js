@@ -302,7 +302,10 @@ const _processAndUpload = async (args, startTime, file) => {
 		);
 
 		htmlIssuesSummary &&
-			consoleBox('HtmlHint issues: ' + getSummaryText(htmlIssuesSummary), 'red');
+			consoleBox(
+				'HtmlHint issues: ' + getSummaryText(htmlIssuesSummary),
+				'red'
+			);
 
 		// output broken links reports
 		const _ignoreLbl = () =>
@@ -364,9 +367,47 @@ const _processAndUpload = async (args, startTime, file) => {
 			// pushed to cloud, no need to output the CSV
 			consoleBox(getLinkToBuild(runId), 'green');
 		} else {
-			if (badLinks.length > 0) {
-				outputBadDataCsv(badLinks);
-			}
+			badLinks.length && outputBadDataCsv(badLinks);
+
+			htmlIssues &&
+				R.pipe(
+					// restructure
+					R.map(
+						R.applySpec({
+							url: R.prop('url'),
+							errors: R.pipe(
+								R.identity,
+								R.pipe(
+									R.prop('errors'),
+									R.converge(
+										R.zipWith((x, y) => ({
+											error: x,
+											locations: y,
+										})),
+										[R.keys, R.values]
+									)
+								)
+							),
+						})
+					),
+					R.tap(() => consoleBox('List of HTML Issues', 'red')),
+					R.pipe(
+						R.forEach((x) => {
+							console.log(`${x.url}`);
+							R.pipe(
+								R.prop('errors'),
+								R.forEach((error) => {
+									console.log(`${error.error}`);
+									R.pipe(
+										R.prop('locations'),
+										R.forEach(console.log)
+									)(error);
+									console.log('');
+								})
+							)(x);
+						})
+					)
+				)(htmlIssues);
 		}
 
 		if (badLinks.length > 0 || failedThreshold) {
