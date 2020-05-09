@@ -1,0 +1,33 @@
+{
+  "name": "url-checker",
+  "version": "1.0.0",
+  "description": "``` bash\r $ cd ui\r $ npm i\r $ npm run dev\r ```",
+  "main": "index.js",
+  "dependencies": {
+    "boxen": "^4.2.0",
+    "chalk": "^3.0.0",
+    "csv-parser": "^2.3.2",
+    "csv-writer": "^1.6.0",
+    "export-to-csv": "^0.2.1",
+    "express": "^4.17.1",
+    "htmlhint": "^0.11.0",
+    "node-sass": "^4.14.0",
+    "ramda": "^0.27.0",
+    "sass": "^1.26.5",
+    "yargs": "^15.3.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nvhoanganh/urlchecker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nvhoanganh/urlchecker/issues"
+  },
+  "homepage": "https://github.com/nvhoanganh/urlchecker#readme"
+}

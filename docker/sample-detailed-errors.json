@@ -1,0 +1,26 @@
+[
+	{
+		"url": "https://azuregems.io/",
+		"errors": {
+			"inline-style-disabled": [
+				"89:35",
+				"125:41",
+				"147:41",
+				"169:41",
+				"191:41",
+				"213:41",
+				"235:41",
+				"256:41",
+				"277:41",
+				"298:41"
+			]
+		}
+	},
+	{
+		"url": "https://azuregems.io/net-5/",
+		"errors": {
+			"inline-style-disabled": ["157:44", "222:41", "243:41"],
+			"id-unique": ["208:21"]
+		}
+	}
+]

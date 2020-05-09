@@ -17,6 +17,7 @@
     `docker run sswconsulting/sswlinkauditor --url https://azuregems.io/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4 --buildId 3333`
     `docker run sswconsulting/sswlinkauditor --url https://www.ssw.com.au/people/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4 --buildId 8833`
     `docker run sswconsulting/sswlinkauditor --url https://azuregems.io/`
+    `docker run sswconsulting/sswlinkauditor --url https://azuregems.io/ --htmlhint --debug` 
 -   run scan in debug mode
     `docker run sswconsulting/sswlinkauditor --url https://www.ssw.com.au/people/ --debug`
 -   run scan (output in JSON)
@@ -72,4 +73,19 @@ docker container run --cap-add=SYS_ADMIN \
  patrickhulce/lhci-client \
  lhci collect --url="https://example.com"
 lhci upload --token 85cad775-0528-4116-b2bb-f9510f55a9e3 --serverBaseUrl http://localhost:9000
-n
+
+
+# run codeclimate
+
+
+docker run \
+  --interactive --tty --rm \
+  --env CODECLIMATE_CODE="$PWD" \
+  --volume "$PWD":/code \
+  --volume /var/run/docker.sock:/var/run/docker.sock \
+  --volume /tmp/cc:/tmp/cc \
+  codeclimate/codeclimate help
+
+docker run --interactive --tty --rm  --env CODECLIMATE_CODE="$PWD" --volume "$PWD":/code --volume /var/run/docker.sock:/var/run/docker.sock   --volume /tmp/cc:/tmp/cc   codeclimate/codeclimate analyze
+docker run --interactive --tty --rm --env CODECLIMATE_CODE="C:/AnthonyNguyenData/source/personal/url-checker/ui/src" --volume "C:/AnthonyNguyenData/source/personal/url-checker/ui/src":/code --volume /var/run/docker.sock:/var/run/docker.sock   --volume /tmp/cc:/tmp/cc   codeclimate/codeclimate help
+docker run codeclimate/codeclimate help

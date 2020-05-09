@@ -37,6 +37,7 @@ RUN apt-get install -y google-chrome-stable --no-install-recommends
 RUN npm install -g @lhci/cli@0.3.13
 RUN npm install -g lighthouse
 RUN npm install -g cloc
+RUN npm install -g htmlhint
 
 # Install cloc
 

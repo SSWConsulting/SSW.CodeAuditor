@@ -3,7 +3,14 @@ const { execSync } = require('child_process');
 const chalk = require('chalk');
 const minimatch = require('minimatch');
 const yargs = require('yargs');
-const { getConfigs, getPerfThreshold, postData } = require('./api');
+const R = require('ramda');
+const {
+	htmlHintConfig,
+	getConfigs,
+	getPerfThreshold,
+	postData,
+	fetchHtml,
+} = require('./api');
 const {
 	printTimeDiff,
 	getPerfScore,
@@ -14,8 +21,9 @@ const {
 	outputBadDataCsv,
 } = require('./utils');
 
-let _args = null;
+let _args = {};
 let _cloc;
+
 const _getAgrs = () => {
 	_args = yargs
 		.usage('Usage: -url <url>')
@@ -46,6 +54,11 @@ const _getAgrs = () => {
 			type: 'boolean',
 			default: false,
 		})
+		.option('htmlhint', {
+			describe: 'Run html audit using htmlhint',
+			type: 'boolean',
+			default: false,
+		})
 		.option('whitelist', {
 			describe: 'List of URL glob pattern to Ignore in CSV format',
 			type: 'string',
@@ -59,7 +72,7 @@ const _getAgrs = () => {
 	return _args;
 };
 
-const main = () => {
+const main = async () => {
 	const options = _getAgrs();
 	const startTime = new Date();
 
@@ -75,11 +88,12 @@ const main = () => {
 			'green'
 		);
 	}
+
 	const [result, error] = _startScan(options);
 	_writeLog(`scan finished`, result);
 
 	if (options.lighthouse) {
-		_writeLog(`start lighthouse`);
+		_writeLog(`start lig hthouse`);
 		try {
 			execSync(`lhci collect --url="${options.url}" -n 1`);
 			_writeLog(`lighthouse check finished`);
@@ -119,8 +133,79 @@ const _countLineOfCodes = () => {
 	}
 };
 
+const _runHtmlHint = async (url) => {
+	_writeLog(chalk.yellowBright(`Running htmlhint on ${url}`));
+	const HTMLHint = require('htmlhint').default;
+
+	try {
+		const html = await fetchHtml(url);
+		return R.pipe(
+			(html) => HTMLHint.verify(html, htmlHintConfig),
+			R.map((x) => {
+				delete x.evidence;
+				delete x.message;
+				delete x.raw;
+				const error = {
+					...x,
+					ruleName: x.rule.id,
+					url,
+				};
+				delete error.rule;
+				return error;
+			})
+		)(html);
+	} catch (error) {
+		return null;
+	}
+};
+
+const getHtmlHintDetails = (result) => {
+	const getSummarizedErrors = R.pipe(
+		R.flatten,
+		R.filter((x) => !!x),
+		R.groupBy((x) => x.ruleName),
+		R.map((x) => ({
+			type: x[0].type,
+			count: x.length,
+			example: x[0],
+		}))
+	);
+
+	const getDetailsErrorsOnUrl = R.pipe(
+		R.pipe(
+			R.flatten,
+			R.filter((x) => !!x),
+			R.groupBy(R.prop('url'))
+		),
+		R.converge(
+			R.zipWith((k, v) => ({
+				url: k,
+				errors: R.pipe(
+					R.map((e) => ({
+						loc: `${e.line}:${e.col}`,
+						errorType: e.ruleName,
+					})),
+					R.groupBy(R.prop('errorType')),
+					R.converge(
+						R.zipWith((k, v) => ({
+							[k]: v.map((u) => u.loc),
+						})),
+						[R.keys, R.values]
+					),
+					R.reduce((a, b) => {
+						const key = Object.keys(b)[0];
+						return { ...a, [key]: b[key] };
+					}, {})
+				)(v),
+			})),
+			[R.keys, R.values]
+		)
+	);
+
+	return [getSummarizedErrors(result), getDetailsErrorsOnUrl(result)];
+};
+
 const _processAndUpload = async (args, startTime, file) => {
-	// Closures:
 	const __getBadResults = (allUrls) => {
 		return allUrls
 			.filter(
@@ -136,6 +221,17 @@ const _processAndUpload = async (args, startTime, file) => {
 				statuscode: x['Status Code'],
 				statusmsg: x.Status,
 			}));
+	};
+
+	const __getGoodUrls = (allUrls) => {
+		const all = allUrls
+			.filter(
+				(url) =>
+					url.Source.toLowerCase().indexOf(args.url.toLowerCase()) >=
+					0
+			)
+			.map((x) => x.Source);
+		return [...new Set(all)];
 	};
 
 	const __getUniqIgnoredUrls = (badUrls, whitelistedUrls) => {
@@ -172,7 +268,9 @@ const _processAndUpload = async (args, startTime, file) => {
 		runId,
 		requiredThreshold,
 		badLinks,
-		matchedIgnored
+		matchedIgnored,
+		htmlIssuesSummary,
+		htmlIssues
 	) => {
 		let lhScaled;
 		if (lh) {
@@ -189,6 +287,22 @@ const _processAndUpload = async (args, startTime, file) => {
 				} SEO=${lhScaled.seoScore} PWA=${lhScaled.pwaScore}`,
 				'green'
 			);
+
+		// output htmlhint summary
+		const getSummaryText = R.pipe(
+			R.converge(
+				R.zipWith((x, y) => ({
+					error: x,
+					count: y.count,
+				})),
+				[R.keys, R.values]
+			),
+			R.map((x) => `${x.error}: ${x.count}`),
+			R.join(', ')
+		);
+
+		htmlIssuesSummary &&
+			consoleBox('HtmlHint issues: ' + getSummaryText(htmlIssuesSummary), 'red');
 
 		// output broken links reports
 		const _ignoreLbl = () =>
@@ -265,7 +379,6 @@ const _processAndUpload = async (args, startTime, file) => {
 			process.exit(1);
 		}
 	};
-	// closures ends
 
 	let ignoredUrls;
 	let perfThreshold;
@@ -353,6 +466,29 @@ const _processAndUpload = async (args, startTime, file) => {
 
 		whiteListed = whiteListed.concat(whiteListedArgs);
 	}
+
+	let htmlIssuesSummary = null;
+	let htmlIssues = null;
+	if (args.htmlhint) {
+		// need to check for html hint
+		const allgoodLinks = __getGoodUrls(results);
+		_writeLog(
+			`running htmlhint on ${allgoodLinks.length} URLs under the ${args.url}`
+		);
+
+		const result = await Promise.all(
+			allgoodLinks.map((x) => _runHtmlHint(x))
+		);
+		const [summary, details] = getHtmlHintDetails(result);
+		htmlIssuesSummary = summary;
+		htmlIssues = details;
+		_writeLog('summary of html issues found', htmlIssuesSummary);
+		_writeLog(
+			'details of html issues',
+			JSON.stringify(htmlIssues, null, 2)
+		);
+	}
+
 	_writeLog('Url found in WhiteList are', whiteListed);
 	const badUrls = allBadUrls.filter((x) => whiteListed.indexOf(x.dst) < 0);
 
@@ -365,7 +501,9 @@ const _processAndUpload = async (args, startTime, file) => {
 				badUrls,
 				whiteListed,
 				lhr,
-				cloc: _cloc
+				cloc: _cloc,
+				htmlIssuesSummary,
+				htmlIssues,
 			});
 		} catch (error) {
 			console.error(
@@ -378,14 +516,12 @@ const _processAndUpload = async (args, startTime, file) => {
 		runId,
 		perfThreshold,
 		badUrls,
-		whiteListed
+		whiteListed,
+		htmlIssuesSummary,
+		htmlIssues
 	);
 };
 
-// utils
-
 const _writeLog = (...msg) => _args.debug && console.log(...msg);
 
-// run
 main();
-// main_test();

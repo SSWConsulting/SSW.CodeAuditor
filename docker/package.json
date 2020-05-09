@@ -16,9 +16,11 @@
 		"eslint": "^5.12.0",
 		"eslint-plugin-promise": "^4.0.1",
 		"gauge": "^3.0.0",
+		"htmlhint": "^0.11.0",
 		"minimatch": "^3.0.4",
 		"node-fetch": "^2.6.0",
 		"object-assign": "^4.1.1",
+		"ramda": "^0.27.0",
 		"signal-exit": "^3.0.3",
 		"slug": "^2.1.1",
 		"yargs": "^15.3.1"
