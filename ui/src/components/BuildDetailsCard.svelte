@@ -7,11 +7,13 @@
   import Icon from "./Icon.svelte";
   import Toastr from "./Toastr.svelte";
   import { createEventDispatcher } from "svelte";
+
+  export let build = {};
+
   const dispatch = createEventDispatcher();
   const download = () => dispatch("download");
   const perfThreshold = () => dispatch("perfThreshold");
-
-  export let build = {};
+  
 </script>
 
 <div
@@ -34,6 +36,23 @@
                 0 0116 16m-7 3l3 3m0 0l3-3m-3 3V10" />
             </Icon>
             <span class="ml-2">Download CSV</span>
+          </button>
+        </p>
+      {/if}
+
+      {#if build.htmlIssuesList}
+        <p class="text-sm text-gray-600 text-center py-6">
+          <button
+            on:click={() => navigateTo('/htmlhint/' + build.runId)}
+            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2
+            px-4 rounded inline-flex items-center">
+            <Icon cssClass="text-red-500">
+              <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </Icon>
+            <span class="ml-2">
+              View {build.htmlErrors || 0} Errors, {build.htmlWarnings || 0}
+              Warnings
+            </span>
           </button>
         </p>
       {/if}

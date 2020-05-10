@@ -2,6 +2,7 @@ import Login from './containers/Login.svelte';
 import Signup from './containers/Signup.svelte';
 import Dashboard from './containers/Dashboard.svelte';
 import Settings from './containers/Settings.svelte';
+import HtmlHints from './containers/HtmlHints.svelte';
 import BuildDetails from './containers/BuildDetails.svelte';
 import Public from './containers/Public.svelte';
 import LighthouseReport from './containers/LighthouseReport.svelte';
@@ -33,6 +34,11 @@ const routes = [
 	{
 		name: '/lighthouse/:run',
 		component: LighthouseReport,
+		layout: AppLayout
+	},
+	{
+		name: '/htmlhint/:id',
+		component: HtmlHints,
 		layout: AppLayout
 	},
 	{
