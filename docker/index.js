@@ -49,11 +49,6 @@ const _getAgrs = () => {
 			type: 'boolean',
 			default: false,
 		})
-		.option('cloc', {
-			describe: 'Count lines of codes',
-			type: 'boolean',
-			default: false,
-		})
 		.option('htmlhint', {
 			describe: 'Run html audit using htmlhint',
 			type: 'boolean',
@@ -76,7 +71,7 @@ const main = async () => {
 	const options = _getAgrs();
 	const startTime = new Date();
 
-	if (options.cloc) {
+	if (fs.readdirSync('/home/lhci/src/root').length > 0) {
 		const [result, error] = _countLineOfCodes();
 		if (error) {
 			_writeLog(`Error running command: ${error}`);
@@ -121,7 +116,6 @@ const _startScan = (options) => {
 
 const _countLineOfCodes = () => {
 	_writeLog(chalk.yellowBright(`Counting lines of codes`));
-
 	try {
 		const json = execSync(
 			`cloc /home/lhci/src/root --fullpath --not-match-d node_modules --json`
