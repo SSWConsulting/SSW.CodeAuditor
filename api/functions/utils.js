@@ -42,9 +42,10 @@ exports.newGuid = () => {
 exports.getErrorAndWarnCount = R.pipe(
 	R.values,
 	R.groupBy(R.prop('type')),
+	R.tap(console.log),
 	R.converge(
 		R.zipWith((x, y) => ({
-			[x]: y.length,
+			[x]: R.pipe(R.reduce((acc, elem) => acc + elem.count, 0))(y),
 		})),
 		[R.keys, R.values]
 	),

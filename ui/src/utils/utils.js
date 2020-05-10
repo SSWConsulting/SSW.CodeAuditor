@@ -1,3 +1,5 @@
+import { pipe, converge, zipWith, map, join, keys, values } from 'ramda';
+
 export function isValidEmail(value) {
 	if (!value) return true;
 	const pattern = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -94,3 +96,16 @@ export const isInIgnored = (url, list) => {
 	}
 	return null;
 };
+
+export const getHtmlIssuesDescriptions = pipe(
+	JSON.parse,
+	converge(
+		zipWith((x, y) => ({
+			error: x,
+			count: y,
+		})),
+		[keys, values]
+	),
+	map((x) => `"${x.error}" : ${x.count}`),
+	join(', ')
+);

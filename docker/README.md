@@ -12,6 +12,7 @@
     `docker run sswconsulting/sswlinkauditor --url https://www.ssw.com.au/people/`
     `docker run sswconsulting/sswlinkauditor --url https://sswcovid19alert.firebaseapp.com/`
     `docker run sswconsulting/sswlinkauditor --url https://sswcovid19alert.firebaseapp.com/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4`
+    `docker run sswconsulting/sswlinkauditor --url https://sswpeoplestaging.firebaseapp.com/people/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4 --htmlhint`
     `docker run sswconsulting/sswlinkauditor --url https://sswcovid19alert.firebaseapp.com/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4 --buildId 3333`
     `node . --url https://sswcovid19alert.firebaseapp.com/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4 --buildId 3333`
     `docker run sswconsulting/sswlinkauditor --url https://azuregems.io/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4 --buildId 3333`
