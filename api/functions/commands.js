@@ -77,3 +77,6 @@ exports.insertScanSummary = (api, buildId, runId, buildDate, data) => {
 
 exports.uploadLighthouseReport = (runId, lhr) =>
 	uploadBlob(BLOB.lhr, `${runId}.json`, JSON.stringify(lhr));
+
+exports.uploadHtmlHintReport = (runId, htmlIssues) =>
+	uploadBlob(BLOB.htmlhint, `${runId}.json`, JSON.stringify(htmlIssues));

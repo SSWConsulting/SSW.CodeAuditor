@@ -14,4 +14,5 @@ exports.TABLE = {
 
 exports.BLOB = {
 	lhr: 'lhr',
+	htmlhint: 'htmlhint',
 };

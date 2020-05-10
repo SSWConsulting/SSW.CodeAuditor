@@ -38,3 +38,25 @@ exports.newGuid = () => {
 		S4()
 	).toLowerCase();
 };
+
+exports.getErrorAndWarnCount = R.pipe(
+	R.values,
+	R.groupBy(R.prop('type')),
+	R.converge(
+		R.zipWith((x, y) => ({
+			[x]: y.length,
+		})),
+		[R.keys, R.values]
+	),
+	R.mergeAll
+);
+
+exports.getErrorsName = R.pipe(
+	R.converge(
+		R.zipWith((x, y) => ({
+			[x]: y.count,
+		})),
+		[R.keys, R.values]
+	),
+	R.mergeAll
+);

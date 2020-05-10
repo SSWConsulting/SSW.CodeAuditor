@@ -12,6 +12,7 @@ const {
 	deleteIgnoreUrl,
 	updateConfig,
 	uploadLighthouseReport,
+	uploadHtmlHintReport,
 	addPerformanceThreshold,
 } = require('./commands');
 const {
@@ -22,7 +23,7 @@ const {
 	getScanDetails,
 	getIgnoredUrls,
 } = require('./queries');
-const { newGuid } = require('./utils');
+const { newGuid, getErrorAndWarnCount, getErrorsName } = require('./utils');
 const { updateLastBuild, getUserIdFromApiKey } = require('./firestore');
 
 var cors = require('cors');
@@ -96,6 +97,8 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		lhr,
 		whiteListed,
 		cloc,
+		htmlIssuesSummary,
+		htmlIssues,
 	} = req.body;
 	let lhrSummary;
 	if (lhr) {
@@ -106,7 +109,6 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 			seoScore: lhr.categories.seo.score,
 			pwaScore: lhr.categories.pwa.score,
 		};
-		console.log('lighthouse score:', lhrSummary);
 	}
 	const apikey = req.params.api;
 	const buildId = req.params.buildId;
@@ -119,6 +121,16 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		return;
 	}
 
+	let htmlWarnings;
+	let htmlErrors;
+	let htmlIssuesList;
+
+	if (htmlIssuesSummary) {
+		const { warn, error } = getErrorAndWarnCount(htmlIssuesSummary);
+		htmlWarnings = warn;
+		htmlErrors = error;
+		htmlIssuesList = getErrorsName(htmlIssuesSummary);
+	}
 	// insert summary first
 	const payload = {
 		...lhrSummary,
@@ -134,6 +146,9 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 			R.prop('dst'),
 			badUrls.filter((x) => x.statuscode === '404')
 		).length,
+		htmlWarnings,
+		htmlErrors,
+		htmlIssuesList,
 	};
 
 	console.log('adding summary', payload);
@@ -141,6 +156,12 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 	if (lhr) {
 		console.log('uploading to Blob storage');
 		await uploadLighthouseReport(runId, lhr);
+		console.log('uploading to Blob storage - completed');
+	}
+
+	if (htmlIssues) {
+		console.log('uploading list of HTML hint issues to blob storage');
+		await uploadHtmlHintReport(runId, htmlIssues);
 		console.log('uploading to Blob storage - completed');
 	}
 

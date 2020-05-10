@@ -297,7 +297,7 @@ const _processAndUpload = async (args, startTime, file) => {
 				})),
 				[R.keys, R.values]
 			),
-			R.map((x) => `${x.error}: ${x.count}`),
+			R.map((x) => `${x.error}:${x.count}`),
 			R.join(', ')
 		);
 
