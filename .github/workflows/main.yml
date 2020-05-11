@@ -10,7 +10,7 @@ on:
   pull_request:
     branches: [ master ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# A workflow run is made up of one or more jobsjj that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
@@ -25,8 +25,6 @@ jobs:
         SURGE_LOGIN: ${{ secrets.surgeemail }}
         SURGE_TOKEN: ${{ secrets.surgetoken }}
       run: |
-        ls
-        cd ui
-        npm ci
+        cd ui && npm ci
         npm run deploy
         
