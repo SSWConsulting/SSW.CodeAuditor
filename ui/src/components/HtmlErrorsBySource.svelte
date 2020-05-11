@@ -1,5 +1,5 @@
 <script>
-  import { groupBy, props } from "ramda";
+  import { groupBy, props, slice } from "ramda";
   import { isInIgnored } from "../utils/utils.js";
   import { fade, fly } from "svelte/transition";
   import { ignoredUrls$ } from "../stores.js";
@@ -57,7 +57,7 @@
             </td>
             <td class="w-10/12 border px-4 py-2 break-all">
               <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-10">
-                {#each url.errors[key] as item}
+                {#each slice(0, 49, url.errors[key]) as item}
                   <div
                     class="text-xs mr-2 my-1 uppercase tracking-wider border
                     px-2 text-indigo-600 border-indigo-600 hover:bg-indigo-600
@@ -66,6 +66,12 @@
                   </div>
                 {/each}
               </div>
+              {#if url.errors[key].length > 50}
+                <div
+                  class="text-xs mr-2 my-1 tracking-wider px-2 text-indigo-600 cursor-default">
+                  {url.errors[key].length - 50} more..
+                </div>
+              {/if}
             </td>
           </tr>
         {/each}

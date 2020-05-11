@@ -9,6 +9,7 @@
   import { createEventDispatcher } from "svelte";
 
   export let build = {};
+  export let mode = 'url';
 
   const dispatch = createEventDispatcher();
   const download = () => dispatch("download");

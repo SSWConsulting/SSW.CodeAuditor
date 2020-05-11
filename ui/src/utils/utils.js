@@ -1,4 +1,15 @@
-import { pipe, converge, zipWith, map, join, keys, values } from 'ramda';
+import {
+	pipe,
+	converge,
+	zipWith,
+	map,
+	join,
+	keys,
+	values,
+	groupBy,
+	flatten,
+	prop,
+} from 'ramda';
 
 export function isValidEmail(value) {
 	if (!value) return true;
@@ -108,4 +119,30 @@ export const getHtmlIssuesDescriptions = pipe(
 	),
 	map((x) => `"${x.error}" : ${x.count}`),
 	join(', ')
+);
+
+export const getHtmlErrorsByReason = pipe(
+	map((x) => {
+		return Object.keys(x.errors).reduce((pre, curr) => {
+			pre = [
+				...pre,
+				{
+					error: curr,
+					url: x.url,
+					locations: x.errors[curr],
+				},
+			];
+			return pre;
+		}, []);
+	}),
+	map(values),
+	flatten,
+	groupBy(prop('error')),
+	converge(
+		zipWith((k, v) => ({
+			error: k,
+			pages: v,
+		})),
+		[keys, values]
+	)
 );

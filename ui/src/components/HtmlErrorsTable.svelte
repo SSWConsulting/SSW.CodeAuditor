@@ -5,25 +5,25 @@
   import Icon from "./Icon.svelte";
   import ParsedQuery from "query-string";
   import HtmlErrorsBySource from "./HtmlErrorsBySource.svelte";
+  import HtmlErrorsByReason from "./HtmlErrorsByReason.svelte";
   import DetailsByReason from "./DetailsByReason.svelte";
   import { onMount } from "svelte";
 
   export let errors = [];
   export let currentRoute;
 
-  const options = [HtmlErrorsBySource, DetailsByDest, DetailsByReason];
-  let selected = options[0];
   let displayMode = 0;
 
   const changeMode = m => {
     displayMode = m;
-    selected = options[m];
     updateQuery(ParsedQuery.stringify({ displayMode }));
   };
 
   onMount(() => {
     if (currentRoute && currentRoute.queryParams.displayMode) {
-      changeMode(+currentRoute.queryParams.displayMode);
+      setTimeout(() => {
+        changeMode(+currentRoute.queryParams.displayMode);
+      }, 0);
     }
   });
 </script>
@@ -75,5 +75,9 @@
 
   </div>
 
-  <svelte:component this={selected} {errors} on:ignore />
+  {#if displayMode === 0}
+    <HtmlErrorsBySource {errors} />
+  {:else}
+    <HtmlErrorsByReason {errors} />
+  {/if}
 {/if}

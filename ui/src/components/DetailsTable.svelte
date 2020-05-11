@@ -11,13 +11,10 @@
   export let builds = [];
   export let currentRoute;
 
-  const options = [DetailsBySource, DetailsByDest, DetailsByReason];
-  let selected = options[0];
   let displayMode = 0;
 
   const changeMode = m => {
     displayMode = m;
-    selected = options[m];
     updateQuery(ParsedQuery.stringify({ displayMode }));
   };
 
@@ -83,5 +80,11 @@
 
   </div>
 
-  <svelte:component this={selected} {builds} on:ignore />
+  {#if displayMode === 0}
+    <DetailsBySource {builds} on:ignore />
+  {:else if displayMode === 1}
+    <DetailsByDest {builds} on:ignore />
+  {:else}
+    <DetailsByReason {builds} on:ignore />
+  {/if}
 {/if}
