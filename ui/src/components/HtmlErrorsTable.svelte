@@ -31,7 +31,6 @@
 <style>
   .active {
     background: white;
-    border-radius: 9999px;
     color: #63b3ed;
   }
 </style>

@@ -11,11 +11,11 @@
 {#if perf.performanceScore}
   <!-- content here -->
   <div>
-    <div class="grid grid-cols-2 gap-1 row-gap-2 md:grid-cols-3">
+    <div class="grid grid-cols-2 gap-1 row-gap-2 xl:grid-cols-3">
       <div class="text-center whitespace-no-wrap">
         <span class="font-mono">AVG</span>
         <span
-          class="font-bold block md:inline-block"
+          class="font-bold block lg:inline-block"
           title="Average"
           class:text-red-400={perf.average < 50}
           class:text-orange-400={perf.average >= 50 && perf.average <= 80}
@@ -27,7 +27,7 @@
         <span class="font-mono">PERF</span>
         <span
           title="Performance"
-          class="font-bold"
+          class="font-bold block lg:inline-block"
           class:text-red-400={perf.performanceScore < 50}
           class:text-orange-400={perf.performanceScore >= 50 && perf.performanceScore <= 80}
           class:text-green-400={perf.performanceScore > 80}>
@@ -45,7 +45,7 @@
           </Icon>
         {/if}
         <span
-          class="font-bold"
+          class="font-bold block lg:inline-block"
           title="Accessibility"
           class:text-red-400={perf.accessibilityScore < 50}
           class:text-orange-400={perf.accessibilityScore >= 50 && perf.accessibilityScore <= 80}
@@ -58,7 +58,7 @@
         <span class="font-mono">SEO</span>
         <span
           title="SEO"
-          class="font-bold "
+          class="font-bold block lg:inline-block"
           class:text-red-400={perf.seoScore < 50}
           class:text-orange-400={perf.seoScore >= 50 && perf.seoScore <= 80}
           class:text-green-400={perf.seoScore > 80}>
@@ -68,7 +68,7 @@
       <div class="text-center">
         <span class="font-mono">PWA</span>
         <span
-          class="font-bold "
+          class="font-bold block lg:inline-block"
           title="PWA"
           class:text-red-400={perf.pwaScore < 50}
           class:text-orange-400={perf.pwaScore >= 50 && perf.pwaScore <= 80}
@@ -88,7 +88,7 @@
           </Icon>
         {/if}
         <span
-          class="font-bold "
+          class="font-bold block lg:inline-block"
           title="Best Practice"
           class:text-red-400={perf.bestPracticesScore < 50}
           class:text-orange-400={perf.bestPracticesScore >= 50 && perf.bestPracticesScore <= 80}
