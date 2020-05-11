@@ -26,6 +26,6 @@ jobs:
         SURGE_TOKEN: ${{ secrets.surgetoken }}
       run: |
         cd ui
-        npm ci
+        npm install
         npm run deploy
         
