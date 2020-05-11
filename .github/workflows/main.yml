@@ -25,6 +25,7 @@ jobs:
         SURGE_LOGIN: ${{ secrets.surgeemail }}
         SURGE_TOKEN: ${{ secrets.surgetoken }}
       run: |
+        ls
         cd ui
         npm ci
         npm run deploy
