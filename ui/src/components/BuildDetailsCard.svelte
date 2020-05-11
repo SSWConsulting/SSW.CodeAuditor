@@ -9,12 +9,11 @@
   import { createEventDispatcher } from "svelte";
 
   export let build = {};
-  export let mode = 'url';
+  export let mode = "url";
 
   const dispatch = createEventDispatcher();
   const download = () => dispatch("download");
   const perfThreshold = () => dispatch("perfThreshold");
-  
 </script>
 
 <div
@@ -22,43 +21,58 @@
   overflow-hidden rounded-lg shadow-sm mx-auto">
   <div class="m-8">
     <a href={build.url} target="_blank">
-      <h1 class="text-3xl text-center font-semibold py-4">{build.url}</h1>
+      <h1 class="text-3xl text-center font-semibold">{build.url}</h1>
     </a>
     {#if build.buildDate}
       {#if build.totalBrokenLinks > 0}
         <p class="text-sm text-gray-600 text-center py-6">
-          <button
-            on:click={download}
-            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2
-            px-4 rounded inline-flex items-center">
-            <Icon cssClass="">
-              <path
-                d="M8 16a5 5 0 01-.916-9.916 5.002 5.002 0 019.832 0A5.002 5.002
-                0 0116 16m-7 3l3 3m0 0l3-3m-3 3V10" />
-            </Icon>
-            <span class="ml-2">Download CSV</span>
-          </button>
+          {#if mode === 'url'}
+            <button
+              on:click={download}
+              class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2
+              px-4 rounded inline-flex items-center">
+              <Icon cssClass="">
+                <path
+                  d="M8 16a5 5 0 01-.916-9.916 5.002 5.002 0 019.832 0A5.002
+                  5.002 0 0116 16m-7 3l3 3m0 0l3-3m-3 3V10" />
+              </Icon>
+              <span class="ml-2">Download CSV</span>
+            </button>
+
+            {#if build.htmlIssuesList}
+              <button
+                on:click={() => navigateTo('/htmlhint/' + build.runId)}
+                class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold
+                py-2 px-4 rounded inline-flex items-center ml-2">
+                <Icon cssClass="text-red-500">
+                  <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </Icon>
+                <span class="ml-2">
+                  View {build.htmlErrors || 0} Errors, {build.htmlWarnings || 0}
+                  Warnings
+                </span>
+              </button>
+            {/if}
+          {:else}
+            <button
+              on:click={() => navigateTo('/build/' + build.runId)}
+              class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2
+              px-4 rounded inline-flex items-center">
+              <Icon cssClass="text-red-500">
+                <path
+                  d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656
+                  5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0
+                  00-5.656-5.656l-1.1 1.1" />
+              </Icon>
+              <span class="ml-2">View {build.uniqueBrokenLinks} Broken Links</span>
+            </button>
+          {/if}
+
         </p>
       {/if}
 
-      {#if build.htmlIssuesList}
-        <p class="text-sm text-gray-600 text-center py-6">
-          <button
-            on:click={() => navigateTo('/htmlhint/' + build.runId)}
-            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2
-            px-4 rounded inline-flex items-center">
-            <Icon cssClass="text-red-500">
-              <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </Icon>
-            <span class="ml-2">
-              View {build.htmlErrors || 0} Errors, {build.htmlWarnings || 0}
-              Warnings
-            </span>
-          </button>
-        </p>
-      {/if}
       {#if build.performanceScore}
-        <div class="mx-auto px-12 pb-8">
+        <div class="mx-auto px-12">
           <LighthouseSummary value={build} showLabel={true} />
           <div class="text-center pt-4">
             <button
@@ -127,12 +141,14 @@
       hover:text-indigo-100 cursor-default">
       Unique Bad: {build.uniqueBrokenLinks}
     </div>
-    <div
-      class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
-      text-indigo-600 border-indigo-600 hover:bg-indigo-600
-      hover:text-indigo-100 cursor-default">
-      Whitelisted: {build.whiteListed.length}
-    </div>
+    {#if build.whiteListed}
+      <div
+        class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
+        text-indigo-600 border-indigo-600 hover:bg-indigo-600
+        hover:text-indigo-100 cursor-default">
+        Whitelisted: {build.whiteListed.length}
+      </div>
+    {/if}
 
   </div>
 </div>

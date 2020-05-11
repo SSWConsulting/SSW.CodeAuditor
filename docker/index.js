@@ -52,7 +52,7 @@ const _getAgrs = () => {
 		.option('htmlhint', {
 			describe: 'Run html audit using htmlhint',
 			type: 'boolean',
-			default: false,
+			default: true,
 		})
 		.option('whitelist', {
 			describe: 'List of URL glob pattern to Ignore in CSV format',

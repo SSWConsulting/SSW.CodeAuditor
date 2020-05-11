@@ -23,12 +23,14 @@
 
   let runId = currentRoute.namedParams.id;
   let promise = getHtmlHints(runId);
-
   async function getHtmlHints(id) {
     const d = await fetch(
       `https://urlchecker.blob.core.windows.net/htmlhint/${id}.json`
     );
-    return await d.json();
+    let htmlHint = await d.json();
+    let summary = await getBuildDetails(id);
+
+    return { htmlHint, summary: summary.summary };
   }
 
   let userNotLoginToast;
@@ -80,13 +82,14 @@
       </Icon>
       <span
         class="inline-block align-baseline text-blue hover:text-blue-darker">
-        Html Issues
+        HtmlHint
       </span>
     </p>
     {#await promise}
       <LoadingFlat />
     {:then data}
-      <HtmlErrorsTable errors={data} {currentRoute} />
+      <BuildDetailsCard build={data ? data.summary : {}} mode="htmlhint" />
+      <HtmlErrorsTable errors={data.htmlHint} {currentRoute} />
     {:catch error}
       <p class="text-red-600 mx-auto text-2xl py-8">{error.message}</p>
     {/await}

@@ -116,6 +116,13 @@
         class="inline-block align-baseline text-blue hover:text-blue-darker">
         {currentRoute.namedParams.id}
       </span>
+      <Icon cssClass="inline-block" height="20" width="20">
+        <path d="M9 5l7 7-7 7" />
+      </Icon>
+      <span
+        class="inline-block align-baseline text-blue hover:text-blue-darker">
+        Broken Links
+      </span>
     </p>
     {#await promise}
       <LoadingFlat />

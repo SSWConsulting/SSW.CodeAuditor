@@ -8,20 +8,11 @@
 
   export let errors = [];
 
-  let reasons;
-  $: {
-    reasons = getHtmlErrorsByReason(errors);
-    console.log(reasons);
-  }
+  $: reasons = getHtmlErrorsByReason(errors);
 
   let hiddenRows = {};
-  const hideShow = key => {
-    if (key in hiddenRows) {
-      hiddenRows[key] = !hiddenRows[key];
-    } else {
-      hiddenRows[key] = true;
-    }
-  };
+  const hideShow = key =>
+    (hiddenRows[key] = key in hiddenRows ? !hiddenRows[key] : true);
 </script>
 
 {#each reasons as error}
@@ -30,18 +21,21 @@
       <Icon
         on:click={() => hideShow(error.error)}
         cssClass="inline-block cursor-pointer">
-        {#if hiddenRows[error.error]}
+        {#if !hiddenRows[error.error]}
           <path d="M19 9l-7 7-7-7" />
         {:else}
           <path d="M9 5l7 7-7 7" />
         {/if}
       </Icon>
     </span>
-    <span class="inline-block align-baseline text-blue-600 hover:text-blue-800">
+    <a
+      class="inline align-baseline text-blue-600 hover:text-blue-800"
+      target="_blank"
+      href={'https://github.com/htmlhint/HTMLHint/wiki/' + error.error}>
       {error.error}
-    </span>
+    </a>
   </div>
-  {#if hiddenRows[error.error]}
+  {#if !hiddenRows[error.error]}
     <table
       class="table-auto mb-8"
       in:fade={{ y: 100, duration: 400 }}
@@ -61,7 +55,7 @@
               {page.url}
             </td>
             <td class="w-10/12 border px-4 py-2 break-all">
-              <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-10">
+              <div class="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-6">
                 {#each slice(0, 49, page.locations) as item}
                   <div
                     class="text-xs mr-2 my-1 uppercase tracking-wider border

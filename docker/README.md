@@ -90,3 +90,7 @@ docker run \
 docker run --interactive --tty --rm  --env CODECLIMATE_CODE="$PWD" --volume "$PWD":/code --volume /var/run/docker.sock:/var/run/docker.sock   --volume /tmp/cc:/tmp/cc   codeclimate/codeclimate analyze
 docker run --interactive --tty --rm --env CODECLIMATE_CODE="C:/AnthonyNguyenData/source/personal/url-checker/ui/src" --volume "C:/AnthonyNguyenData/source/personal/url-checker/ui/src":/code --volume /var/run/docker.sock:/var/run/docker.sock   --volume /tmp/cc:/tmp/cc   codeclimate/codeclimate help
 docker run codeclimate/codeclimate help
+
+
+
+docker container run --rm --cap-add=SYS_ADMIN sswconsulting/sswlinkauditor --lighthouse --token bbf65654-23d5-4d87-8f68-34d68c30d2e4 --url https://azuregems.io

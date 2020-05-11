@@ -53,7 +53,14 @@
             <td
               class="whitespace-no-wrap break-all w-2/12 border px-4 py-2
               break-all">
-              {key}
+              <a
+                class="inline-block align-baseline text-blue-600
+                hover:text-blue-800"
+                target="_blank"
+                href={'https://github.com/htmlhint/HTMLHint/wiki/' + key}>
+                {key}
+              </a>
+
             </td>
             <td class="w-10/12 border px-4 py-2 break-all">
               <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-10">
@@ -68,7 +75,8 @@
               </div>
               {#if url.errors[key].length > 50}
                 <div
-                  class="text-xs mr-2 my-1 tracking-wider px-2 text-indigo-600 cursor-default">
+                  class="text-xs mr-2 my-1 tracking-wider px-2 text-indigo-600
+                  cursor-default">
                   {url.errors[key].length - 50} more..
                 </div>
               {/if}
