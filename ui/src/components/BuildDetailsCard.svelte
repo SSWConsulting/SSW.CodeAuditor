@@ -11,6 +11,7 @@
   export let build = {};
   export let mode = "url";
 
+  $: totalHtmlIssues = (build.htmlErrors || 0) + (build.htmlWarnings || 0);
   const dispatch = createEventDispatcher();
   const download = () => dispatch("download");
   const perfThreshold = () => dispatch("perfThreshold");
@@ -24,9 +25,9 @@
       <h1 class="text-3xl text-center font-semibold">{build.url}</h1>
     </a>
     {#if build.buildDate}
-      {#if build.totalBrokenLinks > 0}
-        <p class="text-sm text-gray-600 text-center py-3">
-          {#if mode === 'url'}
+      <p class="text-sm text-gray-600 text-center py-3">
+        {#if mode === 'url'}
+          {#if build.totalBrokenLinks > 0}
             <button
               on:click={download}
               class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2
@@ -38,48 +39,46 @@
               </Icon>
               <span class="ml-2">Download CSV</span>
             </button>
+          {/if}
 
-            {#if build.htmlIssuesList}
-              <button
-                on:click={() => navigateTo('/htmlhint/' + build.runId)}
-                class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold
-                py-2 px-4 rounded inline-flex items-center ml-2">
-                <Icon cssClass="text-red-500">
-                  <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </Icon>
-                <span class="ml-2">
-                  View {build.htmlErrors || 0 + build.htmlWarnings || 0} HTML Issues
-                </span>
-              </button>
-            {/if}
-          {:else}
+          {#if totalHtmlIssues > 0}
             <button
-              on:click={() => navigateTo('/build/' + build.runId)}
+              on:click={() => navigateTo('/htmlhint/' + build.runId)}
               class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2
-              px-4 rounded inline-flex items-center">
+              px-4 rounded inline-flex items-center ml-2">
               <Icon cssClass="text-red-500">
-                <path
-                  d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656
-                  5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0
-                  00-5.656-5.656l-1.1 1.1" />
+                <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </Icon>
-              <span class="ml-2">
-                View {build.uniqueBrokenLinks} Broken Links
-              </span>
+              <span class="ml-2">View {totalHtmlIssues} HTML Issues</span>
             </button>
           {/if}
+        {:else}
           <button
-            on:click={() => navigateTo('/lighthouse/' + build.runId)}
+            on:click={() => navigateTo('/build/' + build.runId)}
             class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2
-            px-4 rounded inline-flex items-center text-center">
-            <Icon cssClass="">
-              <path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-              <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+            px-4 rounded inline-flex items-center">
+            <Icon cssClass="text-red-500">
+              <path
+                d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656
+                5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0
+                00-5.656-5.656l-1.1 1.1" />
             </Icon>
-            <span class="ml-2">View Lighthouse Report</span>
+            <span class="ml-2">
+              View {build.uniqueBrokenLinks} Broken Links
+            </span>
           </button>
-        </p>
-      {/if}
+        {/if}
+        <button
+          on:click={() => navigateTo('/lighthouse/' + build.runId)}
+          class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4
+          rounded inline-flex items-center text-center">
+          <Icon cssClass="">
+            <path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+            <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+          </Icon>
+          <span class="ml-2">View Lighthouse Report</span>
+        </button>
+      </p>
 
       {#if build.performanceScore}
         <div class="mx-auto px-12">

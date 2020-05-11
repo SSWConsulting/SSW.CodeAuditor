@@ -6,6 +6,7 @@
   import LighthouseSummary from "./LighthouseSummary.svelte";
   export let build = {};
 
+  $: totalHtmlIssues = (build.htmlErrors || 0) + (build.htmlWarnings || 0);
   const download = id => {
     window.location.href = `https://urlchecker.blob.core.windows.net/lhr/${id}.json`;
   };
@@ -31,7 +32,7 @@
           <span class="ml-2">Download Lighthouse Report</span>
         </button>
 
-        {#if build.htmlIssuesList}
+        {#if totalHtmlIssues}
           <button
             on:click={() => navigateTo('/htmlhint/' + build.runId)}
             class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2
@@ -40,7 +41,7 @@
               <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </Icon>
             <span class="ml-2">
-              View {build.htmlErrors || 0 + build.htmlWarnings || 0} Html Issues
+              View {totalHtmlIssues} Html Issues
             </span>
           </button>
         {/if}
