@@ -105,59 +105,51 @@
     {#if build.buildDate}
       <div
         class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
-        text-green-600 border-green-600 hover:bg-green-600 hover:text-green-100
-        cursor-default">
+        text-green-600 border-green-600 cursor-default">
         {formatDistanceToNow(new Date(build.buildDate), { addSuffix: true })}
       </div>
     {/if}
     <div
       class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
-      text-green-600 border-green-600 hover:bg-green-600 hover:text-green-100
-      cursor-default">
+      text-green-600 border-green-600 cursor-default">
       Scanned: {build.totalScanned}
     </div>
     <div
       class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
-      text-indigo-600 border-indigo-600 hover:bg-indigo-600
-      hover:text-indigo-100 cursor-default">
+      text-indigo-600 border-indigo-600 cursor-default">
       Duration: {printTimeDiff(+build.scanDuration)}
     </div>
     <div
       class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
-      text-indigo-600 border-indigo-600 hover:bg-indigo-600
-      hover:text-indigo-100 cursor-default">
+      text-indigo-600 border-indigo-600 cursor-default">
       Broken: {build.totalBrokenLinks}
     </div>
     <div
       class="text-xs mr-2 my-1 uppercase tracking-wider border px-2 text-red-600
-      border-red-600 hover:bg-red-600 hover:text-red-100 cursor-default">
+      border-red-600 cursor-default">
       404 URL: {build.totalUnique404}
     </div>
     <div
       class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
-      text-indigo-600 border-indigo-600 hover:bg-indigo-600
-      hover:text-indigo-100 cursor-default">
+      text-indigo-600 border-indigo-600 cursor-default">
       Unique Bad: {build.uniqueBrokenLinks}
     </div>
     {#if build.whiteListed}
       <div
         class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
-        text-indigo-600 border-indigo-600 hover:bg-indigo-600
-        hover:text-indigo-100 cursor-default">
+        text-indigo-600 border-indigo-600 cursor-default">
         Whitelisted: {build.whiteListed.length}
       </div>
     {/if}
     {#if build.htmlIssuesList}
       <div
         class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
-        text-red-600 border-red-600 hover:bg-red-600 hover:text-red-100
-        cursor-default">
+        text-red-600 border-red-600 cursor-default">
         Html Errors: {build.htmlErrors || 0}
       </div>
       <div
         class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
-        text-orange-600 border-orange-600 hover:bg-orange-600
-        hover:text-orange-100 cursor-default">
+        text-orange-600 border-orange-600 cursor-default">
         Html Warnings: {build.htmlWarnings || 0}
       </div>
     {/if}
