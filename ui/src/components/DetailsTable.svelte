@@ -28,7 +28,6 @@
 <style>
   .active {
     background: white;
-    border-radius: 9999px;
     color: #63b3ed;
   }
 </style>
@@ -64,8 +63,7 @@
         on:click={() => changeMode(1)}
         class:active={displayMode === 1}
         class="inline-flex items-center transition-colors duration-300 ease-in
-        focus:outline-none hover:text-blue-400 focus:text-blue-400
-        rounded-r-full px-4 py-2">
+        focus:outline-none hover:text-blue-400 focus:text-blue-400 px-4 py-2">
         <span>By Destination</span>
       </button>
       <button
