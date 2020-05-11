@@ -40,8 +40,7 @@
               <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </Icon>
             <span class="ml-2">
-              View {build.htmlErrors || 0} Errors, {build.htmlWarnings || 0}
-              Warnings
+              View {build.htmlErrors || 0 + build.htmlWarnings || 0} Html Issues
             </span>
           </button>
         {/if}

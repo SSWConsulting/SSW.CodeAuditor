@@ -82,7 +82,7 @@
       </Icon>
       <span
         class="inline-block align-baseline text-blue hover:text-blue-darker">
-        HtmlHint
+        Html Issues
       </span>
     </p>
     {#await promise}

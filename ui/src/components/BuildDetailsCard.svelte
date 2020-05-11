@@ -25,7 +25,7 @@
     </a>
     {#if build.buildDate}
       {#if build.totalBrokenLinks > 0}
-        <p class="text-sm text-gray-600 text-center py-6">
+        <p class="text-sm text-gray-600 text-center py-3">
           {#if mode === 'url'}
             <button
               on:click={download}
@@ -48,8 +48,7 @@
                   <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </Icon>
                 <span class="ml-2">
-                  View {build.htmlErrors || 0} Errors, {build.htmlWarnings || 0}
-                  Warnings
+                  View {build.htmlErrors || 0 + build.htmlWarnings || 0} HTML Issues
                 </span>
               </button>
             {/if}
@@ -64,10 +63,21 @@
                   5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0
                   00-5.656-5.656l-1.1 1.1" />
               </Icon>
-              <span class="ml-2">View {build.uniqueBrokenLinks} Broken Links</span>
+              <span class="ml-2">
+                View {build.uniqueBrokenLinks} Broken Links
+              </span>
             </button>
           {/if}
-
+          <button
+            on:click={() => navigateTo('/lighthouse/' + build.runId)}
+            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2
+            px-4 rounded inline-flex items-center text-center">
+            <Icon cssClass="">
+              <path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+              <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+            </Icon>
+            <span class="ml-2">View Lighthouse Report</span>
+          </button>
         </p>
       {/if}
 
@@ -75,16 +85,6 @@
         <div class="mx-auto px-12">
           <LighthouseSummary value={build} showLabel={true} />
           <div class="text-center pt-4">
-            <button
-              on:click={() => navigateTo('/lighthouse/' + build.runId)}
-              class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2
-              px-4 rounded inline-flex items-center text-center">
-              <Icon cssClass="">
-                <path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-                <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-              </Icon>
-              <span class="ml-2">Lighthouse Report</span>
-            </button>
             <button
               on:click={perfThreshold}
               class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2
@@ -95,15 +95,14 @@
                   2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3
                   9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
               </Icon>
-              <span class="ml-2">Performance Threshold</span>
+              <span class="ml-2">Set Performance Threshold</span>
             </button>
           </div>
         </div>
       {/if}
     {/if}
   </div>
-  <div
-    class="mt-3 pt-1 flex flex-wrap mx-6 border-t justify-center items-center">
+  <div class="flex flex-wrap mx-6 border-t justify-center items-center">
     {#if build.buildDate}
       <div
         class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
@@ -147,6 +146,20 @@
         text-indigo-600 border-indigo-600 hover:bg-indigo-600
         hover:text-indigo-100 cursor-default">
         Whitelisted: {build.whiteListed.length}
+      </div>
+    {/if}
+    {#if build.htmlIssuesList}
+      <div
+        class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
+        text-red-600 border-red-600 hover:bg-red-600 hover:text-red-100
+        cursor-default">
+        Html Errors: {build.htmlErrors || 0}
+      </div>
+      <div
+        class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
+        text-orange-600 border-orange-600 hover:bg-orange-600
+        hover:text-orange-100 cursor-default">
+        Html Warnings: {build.htmlWarnings || 0}
       </div>
     {/if}
 

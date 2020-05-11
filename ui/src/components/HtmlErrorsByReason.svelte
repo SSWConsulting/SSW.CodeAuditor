@@ -55,12 +55,12 @@
               {page.url}
             </td>
             <td class="w-10/12 border px-4 py-2 break-all">
-              <div class="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-6">
+              <div class="flex flex-wrap">
                 {#each slice(0, 49, page.locations) as item}
                   <div
                     class="text-xs mr-2 my-1 uppercase tracking-wider border
                     px-2 text-indigo-600 border-indigo-600 hover:bg-indigo-600
-                    hover:text-indigo-100 cursor-default">
+                    hover:text-indigo-100 cursor-default whitespace-no-wrap">
                     {item}
                   </div>
                 {/each}
