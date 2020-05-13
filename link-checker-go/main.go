@@ -55,8 +55,8 @@ func test() {
 	}
 }
 
-func check(link Link, linkch chan LinkStatus) {
-	fmt.Println("checking...", link.url)
+func check(link Link, linkch chan LinkStatus, number int) {
+	fmt.Println("CHECK", number, ":", link.url)
 
 	client := &http.Client{}
 	r, e := http.NewRequest("HEAD", link.url, nil)
@@ -75,8 +75,8 @@ func check(link Link, linkch chan LinkStatus) {
 	}
 }
 
-func crawl(link Link, ch chan Link, linkch chan LinkStatus) {
-	fmt.Println("crawling...", link.url)
+func crawl(link Link, ch chan Link, linkch chan LinkStatus, number int) {
+	fmt.Println("CRAWL", number, ":", link.url)
 	resp, err := http.Get(link.url)
 
 	defer func() {
@@ -193,9 +193,9 @@ func main() {
 	chUrls := make(chan Link)
 	chAllUrls := make(chan LinkStatus)
 
+	max := 1
 	crawling := 1
-
-	go crawl(startUrl, chUrls, chAllUrls)
+	go crawl(startUrl, chUrls, chAllUrls, crawling)
 
 	for crawling >= 1 {
 		select {
@@ -216,22 +216,25 @@ func main() {
 			if !crawled {
 				allUrls[link.url] = LinkStatus{link.url, link.srcUrl, "", 0}
 				crawling++
-				fmt.Println("Crawler:", crawling)
+				if crawling > max {
+					max = crawling
+				}
 				if strings.Index(link.url, startUrl.url) == 0 && link.linkType == "a" && !isResourceFile(link.url) {
-					go crawl(link, chUrls, chAllUrls)
+					go crawl(link, chUrls, chAllUrls, crawling)
 				} else {
-					go check(link, chAllUrls)
+					go check(link, chAllUrls, crawling)
 				}
 			}
 
 		case status := <-chAllUrls:
 			crawling = crawling - 1
+			fmt.Println("DONE", crawling, status.url)
 			allUrls[status.url] = status
 		}
 	}
 
 	elapse := time.Since(start)
-	fmt.Printf("\n Took %v, Checked %v URLs\n", elapse, len(allUrls))
+	fmt.Printf("\n Took %v, Checked %v URLs, max goroutines %v\n", elapse, len(allUrls), max)
 
 	fmt.Printf("\n Broken links: \n")
 	for _, v := range allUrls {
