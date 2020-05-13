@@ -56,7 +56,7 @@ func test() {
 }
 
 func check(link Link, linkch chan LinkStatus, number int) {
-	fmt.Println("CHECK", number, ":", link.url)
+	fmt.Println("CHEC", number, link.url)
 
 	client := &http.Client{}
 	r, e := http.NewRequest("HEAD", link.url, nil)
@@ -76,7 +76,7 @@ func check(link Link, linkch chan LinkStatus, number int) {
 }
 
 func crawl(link Link, ch chan Link, linkch chan LinkStatus, number int) {
-	fmt.Println("CRAWL", number, ":", link.url)
+	fmt.Println("CRAW", number, link.url)
 	resp, err := http.Get(link.url)
 
 	defer func() {
