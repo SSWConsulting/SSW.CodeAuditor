@@ -6,6 +6,8 @@ import (
 	"net/http"
 	urlP "net/url"
 	"os"
+	"path"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -36,8 +38,45 @@ func getHref(t html.Token) (ok bool, href string) {
 	return
 }
 
-func crawl(link Link, ch chan Link, linkch chan LinkStatus, checkOnly bool) {
+func test() {
+	client := &http.Client{}
+	r, e := http.NewRequest("HEAD", "https://skype:adamcogan?call", nil)
+
+	if e != nil {
+		fmt.Println("error", e)
+		return
+	}
+	resp, error := client.Do(r)
+
+	if error != nil {
+		fmt.Println("error", error)
+	} else {
+		fmt.Println("ok", resp.Status)
+	}
+}
+
+func check(link Link, linkch chan LinkStatus) {
 	fmt.Println("checking...", link.url)
+
+	client := &http.Client{}
+	r, e := http.NewRequest("HEAD", link.url, nil)
+
+	if e != nil {
+		linkch <- LinkStatus{link.url, link.srcUrl, "Link Invalid", 0}
+		return
+	}
+
+	resp, error := client.Do(r)
+
+	if error != nil {
+		linkch <- LinkStatus{link.url, link.srcUrl, "Empty Response", 0}
+	} else {
+		linkch <- LinkStatus{link.url, link.srcUrl, resp.Status, resp.StatusCode}
+	}
+}
+
+func crawl(link Link, ch chan Link, linkch chan LinkStatus) {
+	fmt.Println("crawling...", link.url)
 	resp, err := http.Get(link.url)
 
 	defer func() {
@@ -48,7 +87,7 @@ func crawl(link Link, ch chan Link, linkch chan LinkStatus, checkOnly bool) {
 		}
 	}()
 
-	if err != nil || checkOnly {
+	if err != nil {
 		return
 	}
 
@@ -62,20 +101,17 @@ func crawl(link Link, ch chan Link, linkch chan LinkStatus, checkOnly bool) {
 		switch {
 		case tt == html.ErrorToken:
 			err := z.Err()
-			if err != io.EOF {
-				fmt.Println("Error parsing HTML", err)
+			if err == io.EOF {
+				return
 			}
+			fmt.Println("Error with tokenizer", err)
 			return
 
 		case tt == html.StartTagToken || tt == html.SelfClosingTagToken:
 			t := z.Token()
 
 			if t.Data == "a" || t.Data == "img" || t.Data == "link" {
-				ok, newUrl := getHref(t)
-				if !ok {
-					continue
-				}
-
+				_, newUrl := getHref(t)
 				ch <- Link{newUrl, link.url, t.Data}
 			}
 		}
@@ -83,12 +119,16 @@ func crawl(link Link, ch chan Link, linkch chan LinkStatus, checkOnly bool) {
 }
 
 func parseUrl(startUrl string, url string) string {
-	if strings.HasPrefix(url, "/") {
+	if !strings.HasPrefix(url, "http") {
+		// strip out the filename (e.g. .aspx  or .asp or .php)
+		r := regexp.MustCompile(`(?P<file>[^\/]*.[a-z]{2,})$`)
+		if len(r.FindStringSubmatch(startUrl)) > 0 {
+			fileName := r.FindStringSubmatch(startUrl)[0]
+			startUrl = strings.ReplaceAll(startUrl, fileName, "")
+		}
 		u, _ := urlP.Parse(startUrl)
-		url = "https://" + u.Hostname() + url
-	} else if strings.HasPrefix(url, "http") {
-	} else {
-		url = "https://" + url
+		u.Path = path.Join(u.Path, url)
+		url = u.String()
 	}
 	return url
 }
@@ -102,25 +142,25 @@ func main() {
 	chAllUrls := make(chan LinkStatus)
 
 	crawling := 1
-	go crawl(startUrl, chUrls, chAllUrls, false)
+	go crawl(startUrl, chUrls, chAllUrls)
 
 	for crawling >= 1 {
 		select {
 		case link := <-chUrls:
-			if strings.HasPrefix(link.url, "#") || link.url == "" {
+			if strings.HasPrefix(link.url, "skype:") || strings.HasPrefix(link.url, "javascript:") || strings.HasPrefix(link.url, "#") || link.url == "" {
 				continue
 			}
 
-			link.url = parseUrl(startUrl.url, link.url)
+			link.url = parseUrl(link.srcUrl, link.url)
 			_, crawled := allUrls[link.url]
 
 			if !crawled {
 				allUrls[link.url] = LinkStatus{link.url, link.srcUrl, "", 0}
 				crawling++
-				if strings.Index(link.url, startUrl.url) == 0 && link.linkType == "a" {
-					go crawl(link, chUrls, chAllUrls, false)
+				if strings.Index(link.url, startUrl.url) >= 0 && link.linkType == "a" {
+					go crawl(link, chUrls, chAllUrls)
 				} else {
-					go crawl(link, chUrls, chAllUrls, true)
+					go check(link, chAllUrls)
 				}
 			}
 
