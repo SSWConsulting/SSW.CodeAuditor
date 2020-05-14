@@ -20,12 +20,14 @@ type LinkStatus struct {
 	srcUrl     string
 	status     string
 	statusCode int
+	anchor     string
 }
 
 type Link struct {
 	url      string
 	srcUrl   string
 	linkType string
+	anchor   string
 }
 
 func getHref(t html.Token) (ok bool, href string) {
@@ -45,16 +47,16 @@ func check(link Link, linkch chan LinkStatus, number int) {
 	r, e := http.NewRequest("HEAD", link.url, nil)
 
 	if e != nil {
-		linkch <- LinkStatus{link.url, link.srcUrl, "Link Invalid", 0}
+		linkch <- LinkStatus{link.url, link.srcUrl, "Link Invalid", 0, link.anchor}
 		return
 	}
 
 	resp, error := client.Do(r)
 
 	if error != nil {
-		linkch <- LinkStatus{link.url, link.srcUrl, "Empty Response", 0}
+		linkch <- LinkStatus{link.url, link.srcUrl, "Empty Response", 0, link.anchor}
 	} else {
-		linkch <- LinkStatus{link.url, link.srcUrl, resp.Status, resp.StatusCode}
+		linkch <- LinkStatus{link.url, link.srcUrl, resp.Status, resp.StatusCode, link.anchor}
 	}
 }
 
@@ -65,9 +67,9 @@ func crawl(link Link, ch chan Link, linkch chan LinkStatus, number int) {
 	defer func() {
 		if err != nil {
 			fmt.Println("error:", err)
-			linkch <- LinkStatus{link.url, link.srcUrl, "Empty Response", 0}
+			linkch <- LinkStatus{link.url, link.srcUrl, "Empty Response", 0, link.anchor}
 		} else {
-			linkch <- LinkStatus{link.url, link.srcUrl, resp.Status, resp.StatusCode}
+			linkch <- LinkStatus{link.url, link.srcUrl, resp.Status, resp.StatusCode, link.anchor}
 		}
 	}()
 
@@ -80,10 +82,12 @@ func crawl(link Link, ch chan Link, linkch chan LinkStatus, number int) {
 
 	z := html.NewTokenizer(b)
 
+	depth := 0
+	var linkUrl string
 	for {
 		tt := z.Next()
-		switch {
-		case tt == html.ErrorToken:
+		switch tt {
+		case html.ErrorToken:
 			err := z.Err()
 			if err == io.EOF {
 				return
@@ -91,13 +95,31 @@ func crawl(link Link, ch chan Link, linkch chan LinkStatus, number int) {
 			fmt.Println("Error with tokenizer", err)
 			return
 
-		case tt == html.StartTagToken || tt == html.SelfClosingTagToken:
+		case html.TextToken:
+			if depth > 0 {
+				text := strings.TrimSpace(string(z.Text()))
+				// if text != "" {
+				// 	fmt.Println(text, "-", linkUrl)
+				// }
+				ch <- Link{linkUrl, link.url, "a", text}
+			}
+		case html.StartTagToken, html.SelfClosingTagToken, html.EndTagToken:
 			t := z.Token()
 
 			if t.Data == "a" || t.Data == "img" || t.Data == "link" {
 				_, newUrl := getHref(t)
-				ch <- Link{newUrl, link.url, t.Data}
+				if t.Data == "a" {
+					linkUrl = newUrl
+					if tt == html.StartTagToken {
+						depth++
+					} else if tt == html.EndTagToken {
+						depth--
+					}
+				} else {
+					ch <- Link{newUrl, link.url, t.Data, ""}
+				}
 			}
+
 		}
 	}
 }
@@ -173,25 +195,17 @@ func writeResultFile(allUrls map[string]LinkStatus) {
 		return
 	}
 
+	f.WriteString("Source,Destination,Status Code,Status,Anchor\n")
 	for _, v := range allUrls {
-		_, err := f.WriteString(v.srcUrl + "," + v.url + "," + v.status + "," + strconv.Itoa(v.statusCode) + "\n")
-		if err != nil {
-			fmt.Println("Can't write result file", err)
-			f.Close()
-			return
-		}
+		f.WriteString(v.srcUrl + "," + v.url + "," + v.status + "," + strconv.Itoa(v.statusCode) + ",\"" + v.anchor + "\"\n")
 	}
 
-	err = f.Close()
-	if err != nil {
-		fmt.Println("can't write file", err)
-		return
-	}
+	f.Close()
 }
 
 func main() {
 	allUrls := make(map[string]LinkStatus)
-	startUrl := Link{os.Args[1], "", "a"}
+	startUrl := Link{os.Args[1], "", "a", ""}
 	start := time.Now()
 
 	chUrls := make(chan Link)
@@ -216,7 +230,7 @@ func main() {
 			_, crawled := allUrls[link.url]
 
 			if !crawled {
-				allUrls[link.url] = LinkStatus{link.url, link.srcUrl, "", 0}
+				allUrls[link.url] = LinkStatus{link.url, link.srcUrl, "", 0, link.anchor}
 				crawling++
 				if crawling > max {
 					max = crawling

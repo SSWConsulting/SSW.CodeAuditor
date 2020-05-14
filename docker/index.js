@@ -88,7 +88,7 @@ const main = async () => {
 	_writeLog(`scan finished`, result);
 
 	if (options.lighthouse) {
-		_writeLog(`start lig hthouse`);
+		_writeLog(`start lighthouse`);
 		try {
 			execSync(`lhci collect --url="${options.url}" -n 1`);
 			_writeLog(`lighthouse check finished`);
@@ -100,14 +100,14 @@ const main = async () => {
 		_writeLog(`Error running command: ${error}`);
 		process.exit(1);
 	}
-	_processAndUpload(options, startTime, '/home/lhci/all_inlinks.csv');
+	_processAndUpload(options, startTime, 'all_inlinks.csv');
 };
 
 const _startScan = (options) => {
 	_writeLog(chalk.yellowBright(`Scanning ${chalk.green(options.url)}`));
 
 	try {
-		const comand = `screamingfrogseospider --crawl ${options.url} --headless --output-folder /home/lhci --overwrite --bulk-export "All Inlinks"`;
+		const comand = `sswlinkauditor ${options.url}`;
 		return [execSync(comand).toString(), null];
 	} catch (error) {
 		return [null, error.message];
