@@ -23,9 +23,6 @@ COPY package*.json ./
 RUN npm install
 RUN node -v
 COPY *.js ./
-RUN ls 
-RUN ls node_modules/.bin/
-
 
 ############################
 # Build smallest image from node
@@ -36,15 +33,9 @@ FROM node:12-alpine
 # install perl for cloc
 RUN apk update && apk add perl
 RUN mkdir usr/app
-RUN ls usr
+RUN mkdir usr/app/src
 
 WORKDIR /usr/app
-# # # Setup a user to avoid doing everything as root
-# # RUN groupadd --system la && \
-# #   useradd --system --create-home --gid la la && \
-# #   mkdir --parents /home/la/src && \
-# #   mkdir --parents /home/la/src/root && \
-# #   chown --recursive la:la /home/la
 
 # USER la
 # copy tools
@@ -53,7 +44,6 @@ COPY --from=builder /go/bin/sswlinkauditor /usr/app/sswlinkauditor
 
 # main nodejs app
 COPY --from=nodeBuilder /usr/src/app /usr/app
-RUN ls /usr/app
 
 
 # ENTRYPOINT ["./sswlinkauditor"]

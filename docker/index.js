@@ -71,7 +71,7 @@ const main = async () => {
 	const options = _getAgrs();
 	const startTime = new Date();
 
-	if (fs.readdirSync('/home/lhci/src/root').length > 0) {
+	if (fs.readdirSync('/usr/app/src').length > 0) {
 		const [result, error] = _countLineOfCodes();
 		if (error) {
 			_writeLog(`Error running command: ${error}`);
@@ -90,7 +90,7 @@ const main = async () => {
 	if (options.lighthouse) {
 		_writeLog(`start lighthouse`);
 		try {
-			execSync(`lhci collect --url="${options.url}" -n 1`);
+			execSync(`./node_modules/.bin/lhci collect --url="${options.url}" -n 1`);
 			_writeLog(`lighthouse check finished`);
 		} catch (e) {
 			_writeLog(`lighthouse check failed`, e);
@@ -100,14 +100,14 @@ const main = async () => {
 		_writeLog(`Error running command: ${error}`);
 		process.exit(1);
 	}
-	_processAndUpload(options, startTime, 'all_inlinks.csv');
+	_processAndUpload(options, startTime, './all_links.csv');
 };
 
 const _startScan = (options) => {
 	_writeLog(chalk.yellowBright(`Scanning ${chalk.green(options.url)}`));
 
 	try {
-		const comand = `sswlinkauditor ${options.url}`;
+		const comand = `./sswlinkauditor ${options.url}`;
 		return [execSync(comand).toString(), null];
 	} catch (error) {
 		return [null, error.message];
@@ -118,7 +118,7 @@ const _countLineOfCodes = () => {
 	_writeLog(chalk.yellowBright(`Counting lines of codes`));
 	try {
 		const json = execSync(
-			`cloc /home/lhci/src/root --fullpath --not-match-d node_modules --json`
+			`./node_modules/.bin/cloc /usr/app/src --fullpath --not-match-d node_modules --json`
 		).toString();
 		const d = JSON.parse(json);
 		return [d, null];
@@ -204,9 +204,7 @@ const _processAndUpload = async (args, startTime, file) => {
 		return allUrls
 			.filter(
 				(url) =>
-					(url['Status Code'] === '0' ||
-						url['Status Code'] === '404') &&
-					url.Status !== 'Blocked by robots.txt'
+					url['Status Code'] === '0' || url['Status Code'] === '404'
 			)
 			.map((x) => ({
 				src: x.Source,
@@ -449,7 +447,7 @@ const _processAndUpload = async (args, startTime, file) => {
 			}
 
 			_writeLog(`Reading Lighthouse report file`);
-			let lhFiles = fs.readdirSync('/home/lhci/src/.lighthouseci/');
+			let lhFiles = fs.readdirSync('/usr/app/.lighthouseci/');
 			if (lhFiles.filter((x) => x.endsWith('.json')).length > 0) {
 				const jsonReport = lhFiles
 					.filter((x) => x.endsWith('.json'))
@@ -461,9 +459,7 @@ const _processAndUpload = async (args, startTime, file) => {
 
 				lhr = JSON.parse(
 					fs
-						.readFileSync(
-							`/home/lhci/src/.lighthouseci/${jsonReport}`
-						)
+						.readFileSync(`/usr/app/.lighthouseci/${jsonReport}`)
 						.toString()
 				);
 

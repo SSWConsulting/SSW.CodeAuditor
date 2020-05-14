@@ -1,31 +1,33 @@
 # check for broken links
 
 -   build the image
-    `docker build -t sswconsulting/sswlinkauditor .`
+    docker build -t sswconsulting/sswlinkauditor .
 -   tag and push
-    `docker push sswconsulting/sswlinkauditor`
+    docker push sswconsulting/sswlinkauditor
 -   Get Usage
-    `docker run sswconsulting/sswlinkauditor --help`
+    docker run sswconsulting/sswlinkauditor --help
 -   run scan (output in CSV)
-    `docker run sswconsulting/sswlinkauditor --url https://www.ssw.com.au/people/`
-    `docker run -v "C:/AnthonyNguyenData/source/people.ssw.com.au/src:/home/lhci/src/root" sswconsulting/sswlinkauditor --url https://www.ssw.com.au/people/ --cloc`
-    `docker run sswconsulting/sswlinkauditor --url https://www.ssw.com.au/people/`
-    `docker run sswconsulting/sswlinkauditor --url https://sswcovid19alert.firebaseapp.com/`
-    `docker run sswconsulting/sswlinkauditor --url https://sswcovid19alert.firebaseapp.com/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4`
-    `docker run sswconsulting/sswlinkauditor --url https://sswpeoplestaging.firebaseapp.com/people/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4 --htmlhint`
-    `docker run sswconsulting/sswlinkauditor --url https://sswcovid19alert.firebaseapp.com/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4 --buildId 3333`
-    `node . --url https://sswcovid19alert.firebaseapp.com/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4 --buildId 3333`
-    `docker run sswconsulting/sswlinkauditor --url https://azuregems.io/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4 --buildId 3333`
-    `docker run sswconsulting/sswlinkauditor --url https://www.ssw.com.au/people/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4 --buildId 8833`
-    `docker run sswconsulting/sswlinkauditor --url https://azuregems.io/`
-    `docker run sswconsulting/sswlinkauditor --url https://sswpeoplestaging.firebaseapp.com/people/ --htmlhint false --debug`
-    `docker run sswconsulting/sswlinkauditor --url https://azuregems.io/ --htmlhint --debug` 
+    docker run sswconsulting/sswlinkauditor --url https://www.ssw.com.au/people/
+    docker run -v "C:/AnthonyNguyenData/source/people.ssw.com.au/src:/home/lhci/src/root" sswconsulting/sswlinkauditor --url https://www.ssw.com.au/people/ --cloc
+    docker run sswconsulting/sswlinkauditor --url https://www.ssw.com.au/people/
+    docker run sswconsulting/sswlinkauditor --url https://sswcovid19alert.firebaseapp.com/
+    docker run sswconsulting/sswlinkauditor --url https://sswcovid19alert.firebaseapp.com/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4
+    docker run sswconsulting/sswlinkauditor --url https://sswpeoplestaging.firebaseapp.com/people/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4 --htmlhint
+    docker run sswconsulting/sswlinkauditor --url https://sswcovid19alert.firebaseapp.com/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4 --buildId 3333
+    node . --url https://sswcovid19alert.firebaseapp.com/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4 --buildId 3333
+    docker run sswconsulting/sswlinkauditor --url https://azuregems.io/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4 --buildId 3333
+    docker run sswconsulting/sswlinkauditor --url https://www.ssw.com.au/people/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4 --buildId 8833
+    docker run sswconsulting/sswlinkauditor --url https://azuregems.io/
+    docker run sswconsulting/sswlinkauditor --url https://sswpeoplestaging.firebaseapp.com/people/ --htmlhint false --debug
+    docker run sswconsulting/sswlinkauditor --url https://azuregems.io/ --htmlhint --debug 
+    docker run sswconsulting/sswlinkauditorv2 --url https://azuregems.io/ --debug 
+    docker container run --rm --cap-add=SYS_ADMIN sswconsulting/sswlinkauditorv2 --url https://azuregems.io/ --lighthouse --debug
 -   run scan in debug mode
-    `docker run sswconsulting/sswlinkauditor --url https://www.ssw.com.au/people/ --debug`
+    docker run sswconsulting/sswlinkauditor --url https://www.ssw.com.au/people/ --debug
 -   run scan (output in JSON)
-    `docker run sswconsulting/sswlinkauditor --url https://www.ssw.com.au/people/ --format json`
+    docker run sswconsulting/sswlinkauditor --url https://www.ssw.com.au/people/ --format json
 -   run scan in debug mode
-    `docker run sswconsulting/sswlinkauditor --url https://www.ssw.com.au/people/ --debug`
+    docker run sswconsulting/sswlinkauditor --url https://www.ssw.com.au/people/ --debug
 
 docker container run --cap-add=SYS_ADMIN -v "C:/output:/home/lhci/reports/.lighthouseci" lighthousedocker lhci collect --url="https://google.com" -n 1
 docker run --cap-add=SYS_ADMIN -v "C:/output:/home/lhci/reports/.lighthouseci" lighthousedocker lhci collect --url="https://google.com" -n 1
