@@ -59,5 +59,4 @@ RUN ls /usr/app
 # ENTRYPOINT ["./sswlinkauditor"]
 # ENTRYPOINT ["./node_modules/.bin/lhci"]
 # ENTRYPOINT ["./node_modules/.bin/cloc"]
-# ENTRYPOINT ["./node_modules/.bin/htmlhint"]
 ENTRYPOINT ["node","."]
