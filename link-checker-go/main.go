@@ -38,23 +38,6 @@ func getHref(t html.Token) (ok bool, href string) {
 	return
 }
 
-func test() {
-	client := &http.Client{}
-	r, e := http.NewRequest("HEAD", "https://skype:adamcogan?call", nil)
-
-	if e != nil {
-		fmt.Println("error", e)
-		return
-	}
-	resp, error := client.Do(r)
-
-	if error != nil {
-		fmt.Println("error", error)
-	} else {
-		fmt.Println("ok", resp.Status)
-	}
-}
-
 func check(link Link, linkch chan LinkStatus, number int) {
 	fmt.Println("CHEC", number, link.url)
 
