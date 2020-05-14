@@ -18,6 +18,7 @@
     `docker run sswconsulting/sswlinkauditor --url https://azuregems.io/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4 --buildId 3333`
     `docker run sswconsulting/sswlinkauditor --url https://www.ssw.com.au/people/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4 --buildId 8833`
     `docker run sswconsulting/sswlinkauditor --url https://azuregems.io/`
+    `docker run sswconsulting/sswlinkauditor --url https://sswpeoplestaging.firebaseapp.com/people/ --htmlhint false --debug`
     `docker run sswconsulting/sswlinkauditor --url https://azuregems.io/ --htmlhint --debug` 
 -   run scan in debug mode
     `docker run sswconsulting/sswlinkauditor --url https://www.ssw.com.au/people/ --debug`
@@ -94,3 +95,7 @@ docker run codeclimate/codeclimate help
 
 
 docker container run --rm --cap-add=SYS_ADMIN sswconsulting/sswlinkauditor --lighthouse --token bbf65654-23d5-4d87-8f68-34d68c30d2e4 --url https://azuregems.io
+
+
+
+ScreamingFrogSEOSpiderCli.exe --crawl https://sswpeoplestaging.firebaseapp.com/people/ --headless --output-folder "C:\output" --overwrite --bulk-export "All Inlinks"

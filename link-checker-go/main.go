@@ -64,6 +64,7 @@ func crawl(link Link, ch chan Link, linkch chan LinkStatus, number int) {
 
 	defer func() {
 		if err != nil {
+			fmt.Println("error:", err)
 			linkch <- LinkStatus{link.url, link.srcUrl, "Empty Response", 0}
 		} else {
 			linkch <- LinkStatus{link.url, link.srcUrl, resp.Status, resp.StatusCode}
@@ -161,6 +162,33 @@ func isResourceFile(url string) bool {
 	return false
 }
 
+func writeResultFile(allUrls map[string]LinkStatus) {
+	if _, err := os.Stat("all_links.csv"); os.IsExist(err) {
+		os.Remove("all_links.csv")
+	}
+
+	f, err := os.Create("all_links.csv")
+	if err != nil {
+		fmt.Println("Can't create output file", err)
+		return
+	}
+
+	for _, v := range allUrls {
+		_, err := f.WriteString(v.srcUrl + "," + v.url + "," + v.status + "," + strconv.Itoa(v.statusCode) + "\n")
+		if err != nil {
+			fmt.Println("Can't write result file", err)
+			f.Close()
+			return
+		}
+	}
+
+	err = f.Close()
+	if err != nil {
+		fmt.Println("can't write file", err)
+		return
+	}
+}
+
 func main() {
 	allUrls := make(map[string]LinkStatus)
 	startUrl := Link{os.Args[1], "", "a"}
@@ -211,12 +239,16 @@ func main() {
 	fmt.Printf("\n Took %v, Checked %v URLs, max goroutines %v\n", elapse, len(allUrls), max)
 
 	fmt.Printf("\n Broken links: \n")
+
 	for _, v := range allUrls {
 		if v.statusCode < 200 || v.statusCode > 399 {
-			fmt.Printf("\n%v -> %v (%v)", v.srcUrl, v.url, strconv.Itoa(v.statusCode))
+			fmt.Printf("%v -> %v (%v)\n", v.srcUrl, v.url, strconv.Itoa(v.statusCode))
 		}
 	}
-	fmt.Println("")
+
+	writeResultFile(allUrls)
+
+	fmt.Println("wrote result to all_links.csv")
 
 	close(chUrls)
 }
