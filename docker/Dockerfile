@@ -1,69 +1,63 @@
-# nodejs app
-FROM node:12 AS builder
+############################
+# STEP 1 build executable binary
+############################
+FROM golang:alpine AS builder
+# Install git.
+# Git is required for fetching the dependencies.
+RUN apk update && apk add --no-cache git
+WORKDIR $GOPATH/src/mypackage/myapp/
+COPY *.go .
+# Fetch dependencies.
+# Using go get.
+RUN go get -d -v
+# Build the binary.
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /go/bin/sswlinkauditor
+
+
+############################
+# Build the nodejs app
+############################
+FROM node:12 AS nodeBuilder
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 RUN node -v
 COPY *.js ./
-
-# base image for screaming frog
-FROM softonic/screamingfrog:12.6
-
-# install node
-RUN apt-get update
-RUN apt-get -y install curl gnupg
-RUN curl -sL https://deb.nodesource.com/setup_12.x  | bash -
-RUN apt-get -y install nodejs
-RUN node -v
-
-COPY spider.config /root/.ScreamingFrogSEOSpider/spider.config
-COPY spa.seospiderconfig /usr/bin/spa.seospiderconfig
-COPY licence.txt /root/.ScreamingFrogSEOSpider/licence.txt
-
-RUN mkdir /home/crawls
-WORKDIR /usr/src/app
-
-# Install lighthouse
-# RUN apt-get update --fix-missing && apt-get -y upgrade
+RUN ls 
+RUN ls node_modules/.bin/
 
 
-# Install latest chrome stable package.
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-RUN apt-get update
-RUN apt-get install -y google-chrome-stable --no-install-recommends
+############################
+# Build smallest image from node
+############################
+# FROM astefanutti/scratch-node
+FROM node:12-alpine
 
-# Install Lighthouse CI
-RUN npm install -g @lhci/cli@0.3.13
-RUN npm install -g lighthouse
-RUN npm install -g cloc
-RUN npm install -g htmlhint
+# install perl for cloc
+RUN apk update && apk add perl
+RUN mkdir usr/app
+RUN ls usr
 
-# Install cloc
+WORKDIR /usr/app
+# # # Setup a user to avoid doing everything as root
+# # RUN groupadd --system la && \
+# #   useradd --system --create-home --gid la la && \
+# #   mkdir --parents /home/la/src && \
+# #   mkdir --parents /home/la/src/root && \
+# #   chown --recursive la:la /home/la
 
-# Setup a user to avoid doing everything as root
-RUN groupadd --system lhci && \
-  useradd --system --create-home --gid lhci lhci && \
-  mkdir --parents /home/lhci/src && \
-  mkdir --parents /home/lhci/src/root && \
-  chown --recursive lhci:lhci /home/lhci
+# USER la
+# copy tools
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=builder /go/bin/sswlinkauditor /usr/app/sswlinkauditor
 
-# give lhci user access to /root/.ScreamingFrogSEOSpider folder
+# main nodejs app
+COPY --from=nodeBuilder /usr/src/app /usr/app
+RUN ls /usr/app
 
-USER lhci
 
-WORKDIR /home/lhci/src
-COPY spider.config /home/lhci/.ScreamingFrogSEOSpider/spider.config
-COPY licence.txt /home/lhci/.ScreamingFrogSEOSpider/licence.txt
-COPY spa.seospiderconfig /home/lhci/spa.seospiderconfig
-
-# RUN ls /home/lhci/.ScreamingFrogSEOSpider
-
-COPY --from=builder /usr/src/app /home/lhci/src
-# RUN ls /home/lhci/src/node_modules
-
-ENTRYPOINT ["node","."]
-# ENTRYPOINT ["lhci"]
-# ENTRYPOINT ["/usr/bin/screamingfrogseospider","--output-folder", "/home/crawls", "--headless", "--bulk-export", "All Inlinks"]
-# ENTRYPOINT ["node",".","--url","https://ssw.com.au/people/","--token", "bbf65654-23d5-4d87-8f68-34d68c30d2e4","--buildId","azure","--debug"]
-# ENTRYPOINT ["lhci"]
+ENTRYPOINT ["./sswlinkauditor"]
+# ENTRYPOINT ["./node_modules/.bin/lhci"]
+# ENTRYPOINT ["./node_modules/.bin/cloc"]
+# ENTRYPOINT ["./node_modules/.bin/htmlhint"]
+# ENTRYPOINT ["node","."]

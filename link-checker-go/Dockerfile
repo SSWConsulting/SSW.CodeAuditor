@@ -11,7 +11,7 @@ COPY . .
 # Using go get.
 RUN go get -d -v
 # Build the binary.
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /go/bin/sswlinkauditor
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags "-s" -a -installsuffix cgo -o /go/bin/sswlinkauditor
 
 RUN ls /go/bin/
 ############################
