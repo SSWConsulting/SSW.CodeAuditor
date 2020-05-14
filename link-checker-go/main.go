@@ -113,29 +113,23 @@ func parseUrl(startUrl string, url string) string {
 	}
 
 	if strings.HasPrefix(url, "http") {
-		// already a fully formed url
 		return url
 	}
 
 	sUrl, _ := urlP.Parse(startUrl)
 
 	if strings.HasPrefix(url, "//") {
-		// fmt.Println(url, "1.becomes", "https:"+url)
 		return sUrl.Scheme + "://" + url
 	} else if strings.HasPrefix(url, "/") {
-		// start with / => this is related to the full path
 		u, _ := urlP.Parse(startUrl)
-		// fmt.Println(url, "2.becomes", protocol+u.Hostname()+url)
 		return sUrl.Scheme + "://" + u.Hostname() + url
 	} else {
 
 		UrlPath := sUrl.Path
-		// strip out the filename (e.g. .aspx  or .asp or .php)
+		// strip out the filename (e.g. .aspx  or .asp or .php) because .Join() method doesn't handle this correctly
 		r := regexp.MustCompile(`(?P<file>\/[^\/]+\.[a-z0-9]+/*)$`)
 
-		// check if the path is ASPX or PHP
 		if len(r.FindStringSubmatch(UrlPath)) > 0 {
-			// fmt.Println(startUrl, "path is a file (e.g. php/aspx)")
 			fileName := r.FindStringSubmatch(UrlPath)[0]
 			UrlPath = strings.ReplaceAll(UrlPath, fileName, "")
 		}
@@ -147,7 +141,6 @@ func parseUrl(startUrl string, url string) string {
 
 		u, _ := urlP.Parse(baseUrl)
 		u.Path = path.Join(u.Path, url)
-		// fmt.Println("base", startUrl, "dest", url, "new URL", u.String())
 		return u.String()
 	}
 }
@@ -191,10 +184,8 @@ func main() {
 				continue
 			}
 
-			// fmt.Println("original url is", link.url, "on", link.srcUrl)
 			link.url = parseUrl(link.srcUrl, link.url)
 			_, crawled := allUrls[link.url]
-			// fmt.Println("parsed url is", link.url)
 
 			if !crawled {
 				allUrls[link.url] = LinkStatus{link.url, link.srcUrl, "", 0}
