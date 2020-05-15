@@ -2,6 +2,7 @@
 
 -   build the image
     docker build -t sswconsulting/sswlinkauditor .
+    docker build -f DockerfileLighthouse -t sswconsulting/sswlinkauditorv2:lighthouse .
 -   tag and push
     docker push sswconsulting/sswlinkauditor
 -   Get Usage
@@ -22,6 +23,9 @@
     docker run sswconsulting/sswlinkauditor --url https://azuregems.io/ --htmlhint --debug 
     docker run sswconsulting/sswlinkauditorv2 --url https://azuregems.io/ --debug 
     docker container run --rm --cap-add=SYS_ADMIN sswconsulting/sswlinkauditorv2 --url https://azuregems.io/ --lighthouse --debug
+
+    docker container run --rm --cap-add=SYS_ADMIN sswconsulting/sswlinkauditorv2:lighthouse --url https://azuregems.io/ --lighthouse --debug
+    docker container run --rm --cap-add=SYS_ADMIN sswconsulting/sswlinkauditorv2:lighthouse --url https://azuregems.io/ --lighthouse --debug --token bbf65654-23d5-4d87-8f68-34d68c30d2e4
 -   run scan in debug mode
     docker run sswconsulting/sswlinkauditor --url https://www.ssw.com.au/people/ --debug
 -   run scan (output in JSON)

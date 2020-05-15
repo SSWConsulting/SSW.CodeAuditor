@@ -54,6 +54,11 @@ const _getAgrs = () => {
 			type: 'boolean',
 			default: true,
 		})
+		.option('linkcheck', {
+			describe: 'Check for broken links',
+			type: 'boolean',
+			default: true,
+		})
 		.option('whitelist', {
 			describe: 'List of URL glob pattern to Ignore in CSV format',
 			type: 'string',
@@ -71,10 +76,10 @@ const main = async () => {
 	const options = _getAgrs();
 	const startTime = new Date();
 
-	if (fs.readdirSync('/usr/app/src').length > 0) {
-		const [result, error] = _countLineOfCodes();
+	if (fs.readdirSync('./src').length > 0) {
+		const [result, error] = countLineOfCodes();
 		if (error) {
-			_writeLog(`Error running command: ${error}`);
+			writeLog(`Error running command: ${error}`);
 			process.exit(1);
 		}
 		_cloc = result;
@@ -84,27 +89,29 @@ const main = async () => {
 		);
 	}
 
-	const [result, error] = _startScan(options);
-	_writeLog(`scan finished`, result);
+	const [result, error] = startScan(options);
+	writeLog(`scan finished`, result);
 
 	if (options.lighthouse) {
-		_writeLog(`start lighthouse`);
+		writeLog(`start lighthouse`);
 		try {
-			execSync(`./node_modules/.bin/lhci collect --url="${options.url}" -n 1`);
-			_writeLog(`lighthouse check finished`);
+			const rs = execSync(
+				`./node_modules/.bin/lhci collect --url="${options.url}" -n 1`
+			).toString();
+			writeLog(`lighthouse check finished`, rs);
 		} catch (e) {
-			_writeLog(`lighthouse check failed`, e);
+			writeLog(`lighthouse check failed`, e);
 		}
 	}
 	if (error) {
-		_writeLog(`Error running command: ${error}`);
+		writeLog(`Error running command: ${error}`);
 		process.exit(1);
 	}
-	_processAndUpload(options, startTime, './all_links.csv');
+	processAndUpload(options, startTime, './all_links.csv');
 };
 
-const _startScan = (options) => {
-	_writeLog(chalk.yellowBright(`Scanning ${chalk.green(options.url)}`));
+const startScan = (options) => {
+	writeLog(chalk.yellowBright(`Scanning ${chalk.green(options.url)}`));
 
 	try {
 		const comand = `./sswlinkauditor ${options.url}`;
@@ -114,11 +121,11 @@ const _startScan = (options) => {
 	}
 };
 
-const _countLineOfCodes = () => {
-	_writeLog(chalk.yellowBright(`Counting lines of codes`));
+const countLineOfCodes = () => {
+	writeLog(chalk.yellowBright(`Counting lines of codes`));
 	try {
 		const json = execSync(
-			`./node_modules/.bin/cloc /usr/app/src --fullpath --not-match-d node_modules --json`
+			`./node_modules/.bin/cloc src --fullpath --not-match-d node_modules --json`
 		).toString();
 		const d = JSON.parse(json);
 		return [d, null];
@@ -127,8 +134,8 @@ const _countLineOfCodes = () => {
 	}
 };
 
-const _runHtmlHint = async (url) => {
-	_writeLog(chalk.yellowBright(`Running htmlhint on ${url}`));
+const runHtmlHint = async (url) => {
+	writeLog(chalk.yellowBright(`Running htmlhint on ${url}`));
 	const HTMLHint = require('htmlhint').default;
 
 	try {
@@ -199,7 +206,10 @@ const getHtmlHintDetails = (result) => {
 	return [getSummarizedErrors(result), getDetailsErrorsOnUrl(result)];
 };
 
-const _processAndUpload = async (args, startTime, file) => {
+const processAndUpload = async (args, startTime, file) => {
+	/**
+	 ************** CLOSURES ****************
+	 */
 	const __getBadResults = (allUrls) => {
 		return allUrls
 			.filter(
@@ -413,54 +423,21 @@ const _processAndUpload = async (args, startTime, file) => {
 		}
 	};
 
-	let ignoredUrls;
-	let perfThreshold;
-	let lhrSummary;
-	let lhr;
-	let runId;
-
-	const results = await readCsv(file);
-
-	const [took, sec] = printTimeDiff(new Date(), startTime);
-
-	_writeLog(`Took ${sec} seconds`);
-
-	// retrieve information about the token
-	if (args.token) {
-		_writeLog(`Retrieving config for token`, args.token);
-
-		try {
-			ignoredUrls = await getConfigs(args.token);
-			_writeLog(`Ignored URLs`, ignoredUrls);
-		} catch (error) {
-			console.error('failed to load settings');
-		}
-
+	const __readLighthouseReport = () => {
 		if (args.lighthouse) {
-			_writeLog(`getting perf threshold for `, args.url);
-			try {
-				perfThreshold = await getPerfThreshold(args.token, args.url);
-				perfThreshold &&
-					_writeLog(`Performance Threshold`, perfThreshold);
-			} catch (error) {
-				console.error('failed to load perfthreshold');
-			}
-
-			_writeLog(`Reading Lighthouse report file`);
-			let lhFiles = fs.readdirSync('/usr/app/.lighthouseci/');
+			writeLog(`Reading Lighthouse report files`);
+			let lhFiles = fs.readdirSync('./.lighthouseci/');
 			if (lhFiles.filter((x) => x.endsWith('.json')).length > 0) {
 				const jsonReport = lhFiles
 					.filter((x) => x.endsWith('.json'))
 					.splice(-1)[0];
 
-				_writeLog(
+				writeLog(
 					`Include Lighthouse report in the payload as well: ${jsonReport}`
 				);
 
 				lhr = JSON.parse(
-					fs
-						.readFileSync(`/usr/app/.lighthouseci/${jsonReport}`)
-						.toString()
+					fs.readFileSync(`./.lighthouseci/${jsonReport}`).toString()
 				);
 
 				lhrSummary = {
@@ -471,57 +448,105 @@ const _processAndUpload = async (args, startTime, file) => {
 					pwaScore: lhr.categories.pwa.score,
 				};
 			}
-			_writeLog(`Lighthouse reports output`, lhFiles);
+			writeLog(`Lighthouse reports output`, lhFiles);
 		}
-	}
+	};
 
-	const allBadUrls = __getBadResults(results);
-	let whiteListed = [];
-	if (ignoredUrls && ignoredUrls.length > 0) {
-		_writeLog('There are whitelisted URLs configured in online');
-		whiteListed = __getUniqIgnoredUrls(allBadUrls, ignoredUrls);
-	}
-
-	if (args.whitelist) {
-		_writeLog('Got the whitelist from command ARGs');
-		// .filter((ignorePattern) => minimatch(url, ignorePattern))
-		const whitelistList = args.whitelist.split(',');
-		const inWhiteListFromArgs = (url) =>
-			whitelistList.filter((ignorePattern) =>
-				minimatch(url, ignorePattern)
-			).length > 0;
-
-		const whiteListedArgs = allBadUrls
-			.filter((u) => inWhiteListFromArgs(u.dst))
-			.map((x) => x.dst);
-
-		whiteListed = whiteListed.concat(whiteListedArgs);
-	}
-
-	let htmlIssuesSummary = null;
-	let htmlIssues = null;
-	if (args.htmlhint) {
-		// need to check for html hint
+	const __readHtmlHint = async () => {
 		const allgoodLinks = __getGoodUrls(results);
-		_writeLog(
+		writeLog(
 			`running htmlhint on ${allgoodLinks.length} URLs under the ${args.url}`
 		);
 
 		const result = await Promise.all(
-			allgoodLinks.map((x) => _runHtmlHint(x))
+			allgoodLinks.map((x) => runHtmlHint(x))
 		);
+
 		const [summary, details] = getHtmlHintDetails(result);
 		htmlIssuesSummary = summary;
 		htmlIssues = details;
-		_writeLog('summary of html issues found', htmlIssuesSummary);
-		_writeLog(
-			'details of html issues',
-			JSON.stringify(htmlIssues, null, 2)
-		);
+		writeLog('summary of html issues found', htmlIssuesSummary);
+		writeLog('details of html issues', JSON.stringify(htmlIssues, null, 2));
+	};
+
+	const __processBrokenLinks = () => {
+		allBadUrls = __getBadResults(results);
+		if (ignoredUrls && ignoredUrls.length > 0) {
+			writeLog('There are whitelisted URLs configured in online');
+			whiteListed = __getUniqIgnoredUrls(allBadUrls, ignoredUrls);
+		}
+
+		if (args.whitelist) {
+			writeLog('Got the whitelist from command ARGs');
+			const whitelistList = args.whitelist.split(',');
+			const inWhiteListFromArgs = (url) =>
+				whitelistList.filter((ignorePattern) =>
+					minimatch(url, ignorePattern)
+				).length > 0;
+
+			const whiteListedArgs = allBadUrls
+				.filter((u) => inWhiteListFromArgs(u.dst))
+				.map((x) => x.dst);
+
+			whiteListed = whiteListed.concat(whiteListedArgs);
+		}
+	};
+	/**
+	 ************** END CLOSURES ****************
+	 */
+
+	let ignoredUrls;
+	let perfThreshold;
+	let lhrSummary;
+	let lhr;
+	let runId;
+	let htmlIssuesSummary = null;
+	let htmlIssues = null;
+	let whiteListed = [];
+	let allBadUrls = [];
+	let badUrls = [];
+
+	const results = await readCsv(file);
+
+	const [took, sec] = printTimeDiff(new Date(), startTime);
+
+	writeLog(`Took ${sec} seconds`);
+
+	if (args.lighthouse) {
+		__readLighthouseReport();
 	}
 
-	_writeLog('Url found in WhiteList are', whiteListed);
-	const badUrls = allBadUrls.filter((x) => whiteListed.indexOf(x.dst) < 0);
+	if (args.htmlhint) {
+		await __readHtmlHint();
+	}
+
+	if (args.token) {
+		writeLog(`Retrieving config for token`, args.token);
+
+		try {
+			ignoredUrls = await getConfigs(args.token);
+			writeLog(`Ignored URLs`, ignoredUrls);
+		} catch (error) {
+			console.error('failed to load settings');
+		}
+
+		if (args.lighthouse) {
+			writeLog(`getting perf threshold for `, args.url);
+			try {
+				perfThreshold = await getPerfThreshold(args.token, args.url);
+				perfThreshold &&
+					writeLog(`Performance Threshold`, perfThreshold);
+			} catch (error) {
+				console.error('failed to load perfthreshold');
+			}
+		}
+	}
+
+	if (args.linkcheck) {
+		__processBrokenLinks();
+		writeLog('Url found in WhiteList are', whiteListed);
+		badUrls = allBadUrls.filter((x) => whiteListed.indexOf(x.dst) < 0);
+	}
 
 	if (args.token) {
 		try {
@@ -542,6 +567,7 @@ const _processAndUpload = async (args, startTime, file) => {
 			);
 		}
 	}
+
 	__printResultsToConsole(
 		lhrSummary,
 		runId,
@@ -553,6 +579,6 @@ const _processAndUpload = async (args, startTime, file) => {
 	);
 };
 
-const _writeLog = (...msg) => _args.debug && console.log(...msg);
+const writeLog = (...msg) => _args.debug && console.log(...msg);
 
 main();
