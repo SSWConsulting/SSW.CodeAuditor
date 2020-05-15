@@ -14,7 +14,7 @@ exports.consoleBox = (text, color) =>
 
 exports.getLinkToBuild = (runId) =>
 	runId
-		? `Report URL => https://sswlinkauditor.surge.sh/build/${_replaceQuote(runId)}`
+		? `Report URL => https://codeauditor.surge.sh/build/${_replaceQuote(runId)}`
 		: '';
 
 exports.printTimeDiff = (t1, t2) => {

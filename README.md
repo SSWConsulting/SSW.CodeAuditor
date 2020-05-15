@@ -5,10 +5,10 @@ $ npm i
 $ npm run dev
 ```
 
-# build docker image
+# build docker images
 ``` bash
 $ cd docker
-$ docker build -t sswlinkauditor .
+$ sh build.sh
 ```
 
 # run API

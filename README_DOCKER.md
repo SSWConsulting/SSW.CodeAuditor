@@ -1,4 +1,4 @@
-# Run SSW Auditor in your CI/CD pipeline
+# Run SSW CodeAuditor in your CI/CD pipeline
 
 Scan any website for broken links and HTML issues by running the following command:
 
@@ -18,7 +18,7 @@ Why **--cap-add=SYS_ADMIN** option? [Read here](https://github.com/GoogleChrome/
 
 ## Sign up at https://codeauditor.surge.sh/
 
-If you [**sign up**](https://codeauditor.surge.sh/signup), you will get a unique token which allow you to store last **100** scan results for **FREE** on [**https://codeauditor.surge.sh**](https://codeauditor.surge.sh/signup)
+If you [**sign up**](https://codeauditor.surge.sh/signup), you will get a unique token which allow you to store last **100** scan results online for **FREE**
 
 ```bash
 $ docker run sswconsulting/codeauditor --url <URL> --buildId <BUILDID> --token <TOKEN>
@@ -37,11 +37,11 @@ Run help for all command line options:
 $ docker run sswconsulting/codeauditor --help
 ```
 
-### Include Lighthouse without sswconsulting/codeauditor:lhci image
+### Include Lighthouse without using sswconsulting/codeauditor:lhci image
 You can also run `lighthouse` tool directly on your build server and publish the result to https://codeauditor.surge.sh/ (This way, you don't have to pull the larger `sswconsulting/codeauditor:lhci` image)
 
 ```bash
 $ npm install -g @lhci/cli
 $ lhci collect --url=<URL>
-$ docker container run --rm -v "$PWD/.lighthouseci:/usr/app/.lighthouseci" sswconsulting/sswlinkauditorv2 --url https://azuregems.io --lighthouse --token <TOKEN>
+$ docker container run --rm -v "$PWD/.lighthouseci:/usr/app/.lighthouseci" sswconsulting/codeauditor --url https://azuregems.io --lighthouse --token <TOKEN>
 ```

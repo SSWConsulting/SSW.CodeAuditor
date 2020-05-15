@@ -1,0 +1,2 @@
+docker push sswconsulting/codeauditor
+docker push sswconsulting/codeauditor:lhci
