@@ -27,7 +27,6 @@ COPY *.js ./
 ############################
 # Build smallest image from node
 ############################
-# FROM astefanutti/scratch-node
 FROM node:12-alpine
 
 # install perl for cloc
@@ -36,10 +35,8 @@ RUN mkdir usr/app
 RUN mkdir usr/app/src
 
 WORKDIR /usr/app
-
 # USER la
-# copy tools
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+# copy go tools
 COPY --from=builder /go/bin/sswlinkauditor /usr/app/sswlinkauditor
 
 # main nodejs app

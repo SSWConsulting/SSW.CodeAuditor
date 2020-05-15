@@ -46,7 +46,7 @@ RUN groupadd --system lhci && \
   mkdir --parents /home/lhci/app/src && \
   chown --recursive lhci:lhci /home/lhci
 
-
+RUN ls /etc/apt/sources.list.d
 USER lhci
 
 WORKDIR /home/lhci/app

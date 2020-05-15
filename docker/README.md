@@ -2,9 +2,10 @@
 
 -   build the image
     docker build -t sswconsulting/sswlinkauditor .
-    docker build -f DockerfileLighthouse -t sswconsulting/sswlinkauditorv2:lighthouse .
+docker build -f DockerfileLighthouse -t sswconsulting/codeauditor:lhci .
 -   tag and push
-    docker push sswconsulting/sswlinkauditor
+    docker push sswconsulting/codeauditor
+    docker push sswconsulting/codeauditor:lhci
 -   Get Usage
     docker run sswconsulting/sswlinkauditor --help
 -   run scan (output in CSV)
@@ -26,6 +27,11 @@
 
     docker container run --rm --cap-add=SYS_ADMIN sswconsulting/sswlinkauditorv2:lighthouse --url https://azuregems.io/ --lighthouse --debug
     docker container run --rm --cap-add=SYS_ADMIN sswconsulting/sswlinkauditorv2:lighthouse --url https://azuregems.io/ --lighthouse --debug --token bbf65654-23d5-4d87-8f68-34d68c30d2e4
+    docker container run --rm --cap-add=SYS_ADMIN sswconsulting/sswlinkauditor --url https://azuregems.io/ --lighthouse --debug --token bbf65654-23d5-4d87-8f68-34d68c30d2e4
+
+    docker container run --rm -v "C:\AnthonyNguyenData\source\personal\url-checker\docker\.lighthouseci:/usr/app/.lighthouseci" sswconsulting/sswlinkauditorv2 --url https://azuregems.io --lighthouse --token bbf65654-23d5-4d87-8f68-34d68c30d2e4
+
+    docker container run --rm sswconsulting/sswlinkauditorv2 --url https://azuregems.io/ --debug --token bbf65654-23d5-4d87-8f68-34d68c30d2e4
 -   run scan in debug mode
     docker run sswconsulting/sswlinkauditor --url https://www.ssw.com.au/people/ --debug
 -   run scan (output in JSON)

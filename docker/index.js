@@ -92,7 +92,10 @@ const main = async () => {
 	const [result, error] = startScan(options);
 	writeLog(`scan finished`, result);
 
-	if (options.lighthouse) {
+	if (
+		options.lighthouse &&
+		fs.existsSync('/etc/apt/sources.list.d/google.list')
+	) {
 		writeLog(`start lighthouse`);
 		try {
 			const rs = execSync(
@@ -103,6 +106,7 @@ const main = async () => {
 			writeLog(`lighthouse check failed`, e);
 		}
 	}
+
 	if (error) {
 		writeLog(`Error running command: ${error}`);
 		process.exit(1);
@@ -424,32 +428,34 @@ const processAndUpload = async (args, startTime, file) => {
 	};
 
 	const __readLighthouseReport = () => {
-		if (args.lighthouse) {
-			writeLog(`Reading Lighthouse report files`);
-			let lhFiles = fs.readdirSync('./.lighthouseci/');
-			if (lhFiles.filter((x) => x.endsWith('.json')).length > 0) {
-				const jsonReport = lhFiles
-					.filter((x) => x.endsWith('.json'))
-					.splice(-1)[0];
-
-				writeLog(
-					`Include Lighthouse report in the payload as well: ${jsonReport}`
-				);
-
-				lhr = JSON.parse(
-					fs.readFileSync(`./.lighthouseci/${jsonReport}`).toString()
-				);
-
-				lhrSummary = {
-					performanceScore: lhr.categories.performance.score,
-					accessibilityScore: lhr.categories.accessibility.score,
-					bestPracticesScore: lhr.categories['best-practices'].score,
-					seoScore: lhr.categories.seo.score,
-					pwaScore: lhr.categories.pwa.score,
-				};
-			}
-			writeLog(`Lighthouse reports output`, lhFiles);
+		if (!fs.existsSync('./.lighthouseci/')) {
+			console.log('ERROR => No lighthouse report found. Run again with `-v "%.LIGHTHOUSECI%:/usr/app/.lighthouseci"` option')
+			return;
 		}
+		writeLog(`Reading Lighthouse report files`);
+		let lhFiles = fs.readdirSync('./.lighthouseci/');
+		if (lhFiles.filter((x) => x.endsWith('.json')).length > 0) {
+			const jsonReport = lhFiles
+				.filter((x) => x.endsWith('.json'))
+				.splice(-1)[0];
+
+			writeLog(
+				`Include Lighthouse report in the payload as well: ${jsonReport}`
+			);
+
+			lhr = JSON.parse(
+				fs.readFileSync(`./.lighthouseci/${jsonReport}`).toString()
+			);
+
+			lhrSummary = {
+				performanceScore: lhr.categories.performance.score,
+				accessibilityScore: lhr.categories.accessibility.score,
+				bestPracticesScore: lhr.categories['best-practices'].score,
+				seoScore: lhr.categories.seo.score,
+				pwaScore: lhr.categories.pwa.score,
+			};
+		}
+		writeLog(`Lighthouse reports output`, lhFiles);
 	};
 
 	const __readHtmlHint = async () => {
