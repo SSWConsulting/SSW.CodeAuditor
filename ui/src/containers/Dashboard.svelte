@@ -55,15 +55,15 @@
   });
 
   const instructions = `
-  ## SSW Auditor - Scan instructions
+  ## SSW Code Auditor - Scan instructions
   Scan any website for broken links by running the following command:
   \`\`\` bash
-  $ docker run sswconsulting/sswlinkauditor --token ${token} --url <URL> --buildId [BUILDID]
+  $ docker run sswconsulting/codeauditor --token ${token} --url <URL> --buildId [BUILDID]
   \`\`\`
   
   Include [Lighthouse](https://developers.google.com/web/tools/lighthouse) key performance score by running
   \`\`\` bash
-  $ docker container run --rm --cap-add=SYS_ADMIN sswconsulting/sswlinkauditor --lighthouse --token ${token} --url <URL>
+  $ docker container run --rm --cap-add=SYS_ADMIN sswconsulting/codeauditor --lighthouse --token ${token} --url <URL>
   \`\`\`
 
   Why **--cap-add=SYS_ADMIN** option? [Read here](https://github.com/GoogleChrome/lighthouse-ci/tree/master/docs/recipes/docker-client)
