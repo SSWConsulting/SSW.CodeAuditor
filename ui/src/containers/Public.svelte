@@ -11,7 +11,7 @@
 
   async function getReadMe() {
     const res = await fetch(
-      `https://raw.githubusercontent.com/nvhoanganh/urlchecker/master/README_DOCKER.md`
+      `/README.md`
     );
     instructions = await res.text();
   }
