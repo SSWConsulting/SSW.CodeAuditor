@@ -35,7 +35,7 @@ const _getAgrs = () => {
 		.option('token', {
 			alias: 't',
 			describe:
-				'Dashboard token (sign up at https://codeauditor.surge.sh/)',
+				'Dashboard token (sign up at https://sswauditor.surge.sh/)',
 			type: 'string',
 			demandOption: false,
 		})
