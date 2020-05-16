@@ -217,19 +217,25 @@ function getLinks(url: string, body: string): Link[] {
 function main() {
 	const start = new Date();
 	const { args } = Deno;
-	const { url } = parse(args);
-	startScan(url).then((res: any) => {
-		const links = res.links;
-		const took = new Date().getTime() - start.getTime();
-		console.log(`took ${took / 1000} seconds`);
-		console.log(`total scanned ${links.length}, max thread: ${res.max}`);
-		const broken = links.filter(
-			(x: LinkStatus) => +x.statusCode < 200 || +x.statusCode > 300
-		);
-		console.log(`total broken ${broken.length}`);
-		broken.forEach((l: LinkStatus) => {
-			console.log(`${l.srcUrl} -> ${l.url} -> ${l.statusCode}`);
+	const { url, port } = parse(args);
+	if (!url && port) {
+		startWebServer(+port);
+	} else if (url) {
+		startScan(url).then((res: any) => {
+			const links = res.links;
+			const took = new Date().getTime() - start.getTime();
+			console.log(`took ${took / 1000} seconds`);
+			console.log(
+				`total scanned ${links.length}, max thread: ${res.max}`
+			);
+			const broken = links.filter(
+				(x: LinkStatus) => +x.statusCode < 200 || +x.statusCode > 300
+			);
+			console.log(`total broken ${broken.length}`);
+			broken.forEach((l: LinkStatus) => {
+				console.log(`${l.srcUrl} -> ${l.url} -> ${l.statusCode}`);
+			});
 		});
-	});
+	}
 }
-main();
+main()
