@@ -3,37 +3,31 @@ import * as html from 'https://cdn.pika.dev/html5parser@^1.1.2';
 import { parse } from 'https://deno.land/std/flags/mod.ts';
 import urlJoin from 'https://cdn.pika.dev/proper-url-join@^2.1.1';
 import * as urlP from 'https://cdn.pika.dev/native-url@^0.2.6';
+import { Application } from 'https://deno.land/x/oak/mod.ts';
+import { Router } from 'https://deno.land/x/oak/mod.ts';
 
-interface Link {
-	linkType: string;
-	srcUrl: string;
-	url: string;
-	anchor: string;
+async function startWebServer(port) {
+	const app = new Application();
+	const router = new Router();
+
+	app.use(router.routes());
+	app.use(router.allowedMethods());
+	app.use(({ response }) => {
+		response.status = 404;
+		response.body = { status: 'Not Found' };
+	});
+
+	router.get('/', ({ response }) => {
+		response.body = 'Todo list rest api using deno runtime';
+	});
+
+	console.log(
+		`Server is running in ${port} \nOpen: http://localhost:${port}`
+	);
+	await app.listen({ port });
 }
 
-interface LinkStatus {
-	url: string;
-	srcUrl: string;
-	status: string;
-	statusCode: string;
-	anchor: string;
-}
-
-async function startWebServer(port: number) {
-	const s = serve({ port });
-	console.log('open => http://localhost:8000/');
-	for await (const req of s) {
-		if (req.url.indexOf('/scan?url=') >= 0) {
-			const url = req.url.split('=')[1];
-			const urls = await startScan(url);
-			req.respond({ body: JSON.stringify(urls) });
-		} else {
-			req.respond({ body: 'Invalid Request' });
-		}
-	}
-}
-
-function parseUrl(startUrl: string, url: string): string {
+function parseUrl(startUrl, url) {
 	url = url.trim();
 	if (url.indexOf('#') > 0) {
 		url = url.split('#')[0];
@@ -57,21 +51,19 @@ function parseUrl(startUrl: string, url: string): string {
 	return urlP.resolve(startUrl, url);
 }
 
-function isProtocolUrl(url: string) {
-	const regex = /^[a-z]+:[^\/\/]/g;
-	const found = url.match(regex);
+function isProtocolUrl(url) {
+	const found = url.match(/^[a-z]+:[^\/\/]/g);
 	return found && found.length > 0;
 }
 
-function isResourceFile(url: string) {
-	const regex = /.*\.(mht|jpg|png|css|js|ico|gif|svg|mp3|ttf)/g;
-	const found = url.match(regex);
+function isResourceFile(url) {
+	const found = url.match(/.*\.(mht|jpg|png|css|js|ico|gif|svg|mp3|ttf)/g);
 	return found && found.length > 0;
 }
 
-function startScan(url: string) {
-	let allUrls: any = {};
-	const startUrl: Link = {
+function startScan(url) {
+	let allUrls = {};
+	const startUrl = {
 		linkType: 'a',
 		url,
 		srcUrl: '',
@@ -82,7 +74,7 @@ function startScan(url: string) {
 	let max = 1;
 	let crawling = 1;
 
-	const newUrlFound = (link: Link) => {
+	const newUrlFound = (link) => {
 		if (!link.url) {
 			return;
 		}
@@ -115,7 +107,7 @@ function startScan(url: string) {
 		}
 	};
 
-	const newUrlChecked = (link: LinkStatus) => {
+	const newUrlChecked = (link) => {
 		console.log('DONE', crawling, link.url, link.statusCode, link.status);
 		crawling--;
 		allUrls[link.url] = link;
@@ -123,7 +115,7 @@ function startScan(url: string) {
 
 	crawl(startUrl, newUrlFound, newUrlChecked, crawling);
 
-	return new Promise((resolve, rejecte) => {
+	return new Promise((resolve) => {
 		const intv = setInterval(() => {
 			if (crawling < 1) {
 				clearInterval(intv);
@@ -134,7 +126,7 @@ function startScan(url: string) {
 	});
 }
 
-async function check(link: Link, linkStat: any, crawler: number) {
+async function check(link, linkStat, crawler) {
 	try {
 		console.log('CHECK', crawler, link.url);
 		const resp = await fetch(link.url, {
@@ -155,7 +147,7 @@ async function check(link: Link, linkStat: any, crawler: number) {
 		});
 	}
 }
-async function crawl(link: Link, newLink: any, linkStat: any, crawler: number) {
+async function crawl(link, newLink, linkStat, crawler) {
 	try {
 		console.log('CRAWL', crawler, link.url);
 		const resp = await fetch(link.url);
@@ -184,9 +176,9 @@ async function crawl(link: Link, newLink: any, linkStat: any, crawler: number) {
 	}
 }
 
-function getLinks(url: string, body: string): Link[] {
+function getLinks(url, body) {
 	const ast = html.parse(body);
-	let links: Link[] = [];
+	let links = [];
 	html.walk(ast, {
 		enter: (node) => {
 			if (
@@ -198,13 +190,12 @@ function getLinks(url: string, body: string): Link[] {
 				);
 
 				const text =
-					node.body &&
-					(node.body.find((x) => x.type === 'Text') as any);
+					node.body && node.body.find((x) => x.type === 'Text');
 
 				links.push({
 					linkType: node.name,
 					srcUrl: url,
-					url: href?.value?.value as string,
+					url: href?.value?.value,
 					anchor: (text?.value || '').trim(),
 				});
 			}
@@ -218,10 +209,11 @@ function main() {
 	const start = new Date();
 	const { args } = Deno;
 	const { url, port } = parse(args);
-	if (!url && port) {
-		startWebServer(+port);
+	if (!url) {
+		console.log(`starting web server..`);
+		startWebServer(8080);
 	} else if (url) {
-		startScan(url).then((res: any) => {
+		startScan(url).then((res) => {
 			const links = res.links;
 			const took = new Date().getTime() - start.getTime();
 			console.log(`took ${took / 1000} seconds`);
@@ -229,13 +221,14 @@ function main() {
 				`total scanned ${links.length}, max thread: ${res.max}`
 			);
 			const broken = links.filter(
-				(x: LinkStatus) => +x.statusCode < 200 || +x.statusCode > 300
+				(x) => +x.statusCode < 200 || +x.statusCode > 300
 			);
 			console.log(`total broken ${broken.length}`);
-			broken.forEach((l: LinkStatus) => {
+			broken.forEach((l) => {
 				console.log(`${l.srcUrl} -> ${l.url} -> ${l.statusCode}`);
 			});
 		});
 	}
 }
-main()
+
+main();

@@ -1,0 +1,7 @@
+CRAWL 1 https://ssw.com.au/people/
+DONE 1 https://ssw.com.au/people/ 0 error
+done
+took 21.203 seconds
+total scanned 1
+total broken 1
+ -> https://ssw.com.au/people/ -> 0
