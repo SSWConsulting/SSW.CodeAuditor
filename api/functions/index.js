@@ -2,6 +2,7 @@ const functions = require('firebase-functions');
 const express = require('express');
 const admin = require('firebase-admin');
 const R = require('ramda');
+const fetch = require('node-fetch');
 const Queue = require('better-queue');
 require('dotenv').config();
 
@@ -78,6 +79,12 @@ app.post('/config/:api/ignore', async (req, res) => {
 app.get('/scanresult/:api', async (req, res) =>
 	res.json(await getSummary(req.params.api))
 );
+
+app.get('/viewsource', async (req, res) => {
+	const resp = await fetch(req.query.url);
+	const source = await resp.text();
+	res.send(source);
+});
 
 app.get('/run/:runId', async (req, res) => {
 	const summary = await getSummaryById(req.params.runId);

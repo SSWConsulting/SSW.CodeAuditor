@@ -80,7 +80,7 @@
         </button>
       </p>
 
-      {#if build.performanceScore}
+      {#if build.performanceScore && mode === 'url'}
         <div class="mx-auto px-12">
           <LighthouseSummary value={build} showLabel={true} />
           <div class="text-center pt-4">

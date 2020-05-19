@@ -1,8 +1,10 @@
 <script>
   import { groupBy, props } from "ramda";
   import DetailsByDest from "./DetailsByDest.svelte";
-  import { updateQuery } from "../utils/utils.js";
+  import { updateQuery, CONSTS } from "../utils/utils.js";
   import Icon from "./Icon.svelte";
+  import Modal from "./Modal.svelte";
+  import LoadingFlat from "./LoadingFlat.svelte";
   import ParsedQuery from "query-string";
   import HtmlErrorsBySource from "./HtmlErrorsBySource.svelte";
   import HtmlErrorsByReason from "./HtmlErrorsByReason.svelte";
@@ -13,6 +15,37 @@
   export let currentRoute;
 
   let displayMode = 0;
+  let viewUrlSource = "";
+  let source;
+  let showSource;
+  let loading;
+  let codeViewer;
+
+  const dismiss = () => (showSource = false);
+  async function viewPageSource(event) {
+    console.log(event);
+    viewUrlSource = event.detail.url;
+    showSource = true;
+    loading = true;
+    const res = await fetch(
+      `${CONSTS.API}/api/viewsource?url=${encodeURIComponent(viewUrlSource)}`
+    );
+    source = await res.text();
+
+    setTimeout(() => {
+      const element = document.getElementById("codeEditor");
+      console.log("element", element);
+      codeViewer = window.CodeMirror(element, {
+        value: source,
+        mode: "htmlmixed",
+        lineNumbers: true,
+        foldGutter: true,
+        gutters: ["CodeMirror-linenumbers"]
+      });
+      codeViewer.setSize("100%", "100%");
+      loading = false;
+    }, 10);
+  }
 
   const changeMode = m => {
     displayMode = m;
@@ -32,6 +65,9 @@
   .active {
     background: white;
     color: #63b3ed;
+  }
+  #codeEditor {
+    height: 100%
   }
 </style>
 
@@ -75,8 +111,21 @@
   </div>
 
   {#if displayMode === 0}
-    <HtmlErrorsBySource {errors} />
+    <HtmlErrorsBySource {errors} on:viewSource={viewPageSource} />
   {:else}
-    <HtmlErrorsByReason {errors} />
+    <HtmlErrorsByReason {errors} on:viewSource={viewPageSource} />
   {/if}
 {/if}
+
+<Modal
+  bind:show={showSource}
+  header="View Source"
+  on:dismiss={dismiss}
+  full={true}>
+  {#if loading}
+    <LoadingFlat />
+  {/if}
+  <div class="ml-5">
+    <div id="codeEditor" class="border" />
+  </div>
+</Modal>

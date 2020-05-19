@@ -98,15 +98,12 @@ func crawl(link Link, ch chan Link, linkch chan LinkStatus, number int) {
 		case html.TextToken:
 			if depth > 0 {
 				text := strings.TrimSpace(string(z.Text()))
-				// if text != "" {
-				// 	fmt.Println(text, "-", linkUrl)
-				// }
 				ch <- Link{linkUrl, link.url, "a", text}
 			}
 		case html.StartTagToken, html.SelfClosingTagToken, html.EndTagToken:
 			t := z.Token()
 
-			if t.Data == "a" || t.Data == "img" || t.Data == "link" {
+			if t.Data == "a" || t.Data == "img" || t.Data == "link" || t.Data == "iframe" {
 				_, newUrl := getHref(t)
 				if t.Data == "a" {
 					linkUrl = newUrl

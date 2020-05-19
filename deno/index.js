@@ -17,8 +17,14 @@ async function startWebServer(port) {
 		response.body = { status: 'Not Found' };
 	});
 
-	router.get('/', ({ response }) => {
-		response.body = 'Todo list rest api using deno runtime';
+	router.get('/', async ({ response, request, params }) => {
+		if (request.url.search) {
+			const url = request.url.search.split('=')[1];
+			const result = await startScan(url);
+			response.body = JSON.stringify(result);
+		} else {
+			response.body = '/?url=<URL>';
+		}
 	});
 
 	console.log(
@@ -127,11 +133,13 @@ function startScan(url) {
 }
 
 async function check(link, linkStat, crawler) {
+	let statusCode;
 	try {
 		console.log('CHECK', crawler, link.url);
 		const resp = await fetch(link.url, {
 			method: 'HEAD',
 		});
+		statusCode = 
 		linkStat({
 			url: link.url,
 			srcUrl: link.srcUrl,
@@ -205,6 +213,19 @@ function getLinks(url, body) {
 	return links;
 }
 
+async function writeResultFile(allUrls) {
+	const csv =
+		'Source,Destination,Status,Status Code,Anchor\n' +
+		allUrls
+			.map(
+				(x) =>
+					`${x.srcUrl},${x.url},${x.status},${x.statusCode},"${x.anchor}"`
+			)
+			.join('\n');
+	const encoder = new TextEncoder();
+	await Deno.writeFile('./all_links.csv', encoder.encode(csv));
+}
+
 function main() {
 	const start = new Date();
 	const { args } = Deno;
@@ -213,7 +234,7 @@ function main() {
 		console.log(`starting web server..`);
 		startWebServer(8080);
 	} else if (url) {
-		startScan(url).then((res) => {
+		startScan(url).then(async (res) => {
 			const links = res.links;
 			const took = new Date().getTime() - start.getTime();
 			console.log(`took ${took / 1000} seconds`);
@@ -227,6 +248,8 @@ function main() {
 			broken.forEach((l) => {
 				console.log(`${l.srcUrl} -> ${l.url} -> ${l.statusCode}`);
 			});
+			console.log(`writing result file`);
+			await writeResultFile(links);
 		});
 	}
 }

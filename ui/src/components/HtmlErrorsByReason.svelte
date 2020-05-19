@@ -7,6 +7,12 @@
   import Icon from "./Icon.svelte";
 
   export let errors = [];
+  const dispatch = createEventDispatcher();
+  const viewSource = (url, location) =>
+    dispatch("viewSource", {
+      url,
+      location
+    });
 
   $: reasons = getHtmlErrorsByReason(errors);
 
@@ -61,7 +67,12 @@
                     class="text-xs mr-2 my-1 uppercase tracking-wider border
                     px-2 text-indigo-600 border-indigo-600 hover:bg-indigo-600
                     hover:text-indigo-100 cursor-default whitespace-no-wrap">
-                    {item}
+                    <a
+                      on:click={() => viewSource(page.url, item)}
+                      href="javascript:void(0)"
+                      title="View source">
+                      {item}
+                    </a>
                   </div>
                 {/each}
               </div>
