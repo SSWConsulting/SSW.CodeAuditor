@@ -116,7 +116,7 @@
         type="range"
         min="0"
         max="100" />
-      <div class="pt-6 pb-6 italic text-center">0 = ignore criteria</div>
+      <div class="italic text-center pb-3">0 = ignore criteria</div>
       <div class="text-center">
         <button
           on:click={clearAll}

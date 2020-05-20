@@ -7,6 +7,7 @@
   import DetailsBySource from "./DetailsBySource.svelte";
   import DetailsByReason from "./DetailsByReason.svelte";
   import { onMount } from "svelte";
+  import { createEventDispatcher } from "svelte";
 
   export let builds = [];
   export let currentRoute;
@@ -17,6 +18,9 @@
     displayMode = m;
     updateQuery(ParsedQuery.stringify({ displayMode }));
   };
+
+  const dispatch = createEventDispatcher();
+  const download = () => dispatch("download");
 
   onMount(() => {
     if (currentRoute && currentRoute.queryParams.displayMode) {
@@ -47,7 +51,7 @@
     </Icon>
   </div>
 {:else}
-  <div class="my-4 mx-auto">
+  <div class="my-4">
     <div
       class="bg-gray-200 text-sm text-gray-500 leading-none border-2
       border-gray-200 rounded-full inline-flex">
@@ -75,7 +79,18 @@
         <span>By Status</span>
       </button>
     </div>
-
+    <div class="float-right">
+      <button
+        on:click={download}
+        title="Download CSV"
+        class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-1
+        rounded-lg inline-flex items-center">
+        <Icon cssClass="">
+          <path
+            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        </Icon>
+      </button>
+    </div>
   </div>
 
   {#if displayMode === 0}

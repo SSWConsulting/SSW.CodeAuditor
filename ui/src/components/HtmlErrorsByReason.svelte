@@ -1,6 +1,10 @@
 <script>
   import { slice, groupBy, props } from "ramda";
-  import { isInIgnored, getHtmlErrorsByReason } from "../utils/utils.js";
+  import {
+    isInIgnored,
+    getHtmlErrorsByReason,
+    HTMLERRORS
+  } from "../utils/utils.js";
   import { fade, fly } from "svelte/transition";
   import { ignoredUrls$ } from "../stores.js";
   import { createEventDispatcher } from "svelte";
@@ -34,10 +38,21 @@
         {/if}
       </Icon>
     </span>
+    <Icon
+      title={HTMLERRORS.indexOf(error.error) >= 0 ? 'Error' : 'Warning'}
+      cssClass={`inline-block cursor-pointer ${HTMLERRORS.indexOf(error.error) >= 0 ? 'text-red-600' : 'text-orange-600'}`}>
+      {#if HTMLERRORS.indexOf(error.error) >= 0}
+        <path
+          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732
+          4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+      {:else}
+        <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      {/if}
+    </Icon>
     <a
       class="inline align-baseline text-blue-600 hover:text-blue-800"
       target="_blank"
-      href={'https://github.com/htmlhint/HTMLHint/wiki/' + error.error}>
+      href={'https://htmlhint.com/docs/user-guide/rules/' + error.error}>
       {error.error}
     </a>
   </div>
@@ -65,8 +80,8 @@
                 {#each slice(0, 49, page.locations) as item}
                   <div
                     class="text-xs mr-2 my-1 uppercase tracking-wider border
-                    px-2 text-indigo-600 border-indigo-600 hover:bg-indigo-600
-                    hover:text-indigo-100 cursor-default whitespace-no-wrap">
+                    px-2 border-red-600 hover:bg-red-600 hover:text-white cursor-default
+                    whitespace-no-wrap">
                     <a
                       on:click={() => viewSource(page.url, item)}
                       href="javascript:void(0)"
@@ -78,7 +93,7 @@
               </div>
               {#if page.locations.length > 50}
                 <div
-                  class="text-xs mr-2 my-1 tracking-wider px-2 text-indigo-600
+                  class="text-xs mr-2 my-1 tracking-wider px-2
                   cursor-default">
                   {page.locations.length - 50} more..
                 </div>

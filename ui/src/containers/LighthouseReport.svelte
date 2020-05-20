@@ -3,6 +3,9 @@
   import { Navigate, navigateTo } from "svelte-router-spa";
   import LoadingFlat from "../components/LoadingFlat.svelte";
   import Icon from "../components/Icon.svelte";
+  import Tabs from "../components/Tabs.svelte";
+  import Toastr from "../components/Toastr.svelte";
+  import slug from "slug";
   import {
     getBuildDetails,
     userApi,
@@ -10,11 +13,48 @@
     getIgnoreList
   } from "../stores";
   import LighthouseDetailsCard from "../components/LighthouseDetailsCard.svelte";
+  import UpdatePerfThreshold from "../components/UpdatePerfThreshold.svelte";
+  import { printTimeDiff, CONSTS } from "../utils/utils";
+
   export let currentRoute;
+
   let loading;
 
   let promise = getBuildDetails(currentRoute.namedParams.run);
   let runId;
+  let userNotLoginToast;
+  let perfThresholdShown;
+  let scanUrl;
+  let loadingPerfSettings;
+  let lastBuild;
+  let threshold;
+
+  const download = () => {
+    window.location.href = `https://urlchecker.blob.core.windows.net/lhr/${currentRoute.namedParams.run}.json`;
+  };
+
+  const showPerfThreshold = async (summary, user) => {
+    if (!user) {
+      userNotLoginToast = true;
+      return;
+    }
+    scanUrl = summary.url;
+    lastBuild = summary;
+    perfThresholdShown = true;
+    loadingPerfSettings = true;
+    try {
+      const res = await fetch(
+        `${CONSTS.API}/api/config/${user.apiKey}/perfthreshold/${slug(scanUrl)}`
+      );
+      const result = await res.json();
+      threshold = result || blank;
+    } catch (error) {
+      console.error("error getting threshold", error);
+      threshold = blank;
+    } finally {
+      loadingPerfSettings = false;
+    }
+  };
 
   onMount(() => {
     if (currentRoute && currentRoute.namedParams.run) {
@@ -37,31 +77,6 @@
 
 <div class="container mx-auto">
   <div class="bg-white shadow-lg rounded px-8 pt-6 mb-6 flex flex-col">
-    <p class="pb-2">
-      <Icon cssClass="inline-block" height="20" width="20">
-        <path d="M9 5l7 7-7 7" />
-      </Icon>
-      <a
-        class="inline-block align-baseline text-blue hover:text-blue-darker"
-        href="/">
-        Builds
-      </a>
-      <Icon cssClass="inline-block" height="20" width="20">
-        <path d="M9 5l7 7-7 7" />
-      </Icon>
-      <a
-        class="inline-block align-baseline text-blue hover:text-blue-darker"
-        href="/">
-        <Navigate to={`/build/${runId}`}>{runId}</Navigate>
-      </a>
-      <Icon cssClass="inline-block" height="20" width="20">
-        <path d="M9 5l7 7-7 7" />
-      </Icon>
-      <span
-        class="inline-block align-baseline text-blue hover:text-blue-darker">
-        Lighthouse Report
-      </span>
-    </p>
 
     {#if loading}
       <LoadingFlat />
@@ -69,12 +84,75 @@
       {#await promise}
         <LoadingFlat />
       {:then data}
-        <LighthouseDetailsCard build={data ? data.summary : {}} />
+        <Tabs build={data ? data.summary : {}} displayMode="lighthouse" />
+
+        <p class="pb-3 pt-4">
+          <Icon cssClass="inline-block" height="20" width="20">
+            <path d="M9 5l7 7-7 7" />
+          </Icon>
+          <a
+            class="inline-block align-baseline text-blue hover:text-blue-darker"
+            href="/">
+            Builds
+          </a>
+          <Icon cssClass="inline-block" height="20" width="20">
+            <path d="M9 5l7 7-7 7" />
+          </Icon>
+          <a
+            class="inline-block align-baseline text-blue hover:text-blue-darker"
+            href="/">
+            <Navigate to={`/build/${runId}`}>{runId}</Navigate>
+          </a>
+          <Icon cssClass="inline-block" height="20" width="20">
+            <path d="M9 5l7 7-7 7" />
+          </Icon>
+          <span
+            class="inline-block align-baseline text-blue hover:text-blue-darker">
+            Lighthouse Report
+          </span>
+        </p>
+
+        <LighthouseDetailsCard
+          build={data ? data.summary : {}}
+          on:perfThreshold={() => showPerfThreshold(data.summary, $userSession$)} />
       {:catch error}
         <p class="text-red-600 mx-auto text-2xl py-8">{error.message}</p>
       {/await}
     {/if}
     <!-- this is where the lighthouse report will go -->
+    <div class="my-4">
+      <div class="float-right">
+        <button
+          on:click={download}
+          title="Download JSON"
+          class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-1
+          rounded-lg inline-flex items-center">
+          <Icon cssClass="">
+            <path
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </Icon>
+        </button>
+      </div>
+    </div>
     <main id="report" />
   </div>
 </div>
+
+<UpdatePerfThreshold
+  url={scanUrl}
+  loading={loadingPerfSettings}
+  {lastBuild}
+  {threshold}
+  bind:show={perfThresholdShown}
+  user={$userSession$} />
+
+<Toastr bind:show={userNotLoginToast} timeout={10000} mode="warn">
+  <p>Sign in to unlock this feature!</p>
+  <p class="text-sm pt-2">
+    <span
+      class="inline-block align-baseline font-bold text-sm text-blue
+      hover:text-blue-darker">
+      <Navigate to="/login">Sign in</Navigate>
+    </span>
+  </p>
+</Toastr>

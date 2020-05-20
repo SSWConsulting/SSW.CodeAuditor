@@ -6,6 +6,7 @@
     getIgnoreList
   } from "../stores";
   import { onMount } from "svelte";
+  import Tabs from "../components/Tabs.svelte";
   import Icon from "../components/Icon.svelte";
   import DetailsTable from "../components/DetailsTable.svelte";
   import slug from "slug";
@@ -17,20 +18,14 @@
   import LoadingFlat from "../components/LoadingFlat.svelte";
   import Modal from "../components/Modal.svelte";
   import UpdateIgnoreUrl from "../components/UpdateIgnoreUrl.svelte";
-  import UpdatePerfThreshold from "../components/UpdatePerfThreshold.svelte";
 
   export let currentRoute;
 
   let promise = getBuildDetails(currentRoute.namedParams.id);
   let userNotLoginToast;
-
   let ignoreUrlShown;
-  let perfThresholdShown;
   let urlToIgnore;
   let scanUrl;
-  let lastBuild;
-  let loadingPerfSettings;
-  let threshold = {};
 
   const onDownload = data => {
     const csvExporter = new ExportToCsv({
@@ -50,6 +45,7 @@
       })
     );
   };
+  
   const blank = {
     performanceScore: 0,
     pwaScore: 0,
@@ -57,28 +53,6 @@
     accessibilityScore: 0,
     bestPracticesScore: 0,
     average: 0
-  };
-  const showPerfThreshold = async (summary, user) => {
-    if (!user) {
-      userNotLoginToast = true;
-      return;
-    }
-    scanUrl = summary.url;
-    lastBuild = summary;
-    perfThresholdShown = true;
-    loadingPerfSettings = true;
-    try {
-      const res = await fetch(
-        `${CONSTS.API}/api/config/${user.apiKey}/perfthreshold/${slug(scanUrl)}`
-      );
-      const result = await res.json();
-      threshold = result || blank;
-    } catch (error) {
-      console.error("error getting threshold", error);
-      threshold = blank;
-    } finally {
-      loadingPerfSettings = false;
-    }
   };
 
   const showIgnore = (mainUrl, url, user) => {
@@ -100,38 +74,41 @@
 
 <div class="container mx-auto">
   <div class="bg-white shadow-lg rounded px-8 pt-6 mb-6 flex flex-col">
-    <p class="pb-2">
-      <Icon cssClass="inline-block" height="20" width="20">
-        <path d="M9 5l7 7-7 7" />
-      </Icon>
-      <a
-        class="inline-block align-baseline text-blue hover:text-blue-darker"
-        href="/">
-        Builds
-      </a>
-      <Icon cssClass="inline-block" height="20" width="20">
-        <path d="M9 5l7 7-7 7" />
-      </Icon>
-      <span
-        class="inline-block align-baseline text-blue hover:text-blue-darker">
-        {currentRoute.namedParams.id}
-      </span>
-      <Icon cssClass="inline-block" height="20" width="20">
-        <path d="M9 5l7 7-7 7" />
-      </Icon>
-      <span
-        class="inline-block align-baseline text-blue hover:text-blue-darker">
-        Broken Links
-      </span>
-    </p>
+
     {#await promise}
       <LoadingFlat />
     {:then data}
-      <BuildDetailsCard
-        build={data ? data.summary : {}}
-        on:download={() => onDownload(data)}
-        on:perfThreshold={() => showPerfThreshold(data.summary, $userSession$)} />
+      <Tabs build={data ? data.summary : {}} displayMode="url" />
+
+      <p class="pb-3 pt-4">
+        <Icon cssClass="inline-block" height="20" width="20">
+          <path d="M9 5l7 7-7 7" />
+        </Icon>
+        <a
+          class="inline-block align-baseline text-blue hover:text-blue-darker"
+          href="/">
+          Builds
+        </a>
+        <Icon cssClass="inline-block" height="20" width="20">
+          <path d="M9 5l7 7-7 7" />
+        </Icon>
+        <span
+          class="inline-block align-baseline text-blue hover:text-blue-darker">
+          {currentRoute.namedParams.id}
+        </span>
+        <Icon cssClass="inline-block" height="20" width="20">
+          <path d="M9 5l7 7-7 7" />
+        </Icon>
+        <span
+          class="inline-block align-baseline text-blue hover:text-blue-darker">
+          Broken Links
+        </span>
+      </p>
+
+      <BuildDetailsCard build={data ? data.summary : {}} />
+
       <DetailsTable
+        on:download={() => onDownload(data)}
         on:ignore={url => showIgnore(data.summary.url, url, $userSession$)}
         builds={data ? data.brokenLinks : []}
         {currentRoute} />
@@ -156,12 +133,4 @@
   url={urlToIgnore}
   {scanUrl}
   bind:show={ignoreUrlShown}
-  user={$userSession$} />
-
-<UpdatePerfThreshold
-  url={scanUrl}
-  loading={loadingPerfSettings}
-  {lastBuild}
-  {threshold}
-  bind:show={perfThresholdShown}
   user={$userSession$} />

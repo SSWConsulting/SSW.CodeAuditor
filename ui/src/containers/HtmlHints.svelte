@@ -6,12 +6,14 @@
     getIgnoreList
   } from "../stores";
   import { onMount } from "svelte";
+  import Tabs from "../components/Tabs.svelte";
   import Icon from "../components/Icon.svelte";
+  import { pipe, map, flatten } from "ramda";
   import HtmlErrorsTable from "../components/HtmlErrorsTable.svelte";
   import slug from "slug";
   import Toastr from "../components/Toastr.svelte";
   import BuildDetailsCard from "../components/BuildDetailsCard.svelte";
-  import { CONSTS, getPerfScore } from "../utils/utils.js";
+  import { CONSTS, getPerfScore, HTMLERRORS } from "../utils/utils.js";
   import { ExportToCsv } from "export-to-csv";
   import { Navigate, navigateTo } from "svelte-router-spa";
   import LoadingFlat from "../components/LoadingFlat.svelte";
@@ -29,7 +31,6 @@
     );
     let htmlHint = await d.json();
     let summary = await getBuildDetails(id);
-
     return { htmlHint, summary: summary.summary };
   }
 
@@ -51,6 +52,33 @@
     average: 0
   };
 
+  const onDownload = data => {
+    const csvExporter = new ExportToCsv({
+      useKeysAsHeaders: true
+    });
+
+    const exportToflat = pipe(
+      map(
+        pipe(x => {
+          let errors = [];
+          Object.keys(x.errors).forEach(e => {
+            errors.push({
+              url: x.url,
+              issue: e,
+              level: HTMLERRORS.indexOf(e) >= 0 ? "error" : "warning",
+              locations: x.errors[e].join(" "),
+              ruleUrl: "https://htmlhint.com/docs/user-guide/rules/" + e
+            });
+          });
+          return errors;
+        })
+      ),
+      flatten
+    );
+
+    csvExporter.generateCsv(exportToflat(data.htmlHint));
+  };
+
   userSession$.subscribe(async x => {
     if (x) {
       getIgnoreList(x);
@@ -60,36 +88,43 @@
 
 <div class="container mx-auto">
   <div class="bg-white shadow-lg rounded px-8 pt-6 mb-6 flex flex-col">
-    <p class="pb-2">
-      <Icon cssClass="inline-block" height="20" width="20">
-        <path d="M9 5l7 7-7 7" />
-      </Icon>
-      <a
-        class="inline-block align-baseline text-blue hover:text-blue-darker"
-        href="/">
-        Builds
-      </a>
-      <Icon cssClass="inline-block" height="20" width="20">
-        <path d="M9 5l7 7-7 7" />
-      </Icon>
-      <a
-        class="inline-block align-baseline text-blue hover:text-blue-darker"
-        href="/">
-        <Navigate to={`/build/${runId}`}>{runId}</Navigate>
-      </a>
-      <Icon cssClass="inline-block" height="20" width="20">
-        <path d="M9 5l7 7-7 7" />
-      </Icon>
-      <span
-        class="inline-block align-baseline text-blue hover:text-blue-darker">
-        Html Issues
-      </span>
-    </p>
+
     {#await promise}
       <LoadingFlat />
     {:then data}
+      <Tabs build={data ? data.summary : {}} displayMode="html" />
+
+      <p class="pb-3 pt-4">
+        <Icon cssClass="inline-block" height="20" width="20">
+          <path d="M9 5l7 7-7 7" />
+        </Icon>
+        <a
+          class="inline-block align-baseline text-blue hover:text-blue-darker"
+          href="/">
+          Builds
+        </a>
+        <Icon cssClass="inline-block" height="20" width="20">
+          <path d="M9 5l7 7-7 7" />
+        </Icon>
+        <a
+          class="inline-block align-baseline text-blue hover:text-blue-darker"
+          href="/">
+          <Navigate to={`/build/${runId}`}>{runId}</Navigate>
+        </a>
+        <Icon cssClass="inline-block" height="20" width="20">
+          <path d="M9 5l7 7-7 7" />
+        </Icon>
+        <span
+          class="inline-block align-baseline text-blue hover:text-blue-darker">
+          Html
+        </span>
+      </p>
+
       <BuildDetailsCard build={data ? data.summary : {}} mode="htmlhint" />
-      <HtmlErrorsTable errors={data.htmlHint} {currentRoute} />
+      <HtmlErrorsTable
+        on:download={() => onDownload(data)}
+        errors={data.htmlHint}
+        {currentRoute} />
     {:catch error}
       <p class="text-red-600 mx-auto text-2xl py-8">{error.message}</p>
     {/await}

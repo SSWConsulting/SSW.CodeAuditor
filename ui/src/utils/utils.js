@@ -146,3 +146,16 @@ export const getHtmlErrorsByReason = pipe(
 		[keys, values]
 	)
 );
+
+export const HTMLERRORS = [
+	'attr-no-duplication',
+	'attr-lowercase',
+	'attr-value-double-quotes',
+	'doctype-first',
+	'id-unique',
+	'spec-char-escape',
+	'src-not-empty',
+	'tag-pair',
+	'tagname-lowercase',
+	'title-require',
+];
