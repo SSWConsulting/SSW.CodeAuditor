@@ -16,22 +16,19 @@
 
   let displayMode = 0;
   let viewUrlSource = "";
+  let viewLocation = "";
   let source;
   let showSource;
   let loading;
   let codeViewer;
-
-  const dismiss = () => (showSource = false);
-  async function viewPageSource(event) {
-    console.log(event);
-    viewUrlSource = event.detail.url;
+  let codediv;
+  const dismiss = () => {
+    showSource = false;
+    codeViewer = null;
+    codediv.innerHTML = "";
+  };
+  function showSourceWindow() {
     showSource = true;
-    loading = true;
-    const res = await fetch(
-      `${CONSTS.API}/api/viewsource?url=${encodeURIComponent(viewUrlSource)}`
-    );
-    source = await res.text();
-
     setTimeout(() => {
       const element = document.getElementById("codeEditor");
       console.log("element", element);
@@ -39,12 +36,39 @@
         value: source,
         mode: "htmlmixed",
         lineNumbers: true,
+        styleSelectedText: true,
         foldGutter: true,
         gutters: ["CodeMirror-linenumbers"]
       });
       codeViewer.setSize("100%", "100%");
-      loading = false;
+
+      const [line, char] = viewLocation.split(":");
+      codeViewer.scrollIntoView({ line: +line, char: +char }, 400);
+
+      codeViewer.markText(
+        { line: line - 1, ch: +char },
+        { line: line - 1, ch: +char + 10000 },
+        { className: "bg-red-500" }
+      );
     }, 10);
+  }
+
+  async function viewPageSource(event) {
+    viewLocation = event.detail.location;
+    if (viewUrlSource === event.detail.url) {
+      showSourceWindow();
+      return;
+    }
+
+    viewUrlSource = event.detail.url;
+    showSource = true;
+    loading = true;
+    const res = await fetch(
+      `${CONSTS.API}/api/viewsource?url=${encodeURIComponent(viewUrlSource)}`
+    );
+    source = await res.text();
+    loading = false;
+    showSourceWindow();
   }
 
   const changeMode = m => {
@@ -67,7 +91,7 @@
     color: #63b3ed;
   }
   #codeEditor {
-    height: 100%
+    height: 100%;
   }
 </style>
 
@@ -125,7 +149,7 @@
   {#if loading}
     <LoadingFlat />
   {/if}
-  <div class="ml-5">
-    <div id="codeEditor" class="border" />
+  <div class="mx-3">
+    <div id="codeEditor" bind:this={codediv} class:border={!loading} />
   </div>
 </Modal>
