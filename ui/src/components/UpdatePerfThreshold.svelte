@@ -146,8 +146,7 @@
 <Toastr bind:show={addedSuccess}>
   <p class="font-bold">Performance threshold updated for</p>
   <span
-    class="inline-block align-baseline font-bold text-sm text-blue
-    hover:text-blue-darker">
+    class="inline-block align-baseline font-bold text-sm link">
     <a href={url} target="_blank">{url}</a>
   </span>
 </Toastr>

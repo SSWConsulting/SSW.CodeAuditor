@@ -43,7 +43,7 @@
         <tr>
           <td class="border px-4 py-2">
             <a
-              class="inline-block align-middle text-blue-500"
+              class="inline-block align-middle link"
               target="_blank"
               href={val.urlToIgnore}>
               {val.urlToIgnore}
@@ -55,7 +55,7 @@
             {:else}
               When scanning
               <a
-                class="inline-block align-middle text-blue-500"
+                class="inline-block align-middle link"
                 target="_blank"
                 href={val.ignoreOn}>
                 {val.ignoreOn}

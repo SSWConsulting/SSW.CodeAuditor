@@ -32,7 +32,13 @@
 <style>
   .active {
     background: white;
-    color: #63b3ed;
+    color: #cc4141;
+  }
+  .active:focus {
+    color: #cc4141;
+  }
+  .active:visited {
+    color: #cc4141;
   }
 </style>
 
@@ -53,29 +59,27 @@
 {:else}
   <div class="my-4">
     <div
-      class="bg-gray-200 text-sm text-gray-500 leading-none border-2
-      border-gray-200 rounded-full inline-flex">
+      class="bggrey text-sm textgrey leading-none border-2 border-gray-200
+      rounded-full inline-flex">
       <button
         on:click={() => changeMode(0)}
         class:active={displayMode === 0}
         class="inline-flex items-center transition-colors duration-300 ease-in
-        focus:outline-none hover:text-blue-400 focus:text-blue-400
-        rounded-l-full px-4 py-2">
+        focus:outline-none rounded-l-full px-4 py-2">
         <span>By Source</span>
       </button>
       <button
         on:click={() => changeMode(1)}
         class:active={displayMode === 1}
         class="inline-flex items-center transition-colors duration-300 ease-in
-        focus:outline-none hover:text-blue-400 focus:text-blue-400 px-4 py-2">
+        focus:outline-none px-4 py-2">
         <span>By Destination</span>
       </button>
       <button
         on:click={() => changeMode(2)}
         class:active={displayMode === 2}
         class="inline-flex items-center transition-colors duration-300 ease-in
-        focus:outline-none hover:text-blue-400 focus:text-blue-400
-        rounded-r-full px-4 py-2">
+        focus:outline-none rounded-r-full px-4 py-2">
         <span>By Status</span>
       </button>
     </div>

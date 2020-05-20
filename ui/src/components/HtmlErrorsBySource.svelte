@@ -35,7 +35,7 @@
       Issues found on:
     </span>
     <a
-      class="inline-block align-baseline text-blue-600 hover:text-blue-800"
+      class="inline-block align-baseline link"
       target="_blank"
       href={url.url}>
       {url.url}
@@ -70,8 +70,7 @@
                 {/if}
               </Icon>
               <a
-                class="inline-block align-baseline text-blue-600
-                hover:text-blue-800"
+                class="inline-block align-baseline link"
                 target="_blank"
                 href={'https://htmlhint.com/docs/user-guide/rules/' + key}>
                 {key}

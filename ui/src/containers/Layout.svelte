@@ -15,10 +15,13 @@
   .brand {
     color: white !important;
   }
+  .nav {
+    background-color: #414141;
+  }
 </style>
 
 <main class="container mx-auto">
-  <nav class="flex items-center justify-between flex-wrap bg-gray-800 p-6">
+  <nav class="flex items-center justify-between flex-wrap p-6 nav">
     <div class="flex items-center flex-shrink-0 text-white mr-6">
       <Icon cssClass="inline-block text-red-600" height="24" width="24">
         <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />

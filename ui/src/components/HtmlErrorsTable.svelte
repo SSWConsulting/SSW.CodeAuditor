@@ -11,7 +11,7 @@
   import DetailsByReason from "./DetailsByReason.svelte";
   import { onMount } from "svelte";
   import { createEventDispatcher } from "svelte";
-  
+
   export let errors = [];
   export let currentRoute;
 
@@ -93,7 +93,13 @@
 <style>
   .active {
     background: white;
-    color: #63b3ed;
+    color: #cc4141;
+  }
+  .active:focus {
+    color: #cc4141;
+  }
+  .active:visited {
+    color: #cc4141;
   }
   #codeEditor {
     height: 100%;
@@ -117,7 +123,7 @@
 {:else}
   <div class="my-4">
     <div
-      class="bg-gray-200 text-sm text-gray-500 leading-none border-2
+      class="bg-gray-200 text-sm textgrey leading-none border-2
       border-gray-200 rounded-full inline-flex">
       <button
         on:click={() => changeMode(0)}

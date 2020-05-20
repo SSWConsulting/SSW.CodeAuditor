@@ -5,7 +5,7 @@
   export let displayMode = "";
 
   let baseClass =
-    "bg-white inline-block py-2 px-4 text-blue-500 hover:text-blue-800 font-semibold";
+    "bg-white inline-block py-2 px-4 textgrey hover:text-grey-800 font-semibold";
   let active = " text-blue-700 border-l border-t border-r rounded-t";
   $: totalHtmlIssues = (build.htmlErrors || 0) + (build.htmlWarnings || 0);
 

@@ -66,8 +66,7 @@
             class="border px-4 py-2 w-5/12 hover:bg-gray-100"
             on:click={() => navigateTo(`/build/${val.runId}`)}>
             <a
-              class="inline-block align-baseline text-blue-600
-              hover:text-blue-800 truncate max-w-xs text-sm"
+              class="inline-block align-baseline link truncate max-w-xs text-sm"
               target="_blank"
               href={val.url}>
               {val.url}

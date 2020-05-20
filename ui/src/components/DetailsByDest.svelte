@@ -41,10 +41,7 @@
       {destinations[url][0].statusmsg} ({destinations[url][0].statuscode || 0})
       :
     </span>
-    <a
-      class="mr-2 inline-block align-baseline text-blue-600 hover:text-blue-800"
-      target="_blank"
-      href={url}>
+    <a class="mr-2 inline-block align-baseline link" target="_blank" href={url}>
       {url}
     </a>
     {#if isInIgnored(url, ignoredPatterns)}
@@ -52,10 +49,8 @@
         title="This is URL is in the ignored lists. Go to Settings to remove it">
         <Icon cssClass="text-red-600 inline-block">
           <path
-            d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923
-            3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
-            clip-rule="evenodd" />
-          <path d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+            d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636
+            5.636m12.728 12.728L5.636 5.636" />
         </Icon>
       </span>
     {:else}
@@ -65,9 +60,8 @@
         class="hover:bg-gray-400 rounded inline-flex align-middle mr-3">
         <Icon>
           <path
-            d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586
-            15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12
-            4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+            d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636
+            5.636m12.728 12.728L5.636 5.636" />
         </Icon>
       </button>
     {/if}
@@ -92,8 +86,7 @@
           <tr>
             <td class="w-6/12 border px-4 py-2 break-all">
               <a
-                class="inline-block align-baseline text-blue-600
-                hover:text-blue-800"
+                class="link inline-block align-baseline link"
                 target="_blank"
                 href={val.src}>
                 {val.src}

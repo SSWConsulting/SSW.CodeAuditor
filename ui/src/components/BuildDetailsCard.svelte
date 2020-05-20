@@ -13,7 +13,7 @@
 </script>
 
 <div
-  class="mx-5 bg-gray-200 pb-3 my-3 w-full justify-center items-center
+  class="mx-5 bggrey pb-3 my-3 w-full justify-center items-center
   overflow-hidden rounded-lg shadow-sm mx-auto">
   <div class="mt-8 mb-4 text-center">
     <span class="text-3xl font-semibold">
