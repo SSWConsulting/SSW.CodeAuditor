@@ -48,7 +48,12 @@
               <Navigate to={`/build/${val.runId}`}>
                 <Icon
                   cssClass={val.totalBrokenLinks === 0 ? 'inline-block text-green-600' : 'inline-block text-red-600'}>
-                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  {#if val.totalBrokenLinks === 0}
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  {:else}
+                    <path
+                      d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  {/if}
                 </Icon>
               </Navigate>
             </span>
