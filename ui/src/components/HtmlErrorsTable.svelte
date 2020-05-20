@@ -123,8 +123,8 @@
 {:else}
   <div class="my-4">
     <div
-      class="bg-gray-200 text-sm textgrey leading-none border-2
-      border-gray-200 rounded-full inline-flex">
+      class="bg-gray-200 text-sm textgrey leading-none border-2 border-gray-200
+      rounded-full inline-flex">
       <button
         on:click={() => changeMode(0)}
         class:active={displayMode === 0}
@@ -171,7 +171,5 @@
   {#if loading}
     <LoadingFlat />
   {/if}
-  <div class="mx-3">
-    <div id="codeEditor" bind:this={codediv} class:border={!loading} />
-  </div>
+  <div id="codeEditor" bind:this={codediv} class:border={!loading} />
 </Modal>
