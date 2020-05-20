@@ -38,6 +38,7 @@ export const isLoggedIn = derived(userSession$, (session) => {
 
 export const ignoredUrls$ = writable([]);
 export const loadingIgnored$ = writable(false);
+export const activeRun$ = writable(null);
 
 export const ignoredUrlsList$ = derived(ignoredUrls$, (list) => {
 	return list ? list.map((x) => x.urlToIgnore) : [];
@@ -122,11 +123,15 @@ export const deleteIgnoreUrl = async (url, user) => {
 };
 
 export const getBuildDetails = async (runId) => {
+	if (activeRun && activeRun.summary.runId === runId) {
+		return activeRun;
+	}
+
 	const res = await fetch(`${CONSTS.API}/api/run/${runId}`);
 	const result = await res.json();
 
 	if (res.ok) {
-		return {
+		const d = {
 			summary: {
 				...result.summary,
 				whiteListed: result.summary.whiteListed
@@ -135,7 +140,12 @@ export const getBuildDetails = async (runId) => {
 			},
 			brokenLinks: result.brokenLinks,
 		};
+		activeRun$.set(d);
+		return d;
 	} else {
 		throw new Error('Failed to load');
 	}
 };
+
+let activeRun;
+activeRun$.subscribe((x) => (activeRun = x));

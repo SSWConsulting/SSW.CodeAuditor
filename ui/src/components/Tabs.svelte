@@ -2,7 +2,6 @@
   import { Navigate, navigateTo } from "svelte-router-spa";
   import { getPerfScore } from "../utils/utils.js";
   export let build = {};
-  console.log(build);
   export let displayMode = "";
 
   let baseClass =

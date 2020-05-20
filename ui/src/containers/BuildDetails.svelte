@@ -66,7 +66,7 @@
     ignoreUrlShown = true;
   };
 
-  userSession$.subscribe(async x => {
+  userSession$.subscribe(x => {
     if (x) {
       getIgnoreList(x);
     }
@@ -81,8 +81,11 @@
     {:then data}
       <Tabs build={data ? data.summary : {}} displayMode="url" />
 
-      <Breadcrumbs build={data ? data.summary : {}} runId={currentRoute.namedParams.id} displayMode="Links" />
-      
+      <Breadcrumbs
+        build={data ? data.summary : {}}
+        runId={currentRoute.namedParams.id}
+        displayMode="Links" />
+
       <BuildDetailsCard build={data ? data.summary : {}} />
 
       <DetailsTable
