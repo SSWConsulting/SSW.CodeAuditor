@@ -10,6 +10,7 @@
   import Icon from "../components/Icon.svelte";
   import { pipe, map, flatten } from "ramda";
   import HtmlErrorsTable from "../components/HtmlErrorsTable.svelte";
+  import Breadcrumbs from "../components/Breadcrumbs.svelte";
   import slug from "slug";
   import Toastr from "../components/Toastr.svelte";
   import BuildDetailsCard from "../components/BuildDetailsCard.svelte";
@@ -94,31 +95,10 @@
     {:then data}
       <Tabs build={data ? data.summary : {}} displayMode="html" />
 
-      <p class="pb-3 pt-4">
-        <Icon cssClass="inline-block" height="20" width="20">
-          <path d="M9 5l7 7-7 7" />
-        </Icon>
-        <a
-          class="inline-block align-baseline text-blue hover:text-blue-darker"
-          href="/">
-          Builds
-        </a>
-        <Icon cssClass="inline-block" height="20" width="20">
-          <path d="M9 5l7 7-7 7" />
-        </Icon>
-        <a
-          class="inline-block align-baseline text-blue hover:text-blue-darker"
-          href="/">
-          <Navigate to={`/build/${runId}`}>{runId}</Navigate>
-        </a>
-        <Icon cssClass="inline-block" height="20" width="20">
-          <path d="M9 5l7 7-7 7" />
-        </Icon>
-        <span
-          class="inline-block align-baseline text-blue hover:text-blue-darker">
-          Html
-        </span>
-      </p>
+      <Breadcrumbs
+        build={data ? data.summary : {}}
+        runId={currentRoute.namedParams.id}
+        displayMode="HTML" />
 
       <BuildDetailsCard build={data ? data.summary : {}} mode="htmlhint" />
       <HtmlErrorsTable

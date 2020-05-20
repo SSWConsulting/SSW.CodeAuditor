@@ -1,6 +1,7 @@
 <script>
   import { onMount, onDestroy } from "svelte";
   import { Navigate, navigateTo } from "svelte-router-spa";
+  import Breadcrumbs from "../components/Breadcrumbs.svelte";
   import LoadingFlat from "../components/LoadingFlat.svelte";
   import Icon from "../components/Icon.svelte";
   import Tabs from "../components/Tabs.svelte";
@@ -86,31 +87,10 @@
       {:then data}
         <Tabs build={data ? data.summary : {}} displayMode="lighthouse" />
 
-        <p class="pb-3 pt-4">
-          <Icon cssClass="inline-block" height="20" width="20">
-            <path d="M9 5l7 7-7 7" />
-          </Icon>
-          <a
-            class="inline-block align-baseline text-blue hover:text-blue-darker"
-            href="/">
-            Builds
-          </a>
-          <Icon cssClass="inline-block" height="20" width="20">
-            <path d="M9 5l7 7-7 7" />
-          </Icon>
-          <a
-            class="inline-block align-baseline text-blue hover:text-blue-darker"
-            href="/">
-            <Navigate to={`/build/${runId}`}>{runId}</Navigate>
-          </a>
-          <Icon cssClass="inline-block" height="20" width="20">
-            <path d="M9 5l7 7-7 7" />
-          </Icon>
-          <span
-            class="inline-block align-baseline text-blue hover:text-blue-darker">
-            Lighthouse Report
-          </span>
-        </p>
+        <Breadcrumbs
+          build={data ? data.summary : {}}
+          runId={currentRoute.namedParams.id}
+          displayMode="Lighthouse Audit" />
 
         <LighthouseDetailsCard
           build={data ? data.summary : {}}

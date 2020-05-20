@@ -29,14 +29,14 @@
   <li class="mr-1" class:-mb-px={displayMode === 'url'}>
     <span class={baseClass + (displayMode === 'url' ? active : '')} href="#">
       <Navigate to={'/build/' + build.runId}>
-        Link ({build.uniqueBrokenLinks})
+        Links{build.uniqueBrokenLinks ? ` (${build.uniqueBrokenLinks})` : ''}
       </Navigate>
     </span>
   </li>
   <li class="mr-1" class:-mb-px={displayMode === 'html'}>
     <span class={baseClass + (displayMode === 'html' ? active : '')} href="#">
       <Navigate to={'/htmlhint/' + build.runId}>
-        Html ({totalHtmlIssues})
+        HTML{totalHtmlIssues ? ` (${totalHtmlIssues})` : ''}
       </Navigate>
     </span>
   </li>
@@ -45,7 +45,7 @@
       class={baseClass + (displayMode === 'lighthouse' ? active : '')}
       href="#">
       <Navigate to={'/lighthouse/' + build.runId}>
-        Lighthouse Audit ({lhWarning.length})
+        Lighthouse Audit{lhWarning.length ? ` (${lhWarning.length})` : ''}
       </Navigate>
     </span>
   </li>

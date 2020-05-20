@@ -8,6 +8,7 @@
   import { onMount } from "svelte";
   import Tabs from "../components/Tabs.svelte";
   import Icon from "../components/Icon.svelte";
+  import Breadcrumbs from "../components/Breadcrumbs.svelte";
   import DetailsTable from "../components/DetailsTable.svelte";
   import slug from "slug";
   import Toastr from "../components/Toastr.svelte";
@@ -45,7 +46,7 @@
       })
     );
   };
-  
+
   const blank = {
     performanceScore: 0,
     pwaScore: 0,
@@ -80,31 +81,8 @@
     {:then data}
       <Tabs build={data ? data.summary : {}} displayMode="url" />
 
-      <p class="pb-3 pt-4">
-        <Icon cssClass="inline-block" height="20" width="20">
-          <path d="M9 5l7 7-7 7" />
-        </Icon>
-        <a
-          class="inline-block align-baseline text-blue hover:text-blue-darker"
-          href="/">
-          Builds
-        </a>
-        <Icon cssClass="inline-block" height="20" width="20">
-          <path d="M9 5l7 7-7 7" />
-        </Icon>
-        <span
-          class="inline-block align-baseline text-blue hover:text-blue-darker">
-          {currentRoute.namedParams.id}
-        </span>
-        <Icon cssClass="inline-block" height="20" width="20">
-          <path d="M9 5l7 7-7 7" />
-        </Icon>
-        <span
-          class="inline-block align-baseline text-blue hover:text-blue-darker">
-          Broken Links
-        </span>
-      </p>
-
+      <Breadcrumbs build={data ? data.summary : {}} runId={currentRoute.namedParams.id} displayMode="Links" />
+      
       <BuildDetailsCard build={data ? data.summary : {}} />
 
       <DetailsTable

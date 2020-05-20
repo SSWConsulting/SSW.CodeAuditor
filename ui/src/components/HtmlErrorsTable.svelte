@@ -53,7 +53,7 @@
       codeViewer.markText(
         { line: line - 1, ch: +char },
         { line: line - 1, ch: +char + 10000 },
-        { className: "bg-red-500" }
+        { className: "border border-red-500 bg-red-200" }
       );
     }, 10);
   }

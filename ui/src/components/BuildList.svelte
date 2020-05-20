@@ -40,28 +40,27 @@
     </thead>
     <tbody>
       {#each builds as val}
-        <tr
-          class="flex hover:bg-gray-200 cursor-pointer"
-          on:click={() => navigateTo(`/build/${val.runId}`)}>
-          <td class="border py-2 w-1/12 mx-auto">
+        <tr class="flex cursor-pointer">
+          <td
+            class="border py-2 w-1/12 mx-auto hover:bg-gray-100"
+            on:click={() => navigateTo(`/build/${val.runId}`)}>
             <span class="block align-middle hover:text-blue-800 text-center">
-              <Navigate to={`/build/${val.runId}`}>
-                <Icon
-                  cssClass={val.totalBrokenLinks === 0 ? 'inline-block text-green-600' : 'inline-block text-red-600'}>
-                  {#if val.totalBrokenLinks === 0}
-                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  {:else}
-                    <path
-                      d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  {/if}
-                </Icon>
-              </Navigate>
+              <Icon
+                cssClass={val.totalBrokenLinks === 0 ? 'inline-block text-green-600' : 'inline-block text-red-600'}>
+                {#if val.totalBrokenLinks === 0}
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                {:else}
+                  <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                {/if}
+              </Icon>
             </span>
             <span class="block text-center text-sm truncate">
               {val.buildId}
             </span>
           </td>
-          <td class="border px-4 py-2 w-5/12">
+          <td
+            class="border px-4 py-2 w-5/12 hover:bg-gray-100"
+            on:click={() => navigateTo(`/build/${val.runId}`)}>
             <a
               class="inline-block align-baseline text-blue-600
               hover:text-blue-800 truncate max-w-xs text-sm"
@@ -77,13 +76,19 @@
             </div>
 
           </td>
-          <td class="border px-4 py-2 text-right w-3/12">
+          <td
+            class="border px-4 py-2 text-right w-3/12 hover:bg-gray-100"
+            on:click={() => navigateTo(`/build/${val.runId}`)}>
             <LinkSummary value={val} />
           </td>
-          <td class="border px-4 py-2 text-center w-3/12">
+          <td
+            class="border px-4 py-2 text-center w-3/12 hover:bg-gray-100"
+            on:click={() => navigateTo(`/htmlhint/${val.runId}`)}>
             <CodeSummary value={val} />
           </td>
-          <td class="border px-4 py-2 text-center w-3/12">
+          <td
+            class="border px-4 py-2 text-center w-3/12 hover:bg-gray-100"
+            on:click={() => navigateTo(`/lighthouse/${val.runId}`)}>
             <LighthouseSummary value={val} />
           </td>
         </tr>
