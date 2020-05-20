@@ -18,8 +18,7 @@
           class="font-bold block lg:inline-block"
           title="Average"
           class:text-red-400={perf.average < 50}
-          class:text-orange-400={perf.average >= 50 && perf.average <= 80}
-          class:text-green-400={perf.average > 80}>
+          class:text-orange-400={perf.average >= 50 && perf.average <= 90}>
           {perf.average.toFixed(1)}
         </span>
       </div>
@@ -29,8 +28,7 @@
           title="Performance"
           class="font-bold block lg:inline-block"
           class:text-red-400={perf.performanceScore < 50}
-          class:text-orange-400={perf.performanceScore >= 50 && perf.performanceScore <= 80}
-          class:text-green-400={perf.performanceScore > 80}>
+          class:text-orange-400={perf.performanceScore >= 50 && perf.performanceScore <= 90}>
           {perf.performanceScore}
         </span>
       </div>
@@ -48,8 +46,7 @@
           class="font-bold block lg:inline-block"
           title="Accessibility"
           class:text-red-400={perf.accessibilityScore < 50}
-          class:text-orange-400={perf.accessibilityScore >= 50 && perf.accessibilityScore <= 80}
-          class:text-green-400={perf.accessibilityScore > 80}>
+          class:text-orange-400={perf.accessibilityScore >= 50 && perf.accessibilityScore <= 90}>
           {perf.accessibilityScore}
         </span>
       </div>
@@ -60,8 +57,7 @@
           title="SEO"
           class="font-bold block lg:inline-block"
           class:text-red-400={perf.seoScore < 50}
-          class:text-orange-400={perf.seoScore >= 50 && perf.seoScore <= 80}
-          class:text-green-400={perf.seoScore > 80}>
+          class:text-orange-400={perf.seoScore >= 50 && perf.seoScore <= 90}>
           {perf.seoScore}
         </span>
       </div>
@@ -71,8 +67,7 @@
           class="font-bold block lg:inline-block"
           title="PWA"
           class:text-red-400={perf.pwaScore < 50}
-          class:text-orange-400={perf.pwaScore >= 50 && perf.pwaScore <= 80}
-          class:text-green-400={perf.pwaScore > 80}>
+          class:text-orange-400={perf.pwaScore >= 50 && perf.pwaScore <= 90}>
           {perf.pwaScore}
         </span>
       </div>
@@ -91,8 +86,7 @@
           class="font-bold block lg:inline-block"
           title="Best Practice"
           class:text-red-400={perf.bestPracticesScore < 50}
-          class:text-orange-400={perf.bestPracticesScore >= 50 && perf.bestPracticesScore <= 80}
-          class:text-green-400={perf.bestPracticesScore > 80}>
+          class:text-orange-400={perf.bestPracticesScore >= 50 && perf.bestPracticesScore <= 90}>
           {perf.bestPracticesScore}
         </span>
       </div>

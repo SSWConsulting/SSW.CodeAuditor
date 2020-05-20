@@ -48,7 +48,7 @@
   {#if value.htmlIssuesList}
     <div class="text-center whitespace-no-wrap mx-auto">
       <Icon cssClass="text-red-500 block mx-auto">
-        <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <path d="M6 18L18 6M6 6l12 12" />
       </Icon>
       <span class="font-bold block mx-auto text-sm" title={htmlIssues}>
         {value.htmlErrors || 0}
