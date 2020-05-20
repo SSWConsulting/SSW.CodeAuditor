@@ -1,6 +1,7 @@
 <script>
   import TextField from "./TextField.svelte";
   import formatDistanceToNow from "date-fns/formatDistanceToNow";
+  import addDays from "date-fns/addDays";
   import { Navigate, navigateTo } from "svelte-router-spa";
   import { fade, fly } from "svelte/transition";
   import LighthouseSummary from "./LighthouseSummary.svelte";
@@ -12,6 +13,9 @@
   export let lastBuild;
 
   $: numberOfBuilds = builds.length;
+  let count = builds.filter(
+    x => new Date(x.buildDate) > addDays(new Date(), -30)
+  ).length;
 </script>
 
 {#if numberOfBuilds === 0}
@@ -21,9 +25,9 @@
     <div class="md:w-1/8">
       {#if lastBuild}
         <label
-          class="block text-gray-900 font-bold md:text-right mb-1 md:mb-0 pr-4"
+          class="block text-gray-700 font-bold md:text-right mb-1 md:mb-0 pr-4"
           for="inline-full-name">
-          Last build: {formatDistanceToNow(lastBuild, { addSuffix: true })}
+          {count} builds in last 30 days, last build: {formatDistanceToNow(lastBuild, { addSuffix: true })}
         </label>
       {/if}
     </div>
