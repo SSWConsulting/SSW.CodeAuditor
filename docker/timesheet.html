@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SSW TimePRO - Timesheet List</title>
+    <link rel="icon" type="image/png" href="/Content/TimePro_icon_20.png" />
+
+    <link href="/Content/bootstrap?v=Lmydo_4vaIDmi3ZQ2z3IQOz4-yobQ2zlceiLJEn9Ev81" rel="stylesheet"/>
+<link href="/Content/fontawesome/css?v=5GFXY3DfCR-5pSdIm3dQJtUhiR8s6q13kijgXu13UgQ1" rel="stylesheet"/>
+<link href="/Content/kendo/css_v2?v=OLwCGYLOxbrFu9vHnLNJQzImpjXZwQHIh7cwmtPz35k1" rel="stylesheet"/>
+<link href="/Content/SqlDeploy/css?v=zgf9RxmpTXsK3cLamOyxQMK22zfmhMLQ704ALHzKr9E1" rel="stylesheet"/>
+<link href="/Content/css_v2?v=gNDIMfQyhuWUdvDwhu6CRJz6RsP9cHPudXfw8_Tq6Ro1" rel="stylesheet"/>
+
+
+    <script src="/bundles/jquery?v=gkWyJthHPtwkFjvHuNinBjchIfwLwc_KbE-H26J2kAI1"></script>
+<script src="/bundles/bootstrap?v=9G67ugWPOxmy1GyedmUlF4EJapkuJ4fmX570BkoPVXU1"></script>
+<script src="/bundles/thirdparty?v=Fh1XnyYOnBngJbaVNb4vLmUVrnAX9j_iAOygbYgEv301"></script>
+<script src="/bundles/angular?v=xrFCpkvkA5Q0L9qxMqJs6bCes5e_MYmJH4BEbCaH4841"></script>
+<script src="/bundles/kendo/js?v=z1YftoyGjL0RapQEaw6pClpB_6ySj80NgOj2HhawXMM1"></script>
+<script src="/bundles/angularapp?v=N_YTydEjVRZSQcwEpg4hDTx0qZTgfs3rcH9Clx-_SjE1"></script>
+
+
+    <script>
+
+        Url = {
+            AppRoot: '/',
+            Content: function (relativeUrl) {
+                return relativeUrl.replace("~/", Url.AppRoot);
+            }
+        };
+
+    </script>
+
+    
+    
+    <script type="text/javascript" src="/Scripts/Timesheet/list.js"></script>
+    <script type="text/javascript" src="/Scripts/Timesheet/timesheet-delete.js"></script>
+    <script type="text/javascript">
+        var currentEmpId = 'AVN';
+        var getTimesheetDateClassesUrl = '/Ajax/GetTimesheetDateClasses';
+        var deleteTimeSheetUrl = '/Timesheet/Delete';
+        var filterDate = new Date(2020, 5 - 1, 21);
+        var employeeComboUrl = '/Ajax/EmployeeComboBox_FilteringAjax';
+        var includeExEmployees = $.jStorage.get(currentEmpId + "IncludeExEmployees");
+        var hasTimesheets = false;
+    </script>
+
+
+
+    <script id="gridFooterTemplate" type="text/x-jquery-tmpl">
+        <div class="t-grid-footer">
+            <div class="t-grid-footer-wrap">
+                <table cellspacing="0">
+                    <colgroup>
+                        <col colspan="3">
+                    </colgroup>
+                    <tbody>
+                        <tr class="t-footer-template">
+                            <td>Total Records: 0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+                $.ajax({
+                    type: 'GET',
+                    url: 'https://ipapi.co/country',
+                    success: function (data) {
+                        if (data != "CN") {
+                            window.twttr = (function (d, s, id) {
+                                var js,
+                                    fjs = d.getElementsByTagName(s)[0],
+                                    t = window.twttr || {};
+                                if (d.getElementById(id)) return t;
+                                js = d.createElement(s);
+                                js.id = id;
+                                js.src = "https://platform.twitter.com/widgets.js";
+                                fjs.parentNode.insertBefore(js, fjs);
+
+                                t._e = [];
+                                t.ready = function (f) {
+                                    t._e.push(f);
+                                };
+
+                                return t;
+                            }(document, "script", "twitter-wjs"));
+                        }
+                        
+                    }
+                });
+        });
+
+    </script>
+
+
+
+    
+
+    <script>
+        $(function () {
+            $('[data-toggle="popover"]').popover({ html: true });
+        });
+    </script>
+
+
+
+
+
+        <script>
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+            ga('create', 'UA-35401489-1', 'auto');
+            ga('send', 'pageview');
+        </script>
+        <script type="text/javascript">
+            var appInsights = window.appInsights || function(config) {
+                function s(config) {
+                    t[config] = function() {
+                        var i = arguments;
+                        t.queue.push(function() { t[config].apply(t, i) })
+                    }
+                }
+
+                var t = { config: config }, r = document, f = window, e = "script", o = r.createElement(e), i, u;
+                for (o.src = config.url || "//az416426.vo.msecnd.net/scripts/a/ai.0.js", r.getElementsByTagName(e)[0].parentNode.appendChild(o), t.cookie = r.cookie, t.queue = [], i = ["Event", "Exception", "Metric", "PageView", "Trace"]; i.length;) s("track" + i.pop());
+                return config.disableExceptionTracking || (i = "onerror", s("_" + i), u = f[i], f[i] = function(config, r, f, e, o) {
+                    var s = u && u(config, r, f, e, o);
+                    return s !== !0 && t["_" + i](config, r, f, e, o), s
+                }), t
+            }({
+                instrumentationKey: "0b0bc414-eae9-4c24-95bf-5db20bad24d8"
+            });
+
+            window.appInsights = appInsights;
+            appInsights.trackPageView();
+        </script>
+    <!-- Hotjar Tracking Code for http://sswtimepro.com -->
+        <script>
+            (function(h,o,t,j,a,r){
+                h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+                h._hjSettings={hjid:119631,hjsv:5};
+                a=o.getElementsByTagName('head')[0];
+                r=o.createElement('script');r.async=1;
+                r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+                a.appendChild(r);
+            })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+        </script>
+
+
+</head>
+<body ng-app="TimePROApp">
+    <div class="container-fluid">
+        <div class="page-wrap">
+            <nav class="navbar navbar-default navbar-fixed-top" ng-controller="HeaderController">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header visible-xs">
+                    <a class="navbar-brand" href="/"><img src="/Content/timepro-logo.svg" /></a>
+                    <button type="button" class="navbar-toggle collapsed pull-right" data-toggle="collapse" data-target="#MainMenu">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="MainMenu">
+                    <ul class="nav navbar-nav main-nav">
+                        <li class="active">
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Timesheets <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li class="active"><a href="/Timesheet">Day</a></li>
+                                <li class=""><a href="/Timesheet/WeekView">Week</a></li>
+                                <li class=""><a href="/Timesheet/AVN/2020-05-21/Add">Add +</a></li>
+
+                            </ul>
+                        </li>
+                        <li class="">
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reports <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li class=""><a href="/reports">Dashboard</a></li>
+                                <li ng-class="{active: isActive('/Leaderboard/')}"><a href="/b/leaderboard">Billable Leaderboard</a></li>
+                                <li class=""><a href="/Reports/Billboard">Project Billboard</a></li>
+
+                                <li class=""><a href="/Reports/ClientProjectSummary">Client Project Summary</a></li>
+                                <li class=""><a href="/ProjectBreakdownReport">Project Breakdown</a></li>
+                                <li class=""><a href="/Reports/TimeSheetSummary">Timesheet Summary</a></li>
+
+                                <li class=""> <a href="/Reports/AutomaticTimesheets">Automatic Timesheets</a></li>
+                                <li ng-class="{active: isActive('/validation/queries/')}"><a href="/b/validation/queries">Validation queries</a></li>
+                                <li class=""><a href="/Export">Export</a></li>
+                            </ul>
+                        </li>
+                            
+                                <li ng-class="{active: isActive('/Invoice')}">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Invoice <span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li ng-class="{active: isActive('/Invoice/list')}"><a href="/b/invoice/list">Search Invoices</a></li>
+                                        <li ng-class="{active: isActive('/invoice/recurring')}"><a href="/b/invoice/recurring">Recurring Invoices</a></li>
+                                        <li ng-class="{active: isActive('/Invoice/Details')}"><a href="/a#/Invoice/Details/">New Invoice</a></li>
+                                        <li ng-class="{active: isActive('/Invoice/Clients')}"><a href="/b/invoice/clients/">Clients to be Invoiced</a></li>
+                                            <li ng-class="{active: isActive('/receipts/')}"><a href="/b/receipts/">Receipts</a></li>
+                                    </ul>
+                                </li>
+                            
+                        <li ng-class="{active: isActive('/ProductDashboard')}">
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Products <span class="caret"></span></a>
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                <li ng-class="{active: isActive('/ProductDashboard')}"><a href="/a#/">Dashboard</a></li>
+                            </ul>
+                        </li>
+                        <li class="">
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Admin <span class="caret"></span></a>
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                <li><a class="" href="/SiteSettings">Site</a></li>
+                                <li><a class="" href="/Users/List" id="nav-users" title="Manage your users">Users</a></li>
+                                <li ng-class="{active: isActive('/admin/clients')}"><a href="/b/admin/clients/">Clients</a></li>
+                                <li><a class="" href="/Timesheet/Project/List" id="nav-projects" title="Manage your projects">Projects</a></li>
+                                <li><a class="" href="/ProjectIteration/List" id="nav-iterations" title="Manage your iterations">Iterations</a></li>
+                                <li ng-class="{active: isActive('/admin/categories')}"><a href="/b/admin/categories/">Categories</a></li>
+                                <li ng-class="{active: isActive('/admin/tfs')}"><a href="/b/admin/tfs/">Azure DevOps</a></li>
+                                <li ng-class="{active: isActive('/admin/crm')}"><a href="/b/admin/crm/">CRM</a></li>
+                                    <li ng-class="{active: isActive('/b/admin/xero')}"><a href="/b/admin/xero/">Xero</a></li>
+                                <li ng-class="{active: isActive('/invoice/settings')}"><a href="/b/invoice/settings/">Invoice Settings</a></li>
+                                <li ng-class="{active: isActive('/admin/share-point')}"><a href="/b/admin/share-point/">SharePoint</a></li>
+                                <li ng-class="{active: isActive('/admin/api-key')}"><a href="/b/admin/api-key/">API Key</a></li>
+                            </ul>
+                        </li>
+
+                            <li class="">
+                                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Portal <span class="caret"></span></a>
+                                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                    <li ng-class="{active: isActive('/Tenants/')}"><a href="/b/tenants">Tenants</a></li>
+                                </ul>
+                            </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header hidden-xs">
+                    <a class="navbar-brand" href="/"><img src="/Content/timepro-logo.svg" /></a>
+                    <button type="button" class="navbar-toggle collapsed pull-right" data-toggle="collapse" data-target="#MainMenu">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <ul class="nav navbar-right nav-login hidden-xs">
+                    <li class="login-panel">
+                        <div class="account-profile">
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                <img Alt="Profile picture from Gravatar" Title="Anthony Nguyen (AnthonyNguyen@ssw.com.au)" class="hidden-xs" id="employeeImage" src="https://secure.gravatar.com/avatar/2e8f035751b49fe6019d372091c2f1da?s=50&amp;d=identicon"></img> <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                <li class="dropdown-header"><div>
+                Anthony Nguyen
+                <br>
+                AnthonyNguyen@ssw.com.au
+            </div></li>
+                                <li><a href="/Settings">My Settings</a></li>
+                                <li><a href="/Settings/Password">Change my Password</a></li>
+                                <li><a href="/Authentication/LogOff">Logout</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                <div class="form-inline navbar-form navbar-right hidden-xs">
+                    <div class="input-group">
+                        <input type="text" ng-model="Search.Keyword" placeholder="Client / Invoice Search" class="form-control" ng-keyup="($event.keyCode == 13 && Search())" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button" ng-click="Search()"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+            </nav>
+            <div id="main">
+                <div class="timesheetindex">
+                    
+
+<div class="title">
+    
+</div>
+<div class="row">
+    <div class="left-content col-xs-12 col-lg-2 col-md-3 col-sm-4">
+        
+    <div class="filter">
+        <div class="form-group hidden-xs">
+            <input class="employeeCombo" id="EmployeeComboBox" name="EmployeeComboBox" style="width: 100%;" type="text" value="Anthony Nguyen (AVN)" /><script>
+	jQuery(function(){jQuery("#EmployeeComboBox").kendoComboBox({"change":employeeChange,"dataSource":{"transport":{"read":{"url":"/Ajax/EmployeeComboBox_FilteringAjax","data":function() { return { text: getEmployeeText(), IncludeExEmployees: !!includeExEmployees}; },"type":"POST"},"prefix":""},"serverFiltering":true,"filter":[],"schema":{"errors":"Errors"}},"dataTextField":"Text","delay":300,"filter":"contains","ignoreCase":true,"minLength":3,"autoBind":true,"dataValueField":"Value","highlightFirst":true,"suggest":true});});
+</script>
+        </div>
+        <div class="form-group">
+            <div id="calendar"></div>
+        </div>
+        <div class="form-group hidden-xs hidden-sm">
+            <h4>Day Summary</h4>
+                <p>No data for today yet</p>
+        </div>
+        <div class="form-group hidden-xs">
+            <h4>Projects (last 14 days)</h4>
+                <ol class="timesheet-list">
+                            <li>
+                                <a href="/Reports/TimesheetSummary?startDate=2020-04-21&endDate=2020-05-21&Employees=AVN&Clients=RLUHRQ&Projects=6UPE3O" class="billable-client">
+                                    <span></span>
+                                    Avatar - CoINVEST (40.0 hrs)
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/Reports/TimesheetSummary?startDate=2020-04-21&endDate=2020-05-21&Employees=AVN&Clients=SB19GU&Projects=BMQHWP" class="billable-client">
+                                    <span></span>
+                                    Point of Sale - ARB (8.0 hrs)
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/Reports/TimesheetSummary?startDate=2020-04-21&endDate=2020-05-21&Employees=AVN&Clients=SSW&Projects=LA" class="non-billable-client">
+                                    <span></span>
+                                    SSW Link Auditor - SSW (8.0 hrs)
+                                </a>
+                            </li>
+
+                </ol>
+                <div class="clientdaystotal">
+                    Total: 56.0 hrs (<a href="/Reports/ClientProjectSummary?startDate=2020-04-21&endDate=2020-05-21&EmpID=AVN">More</a>)
+                </div>
+        </div>
+    </div>
+
+    </div>
+    <div class="main-content col-xs-12 col-lg-10 col-md-9 col-sm-8">
+        
+<div ng-controller="TimesheetDashboardController as vm">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+
+            
+
+            <h2 class="timesheetindex-date hidden-xs">
+
+
+                <span>Thursday 21<sup>th</sup> May 2020</span>
+            </h2>
+
+
+            <div class="toolbar">
+                <a class="btn btn-primary " href="/Timesheet/AVN/2020-05-21/Add">Add Timesheet</a>
+                
+            </div>
+
+            <div class="timesheets-index">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+<div class="bottom-content"></div>
+
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+            <div class="footer-style">
+                <div class="row">
+                    <div class="col-sm-12 col-xs-12">
+                        <ul class="footer-links">
+                            <li>&copy; Copyright <a href="http://www.ssw.com.au/" target="_blank">SSW</a> 2020. All Rights Reserved</li>
+                            <li><a href="https://www.sswtimepro.com/Videos"><img src="/Content/images/YouTubeIcon.png" width="20" /> Videos</a></li>
+                            <li><a href="/HealthCheck"><img src="/Content/healthchecklogo-nowords.png" height="14" alt="HealthCheck">Health Check</a></li>
+                        </ul>
+                        <ul class="footer-links">
+                            <li>
+                                Version: 3.20. Last deployed yesterday with commit facc131f (Build #0520.02).
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+
+    <script>
+// Include the UserVoice JavaScript SDK (only needed once on a page)
+UserVoice=window.UserVoice||[];(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/0vDtya3vMqrDdxoMlfArOQ.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})();
+
+//
+// UserVoice Javascript SDK developer documentation:
+// https://www.uservoice.com/o/javascript-sdk
+//
+
+// Set colors
+UserVoice.push(['set', {
+  accent_color: '#448dd6',
+  trigger_color: 'white',
+  trigger_background_color: 'rgba(46, 49, 51, 0.6)'
+}]);
+
+// Identify the user and pass traits
+// To enable, replace sample data with actual user traits and uncomment the line
+UserVoice.push(['identify', {
+  //email:      'john.doe@example.com', // User’s email address
+  //name:       'John Doe', // User’s real name
+  //created_at: 1364406966, // Unix timestamp for the date the user signed up
+  //id:         123, // Optional: Unique id of the user (if set, this should not change)
+  //type:       'Owner', // Optional: segment your users by type
+  //account: {
+  //  id:           123, // Optional: associate multiple users with a single account
+  //  name:         'Acme, Co.', // Account name
+  //  created_at:   1364406966, // Unix timestamp for the date the account was created
+  //  monthly_rate: 9.99, // Decimal; monthly rate of the account
+  //  ltv:          1495.00, // Decimal; lifetime value of the account
+  //  plan:         'Enhanced' // Plan name for the account
+  //}
+}]);
+
+// Add default trigger to the bottom-right corner of the window:
+UserVoice.push(['addTrigger', {mode: 'contact', trigger_position: 'bottom-right' }]);
+
+// Or, use your own custom trigger:
+//UserVoice.push(['addTrigger', '#id', { mode: 'contact' }]);
+
+// Autoprompt for Satisfaction and SmartVote (only displayed under certain conditions)
+//UserVoice.push(['autoprompt', {}]);
+</script>
+
+    
+    <script async src="https://ssw-boggo-app.azurewebsites.net/widget?project=SSW.TimeProDotNet&account=ssw2&position=right&rightOffset=60px"></script>
+
+</body>
+</html>
+
