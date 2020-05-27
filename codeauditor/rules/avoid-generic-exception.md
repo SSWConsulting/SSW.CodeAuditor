@@ -1,13 +1,13 @@
 ---
 id: 'ssw88'
-name: 'No catching specific Exceptions'
-ruleUrl: 'https://eslint.org/docs/rules/no-empty'
+name: 'Avoid generic Exceptions'
+ruleUrl: 'http://www.ssw.com.au/ssw/CodeAuditor/'
 ruleType: Regex
-fileFilter: '*.cs;*.js;*.ts'
+fileFilter: '*.cs'
 shouldExists: false
 isError: false
 searchIn: 'content'
-regex: "catch\\s*\\(\\s*Exception\\s+"
+regex: "catch\\s*\\(\\s*Exception\\s*"
 ---
 
 ## Rule Details

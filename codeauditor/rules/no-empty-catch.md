@@ -1,13 +1,13 @@
 ---
 id: 'ssw26'
 name: 'No empty catch blocks'
-ruleUrl: 'https://eslint.org/docs/rules/no-empty'
+ruleUrl: 'http://www.ssw.com.au/ssw/CodeAuditor/'
 ruleType: Regex
-fileFilter: '*.cs;*.js;*.ts;*.xml'
+fileFilter: '*.cs;*.js'
 shouldExists: false
 isError: true
 searchIn: 'content'
-regex: "{(\\s|//.*)*}"
+regex: "catch\\s*\\(.*\\)\\s*{(\\s|//.*)*}"
 ---
 
 ## Rule Details
