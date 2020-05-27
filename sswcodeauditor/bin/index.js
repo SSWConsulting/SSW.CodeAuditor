@@ -48,13 +48,15 @@ const fileMatchExtension = (file) =>
 		R.any((x) => minimatch(file, `./**/${x}`))
 	);
 
-const args = yargs.usage('Usage: codeauditor src [options]').option('ignore', {
-	alias: 'I',
-	describe:
-		'.gitignore file location, use current location .gitignore file if found',
-	type: 'string',
-	demandOption: false,
-}).argv;
+const args = yargs
+	.usage('Usage: sswcodeauditor src [options]')
+	.option('ignore', {
+		alias: 'I',
+		describe:
+			'.gitignore file location, use current location .gitignore file if found',
+		type: 'string',
+		demandOption: false,
+	}).argv;
 
 const rootFolder = args._[0] || '.';
 const rules = fs.readdirSync(path.join(__dirname, '../rules/'));
