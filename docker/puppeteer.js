@@ -12,9 +12,15 @@ const getLinksViaPuppeteer = async (url) => {
 	const browser = await puppeteer.launch();
 	const page = await browser.newPage();
 	await page.goto(url);
-	const pageContent = await page.content();
+	let links = parseLinks(url, await page.content());
+	await page.goto(
+		'https://azuregems.io/keda-kubernetes-event-driven-autoscaling/'
+	);
+	const dd2 = await page.content();
+	// console.log(dd2);
+	links = links.concat(parseLinks(url, dd2));
 	await browser.close();
-	return parseLinks(url, pageContent);
+	return links;
 };
 
 function parseLinks(url, body) {
@@ -47,7 +53,7 @@ function parseLinks(url, body) {
 }
 
 console.time('took');
-getLinksViaFetch('https://azuregems.io/')
+getLinksViaPuppeteer('https://azuregems.io/')
 	.then((x) => {
 		console.timeEnd('took');
 		console.log('found urls:', x.length);

@@ -1,0 +1,29 @@
+{
+	"name": "codeauditor",
+	"version": "1.0.0",
+	"description": "",
+	"main": "./bin/index.js",
+	"bin": {
+		"codeauditor" : "./bin/index.js"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"as-table": "^1.0.55",
+		"boxen": "^4.2.0",
+		"chalk": "^3.0.0",
+		"eslint": "^5.12.0",
+		"eslint-plugin-promise": "^4.0.1",
+		"gauge": "^3.0.0",
+		"glob": "^7.1.6",
+		"node-fetch": "^2.6.0",
+		"object-assign": "^4.1.1",
+		"parser-front-matter": "^1.6.4",
+		"ramda": "^0.27.0",
+		"signal-exit": "^3.0.3",
+		"yargs": "^15.3.1"
+	}
+}

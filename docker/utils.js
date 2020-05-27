@@ -5,16 +5,20 @@ const chalk = require('chalk');
 const boxen = require('boxen');
 
 exports.consoleBox = (text, color) =>
-	console.log(boxen(chalk[color](text), {
-		padding: 1,
-		margin: 1,
-		borderStyle: 'single',
-		borderColor: color,
-	}));
+	console.log(
+		boxen(chalk[color](text), {
+			padding: 1,
+			margin: 1,
+			borderStyle: 'single',
+			borderColor: color,
+		})
+	);
 
 exports.getLinkToBuild = (runId) =>
 	runId
-		? `Report URL => https://sswauditor.surge.sh/build/${_replaceQuote(runId)}`
+		? `Report URL => https://sswauditor.surge.sh/build/${_replaceQuote(
+				runId
+		  )}`
 		: '';
 
 exports.printTimeDiff = (t1, t2) => {
@@ -60,7 +64,6 @@ exports.getPerfScore = (value) => ({
 			100
 	),
 });
-
 
 exports.outputBadDataCsv = (records) => {
 	const createCsvStringifier = require('csv-writer')
