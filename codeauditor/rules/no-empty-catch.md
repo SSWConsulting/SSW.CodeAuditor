@@ -3,7 +3,7 @@ id: 'ssw26'
 name: 'No empty catch blocks'
 ruleUrl: 'https://eslint.org/docs/rules/no-empty'
 ruleType: Regex
-fileFilter: '*.{cs,ts,js}'
+fileFilter: '*.cs;*.js;*.ts;*.xml'
 shouldExists: false
 isError: true
 searchIn: 'content'
