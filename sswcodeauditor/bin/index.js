@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const R = require('ramda');
 const minimatch = require('minimatch');
+const strip = require('strip-comments');
 const glob = require('glob');
 const chalk = require('chalk');
 const asTable = require('as-table');
@@ -16,6 +17,8 @@ const getLine = (code, index) => {
 	const c = code.substr(0, index);
 	return c.split('\n').length;
 };
+
+const cleanCode = R.pipe(strip);
 
 const printTimeDiff = (t1, t2) => {
 	var dif = t1 - t2;
@@ -111,7 +114,7 @@ for (let u = 0; u < files.length; u++) {
 
 		const code = fs.readFileSync(file).toString();
 		const re = new RegExp(parsed.regex, 'g');
-		let m = re.exec(code);
+		let m = re.exec(cleanCode(code));
 
 		if (m) {
 			while (m) {
