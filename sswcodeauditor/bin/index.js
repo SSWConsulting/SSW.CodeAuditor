@@ -112,9 +112,9 @@ for (let u = 0; u < files.length; u++) {
 			continue;
 		}
 
-		const code = fs.readFileSync(file).toString();
+		const code = cleanCode(fs.readFileSync(file).toString());
 		const re = new RegExp(parsed.regex, 'g');
-		let m = re.exec(cleanCode(code));
+		let m = re.exec(code);
 
 		if (m) {
 			while (m) {
