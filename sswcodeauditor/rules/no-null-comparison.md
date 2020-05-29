@@ -8,19 +8,17 @@ shouldExists: false
 isError: true
 searchIn: 'content'
 script: |
-    const walk = require('esprima-walk');
-    const parse = require('@typescript-eslint/typescript-estree').parse;
-    const ast = parse(code, {
+    const ast = tsParser(code, {
         loc: true,
     });
 
     let tnodes = [];
-    walk(ast, (n) => tnodes.push(n));
+    esWalk(ast, (n) => tnodes.push(n));
     let errors = tnodes
         .filter(
             (n) =>
                 n.type === 'BinaryExpression' &&
-                n.operator === '==' &&
+                (n.operator === '==' || n.operator === '!=') &&
                 n.right.raw === 'null'
         )
         .map((n) => n.loc.start.line)

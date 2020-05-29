@@ -1,5 +1,5 @@
 ---
-id: 'ssw90'
+id: 'ssw9'
 name: 'User triple equals instead of double'
 ruleUrl: 'https://eslint.org/docs/rules/eqeqeq'
 ruleType: Script
@@ -8,16 +8,15 @@ shouldExists: false
 isError: false
 searchIn: 'content'
 script: |
-    const walk = require('esprima-walk');
-    const parse = require('@typescript-eslint/typescript-estree').parse;
-    const ast = parse(code, {
+    const ast = tsParser(code, {
         loc: true,
     });
 
     let tnodes = [];
-    walk(ast, (n) => tnodes.push(n));
+    esWalk(ast, (n) => tnodes.push(n));
     let errors = tnodes
-        .filter((n) => n.type === 'BinaryExpression' && n.operator === '==')
+        .filter((n) => n.type === 'BinaryExpression' && 
+            (n.operator === '==' || n.operator === '!='))
         .map((n) => n.loc.start.line)
         .join(',');
 

@@ -8,7 +8,6 @@ shouldExists: false
 isError: false
 searchIn: 'content'
 script: |
-    const cheerio = require('cheerio');
     const $ = cheerio.load(code, {
         xmlMode: true,
         withStartIndices: true,

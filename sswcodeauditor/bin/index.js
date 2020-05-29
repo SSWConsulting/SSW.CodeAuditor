@@ -12,7 +12,12 @@ const asTable = require('as-table');
 const boxen = require('boxen');
 const results = [];
 const yargs = require('yargs');
+
+// import for the script module
 const { NodeVM } = require('vm2');
+const esWalk = require('esprima-walk');
+const tsParser = require('@typescript-eslint/typescript-estree').parse;
+const cheerio = require('cheerio');
 
 const getLine = (code, index) => {
 	const c = code.substr(0, index);
@@ -24,16 +29,19 @@ const evaluateScript = (code, script) => {
 		timeout: 100, // milliseconds timeout,
 		sandbox: {
 			code,
+			esWalk,
+			tsParser,
+			cheerio,
 		},
 		require: {
 			external: true,
 		},
 	});
-	return vm.run(script, 'index.js');
+	return vm.run(script);
 };
 
 const cleanCode = R.pipe(strip);
-const printErrOrWarn = (parsed, line, file, pushed) => {
+const printErrOrWarn = (parsed, line, file, results) => {
 	console.log(
 		chalk[parsed.isError ? 'red' : 'yellow'](
 			`[${parsed.isError ? 'ERROR' : 'WARN'} : ${parsed.id} - ${
@@ -157,7 +165,7 @@ for (let u = 0; u < files.length; u++) {
 			if (m) {
 				while (m) {
 					const line = getLine(code, m.index);
-					printErrOrWarn(parsed, line, file);
+					printErrOrWarn(parsed, line, file, results);
 					m = re.exec(code);
 				}
 			}
