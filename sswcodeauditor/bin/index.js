@@ -12,14 +12,44 @@ const asTable = require('as-table');
 const boxen = require('boxen');
 const results = [];
 const yargs = require('yargs');
+const { NodeVM } = require('vm2');
 
 const getLine = (code, index) => {
 	const c = code.substr(0, index);
 	return c.split('\n').length;
 };
 
-const cleanCode = R.pipe(strip);
+const evaluateScript = (code, script) => {
+	const vm = new NodeVM({
+		timeout: 100, // milliseconds timeout,
+		sandbox: {
+			code,
+		},
+		require: {
+			external: true,
+		},
+	});
+	return vm.run(script, 'index.js');
+};
 
+const cleanCode = R.pipe(strip);
+const printErrOrWarn = (parsed, line, file, pushed) => {
+	console.log(
+		chalk[parsed.isError ? 'red' : 'yellow'](
+			`[${parsed.isError ? 'ERROR' : 'WARN'} : ${parsed.id} - ${
+				parsed.name
+			}] ${file} (line ${line})`
+		)
+	);
+
+	results.push({
+		ruleId: parsed.id,
+		ruleName: parsed.name,
+		error: parsed.isError,
+		file,
+		line,
+	});
+};
 const printTimeDiff = (t1, t2) => {
 	var dif = t1 - t2;
 	const took = '';
@@ -107,33 +137,29 @@ for (let u = 0; u < files.length; u++) {
 
 	for (let index = 0; index < allRules.length; index++) {
 		const parsed = allRules[index];
-
 		if (!fileMatchExtension(file)(parsed.fileFilter)) {
 			continue;
 		}
 
 		const code = cleanCode(fs.readFileSync(file).toString());
-		const re = new RegExp(parsed.regex, 'g');
-		let m = re.exec(code);
 
-		if (m) {
-			while (m) {
-				const line = getLine(code, m.index);
-				console.log(
-					chalk[parsed.isError ? 'red' : 'yellow'](
-						`[${parsed.isError ? 'ERROR' : 'WARN'} : ${
-							parsed.id
-						} - ${parsed.name}] ${file} (line ${line})`
-					)
-				);
-				results.push({
-					ruleId: parsed.id,
-					ruleName: parsed.name,
-					error: parsed.isError,
-					file,
-					line,
+		if (parsed.ruleType === 'Script') {
+			const locs = evaluateScript(code, parsed.script);
+			if (locs) {
+				locs.split(',').forEach((line) => {
+					printErrOrWarn(parsed, line, file, results);
 				});
-				m = re.exec(code);
+			}
+		} else if (parsed.ruleType === 'Regex') {
+			const re = new RegExp(parsed.regex, 'g');
+			let m = re.exec(code);
+
+			if (m) {
+				while (m) {
+					const line = getLine(code, m.index);
+					printErrOrWarn(parsed, line, file);
+					m = re.exec(code);
+				}
 			}
 		}
 	}

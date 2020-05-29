@@ -19,6 +19,7 @@
 		"as-table": "^1.0.55",
 		"boxen": "^4.2.0",
 		"chalk": "^3.0.0",
+		"cheerio": "^1.0.0-rc.3",
 		"eslint": "^5.12.0",
 		"eslint-plugin-promise": "^4.0.1",
 		"gauge": "^3.0.0",
@@ -26,6 +27,7 @@
 		"parser-front-matter": "^1.6.4",
 		"ramda": "^0.27.0",
 		"strip-comments": "^2.0.1",
+		"vm2": "^3.9.2",
 		"yargs": "^15.3.1"
 	}
 }
