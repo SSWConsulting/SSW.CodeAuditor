@@ -1,5 +1,5 @@
 ---
-id: 'ssw88'
+id: 'ssw89'
 name: 'The <title>, <h1>, and <h2> tags need to be descriptive'
 ruleUrl: 'http://www.ssw.com.au/ssw/CodeAuditor/'
 ruleType: Script

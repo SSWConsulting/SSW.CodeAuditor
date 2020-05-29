@@ -1,5 +1,5 @@
 ---
-id: 'ssw88'
+id: 'ssw90'
 name: 'User triple equals instead of double'
 ruleUrl: 'https://eslint.org/docs/rules/eqeqeq'
 ruleType: Script
