@@ -15,6 +15,7 @@ const {
 	uploadLighthouseReport,
 	uploadHtmlHintReport,
 	addPerformanceThreshold,
+	uploadCodeAuditorReport,
 } = require('./commands');
 const {
 	getSummary,
@@ -24,7 +25,7 @@ const {
 	getScanDetails,
 	getIgnoredUrls,
 } = require('./queries');
-const { newGuid, getErrorAndWarnCount, getErrorsName } = require('./utils');
+const { newGuid, getCodeErrorSummary, getErrorAndWarnCount, getErrorsName } = require('./utils');
 const { updateLastBuild, getUserIdFromApiKey } = require('./firestore');
 
 var cors = require('cors');
@@ -104,6 +105,7 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		lhr,
 		whiteListed,
 		cloc,
+		code,
 		htmlIssuesSummary,
 		htmlIssues,
 	} = req.body;
@@ -138,6 +140,7 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		htmlErrors = error;
 		htmlIssuesList = getErrorsName(htmlIssuesSummary);
 	}
+
 	// insert summary first
 	const payload = {
 		...lhrSummary,
@@ -155,6 +158,7 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		).length,
 		htmlWarnings,
 		htmlErrors,
+		codeIssues: getCodeErrorSummary(code),
 		htmlIssuesList,
 	};
 
@@ -169,7 +173,13 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 	if (htmlIssues) {
 		console.log('uploading list of HTML hint issues to blob storage');
 		await uploadHtmlHintReport(runId, htmlIssues);
-		console.log('uploading to Blob storage - completed');
+		console.log('uploading HtmlHint to Blob storage - completed');
+	}
+
+	if (code) {
+		console.log('uploading list of Code Auditor issues to blob storage');
+		await uploadCodeAuditorReport(runId, code);
+		console.log('uploading Code Auditor to Blob storage - completed');
 	}
 
 	// insert each row

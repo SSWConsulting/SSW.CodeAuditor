@@ -1,0 +1,226 @@
+const d = [
+	{
+		"ruleId": "ssw26",
+		"ruleName": "Boolean Properties must be prefixed by a verb",
+		"error": true,
+		"file": "./tests/bool-property-must-be-prefixed-by-a-verb.cs",
+		"line": 5
+	},
+	{
+		"ruleId": "ssw26",
+		"ruleName": "Boolean Properties must be prefixed by a verb",
+		"error": true,
+		"file": "./tests/bool-property-must-be-prefixed-by-a-verb.cs",
+		"line": 6
+	},
+	{
+		"ruleId": "ssw88",
+		"ruleName": "Avoid generic Exceptions",
+		"error": false,
+		"file": "./tests/catch-generic-exception.cs",
+		"line": 4
+	},
+	{
+		"ruleId": "ssw88",
+		"ruleName": "Avoid generic Exceptions",
+		"error": false,
+		"file": "./tests/catch-generic-exception.cs",
+		"line": 10
+	},
+	{
+		"ruleId": "ssw88",
+		"ruleName": "Avoid generic Exceptions",
+		"error": false,
+		"file": "./tests/catch-generic-exception.cs",
+		"line": 16
+	},
+	{
+		"ruleId": "ssw88",
+		"ruleName": "Avoid generic Exceptions",
+		"error": false,
+		"file": "./tests/catch-generic-exception.cs",
+		"line": 22
+	},
+	{
+		"ruleId": "ssw88",
+		"ruleName": "Avoid generic Exceptions",
+		"error": false,
+		"file": "./tests/catch-generic-exception.cs",
+		"line": 28
+	},
+	{
+		"ruleId": "ssw26",
+		"ruleName": "No empty catch blocks",
+		"error": true,
+		"file": "./tests/catch-generic-exception.cs",
+		"line": 4
+	},
+	{
+		"ruleId": "ssw26",
+		"ruleName": "No empty catch blocks",
+		"error": true,
+		"file": "./tests/catch-generic-exception.cs",
+		"line": 10
+	},
+	{
+		"ruleId": "ssw26",
+		"ruleName": "No empty catch blocks",
+		"error": true,
+		"file": "./tests/catch-generic-exception.cs",
+		"line": 16
+	},
+	{
+		"ruleId": "ssw26",
+		"ruleName": "No empty catch blocks",
+		"error": true,
+		"file": "./tests/catch-generic-exception.cs",
+		"line": 22
+	},
+	{
+		"ruleId": "ssw26",
+		"ruleName": "No empty catch blocks",
+		"error": true,
+		"file": "./tests/catch-generic-exception.cs",
+		"line": 28
+	},
+	{
+		"ruleId": "ssw26",
+		"ruleName": "Use String.Empty instead of \"\"",
+		"error": true,
+		"file": "./tests/catch-generic-exception.cs",
+		"line": 4
+	},
+	{
+		"ruleId": "ssw26",
+		"ruleName": "Use String.Empty instead of \"\"",
+		"error": true,
+		"file": "./tests/catch-generic-exception.cs",
+		"line": 10
+	},
+	{
+		"ruleId": "ssw26",
+		"ruleName": "Use String.Empty instead of \"\"",
+		"error": true,
+		"file": "./tests/catch-generic-exception.cs",
+		"line": 16
+	},
+	{
+		"ruleId": "ssw26",
+		"ruleName": "Use String.Empty instead of \"\"",
+		"error": true,
+		"file": "./tests/catch-generic-exception.cs",
+		"line": 22
+	},
+	{
+		"ruleId": "ssw26",
+		"ruleName": "Use String.Empty instead of \"\"",
+		"error": true,
+		"file": "./tests/catch-generic-exception.cs",
+		"line": 28
+	},
+	{
+		"ruleId": "ssw26",
+		"ruleName": "No empty catch blocks",
+		"error": true,
+		"file": "./tests/no-empty-catch.cs",
+		"line": 3
+	},
+	{
+		"ruleId": "ssw26",
+		"ruleName": "No empty catch blocks",
+		"error": true,
+		"file": "./tests/no-empty-catch.cs",
+		"line": 8
+	},
+	{
+		"ruleId": "ssw26",
+		"ruleName": "No empty catch blocks",
+		"error": true,
+		"file": "./tests/no-empty-catch.cs",
+		"line": 13
+	},
+	{
+		"ruleId": "ssw26",
+		"ruleName": "No empty catch blocks",
+		"error": true,
+		"file": "./tests/no-empty-catch.cs",
+		"line": 17
+	},
+	{
+		"ruleId": "ssw26",
+		"ruleName": "Use String.Empty instead of \"\"",
+		"error": true,
+		"file": "./tests/no-empty-catch.cs",
+		"line": 3
+	},
+	{
+		"ruleId": "ssw26",
+		"ruleName": "Use String.Empty instead of \"\"",
+		"error": true,
+		"file": "./tests/no-empty-catch.cs",
+		"line": 8
+	},
+	{
+		"ruleId": "ssw26",
+		"ruleName": "Use String.Empty instead of \"\"",
+		"error": true,
+		"file": "./tests/no-empty-catch.cs",
+		"line": 13
+	},
+	{
+		"ruleId": "ssw26",
+		"ruleName": "Use String.Empty instead of \"\"",
+		"error": true,
+		"file": "./tests/no-empty-catch.cs",
+		"line": 17
+	},
+	{
+		"ruleId": "ssw89",
+		"ruleName": "The <title>, <h1>, and <h2> tags need to be descriptive",
+		"error": false,
+		"file": "./tests/title-h1-h2-must-be-descriptive.html",
+		"line": "6"
+	},
+	{
+		"ruleId": "ssw88",
+		"ruleName": "Disallow Null Comparisons (no-eq-null)",
+		"error": true,
+		"file": "./tests/use-tripple-equals.js",
+		"line": "3"
+	},
+	{
+		"ruleId": "ssw88",
+		"ruleName": "Disallow Null Comparisons (no-eq-null)",
+		"error": true,
+		"file": "./tests/use-tripple-equals.js",
+		"line": "4"
+	},
+	{
+		"ruleId": "ssw9",
+		"ruleName": "User triple equals instead of double",
+		"error": false,
+		"file": "./tests/use-tripple-equals.js",
+		"line": "3"
+	},
+	{
+		"ruleId": "ssw9",
+		"ruleName": "User triple equals instead of double",
+		"error": false,
+		"file": "./tests/use-tripple-equals.js",
+		"line": "4"
+	},
+	{
+		"ruleId": "ssw9",
+		"ruleName": "User triple equals instead of double",
+		"error": false,
+		"file": "./tests/use-tripple-equals.ts",
+		"line": "4"
+	},
+	{
+		"ruleId": "ssw9",
+		"ruleName": "User triple equals instead of double",
+		"error": false,
+		"file": "./tests/use-tripple-equals.ts",
+		"line": "5"
+	}
+]

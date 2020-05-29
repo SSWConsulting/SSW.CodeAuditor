@@ -82,3 +82,17 @@ exports.outputBadDataCsv = (records) => {
 	console.log(`"Source","Destination","Anchor","Status Code","Status"`);
 	console.log(csvStringifier.stringifyRecords(records));
 };
+
+
+exports.HTMLERRORS = [
+	'attr-no-duplication',
+	'attr-lowercase',
+	'attr-value-double-quotes',
+	'doctype-first',
+	'id-unique',
+	'spec-char-escape',
+	'src-not-empty',
+	'tag-pair',
+	'tagname-lowercase',
+	'title-require',
+];

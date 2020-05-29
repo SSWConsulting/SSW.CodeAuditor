@@ -61,3 +61,19 @@ exports.getErrorsName = R.pipe(
 	),
 	R.mergeAll
 );
+
+exports.getCodeErrorSummary = R.pipe(
+	R.map((x) => ({
+		...x,
+		issue: `${x.error ? 'Error' : 'Warn'} - ${x.ruleName}`,
+	})),
+	R.groupBy(R.prop('issue')),
+	R.converge(
+		R.zipWith((x, y) => ({
+			issue: x,
+			count: y.length,
+		})),
+		[R.keys, R.values]
+	),
+	R.converge(R.zipObj, [R.map(R.prop('issue')), R.map(R.prop('count'))])
+);

@@ -12,7 +12,9 @@ exports.TABLE = {
 	ScanResults: 'ScanResults',
 };
 
+// blob storage names cannot have uppercase or numbers
 exports.BLOB = {
 	lhr: 'lhr',
 	htmlhint: 'htmlhint',
+	codeAuditor: 'codeauditor',
 };

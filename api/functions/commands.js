@@ -80,3 +80,6 @@ exports.uploadLighthouseReport = (runId, lhr) =>
 
 exports.uploadHtmlHintReport = (runId, htmlIssues) =>
 	uploadBlob(BLOB.htmlhint, `${runId}.json`, JSON.stringify(htmlIssues));
+
+exports.uploadCodeAuditorReport = (runId, codeIssues) =>
+	uploadBlob(BLOB.codeAuditor, `${runId}.json`, JSON.stringify(codeIssues));

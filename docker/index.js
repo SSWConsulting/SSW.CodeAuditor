@@ -19,10 +19,12 @@ const {
 	consoleBox,
 	readCsv,
 	outputBadDataCsv,
+	HTMLERRORS,
 } = require('./utils');
 
 let _args = {};
 let _cloc;
+let _codeAuditor = [];
 
 const _getAgrs = () => {
 	_args = yargs
@@ -79,12 +81,26 @@ const main = async () => {
 	if (fs.readdirSync('./src').length > 0) {
 		const [result, error] = countLineOfCodes();
 		if (error) {
-			writeLog(`Error running command: ${error}`);
+			writeLog(`Error running CLOC command: ${error}`);
 			process.exit(1);
 		}
 		_cloc = result;
+
+		const [resultCode, errorCode] = runCodeAuditor();
+		if (errorCode) {
+			writeLog(`Error running SSWCodeAuditor command: ${error}`);
+		}
+		writeLog(resultCode);
+
+		_codeAuditor = resultCode;
+		let codeSummary = '';
+		if (_codeAuditor) {
+			const errors = _codeAuditor.filter((x) => !!x.error);
+			const warns = _codeAuditor.filter((x) => !x.error);
+			codeSummary = ` Errors=${errors.length} Warnings=${warns.length}`;
+		}
 		consoleBox(
-			`Codes: Files=${result.header.n_files} Lines=${result.header.n_lines}`,
+			`Codes: Files=${result.header.n_files} Lines=${result.header.n_lines}${codeSummary}`,
 			'green'
 		);
 	}
@@ -130,6 +146,19 @@ const countLineOfCodes = () => {
 	try {
 		const json = execSync(
 			`./node_modules/.bin/cloc src --fullpath --not-match-d node_modules --json`
+		).toString();
+		const d = JSON.parse(json);
+		return [d, null];
+	} catch (error) {
+		return [null, error.message];
+	}
+};
+
+const runCodeAuditor = () => {
+	writeLog(chalk.yellowBright(`run static code analysis`));
+	try {
+		const json = execSync(
+			`./node_modules/.bin/sswcodeauditor ./src --json`
 		).toString();
 		const d = JSON.parse(json);
 		return [d, null];
@@ -303,8 +332,18 @@ const processAndUpload = async (args, startTime, file) => {
 				})),
 				[R.keys, R.values]
 			),
-			R.map((x) => `${x.error}:${x.count}`),
+			R.map(
+				(x) =>
+					`${x.error} ${
+						HTMLERRORS.indexOf(x.error) >= 0 ? '(Error)' : ''
+					}:${x.count}`
+			),
 			R.join(', ')
+		);
+
+		const getHtmlHintErrors = R.pipe(
+			R.keys,
+			R.filter((x) => HTMLERRORS.indexOf(x) >= 0)
 		);
 
 		htmlIssuesSummary &&
@@ -312,6 +351,10 @@ const processAndUpload = async (args, startTime, file) => {
 				'HtmlHint issues: ' + getSummaryText(htmlIssuesSummary),
 				'red'
 			);
+
+		let htmlErrors = htmlIssuesSummary
+			? getHtmlHintErrors(htmlIssuesSummary)
+			: [];
 
 		// output broken links reports
 		const _ignoreLbl = () =>
@@ -416,20 +459,22 @@ const processAndUpload = async (args, startTime, file) => {
 				)(htmlIssues);
 		}
 
-		if (badLinks.length > 0 || failedThreshold) {
-			consoleBox(
-				`AUDIT FAIL${badLinks.length > 0 ? ' [Broken Links]' : ''}${
-					failedThreshold ? ' [Performance]' : ''
-				}`,
-				'red'
-			);
+		if (
+			badLinks.length > 0 ||
+			failedThreshold ||
+			_codeAuditor.filter((x) => !!x.error).length > 0 ||
+			htmlErrors.length > 0
+		) {
+			consoleBox(`AUDIT FAIL`, 'red');
 			process.exit(1);
 		}
 	};
 
 	const __readLighthouseReport = () => {
 		if (!fs.existsSync('./.lighthouseci/')) {
-			console.log('ERROR => No lighthouse report found. Run again with `-v "%.LIGHTHOUSECI%:/usr/app/.lighthouseci"` option')
+			console.log(
+				'ERROR => No lighthouse report found. Run again with `-v "%.LIGHTHOUSECI%:/usr/app/.lighthouseci"` option'
+			);
 			return;
 		}
 		writeLog(`Reading Lighthouse report files`);
@@ -564,6 +609,7 @@ const processAndUpload = async (args, startTime, file) => {
 				whiteListed,
 				lhr,
 				cloc: _cloc,
+				code: _codeAuditor,
 				htmlIssuesSummary,
 				htmlIssues,
 			});

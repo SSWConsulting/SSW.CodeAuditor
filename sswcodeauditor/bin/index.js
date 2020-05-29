@@ -42,7 +42,7 @@ const evaluateScript = (code, script) => {
 
 const cleanCode = R.pipe(strip);
 const printErrOrWarn = (parsed, line, file, results) => {
-	console.log(
+	log(
 		chalk[parsed.isError ? 'red' : 'yellow'](
 			`[${parsed.isError ? 'ERROR' : 'WARN'} : ${parsed.id} - ${
 				parsed.name
@@ -100,10 +100,14 @@ const args = yargs
 	})
 	.option('json', {
 		alias: 'json',
-		describe: 'JSON output',
+		describe: 'print output in JSON format',
 		type: 'boolean',
 		default: false,
 	}).argv;
+
+const log = (msg) => {
+	!args.json && console.log(msg);
+};
 
 const rootFolder = args._[0] || '.';
 const rules = fs.readdirSync(path.join(__dirname, '../rules/'));
@@ -138,9 +142,8 @@ const globPattern = getGlobalGlobPattern(allRules);
 const files = glob.sync(`${rootFolder}/${globPattern}`, {
 	ignore: ignoredFiles,
 });
-console.log(
-	chalk.yellowBright(`Found ${files.length} files matching `, globPattern)
-);
+
+log(chalk.yellowBright(`Found ${files.length} files matching `, globPattern));
 
 let totalFiles = 0;
 let startTime = new Date();
@@ -182,7 +185,7 @@ for (let u = 0; u < files.length; u++) {
 }
 
 if (args.json) {
-	fs.writeFileSync('./sswcodeauditorresult.json', JSON.stringify(results));
+	console.log(JSON.stringify(results));
 } else {
 	const errors = results.filter((x) => !!x.error);
 	const warns = results.filter((x) => !x.error);
