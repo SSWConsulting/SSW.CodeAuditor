@@ -60,10 +60,10 @@ const printErrOrWarn = (parsed, line, file, results) => {
 };
 const printTimeDiff = (t1, t2) => {
 	var dif = t1 - t2;
-	const took = '';
-	Math.floor(dif / 1000 / 60)
-		.toString()
-		.padStart(2, '0') +
+	const took =
+		Math.floor(dif / 1000 / 60)
+			.toString()
+			.padStart(2, '0') +
 		':' +
 		Math.floor((dif / 1000) % 60)
 			.toString()
@@ -114,8 +114,7 @@ if (ignoreF) {
 		.split('\r\n')
 		.filter((l) => l.trim().length > 0 && !l.trim().match('^(#|!)'))
 		.map((x) => x.trim())
-		.map((x) => `./{,**}/${x}`)
-		.map((x) => (x.endsWith('/') ? `${x}**` : x));
+		.map((x) => `./{,**}/${x}/**`);
 }
 
 // read rule from Rules folder
@@ -145,7 +144,10 @@ for (let u = 0; u < files.length; u++) {
 
 	for (let index = 0; index < allRules.length; index++) {
 		const parsed = allRules[index];
-		if (!fileMatchExtension(file)(parsed.fileFilter)) {
+		if (
+			!fileMatchExtension(file)(parsed.fileFilter) ||
+			fs.lstatSync(file).isDirectory()
+		) {
 			continue;
 		}
 
