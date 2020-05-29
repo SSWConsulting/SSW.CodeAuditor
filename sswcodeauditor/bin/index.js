@@ -97,6 +97,12 @@ const args = yargs
 			'.gitignore file location, use current location .gitignore file if found',
 		type: 'string',
 		demandOption: false,
+	})
+	.option('json', {
+		alias: 'json',
+		describe: 'JSON output',
+		type: 'boolean',
+		default: false,
 	}).argv;
 
 const rootFolder = args._[0] || '.';
@@ -175,20 +181,25 @@ for (let u = 0; u < files.length; u++) {
 	}
 }
 
-const errors = results.filter((x) => !!x.error);
-const warns = results.filter((x) => !x.error);
-const [took] = printTimeDiff(new Date(), startTime);
-
-console.log(
-	boxen(
-		`Scanned ${totalFiles} files for ${allRules.length} rules, took ${took}, found ${errors.length} Errors, ${warns.length} Warnings`,
-		{
-			padding: 1,
-			margin: 1,
-			borderStyle: 'single',
-			borderColor: 'blue',
-		}
-	)
-);
-
-console.log(asTable(results));
+if (args.json) {
+	fs.writeFileSync('./sswcodeauditorresult.json', JSON.stringify(results));
+} else {
+	const errors = results.filter((x) => !!x.error);
+	const warns = results.filter((x) => !x.error);
+	const [took] = printTimeDiff(new Date(), startTime);
+	console.log(
+		boxen(
+			`Scanned ${totalFiles} files for ${allRules.length} rules, took ${took}, found ${errors.length} Errors, ${warns.length} Warnings`,
+			{
+				padding: 1,
+				margin: 1,
+				borderStyle: 'single',
+				borderColor: 'blue',
+			}
+		)
+	);
+	console.log(asTable(results));
+	if (errors.length > 0) {
+		process.exit(1);
+	}
+}
