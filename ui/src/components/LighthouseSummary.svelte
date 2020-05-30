@@ -17,8 +17,7 @@
         <span
           class="font-bold block lg:inline-block textgrey"
           title="Average"
-          class:text-red-400={perf.average < 50}
-          class:text-orange-400={perf.average >= 50 && perf.average <= 90}>
+          class:text-red-400={perf.average < 50}>
           {perf.average.toFixed(1)}
         </span>
       </div>
@@ -27,8 +26,7 @@
         <span
           title="Performance"
           class="font-bold block lg:inline-block textgrey"
-          class:text-red-400={perf.performanceScore < 50}
-          class:text-orange-400={perf.performanceScore >= 50 && perf.performanceScore <= 90}>
+          class:text-red-400={perf.performanceScore < 50}>
           {perf.performanceScore}
         </span>
       </div>
@@ -45,8 +43,7 @@
         <span
           class="font-bold block lg:inline-block textgrey"
           title="Accessibility"
-          class:text-red-400={perf.accessibilityScore < 50}
-          class:text-orange-400={perf.accessibilityScore >= 50 && perf.accessibilityScore <= 90}>
+          class:text-red-400={perf.accessibilityScore < 50}>
           {perf.accessibilityScore}
         </span>
       </div>
@@ -56,8 +53,7 @@
         <span
           title="SEO"
           class="font-bold block lg:inline-block textgrey"
-          class:text-red-400={perf.seoScore < 50}
-          class:text-orange-400={perf.seoScore >= 50 && perf.seoScore <= 90}>
+          class:text-red-400={perf.seoScore < 50}>
           {perf.seoScore}
         </span>
       </div>
@@ -66,8 +62,7 @@
         <span
           class="font-bold block lg:inline-block textgrey"
           title="PWA"
-          class:text-red-400={perf.pwaScore < 50}
-          class:text-orange-400={perf.pwaScore >= 50 && perf.pwaScore <= 90}>
+          class:text-red-400={perf.pwaScore < 50}>
           {perf.pwaScore}
         </span>
       </div>
@@ -84,8 +79,7 @@
         <span
           class="font-bold block lg:inline-block textgrey"
           title="Best Practice"
-          class:text-red-400={perf.bestPracticesScore < 50}
-          class:text-orange-400={perf.bestPracticesScore >= 50 && perf.bestPracticesScore <= 90}>
+          class:text-red-400={perf.bestPracticesScore < 50}>
           {perf.bestPracticesScore}
         </span>
       </div>

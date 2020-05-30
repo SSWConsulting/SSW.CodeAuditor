@@ -1,12 +1,18 @@
 <script>
   import { Navigate, navigateTo } from "svelte-router-spa";
-  import { getPerfScore } from "../utils/utils.js";
+  import { getPerfScore, getCodeSummary } from "../utils/utils.js";
   export let build = {};
   export let displayMode = "";
 
   let baseClass = "bg-white inline-block py-2 px-4 text-gray-600 font-semibold";
   let active = " textgrey border-l border-t border-r rounded-t";
-  $: totalHtmlIssues = (build.htmlErrors || 0) + (build.htmlWarnings || 0);
+  $: codeSummary = getCodeSummary(build);
+
+  $: totalHtmlIssues =
+    (codeSummary.htmlErrors || 0) +
+    (codeSummary.htmlWarnings || 0) +
+    (codeSummary.codeErrors || 0) +
+    (codeSummary.codeWarnings || 0);
 
   let lhWarning = 0;
   $: {
@@ -31,18 +37,20 @@
       </Navigate>
     </span>
   </li>
-  <li class="mr-1" class:-mb-px={displayMode === 'html'}>
-    <span class={baseClass + (displayMode === 'html' ? active : '')}>
+  <li class="mr-1" class:-mb-px={displayMode === 'code'}>
+    <span class={baseClass + (displayMode === 'code' ? active : '')}>
       <Navigate to={'/htmlhint/' + build.runId}>
-        HTML{totalHtmlIssues ? ` (${totalHtmlIssues})` : ''}
+        Code{totalHtmlIssues ? ` (${totalHtmlIssues})` : ''}
       </Navigate>
     </span>
   </li>
-  <li class="mr-1" class:-mb-px={displayMode === 'lighthouse'}>
-    <span class={baseClass + (displayMode === 'lighthouse' ? active : '')}>
-      <Navigate to={'/lighthouse/' + build.runId}>
-        Lighthouse Audit{lhWarning.length ? ` (${lhWarning.length})` : ''}
-      </Navigate>
-    </span>
-  </li>
+  {#if build.performanceScore}
+    <li class="mr-1" class:-mb-px={displayMode === 'lighthouse'}>
+      <span class={baseClass + (displayMode === 'lighthouse' ? active : '')}>
+        <Navigate to={'/lighthouse/' + build.runId}>
+          Lighthouse Audit{lhWarning.length ? ` (${lhWarning.length})` : ''}
+        </Navigate>
+      </span>
+    </li>
+  {/if}
 </ul>

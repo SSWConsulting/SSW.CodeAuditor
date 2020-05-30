@@ -102,14 +102,14 @@
     {#await promise}
       <LoadingFlat />
     {:then data}
-      <Tabs build={data ? data.summary : {}} displayMode="html" />
+      <Tabs build={data ? data.summary : {}} displayMode="code" />
 
       <Breadcrumbs
         build={data ? data.summary : {}}
         runId={currentRoute.namedParams.id}
         displayMode="HTML" />
 
-      <BuildDetailsCard build={data ? data.summary : {}} mode="htmlhint" />
+      <BuildDetailsCard build={data ? data.summary : {}} />
       <HtmlErrorsTable
         on:download={() => onDownload(data)}
         errors={data.htmlHint}
