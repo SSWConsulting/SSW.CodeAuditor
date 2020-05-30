@@ -90,19 +90,26 @@
             <td class="w-10/12 border px-4 py-2 break-all">
               <div class="flex flex-wrap">
                 {#each slice(0, 49, url.errors[key]) as item}
-                  <div
-                    class="text-xs mr-2 my-1 uppercase tracking-wider border
-                    px-2 border-red-600 hover:bg-red-600 hover:text-white
-                    cursor-default whitespace-no-wrap">
-                    {#if htmlHintIssues.indexOf(key) >= 0}
+                  {#if htmlHintIssues.indexOf(key) >= 0}
+                    <div
+                      class="text-xs mr-2 my-1 uppercase tracking-wider border
+                      px-2 border-red-600 hover:bg-red-600 hover:text-white
+                      cursor-default whitespace-no-wrap">
                       <a
                         on:click={() => viewSource(url.url, item)}
                         href="javascript:void(0)"
                         title="View source">
                         {item}
                       </a>
-                    {:else}{item}{/if}
-                  </div>
+                    </div>
+                  {:else}
+                    <div
+                      class="text-xs mr-2 my-1 uppercase tracking-wider border
+                      px-2 border-blue-600 cursor-default whitespace-no-wrap"
+                      title={'Line ' + item}>
+                      {item}
+                    </div>
+                  {/if}
                 {/each}
               </div>
               {#if url.errors[key].length > 50}
