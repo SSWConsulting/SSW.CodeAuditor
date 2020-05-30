@@ -1,0 +1,112 @@
+Checking rules in folder C:\AnthonyNguyenData\source\personal\url-checker\sswcodeauditor\rules\
+Found 8 files matching  **/{*.cs,*.js,*.ts,*.html,*.htm,*.aspx,*.asp}
+Checking ./bin/index.js
+ --with rule no-empty-catch.md
+ --with rule no-null-comparison.md
+ --with rule use-string-empty.md
+ --with rule use-triple-equal.md
+Checking ./tests/bool-property-must-be-prefixed-by-a-verb.cs
+ --with rule avoid-generic-exception.md
+ --with rule bool-property-must-be-prefixed-by-a-verb.md
+[ERROR : ssw26 - Boolean Properties must be prefixed by a verb] ./tests/bool-property-must-be-prefixed-by-a-verb.cs (line 5)
+[ERROR : ssw26 - Boolean Properties must be prefixed by a verb] ./tests/bool-property-must-be-prefixed-by-a-verb.cs (line 6)
+ --with rule no-empty-catch.md
+ --with rule use-string-empty.md
+Checking ./tests/catch-generic-exception.cs
+ --with rule avoid-generic-exception.md
+[WARN : ssw88 - Avoid generic Exceptions] ./tests/catch-generic-exception.cs (line 4)
+[WARN : ssw88 - Avoid generic Exceptions] ./tests/catch-generic-exception.cs (line 10)
+[WARN : ssw88 - Avoid generic Exceptions] ./tests/catch-generic-exception.cs (line 16)
+[WARN : ssw88 - Avoid generic Exceptions] ./tests/catch-generic-exception.cs (line 22)
+[WARN : ssw88 - Avoid generic Exceptions] ./tests/catch-generic-exception.cs (line 28)
+ --with rule bool-property-must-be-prefixed-by-a-verb.md
+ --with rule no-empty-catch.md
+[ERROR : ssw26 - No empty catch blocks] ./tests/catch-generic-exception.cs (line 4)
+[ERROR : ssw26 - No empty catch blocks] ./tests/catch-generic-exception.cs (line 10)
+[ERROR : ssw26 - No empty catch blocks] ./tests/catch-generic-exception.cs (line 16)
+[ERROR : ssw26 - No empty catch blocks] ./tests/catch-generic-exception.cs (line 22)
+[ERROR : ssw26 - No empty catch blocks] ./tests/catch-generic-exception.cs (line 28)
+ --with rule use-string-empty.md
+[ERROR : ssw26 - Use String.Empty instead of ""] ./tests/catch-generic-exception.cs (line 4)
+[ERROR : ssw26 - Use String.Empty instead of ""] ./tests/catch-generic-exception.cs (line 10)
+[ERROR : ssw26 - Use String.Empty instead of ""] ./tests/catch-generic-exception.cs (line 16)
+[ERROR : ssw26 - Use String.Empty instead of ""] ./tests/catch-generic-exception.cs (line 22)
+[ERROR : ssw26 - Use String.Empty instead of ""] ./tests/catch-generic-exception.cs (line 28)
+Checking ./tests/no-empty-catch.cs
+ --with rule avoid-generic-exception.md
+ --with rule bool-property-must-be-prefixed-by-a-verb.md
+ --with rule no-empty-catch.md
+[ERROR : ssw26 - No empty catch blocks] ./tests/no-empty-catch.cs (line 3)
+[ERROR : ssw26 - No empty catch blocks] ./tests/no-empty-catch.cs (line 8)
+[ERROR : ssw26 - No empty catch blocks] ./tests/no-empty-catch.cs (line 13)
+[ERROR : ssw26 - No empty catch blocks] ./tests/no-empty-catch.cs (line 17)
+ --with rule use-string-empty.md
+[ERROR : ssw26 - Use String.Empty instead of ""] ./tests/no-empty-catch.cs (line 3)
+[ERROR : ssw26 - Use String.Empty instead of ""] ./tests/no-empty-catch.cs (line 8)
+[ERROR : ssw26 - Use String.Empty instead of ""] ./tests/no-empty-catch.cs (line 13)
+[ERROR : ssw26 - Use String.Empty instead of ""] ./tests/no-empty-catch.cs (line 17)
+Checking ./tests/title-h1-h2-must-be-descriptive.html
+ --with rule title-h1-h2-must-be-descriptive.md
+[WARN : ssw89 - The <title>, <h1>, and <h2> tags need to be descriptive] ./tests/title-h1-h2-must-be-descriptive.html (line 6)
+Checking ./tests/use-tripple-equals-test2.js
+ --with rule no-empty-catch.md
+ --with rule no-null-comparison.md
+ --with rule use-string-empty.md
+ --with rule use-triple-equal.md
+[WARN : ssw9 - User triple equals instead of double] ./tests/use-tripple-equals-test2.js (line 14)
+Checking ./tests/use-tripple-equals.js
+ --with rule no-empty-catch.md
+ --with rule no-null-comparison.md
+[ERROR : ssw88 - Disallow Null Comparisons (no-eq-null)] ./tests/use-tripple-equals.js (line 3)
+[ERROR : ssw88 - Disallow Null Comparisons (no-eq-null)] ./tests/use-tripple-equals.js (line 4)
+ --with rule use-string-empty.md
+ --with rule use-triple-equal.md
+[WARN : ssw9 - User triple equals instead of double] ./tests/use-tripple-equals.js (line 3)
+[WARN : ssw9 - User triple equals instead of double] ./tests/use-tripple-equals.js (line 4)
+Checking ./tests/use-tripple-equals.ts
+ --with rule no-null-comparison.md
+ --with rule use-triple-equal.md
+[WARN : ssw9 - User triple equals instead of double] ./tests/use-tripple-equals.ts (line 4)
+[WARN : ssw9 - User triple equals instead of double] ./tests/use-tripple-equals.ts (line 5)
+
+   ┌───────────────────────────────────────────────────────────────────────────┐
+   │                                                                           │
+   │   Scanned 8 files for 7 rules, took 181ms, found 22 Errors, 11 Warnings   │
+   │                                                                           │
+   └───────────────────────────────────────────────────────────────────────────┘
+
+file                                                 rule                                         error  line
+-------------------------------------------------------------------------------------------------------------
+./tests/bool-property-must-be-prefixed-by-a-verb.cs  bool-property-must-be-prefixed-by-a-verb.md  true   5   
+./tests/bool-property-must-be-prefixed-by-a-verb.cs  bool-property-must-be-prefixed-by-a-verb.md  true   6   
+./tests/catch-generic-exception.cs                   avoid-generic-exception.md                   false  4   
+./tests/catch-generic-exception.cs                   avoid-generic-exception.md                   false  10  
+./tests/catch-generic-exception.cs                   avoid-generic-exception.md                   false  16  
+./tests/catch-generic-exception.cs                   avoid-generic-exception.md                   false  22  
+./tests/catch-generic-exception.cs                   avoid-generic-exception.md                   false  28  
+./tests/catch-generic-exception.cs                   no-empty-catch.md                            true   4   
+./tests/catch-generic-exception.cs                   no-empty-catch.md                            true   10  
+./tests/catch-generic-exception.cs                   no-empty-catch.md                            true   16  
+./tests/catch-generic-exception.cs                   no-empty-catch.md                            true   22  
+./tests/catch-generic-exception.cs                   no-empty-catch.md                            true   28  
+./tests/catch-generic-exception.cs                   use-string-empty.md                          true   4   
+./tests/catch-generic-exception.cs                   use-string-empty.md                          true   10  
+./tests/catch-generic-exception.cs                   use-string-empty.md                          true   16  
+./tests/catch-generic-exception.cs                   use-string-empty.md                          true   22  
+./tests/catch-generic-exception.cs                   use-string-empty.md                          true   28  
+./tests/no-empty-catch.cs                            no-empty-catch.md                            true   3   
+./tests/no-empty-catch.cs                            no-empty-catch.md                            true   8   
+./tests/no-empty-catch.cs                            no-empty-catch.md                            true   13  
+./tests/no-empty-catch.cs                            no-empty-catch.md                            true   17  
+./tests/no-empty-catch.cs                            use-string-empty.md                          true   3   
+./tests/no-empty-catch.cs                            use-string-empty.md                          true   8   
+./tests/no-empty-catch.cs                            use-string-empty.md                          true   13  
+./tests/no-empty-catch.cs                            use-string-empty.md                          true   17  
+./tests/title-h1-h2-must-be-descriptive.html         title-h1-h2-must-be-descriptive.md           false  6   
+./tests/use-tripple-equals-test2.js                  use-triple-equal.md                          false  14  
+./tests/use-tripple-equals.js                        no-null-comparison.md                        true   3   
+./tests/use-tripple-equals.js                        no-null-comparison.md                        true   4   
+./tests/use-tripple-equals.js                        use-triple-equal.md                          false  3   
+./tests/use-tripple-equals.js                        use-triple-equal.md                          false  4   
+./tests/use-tripple-equals.ts                        use-triple-equal.md                          false  4   
+./tests/use-tripple-equals.ts                        use-triple-equal.md                          false  5   

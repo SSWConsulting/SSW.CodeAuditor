@@ -28,7 +28,6 @@ const getCodeSnippet = (code, line) => {
 	const totalLines = code.split('\n').length;
 	const dropStart = line - 3 < 0 ? 0 : line - 3;
 	const dropEnd = line + 3 > totalLines ? 0 : totalLines - line - 3;
-
 	return R.pipe(
 		R.split('\n'),
 		R.drop(dropStart),
@@ -75,7 +74,7 @@ const printErrOrWarn = (parsed, line, file, results, code) => {
 		ruleFile: parsed.ruleFile,
 		file,
 		line,
-		snippet: getCodeSnippet(code, line),
+		snippet: getCodeSnippet(code, +line),
 	});
 };
 const printTimeDiff = (t1, t2) => {

@@ -35,8 +35,8 @@
   };
 
   $: ERRORS =
-    codeIssues.length > 0
-      ? getCodeErrorRules(codeIssues).concat(HTMLERRORS)
+    codeIssues && codeIssues.length > 0
+      ? (getCodeErrorRules(codeIssues) || []).concat(HTMLERRORS)
       : HTMLERRORS;
 
   let hiddenRows = {};
