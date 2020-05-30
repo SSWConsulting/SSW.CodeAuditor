@@ -24,6 +24,19 @@ const getLine = (code, index) => {
 	return c.split('\n').length;
 };
 
+const getCodeSnippet = (code, line) => {
+	const totalLines = code.split('\n').length;
+	const dropStart = line - 3 < 0 ? 0 : line - 3;
+	const dropEnd = line + 3 > totalLines ? 0 : totalLines - line - 3;
+
+	return R.pipe(
+		R.split('\n'),
+		R.drop(dropStart),
+		R.dropLast(dropEnd),
+		R.join('\n')
+	)(code);
+};
+
 const evaluateScript = (code, script) => {
 	const vm = new NodeVM({
 		timeout: 100, // milliseconds timeout,
@@ -41,7 +54,7 @@ const evaluateScript = (code, script) => {
 };
 
 const cleanCode = R.pipe(strip);
-const printErrOrWarn = (parsed, line, file, results) => {
+const printErrOrWarn = (parsed, line, file, results, code) => {
 	log(
 		chalk[parsed.isError ? 'red' : 'yellow'](
 			`[${parsed.isError ? 'ERROR' : 'WARN'} : ${parsed.id} - ${
@@ -57,6 +70,7 @@ const printErrOrWarn = (parsed, line, file, results) => {
 		ruleFile: parsed.ruleFile,
 		file,
 		line,
+		snippet: getCodeSnippet(code, line),
 	});
 };
 const printTimeDiff = (t1, t2) => {
@@ -174,7 +188,7 @@ for (let u = 0; u < files.length; u++) {
 			const locs = evaluateScript(code, parsed.script);
 			if (locs) {
 				locs.split(',').forEach((line) => {
-					printErrOrWarn(parsed, line, file, results);
+					printErrOrWarn(parsed, line, file, results, code);
 				});
 			}
 		} else if (parsed.ruleType === 'Regex') {
@@ -184,7 +198,7 @@ for (let u = 0; u < files.length; u++) {
 			if (m) {
 				while (m) {
 					const line = getLine(code, m.index);
-					printErrOrWarn(parsed, line, file, results);
+					printErrOrWarn(parsed, line, file, results, code);
 					m = re.exec(code);
 				}
 			}

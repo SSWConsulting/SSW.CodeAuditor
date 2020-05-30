@@ -25,3 +25,4 @@ docker run sswconsulting/sswauditor --url https://azuregems.io/ --htmlhint --deb
 docker run sswconsulting/sswauditor --url https://azuregems.io/ --debug
 docker container run --rm --cap-add=SYS_ADMIN sswconsulting/sswauditor --url https://azuregems.io/ --lighthouse --debug
 docker container run --rm --cap-add=SYS_ADMIN sswconsulting/sswauditor:lhci --url https://azuregems.io/ --lighthouse --debug
+docker container run --rm --cap-add=SYS_ADMIN -v "C:\AnthonyNguyenData\source\personal\url-checker\sswcodeauditor:/home/lhci/app/src" sswconsulting/sswauditor:lhci --url https://azuregems.io/ --lighthouse --token bbf65654-23d5-4d87-8f68-34d68c30d2e4

@@ -35,7 +35,6 @@ RUN mkdir usr/app
 RUN mkdir usr/app/src
 
 WORKDIR /usr/app
-# USER la
 # copy go tools
 COPY --from=builder /go/bin/sswlinkauditor /usr/app/sswlinkauditor
 

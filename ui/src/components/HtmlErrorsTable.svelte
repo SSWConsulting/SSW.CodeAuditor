@@ -77,6 +77,12 @@
     showSourceWindow();
   }
 
+  async function viewCode(event) {
+    source = event.detail;
+    viewLocation = "4:0"
+    showSourceWindow();
+  }
+
   const changeMode = m => {
     displayMode = m;
     updateQuery(ParsedQuery.stringify({ displayMode }));
@@ -158,7 +164,7 @@
   </div>
 
   {#if displayMode === 0}
-    <HtmlErrorsBySource {errors} {codeIssues} on:viewSource={viewPageSource} />
+    <HtmlErrorsBySource {errors} {codeIssues} on:viewSource={viewPageSource} on:viewCode={viewCode}/>
   {:else}
     <HtmlErrorsByReason {errors} {codeIssues} on:viewSource={viewPageSource} />
   {/if}

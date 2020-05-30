@@ -17,11 +17,22 @@
   $: allErrors = errors.concat(getCodeErrorsByFile(codeIssues));
   $: htmlHintIssues = getHtmlHintIssues(errors);
   const dispatch = createEventDispatcher();
-  const viewSource = (url, location) =>
-    dispatch("viewSource", {
-      url,
-      location
-    });
+  const viewSource = (url, location, key) => {
+    console.log(url, location);
+
+    if (htmlHintIssues.indexOf(key) >= 0) {
+      dispatch("viewSource", {
+        url,
+        location
+      });
+    } else {
+      const snippet = codeIssues.filter(
+        x => x.file === url && x.line === location
+      )[0].snippet;
+
+      dispatch("viewCode", `// ..........\n${snippet}\n// ..........`);
+    }
+  };
 
   $: ERRORS = getCodeErrorRules(codeIssues).concat(HTMLERRORS);
 
@@ -90,26 +101,17 @@
             <td class="w-10/12 border px-4 py-2 break-all">
               <div class="flex flex-wrap">
                 {#each slice(0, 49, url.errors[key]) as item}
-                  {#if htmlHintIssues.indexOf(key) >= 0}
-                    <div
-                      class="text-xs mr-2 my-1 uppercase tracking-wider border
-                      px-2 border-red-600 hover:bg-red-600 hover:text-white
-                      cursor-default whitespace-no-wrap">
-                      <a
-                        on:click={() => viewSource(url.url, item)}
-                        href="javascript:void(0)"
-                        title="View source">
-                        {item}
-                      </a>
-                    </div>
-                  {:else}
-                    <div
-                      class="text-xs mr-2 my-1 uppercase tracking-wider border
-                      px-2 border-blue-600 cursor-default whitespace-no-wrap"
-                      title={'Line ' + item}>
+                  <div
+                    class="text-xs mr-2 my-1 uppercase tracking-wider border
+                    px-2 border-red-600 hover:bg-red-600 hover:text-white
+                    cursor-default whitespace-no-wrap">
+                    <a
+                      on:click={() => viewSource(url.url, item, key)}
+                      href="javascript:void(0)"
+                      title="View source">
                       {item}
-                    </div>
-                  {/if}
+                    </a>
+                  </div>
                 {/each}
               </div>
               {#if url.errors[key].length > 50}

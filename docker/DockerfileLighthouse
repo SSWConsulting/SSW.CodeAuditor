@@ -51,7 +51,6 @@ USER lhci
 
 WORKDIR /home/lhci/app
 
-# USER la
 # copy tools
 COPY --from=builder /go/bin/sswlinkauditor /home/lhci/app/sswlinkauditor
 
