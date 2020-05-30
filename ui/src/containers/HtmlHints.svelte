@@ -110,9 +110,11 @@
         displayMode="HTML" />
 
       <BuildDetailsCard build={data ? data.summary : {}} />
+
       <HtmlErrorsTable
         on:download={() => onDownload(data)}
         errors={data.htmlHint}
+        codeIssues={data.codeIssues}
         {currentRoute} />
     {:catch error}
       <p class="text-red-600 mx-auto text-2xl py-8">{error.message}</p>

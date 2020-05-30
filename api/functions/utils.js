@@ -77,3 +77,4 @@ exports.getCodeErrorSummary = R.pipe(
 	),
 	R.converge(R.zipObj, [R.map(R.prop('issue')), R.map(R.prop('count'))])
 );
+

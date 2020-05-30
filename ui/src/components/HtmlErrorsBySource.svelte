@@ -1,13 +1,20 @@
 <script>
   import { groupBy, props, slice } from "ramda";
-  import { isInIgnored, HTMLERRORS } from "../utils/utils.js";
+  import {
+    isInIgnored,
+    HTMLERRORS,
+    getCodeErrorRules,
+    getCodeErrorsByFile
+  } from "../utils/utils.js";
   import { fade, fly } from "svelte/transition";
   import { ignoredUrls$ } from "../stores.js";
   import { createEventDispatcher } from "svelte";
   import Icon from "./Icon.svelte";
 
   export let errors = [];
+  export let codeIssues = [];
 
+  $: allErrors = errors.concat(getCodeErrorsByFile(codeIssues));
   const dispatch = createEventDispatcher();
   const viewSource = (url, location) =>
     dispatch("viewSource", {
@@ -15,12 +22,14 @@
       location
     });
 
+  $: ERRORS = getCodeErrorRules(codeIssues).concat(HTMLERRORS);
+
   let hiddenRows = {};
   const hideShow = key =>
     (hiddenRows[key] = key in hiddenRows ? !hiddenRows[key] : true);
 </script>
 
-{#each errors as url}
+{#each allErrors as url}
   <div class="mb-3">
     <span class="font-bold mr-2">
       <Icon
@@ -34,10 +43,7 @@
       </Icon>
       Issues found on:
     </span>
-    <a
-      class="inline-block align-baseline link"
-      target="_blank"
-      href={url.url}>
+    <a class="inline-block align-baseline link" target="_blank" href={url.url}>
       {url.url}
     </a>
   </div>
@@ -61,9 +67,9 @@
               class="whitespace-no-wrap break-all w-2/12 border px-4 py-2
               break-all">
               <Icon
-                title={HTMLERRORS.indexOf(key) >= 0 ? 'Error' : 'Warning'}
-                cssClass={`inline-block cursor-pointer ${HTMLERRORS.indexOf(key) >= 0 ? 'text-red-600' : 'text-orange-600'}`}>
-                {#if HTMLERRORS.indexOf(key) >= 0}
+                title={ERRORS.indexOf(key) >= 0 ? 'Error' : 'Warning'}
+                cssClass={`inline-block cursor-pointer ${ERRORS.indexOf(key) >= 0 ? 'text-red-600' : 'text-orange-600'}`}>
+                {#if ERRORS.indexOf(key) >= 0}
                   <path d="M6 18L18 6M6 6l12 12" />
                 {:else}
                   <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />

@@ -13,6 +13,7 @@
   import { createEventDispatcher } from "svelte";
 
   export let errors = [];
+  export let codeIssues = [];
   export let currentRoute;
 
   let displayMode = 0;
@@ -157,9 +158,9 @@
   </div>
 
   {#if displayMode === 0}
-    <HtmlErrorsBySource {errors} on:viewSource={viewPageSource} />
+    <HtmlErrorsBySource {errors} {codeIssues} on:viewSource={viewPageSource} />
   {:else}
-    <HtmlErrorsByReason {errors} on:viewSource={viewPageSource} />
+    <HtmlErrorsByReason {errors} {codeIssues} on:viewSource={viewPageSource} />
   {/if}
 {/if}
 

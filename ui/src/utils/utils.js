@@ -3,11 +3,15 @@ import {
 	converge,
 	zipWith,
 	map,
+	mergeAll,
 	join,
+	filter,
+	head,
 	keys,
 	values,
 	groupBy,
 	flatten,
+	tap,
 	prop,
 } from 'ramda';
 
@@ -192,10 +196,11 @@ export const getCodeSummary = (value) => {
 			html: true,
 			htmlErrors: value.htmlErrors || 0,
 			htmlWarnings: value.htmlWarnings || 0,
-			htmlIssueList: 'HTML Issues:\n' + getHtmlIssuesDescriptions(value.htmlIssuesList),
+			htmlIssueList:
+				'HTML Issues:\n' +
+				getHtmlIssuesDescriptions(value.htmlIssuesList),
 		};
 	}
-	console.log(summary);
 	return summary;
 };
 export const HTMLERRORS = [
@@ -210,3 +215,38 @@ export const HTMLERRORS = [
 	'tagname-lowercase',
 	'title-require',
 ];
+
+export const getCodeErrorsByFile = pipe(
+	groupBy(prop('file')),
+	converge(
+		zipWith((x, y) => ({
+			url: x,
+			errors: pipe(
+				groupBy(prop('ruleName')),
+				converge(
+					zipWith((x, y) => ({
+						[x]: pipe(map(prop('line')))(y),
+					})),
+					[keys, values]
+				),
+				mergeAll
+			)(y),
+		})),
+		[keys, values]
+	),
+	tap(console.log)
+);
+
+export const getCodeErrorRules = pipe(
+	groupBy(prop('error')),
+	converge(
+		zipWith((x, y) => ({
+			type: x === 'true' ? 'Error' : 'Warn',
+			errors: pipe(groupBy(prop('ruleName')), keys)(y),
+		})),
+		[keys, values]
+	),
+	filter((x) => x.type === 'Error'),
+	head,
+	prop('errors')
+);
