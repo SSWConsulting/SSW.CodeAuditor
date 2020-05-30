@@ -1,12 +1,31 @@
 <script>
   import Icon from "./Icon.svelte";
-  import { getHtmlIssuesDescriptions } from "../utils/utils.js";
+  import {
+    getCodeIssuesDescriptions,
+    getHtmlIssuesDescriptions
+  } from "../utils/utils.js";
   export let value = {};
   let otherLangs = [];
+
   $: cloc = value.cloc ? JSON.parse(value.cloc) : null;
+
+  $: codeIssues = value.codeIssues ? JSON.parse(value.codeIssues) : null;
+
   $: htmlIssues = value.htmlIssuesList
     ? getHtmlIssuesDescriptions(value.htmlIssuesList)
     : null;
+
+  $: codeIssuesList = value.codeIssues
+    ? " " + getCodeIssuesDescriptions(value.codeIssues)
+    : null;
+
+  $: codeErrors = codeIssues
+    ? Object.keys(codeIssues).filter(x => x.startsWith("Error - ")).length
+    : 0;
+
+  $: codeWarnings = codeIssues
+    ? Object.keys(codeIssues).filter(x => x.startsWith("Warn - ")).length
+    : 0;
 
   $: {
     if (cloc) {
@@ -22,7 +41,7 @@
   }
 </script>
 
-<div class="grid grid-cols-3 gap-1 row-gap-2">
+<div class="grid grid-cols-4">
   {#if cloc}
     <div class="text-center whitespace-no-wrap mx-auto">
       <Icon classnames="block mx-auto">
@@ -45,21 +64,25 @@
     </div>
   {/if}
 
-  {#if value.htmlIssuesList}
+  {#if value.htmlIssuesList || value.codeIssues}
     <div class="text-center whitespace-no-wrap mx-auto">
       <Icon cssClass="text-red-500 block mx-auto">
         <path d="M6 18L18 6M6 6l12 12" />
       </Icon>
-      <span class="font-bold block mx-auto text-sm" title={htmlIssues}>
-        {value.htmlErrors || 0}
+      <span
+        class="font-bold block mx-auto text-sm"
+        title={htmlIssues + codeIssuesList}>
+        {(value.htmlErrors || 0) + codeErrors}
       </span>
     </div>
     <div class="text-center whitespace-no-wrap mx-auto">
       <Icon cssClass="text-orange-500 block mx-auto">
         <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
       </Icon>
-      <span class="font-bold block mx-auto text-sm" title={htmlIssues}>
-        {value.htmlWarnings || 0}
+      <span
+        class="font-bold block mx-auto text-sm"
+        title={htmlIssues + codeIssuesList}>
+        {(value.htmlWarnings || 0) + codeWarnings}
       </span>
     </div>
     <!-- {#each otherLangs as item}
@@ -73,4 +96,5 @@
         </div>
       {/each} -->
   {/if}
+
 </div>

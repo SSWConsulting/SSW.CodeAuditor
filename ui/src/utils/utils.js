@@ -121,6 +121,19 @@ export const getHtmlIssuesDescriptions = pipe(
 	join(', ')
 );
 
+export const getCodeIssuesDescriptions = pipe(
+	JSON.parse,
+	converge(
+		zipWith((x, y) => ({
+			error: x,
+			count: y,
+		})),
+		[keys, values]
+	),
+	map((x) => `"${x.error}" : ${x.count}`),
+	join(', ')
+);
+
 export const getHtmlErrorsByReason = pipe(
 	map((x) => {
 		return Object.keys(x.errors).reduce((pre, curr) => {
