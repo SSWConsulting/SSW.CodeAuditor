@@ -1,6 +1,6 @@
 {
 	"name": "sswcodeauditor",
-	"version": "0.0.7",
+	"version": "0.0.8",
 	"description": "",
 	"main": "./bin/index.js",
 	"bin": {
@@ -30,7 +30,6 @@
 		"ramda": "^0.27.0",
 		"strip-comments": "^2.0.1",
 		"typescript": "^3.9.3",
-		"typescript-estree": "^18.1.0",
 		"vm2": "^3.9.2",
 		"yargs": "^15.3.1"
 	}

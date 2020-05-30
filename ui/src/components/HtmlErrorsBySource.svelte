@@ -82,7 +82,7 @@
               <a
                 class="inline-block align-baseline link"
                 target="_blank"
-                href={htmlHintIssues.indexOf(key) >= 0 ? `https://htmlhint.com/docs/user-guide/rules/${key}` : `https://github.com/nvhoanganh/urlchecker/tree/master/sswcodeauditor/rules`}>
+                href={htmlHintIssues.indexOf(key) >= 0 ? `https://htmlhint.com/docs/user-guide/rules/${key}` : `https://github.com/nvhoanganh/urlchecker/blob/master/sswcodeauditor/rules/${key}.md`}>
                 {key}
               </a>
 

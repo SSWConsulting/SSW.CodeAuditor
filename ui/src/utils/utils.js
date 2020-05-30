@@ -223,10 +223,10 @@ export const getCodeErrorsByFile = pipe(
 		zipWith((x, y) => ({
 			url: x,
 			errors: pipe(
-				groupBy(prop('ruleName')),
+				groupBy(prop('ruleFile')),
 				converge(
 					zipWith((x, y) => ({
-						[x]: pipe(map(prop('line')))(y),
+						[x.replace('.md', '')]: pipe(map(prop('line')))(y),
 					})),
 					[keys, values]
 				),
@@ -242,7 +242,7 @@ export const getCodeErrorRules = pipe(
 	converge(
 		zipWith((x, y) => ({
 			type: x === 'true' ? 'Error' : 'Warn',
-			errors: pipe(groupBy(prop('ruleName')), keys)(y),
+			errors: pipe(groupBy(prop('ruleFile')), keys)(y),
 		})),
 		[keys, values]
 	),
