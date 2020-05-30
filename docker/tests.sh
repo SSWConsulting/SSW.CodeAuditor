@@ -11,6 +11,7 @@ docker run sswconsulting/sswauditor --url https://www.ssw.com.au/people/
 docker run -v "C:/AnthonyNguyenData/source/people.ssw.com.au/src:usr/app/src" sswconsulting/sswauditor --url https://www.ssw.com.au/people/
 docker run -v "C:\AnthonyNguyenData\source\personal\url-checker\sswcodeauditor:/usr/app/src" sswconsulting/sswauditor --url https://azuregems.io/
 docker run -v "C:\AnthonyNguyenData\source\personal\url-checker\sswcodeauditor:/usr/app/src" sswconsulting/sswauditor --url https://azuregems.io/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4
+docker run -v "C:\AnthonyNguyenData\source\people.ssw.com.au:/usr/app/src" sswconsulting/sswauditor --url https://azuregems.io/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4
 docker run sswconsulting/sswauditor --url https://www.ssw.com.au/people/
 docker run sswconsulting/sswauditor --url https://sswcovid19alert.firebaseapp.com/
 docker run sswconsulting/sswauditor --url https://sswcovid19alert.firebaseapp.com/

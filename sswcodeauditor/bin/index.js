@@ -50,7 +50,12 @@ const evaluateScript = (code, script) => {
 			external: true,
 		},
 	});
-	return vm.run(script);
+	try {
+		return vm.run(script);
+	} catch (e) {
+		log('Failed running script', e.message);
+		return '';
+	}
 };
 
 const cleanCode = R.pipe(strip);
@@ -150,6 +155,11 @@ if (ignoreF) {
 
 let allRules = [];
 
+log(
+	chalk.blueBright(
+		`Checking rules in folder ${path.join(__dirname, '../rules/')}`
+	)
+);
 const rules = fs.readdirSync(path.join(__dirname, '../rules/'));
 for (let index = 0; index < rules.length; index++) {
 	const rule = rules[index];
@@ -172,7 +182,7 @@ let startTime = new Date();
 for (let u = 0; u < files.length; u++) {
 	const file = files[u];
 	totalFiles++;
-
+	log(chalk.yellowBright(`Checking ${file}`));
 	for (let index = 0; index < allRules.length; index++) {
 		const parsed = allRules[index];
 		if (
@@ -183,7 +193,7 @@ for (let u = 0; u < files.length; u++) {
 		}
 
 		const code = cleanCode(fs.readFileSync(file).toString());
-
+		log(chalk.yellowBright(` --with rule ${parsed.ruleFile}`));
 		if (parsed.ruleType === 'Script') {
 			const locs = evaluateScript(code, parsed.script);
 			if (locs) {
@@ -223,7 +233,15 @@ if (args.json) {
 			}
 		)
 	);
-	console.log(asTable(results));
+	const removed = results.map((x) => {
+		return {
+			file: x.file,
+			rule: x.ruleFile,
+			error: x.error,
+			line: x.line,
+		};
+	});
+	console.log(asTable(removed));
 	if (errors.length > 0) {
 		process.exit(1);
 	}
