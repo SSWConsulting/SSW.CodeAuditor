@@ -39,7 +39,6 @@
         `https://urlchecker.blob.core.windows.net/codeauditor/${id}.json`
       );
       codeIssues = await c.json();
-      console.log(codeIssues)
     }
     return { htmlHint, summary: summary.summary, codeIssues };
   }

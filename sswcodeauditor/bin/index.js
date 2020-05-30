@@ -54,6 +54,7 @@ const printErrOrWarn = (parsed, line, file, results) => {
 		ruleId: parsed.id,
 		ruleName: parsed.name,
 		error: parsed.isError,
+		ruleFile: parsed.ruleFile,
 		file,
 		line,
 	});
@@ -110,7 +111,6 @@ const log = (msg) => {
 };
 
 const rootFolder = args._[0] || '.';
-const rules = fs.readdirSync(path.join(__dirname, '../rules/'));
 
 let ignoredFiles = [
 	'./{,**}/node_modules/**',
@@ -136,13 +136,14 @@ if (ignoreF) {
 
 let allRules = [];
 
+const rules = fs.readdirSync(path.join(__dirname, '../rules/'));
 for (let index = 0; index < rules.length; index++) {
 	const rule = rules[index];
 	const ruleMd = fs
 		.readFileSync(path.join(__dirname, `../rules/${rule}`))
 		.toString();
 	const parsed = parser.parseSync(ruleMd).data;
-	allRules.push(parsed);
+	allRules.push({ ...parsed, ruleFile: rule });
 }
 
 const globPattern = getGlobalGlobPattern(allRules);

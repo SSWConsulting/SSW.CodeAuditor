@@ -4,6 +4,7 @@ import {
 	zipWith,
 	map,
 	mergeAll,
+	uniq,
 	join,
 	filter,
 	head,
@@ -233,8 +234,7 @@ export const getCodeErrorsByFile = pipe(
 			)(y),
 		})),
 		[keys, values]
-	),
-	tap(console.log)
+	)
 );
 
 export const getCodeErrorRules = pipe(
@@ -249,4 +249,11 @@ export const getCodeErrorRules = pipe(
 	filter((x) => x.type === 'Error'),
 	head,
 	prop('errors')
+);
+
+export const getHtmlHintIssues = pipe(
+	map(prop('errors')),
+	map(keys),
+	flatten,
+	uniq
 );

@@ -3,6 +3,7 @@
   import {
     isInIgnored,
     HTMLERRORS,
+    getHtmlHintIssues,
     getCodeErrorRules,
     getCodeErrorsByFile
   } from "../utils/utils.js";
@@ -13,8 +14,8 @@
 
   export let errors = [];
   export let codeIssues = [];
-
   $: allErrors = errors.concat(getCodeErrorsByFile(codeIssues));
+  $: htmlHintIssues = getHtmlHintIssues(errors);
   const dispatch = createEventDispatcher();
   const viewSource = (url, location) =>
     dispatch("viewSource", {
@@ -25,6 +26,9 @@
   $: ERRORS = getCodeErrorRules(codeIssues).concat(HTMLERRORS);
 
   let hiddenRows = {};
+  const viewRule = k => {
+    window.open();
+  };
   const hideShow = key =>
     (hiddenRows[key] = key in hiddenRows ? !hiddenRows[key] : true);
 </script>
@@ -78,7 +82,7 @@
               <a
                 class="inline-block align-baseline link"
                 target="_blank"
-                href={'https://htmlhint.com/docs/user-guide/rules/' + key}>
+                href={htmlHintIssues.indexOf(key) >= 0 ? `https://htmlhint.com/docs/user-guide/rules/${key}` : `https://github.com/nvhoanganh/urlchecker/tree/master/sswcodeauditor/rules`}>
                 {key}
               </a>
 
