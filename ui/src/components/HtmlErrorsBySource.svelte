@@ -34,7 +34,10 @@
     }
   };
 
-  $: ERRORS = getCodeErrorRules(codeIssues).concat(HTMLERRORS);
+  $: ERRORS =
+    codeIssues.length > 0
+      ? getCodeErrorRules(codeIssues).concat(HTMLERRORS)
+      : HTMLERRORS;
 
   let hiddenRows = {};
   const viewRule = k => {

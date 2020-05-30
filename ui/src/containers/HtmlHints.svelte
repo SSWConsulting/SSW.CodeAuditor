@@ -33,7 +33,7 @@
     let htmlHint = await d.json();
 
     let summary = await getBuildDetails(id);
-    let codeIssues = null;
+    let codeIssues = [];
     if (summary.summary.codeIssues) {
       const c = await fetch(
         `https://urlchecker.blob.core.windows.net/codeauditor/${id}.json`
