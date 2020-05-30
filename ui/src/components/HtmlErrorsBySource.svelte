@@ -94,12 +94,14 @@
                     class="text-xs mr-2 my-1 uppercase tracking-wider border
                     px-2 border-red-600 hover:bg-red-600 hover:text-white
                     cursor-default whitespace-no-wrap">
-                    <a
-                      on:click={() => viewSource(url.url, item)}
-                      href="javascript:void(0)"
-                      title="View source">
-                      {item}
-                    </a>
+                    {#if htmlHintIssues.indexOf(key) >= 0}
+                      <a
+                        on:click={() => viewSource(url.url, item)}
+                        href="javascript:void(0)"
+                        title="View source">
+                        {item}
+                      </a>
+                    {:else}{item}{/if}
                   </div>
                 {/each}
               </div>
