@@ -118,11 +118,10 @@ export const getHtmlIssuesDescriptions = pipe(
 		[keys, values]
 	),
 	map((x) => `"${x.error}" : ${x.count}`),
-	join(', ')
+	join('\n')
 );
 
 export const getCodeIssuesDescriptions = pipe(
-	JSON.parse,
 	converge(
 		zipWith((x, y) => ({
 			error: x,
@@ -131,7 +130,7 @@ export const getCodeIssuesDescriptions = pipe(
 		[keys, values]
 	),
 	map((x) => `"${x.error}" : ${x.count}`),
-	join(', ')
+	join('\n')
 );
 
 export const getHtmlErrorsByReason = pipe(
@@ -160,6 +159,45 @@ export const getHtmlErrorsByReason = pipe(
 	)
 );
 
+export const getCodeSummary = (value) => {
+	let summary = {};
+	if (value.codeIssues) {
+		const data = value.codeIssues ? JSON.parse(value.codeIssues) : null;
+		summary = {
+			...summary,
+			code: true,
+			codeErrors: Object.keys(data).filter((x) =>
+				x.startsWith('Error - ')
+			).length,
+			codeWarnings: Object.keys(data).filter((x) =>
+				x.startsWith('Warn - ')
+			).length,
+			codeIssueList: 'Code Issues:\n' + getCodeIssuesDescriptions(data),
+		};
+	}
+
+	if (value.cloc) {
+		const cloc = JSON.parse(value.cloc);
+		summary = {
+			...summary,
+			cloc: true,
+			totalFiles: cloc.header.n_files,
+			totalLines: cloc.header.n_lines,
+		};
+	}
+
+	if (value.htmlIssuesList) {
+		summary = {
+			...summary,
+			html: true,
+			htmlErrors: value.htmlErrors || 0,
+			htmlWarnings: value.htmlWarnings || 0,
+			htmlIssueList: 'HTML Issues:\n' + getHtmlIssuesDescriptions(value.htmlIssuesList),
+		};
+	}
+	console.log(summary);
+	return summary;
+};
 export const HTMLERRORS = [
 	'attr-no-duplication',
 	'attr-lowercase',

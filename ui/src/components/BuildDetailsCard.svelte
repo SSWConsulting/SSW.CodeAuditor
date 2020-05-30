@@ -1,6 +1,6 @@
 <script>
   import formatDistanceToNow from "date-fns/formatDistanceToNow";
-  import { printTimeDiff } from "../utils/utils";
+  import { printTimeDiff, getCodeSummary } from "../utils/utils";
   import Modal from "./Modal.svelte";
   import { navigateTo } from "svelte-router-spa";
   import LighthouseSummary from "./LighthouseSummary.svelte";
@@ -8,8 +8,7 @@
   import Toastr from "./Toastr.svelte";
 
   export let build = {};
-
-  $: totalHtmlIssues = (build.htmlErrors || 0) + (build.htmlWarnings || 0);
+  $: codeSummary = getCodeSummary(build);
 </script>
 
 <div
@@ -66,16 +65,43 @@
         Whitelisted: {build.whiteListed.length}
       </div>
     {/if}
-    {#if build.htmlIssuesList}
+
+    {#if codeSummary.html}
       <div
         class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
-        text-red-600 border-red-600 cursor-default">
-        Html Errors: {build.htmlErrors || 0}
+        text-red-800 border-red-800 cursor-default">
+        Html Errors: {codeSummary.htmlErrors}
       </div>
       <div
         class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
         text-orange-600 border-orange-600 cursor-default">
-        Html Warnings: {build.htmlWarnings || 0}
+        Html Warnings: {codeSummary.htmlWarnings}
+      </div>
+    {/if}
+
+    {#if codeSummary.cloc}
+      <div
+        class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
+        text-green-600 border-green-600 cursor-default">
+        Code Files: {codeSummary.totalFiles}
+      </div>
+      <div
+        class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
+        text-green-600 border-green-600 cursor-default">
+        Lines of Code: {codeSummary.totalLines}
+      </div>
+    {/if}
+
+    {#if codeSummary.code}
+      <div
+        class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
+        text-red-800 border-red-800 cursor-default">
+        Code Errors: {codeSummary.codeErrors}
+      </div>
+      <div
+        class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
+        text-orange-600 border-orange-600 cursor-default">
+        Code Warnings: {codeSummary.codeWarnings}
       </div>
     {/if}
 

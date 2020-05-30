@@ -31,8 +31,17 @@
       `https://urlchecker.blob.core.windows.net/htmlhint/${id}.json`
     );
     let htmlHint = await d.json();
+
     let summary = await getBuildDetails(id);
-    return { htmlHint, summary: summary.summary };
+    let codeIssues = null;
+    if (summary.summary.codeIssues) {
+      const c = await fetch(
+        `https://urlchecker.blob.core.windows.net/codeauditor/${id}.json`
+      );
+      codeIssues = await c.json();
+      console.log(codeIssues)
+    }
+    return { htmlHint, summary: summary.summary, codeIssues };
   }
 
   let userNotLoginToast;

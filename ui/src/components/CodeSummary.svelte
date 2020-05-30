@@ -2,47 +2,16 @@
   import Icon from "./Icon.svelte";
   import {
     getCodeIssuesDescriptions,
+    getCodeSummary,
     getHtmlIssuesDescriptions
   } from "../utils/utils.js";
   export let value = {};
-  let otherLangs = [];
 
-  $: cloc = value.cloc ? JSON.parse(value.cloc) : null;
-
-  $: codeIssues = value.codeIssues ? JSON.parse(value.codeIssues) : null;
-
-  $: htmlIssues = value.htmlIssuesList
-    ? getHtmlIssuesDescriptions(value.htmlIssuesList)
-    : null;
-
-  $: codeIssuesList = value.codeIssues
-    ? " " + getCodeIssuesDescriptions(value.codeIssues)
-    : null;
-
-  $: codeErrors = codeIssues
-    ? Object.keys(codeIssues).filter(x => x.startsWith("Error - ")).length
-    : 0;
-
-  $: codeWarnings = codeIssues
-    ? Object.keys(codeIssues).filter(x => x.startsWith("Warn - ")).length
-    : 0;
-
-  $: {
-    if (cloc) {
-      otherLangs = Object.keys(cloc)
-        .filter(x => x !== "header")
-        .map(x => ({
-          name: x,
-          ...cloc[x]
-        }));
-
-      console.log(otherLangs);
-    }
-  }
+  $: codeSummary = getCodeSummary(value);
 </script>
 
 <div class="grid grid-cols-4">
-  {#if cloc}
+  {#if codeSummary.cloc}
     <div class="text-center whitespace-no-wrap mx-auto">
       <Icon classnames="block mx-auto">
         <path
@@ -51,7 +20,7 @@
           002 2h8a2 2 0 002-2v-2" />
       </Icon>
       <span class="font-bold block text-sm" title="Number of files">
-        {cloc.header.n_files}
+        {codeSummary.totalFiles}
       </span>
     </div>
     <div class="text-center whitespace-no-wrap mx-auto">
@@ -59,20 +28,20 @@
         <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
       </Icon>
       <span class="font-bold block text-sm" title="Number of lines of codes">
-        {cloc.header.n_lines}
+        {codeSummary.totalLines}
       </span>
     </div>
   {/if}
 
-  {#if value.htmlIssuesList || value.codeIssues}
+  {#if codeSummary.html || codeSummary.code}
     <div class="text-center whitespace-no-wrap mx-auto">
       <Icon cssClass="text-red-500 block mx-auto">
         <path d="M6 18L18 6M6 6l12 12" />
       </Icon>
       <span
         class="font-bold block mx-auto text-sm"
-        title={htmlIssues + codeIssuesList}>
-        {(value.htmlErrors || 0) + codeErrors}
+        title={(codeSummary.codeIssueList || '') + '\n\n\n' + (codeSummary.htmlIssueList || '')}>
+        {(codeSummary.htmlErrors || 0) + (codeSummary.codeErrors || 0)}
       </span>
     </div>
     <div class="text-center whitespace-no-wrap mx-auto">
@@ -81,20 +50,10 @@
       </Icon>
       <span
         class="font-bold block mx-auto text-sm"
-        title={htmlIssues + codeIssuesList}>
-        {(value.htmlWarnings || 0) + codeWarnings}
+        title={(codeSummary.codeIssueList || '') + '\n\n\n' + (codeSummary.htmlIssueList || '')}>
+        {(codeSummary.htmlWarnings || 0) + (codeSummary.codeWarnings || 0)}
       </span>
     </div>
-    <!-- {#each otherLangs as item}
-        <div class="text-center whitespace-no-wrap">
-          <span class="font-mono text-sm">
-            {item.name === 'JavaScript' ? 'JS' : item.name}:
-          </span>
-          <span class="font-bold block" title={`${item.comment} files`}>
-            {item.code}
-          </span>
-        </div>
-      {/each} -->
   {/if}
 
 </div>
