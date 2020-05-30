@@ -111,24 +111,31 @@ const log = (msg) => {
 
 const rootFolder = args._[0] || '.';
 const rules = fs.readdirSync(path.join(__dirname, '../rules/'));
+
+let ignoredFiles = [
+	'./{,**}/node_modules/**',
+	'./{,**}/*.min.*',
+	'./{,**}/*.bundle.*',
+];
+
 let ignoreF = args.ignore
 	? args.ignore
 	: fs.existsSync(`${rootFolder}/.gitignore`)
 	? `${rootFolder}/.gitignore`
 	: null;
 
-let ignoredFiles = [];
 if (ignoreF) {
-	const ignoreFile = fs.readFileSync(ignoreF).toString();
-	ignoredFiles = ignoreFile
+	ignoredFiles = fs
+		.readFileSync(ignoreF)
+		.toString()
 		.split('\r\n')
 		.filter((l) => l.trim().length > 0 && !l.trim().match('^(#|!)'))
 		.map((x) => x.trim())
 		.map((x) => `./{,**}/${x}/**`);
 }
 
-// read rule from Rules folder
 let allRules = [];
+
 for (let index = 0; index < rules.length; index++) {
 	const rule = rules[index];
 	const ruleMd = fs
