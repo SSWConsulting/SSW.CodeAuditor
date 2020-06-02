@@ -90,7 +90,6 @@ exports.HTMLERRORS = [
 	'attr-value-double-quotes',
 	'doctype-first',
 	'id-unique',
-	'spec-char-escape',
 	'src-not-empty',
 	'tag-pair',
 	'tagname-lowercase',
