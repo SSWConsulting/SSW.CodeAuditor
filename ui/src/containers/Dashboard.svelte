@@ -56,21 +56,46 @@
 
   const instructions = `
   ## SSW CodeAuditor - Scan instructions
-  Scan any website for broken links by running the following command:
+  Scan any website for broken links and [HTML Issues](https://htmlhint.com) by running the following command:
   \`\`\` bash
   $ docker run sswconsulting/sswauditor --token ${token} --url <URL> --buildId [BUILDID]
   \`\`\`
-  
-  Include [Lighthouse](https://developers.google.com/web/tools/lighthouse) key performance score by running
+
+  Include [Lighthouse](https://developers.google.com/web/tools/lighthouse) Audit:
   \`\`\` bash
-  $ docker container run --rm --cap-add=SYS_ADMIN sswconsulting/sswauditor --lighthouse --token ${token} --url <URL>
+  $ docker container run --cap-add=SYS_ADMIN \\\ 
+          sswconsulting/sswauditor --lighthouse \\\ 
+          --token ${token} --url <URL>
   \`\`\`
 
-  Why **--cap-add=SYS_ADMIN** option? [Read here](https://github.com/GoogleChrome/lighthouse-ci/tree/master/docs/recipes/docker-client)
+  Include [Static Code Analysis](https://github.com/nvhoanganh/urlchecker/tree/master/sswcodeauditor/rules):
+  \`\`\` bash
+  $ docker container run --cap-add=SYS_ADMIN \\\ 
+          -v "<YOUR_SOURCE_CODE>:/home/lhci/app/src" \\\ 
+          sswconsulting/sswauditor --lighthouse \\\ 
+          --token ${token} --url <URL> 
+  \`\`\`
 
-  Where:
-  - **${token}** is a unique token assigned to your account
-  - **BUILDID** (optional) is your CI build number
+  Where: **${token}** is a unique token assigned to your account and **BUILDID** (optional) is your CI build number
+
+  If you don't want Lighthouse audit, you can use the lighter version
+  \`\`\` bash
+  $ docker container run \\\ 
+          -v "<YOUR_SOURCE_CODE>:/usr/app/src" \\\ 
+          sswconsulting/sswauditor:light \\\ 
+          --token ${token} --url <URL> 
+  \`\`\`
+
+  With **sswconsulting/sswauditor:light**, you can also run Lighthouse audit first and push the result here:
+  \`\`\` bash
+  $ npm install -g @lhci/cli
+  $ lhci collect --url=<URL>
+  $ docker container run \\\ 
+          -v "<YOUR_SOURCE_CODE>:/usr/app/src" \\\ 
+          -v "<.LIGHTHOUSE>:/usr/app/.lighthouseci" \\\ 
+          sswconsulting/sswauditor:light --lighthouse \\\ 
+          --token ${token} --url <URL> 
+  \`\`\`
   `;
 </script>
 

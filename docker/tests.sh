@@ -1,9 +1,9 @@
 #build the image
 docker build -t sswconsulting/sswauditor .
-docker build -f DockerfileLighthouse -t sswconsulting/sswauditor:lhci .
+docker build -f DockerfileLight -t sswconsulting/sswauditor:light .
 #tag and push
 docker push sswconsulting/sswauditor
-docker push sswconsulting/sswauditor:lhci
+docker push sswconsulting/sswauditor:light
 #Get Usage
 docker run sswconsulting/sswauditor --help
 #run scan (output in CSV)
