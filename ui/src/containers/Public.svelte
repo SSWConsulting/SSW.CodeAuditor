@@ -42,8 +42,8 @@
         <div class="flex justify-center">
           <button
             on:click={() => navigateTo('/signup')}
-            class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6
-            focus:outline-none hover:bg-indigo-600 rounded text-lg">
+            class="inline-flex text-white border-0 py-2 px-6 focus:outline-none
+            hover:bg-gray-800 rounded text-lg bgdark">
             Sign up
           </button>
         </div>
@@ -55,10 +55,12 @@
     <div
       class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
       <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
-        <img
-          class="object-cover object-center rounded"
-          alt="hero"
-          src="/images/dashboard.png" />
+        <a href="/images/dashboard.png" target="_blank">
+          <img
+            class="object-cover object-center rounded"
+            alt="hero"
+            src="/images/dashboard.png" />
+        </a>
       </div>
       <div
         class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col
@@ -78,10 +80,12 @@
     <div
       class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
       <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
-        <img
-          class="object-cover object-center rounded"
-          alt="hero"
-          src="/images/exportcsv.png" />
+        <a href="/images/exportcsv.png" target="_blank">
+          <img
+            class="object-cover object-center rounded"
+            alt="hero"
+            src="/images/exportcsv.png" />
+        </a>
       </div>
       <div
         class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col
@@ -101,20 +105,22 @@
     <div
       class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
       <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
-        <img
-          class="object-cover object-center rounded"
-          alt="hero"
-          src="/images/lighthouse2.png" />
+        <a href="/images/lighthouse2.png" target="_blank">
+          <img
+            class="object-cover object-center rounded"
+            alt="hero"
+            src="/images/lighthouse2.png" />
+        </a>
       </div>
       <div
         class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col
         md:items-start md:text-left items-center text-center">
         <h1
           class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">
-          View Lighthouse Audit Report
+          View Lighthouse Report
         </h1>
         <p class="mb-8 leading-relaxed">
-          View Lighthouse Audit Report without leaving the app
+          View Lighthouse Report without leaving the app
         </p>
       </div>
 
@@ -125,17 +131,19 @@
     <div
       class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
       <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
-        <img
-          class="object-cover object-center rounded"
-          alt="hero"
-          src="/images/threshold.png" />
+        <a href="/images/threshold.png" target="_blank">
+          <img
+            class="object-cover object-center rounded"
+            alt="hero"
+            src="/images/threshold.png" />
+        </a>
       </div>
       <div
         class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col
         md:items-start md:text-left items-center text-center">
         <h1
           class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">
-          Set Lighthouse Audit Threshold
+          Set Lighthouse Threshold
         </h1>
         <p class="mb-8 leading-relaxed">
           If Performance is less than 80 and SEO score is less than 100, fail
@@ -149,10 +157,12 @@
     <div
       class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
       <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
-        <img
-          class="object-cover object-center rounded"
-          alt="hero"
-          src="/images/ignore.png" />
+        <a href="/images/ignore.png" target="_blank">
+          <img
+            class="object-cover object-center rounded"
+            alt="hero"
+            src="/images/ignore.png" />
+        </a>
       </div>
       <div
         class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col
@@ -172,10 +182,12 @@
     <div
       class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
       <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
-        <img
-          class="object-cover object-center rounded"
-          alt="hero"
-          src="/images/codeissues.png" />
+        <a href="/images/codeissues.png" target="_blank">
+          <img
+            class="object-cover object-center rounded"
+            alt="hero"
+            src="/images/codeissues.png" />
+        </a>
       </div>
       <div
         class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col

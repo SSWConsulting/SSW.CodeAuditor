@@ -76,6 +76,9 @@ button:focus {
 .textgrey {
 	color: #414141;
 }
+.bgdark {
+	background-color: #414141;
+}
 .textred {
 	color: #cc4141;
 }
