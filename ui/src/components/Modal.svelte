@@ -79,9 +79,8 @@
           <button
             on:click={action}
             type="button"
-            class="bg-blue-100 hover:bg-blue-500 text-blue-800 font-semibold
-            hover:text-white py-2 px-4 border border-blue-500
-            hover:border-transparent rounded">
+            class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
+            border hover:border-transparent rounded">
             {mainAction}
             {#if loading}
               <LoadingCirle />
@@ -91,9 +90,8 @@
         <button
           on:click={dismiss}
           type="button"
-          class="bg-grey-100 hover:bg-blue-500 text-blue-800 font-semibold ml-1
-          hover:text-white py-2 px-4 border border-blue-500
-          hover:border-transparent rounded">
+          class="bgdark hover:bg-grey-800 font-semibold ml-1 text-white
+          hover:text-white py-2 px-4 border hover:border-transparent rounded">
           Cancel
         </button>
       </div>

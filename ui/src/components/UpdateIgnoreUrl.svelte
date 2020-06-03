@@ -63,12 +63,11 @@
   }
 
   input[type="radio"]:checked + label span {
-    background-color: #3490dc;
     box-shadow: 0px 0px 0px 2px white inset;
   }
 
   input[type="radio"]:checked + label {
-    color: #3490dc;
+    color: #414141;
   }
 </style>
 
@@ -81,7 +80,10 @@
   on:dismiss={dismiss}>
   <div class="ml-5">
     <TextField bind:value={url} placeholder="" label="URL" type="text" />
-    <div class="text-sm text-grey-400 py-3">You can use glob matching, e.g. http://twitter.com/** will match with http://twitter.com/users/john or http://twitter.com/login </div>
+    <div class="text-sm text-grey-400 py-3">
+      You can use glob matching, e.g. http://twitter.com/** will match with
+      http://twitter.com/users/john or http://twitter.com/login
+    </div>
     <label class="block uppercase text-xs mb-2 py-2">For</label>
     <ul>
       <li class="pb-3">
@@ -95,8 +97,8 @@
 
           <label for="radio1" class="flex items-center cursor-pointer">
             <span
-              class="w-5 h-5 inline-block mr-2 rounded-full border border-grey
-              flex-no-shrink" />
+              class="w-5 h-5 inline-block mr-2 rounded-full border-black
+              border-solid border flex-no-shrink" />
             All new builds
           </label>
         </div>
@@ -111,8 +113,8 @@
             value={url} />
           <label for="radio2" class="flex items-center cursor-pointer">
             <span
-              class="w-5 h-5 inline-block mr-2 rounded-full border border-grey
-              flex-no-shrink" />
+              class="w-5 h-5 inline-block mr-2 rounded-full border-black
+              border-solid border flex-no-shrink" />
             Only when {scanUrl} is scanned
           </label>
         </div>
