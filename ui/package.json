@@ -2,10 +2,10 @@
   "name": "svelte-app",
   "version": "1.0.0",
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && cp public/index.html public/200.html",
     "dev": "rollup -c -w",
-    "predeploy": "npm run build && cp npublic/index.html public/200.html",
-    "deploy": "surge public --domain https://sswauditor.surge.sh && surge public --domain https://sswlinkauditor.surge.sh",
+    "predeploy": "npm run build && cp public/index.html public/200.html",
+    "deploy": "surge public --domain https://codeauditor.com && surge public --domain https://sswlinkauditor.surge.sh",
     "count": "npx cloc --force-lang=\"HTML\",svelte src",
     "start": "sirv public --single"
   },

@@ -16,7 +16,7 @@ exports.consoleBox = (text, color) =>
 
 exports.getLinkToBuild = (runId) =>
 	runId
-		? `Report URL => https://sswauditor.surge.sh/build/${_replaceQuote(
+		? `Report URL => https://codeauditor.com/build/${_replaceQuote(
 				runId
 		  )}`
 		: '';

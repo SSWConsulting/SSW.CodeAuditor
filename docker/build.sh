@@ -1,2 +1,2 @@
-docker build -t sswconsulting/sswauditor .
-docker build -f DockerfileLighthouse -t sswconsulting/sswauditor:lhci .
+docker build -t sswconsulting/codeauditor .
+docker build -f DockerfileLighthouse -t sswconsulting/codeauditor:lhci .

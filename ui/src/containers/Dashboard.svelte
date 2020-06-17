@@ -58,13 +58,13 @@
   ## CodeAuditor
   Scan any website for broken links and [HTML Issues](https://htmlhint.com) by running the following command:
   \`\`\` bash
-  $ docker run sswconsulting/sswauditor --token ${token} --url <URL> --buildId [BUILDID]
+  $ docker run sswconsulting/codeauditor --token ${token} --url <URL> --buildId [BUILDID]
   \`\`\`
 
   Include [Lighthouse](https://developers.google.com/web/tools/lighthouse) Audit:
   \`\`\` bash
   $ docker container run --cap-add=SYS_ADMIN \\\ 
-          sswconsulting/sswauditor --lighthouse \\\ 
+          sswconsulting/codeauditor --lighthouse \\\ 
           --token ${token} --url <URL>
   \`\`\`
 
@@ -72,7 +72,7 @@
   \`\`\` bash
   $ docker container run --cap-add=SYS_ADMIN \\\ 
           -v "<YOUR_SOURCE_CODE>:/home/lhci/app/src" \\\ 
-          sswconsulting/sswauditor --lighthouse \\\ 
+          sswconsulting/codeauditor --lighthouse \\\ 
           --token ${token} --url <URL> 
   \`\`\`
 
@@ -82,18 +82,18 @@
   \`\`\` bash
   $ docker container run \\\ 
           -v "<YOUR_SOURCE_CODE>:/usr/app/src" \\\ 
-          sswconsulting/sswauditor:light \\\ 
+          sswconsulting/codeauditor:light \\\ 
           --token ${token} --url <URL> 
   \`\`\`
 
-  With **sswconsulting/sswauditor:light**, you can also run Lighthouse audit first and push the result here:
+  With **sswconsulting/codeauditor:light**, you can also run Lighthouse audit first and push the result here:
   \`\`\` bash
   $ npm install -g @lhci/cli
   $ lhci collect --url=<URL>
   $ docker container run \\\ 
           -v "<YOUR_SOURCE_CODE>:/usr/app/src" \\\ 
           -v "<.LIGHTHOUSE>:/usr/app/.lighthouseci" \\\ 
-          sswconsulting/sswauditor:light --lighthouse \\\ 
+          sswconsulting/codeauditor:light --lighthouse \\\ 
           --token ${token} --url <URL> 
   \`\`\`
   `;

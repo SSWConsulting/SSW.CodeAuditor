@@ -23,7 +23,7 @@ return z.request(options).then((response) => {
 				totalScanned: x.totalScanned,
 				scanDuration: x.scanDuration,
 				url: x.url,
-				reportUrl: `https://sswauditor.surge.sh/build/${x.runId}`,
+				reportUrl: `https://codeauditor.com/build/${x.runId}`,
 				totalBrokenLinks: x.totalBrokenLinks,
 				uniqueBrokenLinks: x.uniqueBrokenLinks,
 				pagesWithBrokenLink: x.pagesWithBrokenLink,

@@ -1,2 +1,2 @@
-docker push sswconsulting/sswauditor
-docker push sswconsulting/sswauditor:lhci
+docker push sswconsulting/codeauditor
+docker push sswconsulting/codeauditor:lhci
