@@ -9,12 +9,10 @@ $ docker run sswconsulting/codeauditor --url <URL>
 You can also get [Lighthouse](https://developers.google.com/web/tools/lighthouse) report score by running
 
 ```bash
-$ docker container run --rm --cap-add=SYS_ADMIN sswconsulting/codeauditor:lhci --url <URL> --lighthouse
+$ docker container run --rm --cap-add=SYS_ADMIN sswconsulting/codeauditor --url <URL> --lighthouse
 ```
 
-Please note, `sswconsulting/codeauditor:lhci` image is **1.38GB** (**498MB** compressed), while the `sswconsulting/codeauditor` is **252MB** (**66MB** compressed)
-
-Why **--cap-add=SYS_ADMIN** option? [Read here](https://github.com/GoogleChrome/lighthouse-ci/tree/master/docs/recipes/docker-client)
+What is **--cap-add=SYS_ADMIN** option? [Read here](https://github.com/GoogleChrome/lighthouse-ci/tree/master/docs/recipes/docker-client)
 
 ## Sign up at https://codeauditor.com/
 
@@ -28,7 +26,7 @@ Where: **BUILDID** [optional]: your CI build number
 Or with Lighthouse options
 
 ```bash
-$ docker container run --rm --cap-add=SYS_ADMIN sswconsulting/codeauditor:lhci --url <URL> --lighthouse --buildId <BUILDID> --token <TOKEN>
+$ docker container run --rm --cap-add=SYS_ADMIN sswconsulting/codeauditor --url <URL> --lighthouse --buildId <BUILDID> --token <TOKEN>
 ```
 
 Run help for all command line options:
@@ -37,11 +35,11 @@ Run help for all command line options:
 $ docker run sswconsulting/codeauditor --help
 ```
 
-### Include Lighthouse without using sswconsulting/codeauditor:lhci image
-You can also run `lighthouse` tool directly on your build server and publish the result to https://codeauditor.com/ (This way, you don't have to pull the larger `sswconsulting/codeauditor:lhci` image)
+### Using smaller image
+You can also run `lighthouse` tool directly on your build server and have the result published to https://codeauditor.com/
 
 ```bash
 $ npm install -g @lhci/cli
 $ lhci collect --url=<URL>
-$ docker container run --rm -v "$PWD/.lighthouseci:/usr/app/.lighthouseci" sswconsulting/codeauditor --url https://azuregems.io --lighthouse --token <TOKEN>
+$ docker container run --rm -v "$PWD/.lighthouseci:/usr/app/.lighthouseci" sswconsulting/codeauditor:light --url <URL> --lighthouse --token <TOKEN>
 ```
