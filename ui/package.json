@@ -5,7 +5,8 @@
     "build": "rollup -c && cp public/index.html public/200.html",
     "dev": "rollup -c -w",
     "predeploy": "npm run build && cp public/index.html public/200.html",
-    "deploy": "surge public --domain https://codeauditor.com && surge public --domain https://sswlinkauditor.surge.sh",
+    "deploy": "firebase deploy --token $FIREBASETOKEN --only hosting",
+    "login:ci": "firebase login:ci",
     "count": "npx cloc --force-lang=\"HTML\",svelte src",
     "start": "sirv public --single"
   },

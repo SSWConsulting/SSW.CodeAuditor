@@ -35,6 +35,15 @@ Run help for all command line options:
 $ docker run sswconsulting/codeauditor --help
 ```
 
+### Static Code Analysis
+Include [Static Code Analysis](https://github.com/nvhoanganh/urlchecker/tree/master/sswcodeauditor/rules):
+
+```bash
+$ docker container run --cap-add=SYS_ADMIN \
+    -v "<YOUR_SOURCE_CODE>:/home/lhci/app/src" \
+    sswconsulting/codeauditor --lighthouse --url <URL>
+```
+
 ### Using smaller image
 You can also run `lighthouse` tool directly on your build server and have the result published to https://codeauditor.com/
 
