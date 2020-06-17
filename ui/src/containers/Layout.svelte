@@ -27,7 +27,7 @@
         <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
       </Icon>
       <a href="/" class="ml-2 font-semibold text-xl tracking-tight brand">
-        SSW CodeAuditor
+        CodeAuditor
       </a>
     </div>
     <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">

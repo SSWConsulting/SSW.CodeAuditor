@@ -215,7 +215,7 @@
       <Icon cssClass="inline-block text-red-600" height="24" width="24">
         <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
       </Icon>
-      <span class="ml-3 text-xl">SSW CodeAuditor</span>
+      <span class="ml-3 text-xl">CodeAuditor</span>
     </a>
     <p
       class="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2

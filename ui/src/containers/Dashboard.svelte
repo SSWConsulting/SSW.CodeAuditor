@@ -55,7 +55,7 @@
   });
 
   const instructions = `
-  ## SSW CodeAuditor
+  ## CodeAuditor
   Scan any website for broken links and [HTML Issues](https://htmlhint.com) by running the following command:
   \`\`\` bash
   $ docker run sswconsulting/sswauditor --token ${token} --url <URL> --buildId [BUILDID]

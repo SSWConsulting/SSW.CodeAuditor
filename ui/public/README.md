@@ -1,4 +1,4 @@
-## SSW CodeAuditor
+## CodeAuditor
 
 Scan any website for broken links and [HTML Issues](https://htmlhint.com) by running the following command:
 

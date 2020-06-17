@@ -1,4 +1,4 @@
-# Run SSW CodeAuditor in your CI/CD pipeline
+# Run CodeAuditor in your CI/CD pipeline
 
 Scan any website for broken links and HTML issues by running the following command:
 
