@@ -36,7 +36,7 @@ $ docker run sswconsulting/codeauditor --help
 ```
 
 ### Static Code Analysis
-Include [Static Code Analysis](https://github.com/nvhoanganh/urlchecker/tree/master/sswcodeauditor/rules):
+Include [Static Code Analysis](https://sswcodingstandards.web.app/):
 
 ```bash
 $ docker container run --cap-add=SYS_ADMIN \

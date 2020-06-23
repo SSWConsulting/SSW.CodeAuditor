@@ -96,7 +96,7 @@
               <a
                 class="inline-block align-baseline link"
                 target="_blank"
-                href={htmlHintIssues.indexOf(key) >= 0 ? `https://htmlhint.com/docs/user-guide/rules/${key}` : `https://github.com/nvhoanganh/urlchecker/blob/master/sswcodeauditor/rules/${key}.md`}>
+                href={htmlHintIssues.indexOf(key) >= 0 ? `https://htmlhint.com/docs/user-guide/rules/${key}` : `https://sswcodingstandards.web.app//rules/${key}`}>
                 {key}
               </a>
 

@@ -68,7 +68,7 @@
           --token ${token} --url <URL>
   \`\`\`
 
-  Include [Static Code Analysis](https://github.com/nvhoanganh/urlchecker/tree/master/sswcodeauditor/rules):
+  Include [Static Code Analysis](https://sswcodingstandards.web.app/):
   \`\`\` bash
   $ docker container run --cap-add=SYS_ADMIN \\\ 
           -v "<YOUR_SOURCE_CODE>:/home/lhci/app/src" \\\ 

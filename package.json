@@ -1,5 +1,5 @@
 {
-  "name": "url-checker",
+  "name": "sswcodeauditorapp",
   "version": "1.0.0",
   "description": "``` bash\r $ cd ui\r $ npm i\r $ npm run dev\r ```",
   "main": "index.js",
@@ -22,12 +22,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nvhoanganh/urlchecker.git"
+    "url": "git+https://github.com/SSWConsulting/SSW.CodeAuditor.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/nvhoanganh/urlchecker/issues"
+    "url": "https://github.com/SSWConsulting/SSW.CodeAuditor/issues"
   },
-  "homepage": "https://github.com/nvhoanganh/urlchecker#readme"
+  "homepage": "https://codeauditor.com"
 }

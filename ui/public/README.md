@@ -12,7 +12,7 @@ Include [Lighthouse](https://developers.google.com/web/tools/lighthouse) Audit:
 $ docker container run --cap-add=SYS_ADMIN sswconsulting/codeauditor --lighthouse --url <URL>
 ```
 
-Include [Static Code Analysis](https://github.com/nvhoanganh/urlchecker/tree/master/sswcodeauditor/rules):
+Include [Static Code Analysis](https://sswcodingstandards.web.app/):
 
 ```bash
 $ docker container run --cap-add=SYS_ADMIN \
