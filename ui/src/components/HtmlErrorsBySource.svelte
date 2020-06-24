@@ -1,4 +1,4 @@
-  <script>
+<script>
   import { groupBy, props, slice } from "ramda";
   import {
     isInIgnored,
@@ -23,6 +23,7 @@
     if (htmlHintIssues.indexOf(key) >= 0) {
       dispatch("viewSource", {
         url,
+        key,
         location
       });
     } else {
@@ -30,7 +31,12 @@
         x => x.file === url && x.line === location
       )[0].snippet;
 
-      dispatch("viewCode", `// ..........\n${snippet}\n// ..........`);
+      dispatch("viewCode", {
+        snippet: `// ..........\n${snippet}\n// ..........`,
+        url,
+        key,
+        location
+      });
     }
   };
 
