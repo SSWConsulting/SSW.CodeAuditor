@@ -236,6 +236,27 @@ export const getCodeErrorsByFile = pipe(
 	)
 );
 
+export const getCodeErrorsByRule = pipe(
+	groupBy(prop('ruleFile')),
+	converge(
+		zipWith((x, y) => ({
+			error: x.replace('.md', ''),
+			pages: pipe(
+				groupBy(prop('file')),
+				converge(
+					zipWith((x, y) => ({
+						error: x.replace('.md', ''),
+						url: x,
+						locations: y.map((l) => l.line),
+					})),
+					[keys, values]
+				)
+			)(y),
+		})),
+		[keys, values]
+	)
+);
+
 export const getCodeErrorRules = pipe(
 	groupBy(prop('error')),
 	converge(

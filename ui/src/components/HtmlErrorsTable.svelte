@@ -166,7 +166,7 @@
   {#if displayMode === 0}
     <HtmlErrorsBySource {errors} {codeIssues} on:viewSource={viewPageSource} on:viewCode={viewCode}/>
   {:else}
-    <HtmlErrorsByReason {errors} {codeIssues} on:viewSource={viewPageSource} />
+    <HtmlErrorsByReason {errors} {codeIssues} on:viewSource={viewPageSource} on:viewCode={viewCode}/>
   {/if}
 {/if}
 

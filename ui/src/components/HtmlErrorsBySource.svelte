@@ -1,4 +1,4 @@
-<script>
+  <script>
   import { groupBy, props, slice } from "ramda";
   import {
     isInIgnored,
