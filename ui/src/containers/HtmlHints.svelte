@@ -106,7 +106,7 @@
       <Breadcrumbs
         build={data ? data.summary : {}}
         runId={currentRoute.namedParams.id}
-        displayMode="HTML" />
+        displayMode="Code Issues" />
 
       <BuildDetailsCard build={data ? data.summary : {}} />
 

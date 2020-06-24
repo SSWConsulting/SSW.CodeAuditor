@@ -66,6 +66,16 @@ const _getAgrs = () => {
 			type: 'string',
 			demandOption: false,
 		})
+		.option('ignorefile', {
+			describe: 'static Code Auditor ignore file',
+			type: 'string',
+			demandOption: false,
+		})
+		.option('rules', {
+			describe: 'folder containing the rules to check',
+			type: 'string',
+			demandOption: false,
+		})
 		.option('lighthouse', {
 			describe: 'Include Lighthouse audit',
 			type: 'boolean',
@@ -86,7 +96,7 @@ const main = async () => {
 		}
 		_cloc = result;
 
-		const [resultCode, errorCode] = runCodeAuditor();
+		const [resultCode, errorCode] = runCodeAuditor(options.ignorefile, options.rules);
 		if (errorCode) {
 			writeLog(`Error running SSWCodeAuditor command: ${error}`);
 		}
@@ -154,11 +164,13 @@ const countLineOfCodes = () => {
 	}
 };
 
-const runCodeAuditor = () => {
+const runCodeAuditor = (ignorefile, rulesfolder) => {
 	writeLog(chalk.yellowBright(`run static code analysis`));
 	try {
+		const ignoreParams = ignorefile ? ` -I ./src/${ignorefile} ` : '';
+		const rulesFolderParams = rulesfolder ? ` -R ./src/${rulesfolder} ` : '';
 		const json = execSync(
-			`./node_modules/.bin/sswcodeauditor ./src --json`
+			`./node_modules/.bin/sswcodeauditor ./src ${ignoreParams} ${rulesFolderParams} --json`
 		).toString();
 		const d = JSON.parse(json);
 		return [d, null];

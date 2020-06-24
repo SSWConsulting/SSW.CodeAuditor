@@ -113,7 +113,7 @@
   }
 </style>
 
-{#if errors.length === 0}
+{#if errors.length === 0 && codeIssues.length === 0}
   <div class="mb-6 text-center text-xl py-8">
     <Icon cssClass="text-yellow-800 inline-block">
       <path
