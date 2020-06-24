@@ -14,8 +14,20 @@ import {
 	flatten,
 	tap,
 	prop,
+	when,
+	propSatisfies,
+	gt,
+	takeLast,
+	prepend,
+	__
 } from 'ramda';
 
+export const truncate = (len) =>
+	when(
+		propSatisfies(gt(__, len), 'length'),
+		pipe(takeLast(len), prepend('…'), join(''))
+	);
+	
 export function isValidEmail(value) {
 	if (!value) return true;
 	const pattern = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;

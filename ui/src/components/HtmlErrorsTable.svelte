@@ -19,6 +19,8 @@
   let displayMode = 0;
   let viewUrlSource = "";
   let viewLocation = "";
+  let ruleName = "";
+  let codeLocation = "";
   let source;
   let showSource;
   let loading;
@@ -67,6 +69,7 @@
     }
 
     viewUrlSource = event.detail.url;
+    ruleName = event.detail.key;
     showSource = true;
     loading = true;
     const res = await fetch(
@@ -78,8 +81,11 @@
   }
 
   async function viewCode(event) {
-    source = event.detail;
-    viewLocation = "4:0"
+    source = event.detail.snippet;
+    viewUrlSource = event.detail.url;
+    ruleName = event.detail.key;
+    codeLocation = event.detail.location;
+    viewLocation = "4:0";
     showSourceWindow();
   }
 
@@ -164,15 +170,23 @@
   </div>
 
   {#if displayMode === 0}
-    <HtmlErrorsBySource {errors} {codeIssues} on:viewSource={viewPageSource} on:viewCode={viewCode}/>
+    <HtmlErrorsBySource
+      {errors}
+      {codeIssues}
+      on:viewSource={viewPageSource}
+      on:viewCode={viewCode} />
   {:else}
-    <HtmlErrorsByReason {errors} {codeIssues} on:viewSource={viewPageSource} on:viewCode={viewCode}/>
+    <HtmlErrorsByReason
+      {errors}
+      {codeIssues}
+      on:viewSource={viewPageSource}
+      on:viewCode={viewCode} />
   {/if}
 {/if}
 
 <Modal
   bind:show={showSource}
-  header="View Source"
+  header={ruleName + ': ' + viewUrlSource}
   on:dismiss={dismiss}
   full={true}>
   {#if loading}

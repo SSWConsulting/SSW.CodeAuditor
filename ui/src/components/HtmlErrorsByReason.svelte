@@ -3,6 +3,7 @@
   import {
     isInIgnored,
     getHtmlErrorsByReason,
+    truncate,
     getCodeErrorRules,
     getHtmlHintIssues,
     getCodeErrorsByRule,
@@ -24,6 +25,7 @@
     if (htmlHintIssues.indexOf(key) >= 0) {
       dispatch("viewSource", {
         url,
+        key,
         location
       });
     } else {
@@ -31,7 +33,12 @@
         x => x.file === url && x.line === location
       )[0].snippet;
 
-      dispatch("viewCode", `// ..........\n${snippet}\n// ..........`);
+      dispatch("viewCode", {
+        snippet: `// ..........\n${snippet}\n// ..........`,
+        url,
+        key,
+        location
+      });
     }
   };
 
@@ -76,7 +83,7 @@
     <a
       class="inline align-baseline text-blue-600 hover:text-blue-800"
       target="_blank"
-      href={'https://htmlhint.com/docs/user-guide/rules/' + error.error}>
+      href={htmlHintIssues.indexOf(error.error) >= 0 ? `https://htmlhint.com/docs/user-guide/rules/${error.error}` : `https://sswcodingstandards.web.app//rules/${error.error}`}>
       {error.error}
     </a>
   </div>
@@ -96,8 +103,9 @@
           <tr>
             <td
               class="whitespace-no-wrap break-all w-2/12 border px-4 py-2
-              break-all">
-              {page.url}
+              break-all"
+              title={page.url}>
+              {truncate(80)(page.url)}
             </td>
             <td class="w-10/12 border px-4 py-2 break-all">
               <div class="flex flex-wrap">
