@@ -1,5 +1,5 @@
 const options = {
-	url: `https://asia-northeast1-sswlinkauditor-c1131.cloudfunctions.net/api/scanresult/${bundle.authData.api_key}`,
+	url: `https://asia-east2-sswlinkauditor-c1131.cloudfunctions.net/api/scanresult/${bundle.authData.api_key}`,
 	method: 'GET',
 	headers: {
 		Accept: 'application/json',

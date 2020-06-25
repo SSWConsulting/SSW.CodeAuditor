@@ -55,7 +55,7 @@ export const newGuid = () => {
 
 export const CONSTS = {
 	USERS: 'users',
-	API: 'https://asia-northeast1-sswlinkauditor-c1131.cloudfunctions.net',
+	API: 'https://asia-east2-sswlinkauditor-c1131.cloudfunctions.net',
 };
 
 export const printTimeDiff = (took) =>

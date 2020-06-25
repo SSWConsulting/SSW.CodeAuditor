@@ -25,7 +25,12 @@ const {
 	getScanDetails,
 	getIgnoredUrls,
 } = require('./queries');
-const { newGuid, getCodeErrorSummary, getErrorAndWarnCount, getErrorsName } = require('./utils');
+const {
+	newGuid,
+	getCodeErrorSummary,
+	getErrorAndWarnCount,
+	getErrorsName,
+} = require('./utils');
 const { updateLastBuild, getUserIdFromApiKey } = require('./firestore');
 
 var cors = require('cors');
@@ -77,9 +82,10 @@ app.post('/config/:api/ignore', async (req, res) => {
 	res.json(await getIgnoredUrls(api));
 });
 
-app.get('/scanresult/:api', async (req, res) =>
-	res.json(await getSummary(req.params.api))
-);
+app.get('/scanresult/:api', async (req, res) => {
+	console.log('GET ScanResults for', req.params.api);
+	res.json(await getSummary(req.params.api));
+});
 
 app.get('/viewsource', async (req, res) => {
 	const resp = await fetch(req.query.url);
@@ -217,4 +223,4 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 	res.json(runId);
 });
 
-exports.api = functions.region('asia-northeast1').https.onRequest(app);
+exports.api = functions.region('asia-east2').https.onRequest(app);

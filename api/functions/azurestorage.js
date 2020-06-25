@@ -59,7 +59,7 @@ exports.getTableRows = (table, query) =>
 exports.insertEntity = (table, data) =>
 	new Promise((resolve, reject) =>
 		_createTableIfNotExists(table).then((service) =>
-			service.insertEntity(table, data, (error, result, response) => {
+			service.insertEntity(table, data, (error, _, response) => {
 				if (!error) resolve(response.statusCode);
 				else reject(error);
 			})
@@ -84,21 +84,17 @@ exports.uploadBlob = (container, name, data) =>
 exports.updateEntity = (table, data) =>
 	new Promise((resolve, reject) =>
 		_createTableIfNotExists(table).then((service) =>
-			service.insertOrMergeEntity(
-				table,
-				data,
-				(error, result, response) => {
-					if (!error) resolve(response.statusCode);
-					else reject(error);
-				}
-			)
+			service.insertOrMergeEntity(table, data, (error, _, response) => {
+				if (!error) resolve(response.statusCode);
+				else reject(error);
+			})
 		)
 	);
 
 exports.deleteEntity = (table, data) =>
 	new Promise((resolve, reject) =>
 		_createTableIfNotExists(table).then((service) =>
-			service.deleteEntity(table, data, (error, result, response) => {
+			service.deleteEntity(table, data, (error) => {
 				if (!error) resolve();
 				else reject(error);
 			})
