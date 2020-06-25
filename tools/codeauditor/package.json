@@ -1,0 +1,39 @@
+{
+	"name": "sswcodeauditor",
+	"version": "0.0.17",
+	"description": "",
+	"main": "./bin/index.js",
+	"bin": {
+		"sswcodeauditor": "./bin/index.js"
+	},
+	"scripts": {
+		"test": "node . ./tests"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/SSWConsulting/SSW.CodingStandards"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@typescript-eslint/typescript-estree": "^3.0.2",
+		"as-table": "^1.0.55",
+		"boxen": "^4.2.0",
+		"chalk": "^3.0.0",
+		"cheerio": "^1.0.0-rc.3",
+		"eslint": "^5.12.0",
+		"eslint-plugin-promise": "^4.0.1",
+		"esprima-walk": "^0.1.0",
+		"gauge": "^3.0.0",
+		"glob": "^7.1.6",
+		"parser-front-matter": "^1.6.4",
+		"ramda": "^0.27.0",
+		"strip-comments": "^2.0.1",
+		"typescript": "^3.9.3",
+		"vm2": "^3.9.2",
+		"yargs": "^15.3.1"
+	},
+	"devDependencies": {
+		"firebase-tools": "^8.4.3"
+	}
+}

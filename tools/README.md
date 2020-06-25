@@ -1,0 +1,1 @@
+## This folder contains all the CLI tools used in SSW.CodeAuditor
