@@ -224,3 +224,4 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 });
 
 exports.api = functions.region('asia-east2').https.onRequest(app);
+exports.api2 = functions.region('asia-northeast1').https.onRequest(app);

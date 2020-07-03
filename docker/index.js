@@ -36,8 +36,7 @@ const _getAgrs = () => {
 		})
 		.option('token', {
 			alias: 't',
-			describe:
-				'Dashboard token (sign up at https://codeauditor.com/)',
+			describe: 'Dashboard token (sign up at https://codeauditor.com/)',
 			type: 'string',
 			demandOption: false,
 		})
@@ -96,7 +95,10 @@ const main = async () => {
 		}
 		_cloc = result;
 
-		const [resultCode, errorCode] = runCodeAuditor(options.ignorefile, options.rules);
+		const [resultCode, errorCode] = runCodeAuditor(
+			options.ignorefile,
+			options.rules
+		);
 		if (errorCode) {
 			writeLog(`Error running SSWCodeAuditor command: ${error}`);
 		}
@@ -168,7 +170,9 @@ const runCodeAuditor = (ignorefile, rulesfolder) => {
 	writeLog(chalk.yellowBright(`run static code analysis`));
 	try {
 		const ignoreParams = ignorefile ? ` -I ./src/${ignorefile} ` : '';
-		const rulesFolderParams = rulesfolder ? ` -R ./src/${rulesfolder} ` : '';
+		const rulesFolderParams = rulesfolder
+			? ` -R ./src/${rulesfolder} `
+			: '';
 		const json = execSync(
 			`./node_modules/.bin/sswcodeauditor ./src ${ignoreParams} ${rulesFolderParams} --json`
 		).toString();
@@ -274,8 +278,9 @@ const processAndUpload = async (args, startTime, file) => {
 		const all = allUrls
 			.filter(
 				(url) =>
-					url.Source.toLowerCase().indexOf(args.url.toLowerCase()) >=
-					0
+					(url.Source || '')
+						.toLowerCase()
+						.indexOf(args.url.toLowerCase()) >= 0
 			)
 			.map((x) => x.Source);
 		return [...new Set(all)];
