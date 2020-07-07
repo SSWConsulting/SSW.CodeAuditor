@@ -520,6 +520,8 @@ const processAndUpload = async (args, startTime, file) => {
 		writeLog(`Lighthouse reports output`, lhFiles);
 	};
 
+	
+
 	const __readHtmlHint = async () => {
 		const allgoodLinks = __getGoodUrls(results);
 		writeLog(

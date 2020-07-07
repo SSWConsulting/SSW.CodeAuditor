@@ -1,0 +1,62 @@
+--------------------------------------------------------------------------------
+
+                              /@@#///////@@/(@//@%/(@.@(       @@
+                          @@//////////////////////////////#*  @@@
+                        @////@//(///////////@@@@@///@//@/@**//@@(
+                      @///////@///////////////@@@@    (           @,
+                     @/(&/@////////////////////                     @
+                    @////////////////////////@@                      @
+                  @%////////(//////////%/////&@            @@       *,@
+             @@@@@/@/#/////(&//////////////////                       .@
+        *@@@@@.    .%///(//@//////////////////&.   .@@,                 @%
+      @@%           .&@&&/@.@//&/////(//////////    @@@@@@@@@         .. &@
+    @@%               @@@@@   @&/////////////////#   @/       V  @@/ ,@@@ @
+@@@%                   @@@@        .%@@@@//////#@ @   @@         @     .,.
+                                          @@@/@(  (@@@@% @/\      %
+                                           @@@@(    .     .@@/\   #
+                                             @                  %@%
+
+--------------------------------------------------------------------------------
+
+---------------------------------------------
+--- GitHub Actions Multi Language Linter ----
+---------------------------------------------
+
+---------------------------------------------
+The Super-Linter source code can be found at:
+ - https://github.com/github/super-linter
+---------------------------------------------
+--------------------------------------------
+Gathering GitHub information...
+NOTE: ENV VAR [RUN_LOCAL] has been set to:[true]
+bypassing GitHub Actions variables...
+Linting all files in mapped directory:[/tmp/lint]
+
+--------------------------------------------
+Gathering user validation information...
+
+----------------------------------------------
+----------------------------------------------
+Linting [GO] files...
+----------------------------------------------
+----------------------------------------------
+---------------------------
+File:[/tmp/lint/golang/golang_bad_01.go]
+[0m[41m[0;37mERROR![0m Found errors in [golangci-lint] linter![0m
+[0m[41m[0;37mERROR:[0m[level=error msg="[linters context] typechecking error: golang/golang_bad_01.go:1:1: expected 'package', found 'if'"
+level=warning msg="[runner] Can't run linter goanalysis_metalinter: S1032: failed prerequisites: [(inspect@command-line-arguments, isgenerated@command-line-arguments): analysis skipped: errors in package: [-: golang/golang_bad_01.go:1:1: expected 'package', found 'if']]"
+level=warning msg="[runner] Can't run linter unused: buildir: analysis skipped: errors in package: [-: golang/golang_bad_01.go:1:1: expected 'package', found 'if']"
+level=error msg="Running error: buildir: analysis skipped: errors in package: [-: golang/golang_bad_01.go:1:1: expected 'package', found 'if']"][0m
+---------------------------
+File:[/tmp/lint/golang/golang_good_01.go]
+[0m[0;34m - File:[0;37m[golang_good_01.go][0;34m was linted with [0;37m[golangci-lint][0;34m successfully[0m
+ed: false
+
+----------------------------------------------
+----------------------------------------------
+The script has completed
+----------------------------------------------
+----------------------------------------------
+
+[0m[41m[0;37mERRORS FOUND[0m in GO:[1][0m
+[0m[0;33mWARN![0m Exiting with exit code:[0] as:[DISABLE_ERRORS] was set to:[true][0m

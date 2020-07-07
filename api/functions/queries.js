@@ -51,7 +51,7 @@ exports.getPerformanceThreshold = async (api, url) => {
 exports.getSummary = (api) =>
 	getTableRows(
 		TABLE.Scans,
-		new azure.TableQuery().where('PartitionKey eq ?', api)
+		new azure.TableQuery().where('PartitionKey eq ?', api).top(100)
 	);
 
 exports.getSummaryById = async (runId) => {

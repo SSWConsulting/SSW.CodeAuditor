@@ -28,6 +28,7 @@
 		"signal-exit": "^3.0.3",
 		"slug": "^2.1.1",
 		"sswcodeauditor": "~0.0.17",
+		"xregexp": "^4.3.0",
 		"yargs": "^15.3.1"
 	},
 	"devDependencies": {

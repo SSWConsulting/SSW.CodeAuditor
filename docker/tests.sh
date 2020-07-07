@@ -19,6 +19,15 @@ docker run sswconsulting/codeauditor --url http://staging.sugarlearning.com/ --t
 docker run sswconsulting/codeauditor --url https://sswrulesstaging1.firebaseapp.com/rules/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4
 docker container run --rm --cap-add=SYS_ADMIN sswconsulting/codeauditor --url http://staging.sugarlearning.com/ --lighthouse --token bbf65654-23d5-4d87-8f68-34d68c30d2e4
 docker container run -v "C:\AnthonyNguyenData\source\ssw\SSW.Induction:/home/lhci/app/src" --rm --cap-add=SYS_ADMIN sswconsulting/codeauditor --url http://staging.sugarlearning.com/ --lighthouse --token bbf65654-23d5-4d87-8f68-34d68c30d2e4 --ignorefile .gitignore_ca
+
+docker run -e RUN_LOCAL=true -e DEFAULT_VALIDATE_ALL_CODEBASE=false -e VALIDATE_JAVASCRIPT_STANDARD=true -v "C:\AnthonyNguyenData\source\POSV2\OOEServer:/tmp/lint" github/super-linter
+docker run -e RUN_LOCAL=true -e DEFAULT_VALIDATE_ALL_CODEBASE=false -e VALIDATE_JAVASCRIPT_STANDARD=true -v "C:\AnthonyNguyenData\source\personal\super-linter\.automation\test:/tmp/lint" github/super-linter
+docker run -e RUN_LOCAL=true -e DEFAULT_VALIDATE_ALL_CODEBASE=false -e VALIDATE_JAVASCRIPT_ES=true -v "C:\AnthonyNguyenData\source\personal\super-linter\.automation\test:/tmp/lint" github/super-linter
+docker run -e RUN_LOCAL=true -e DEFAULT_VALIDATE_ALL_CODEBASE=false -e VALIDATE_JAVASCRIPT_ES=true -e VALIDATE_JAVASCRIPT_STANDARD=true -v "C:\AnthonyNguyenData\source\POSV2\OOEServer:/tmp/lint" github/super-linter
+docker run -e RUN_LOCAL=true -e DEFAULT_VALIDATE_ALL_CODEBASE=false -e VALIDATE_TYPESCRIPT_ES=true -e VALIDATE_TYPESCRIPT_STANDARD=true -v "C:\AnthonyNguyenData\source\BaillieuH\BaillieuHolst.ACTIVENEW\src\WebUI\bh.active:/tmp/lint" github/super-linter
+docker run -e RUN_LOCAL=true -e DEFAULT_VALIDATE_ALL_CODEBASE=false -e VALIDATE_GO=true -v "C:\AnthonyNguyenData\source\ssw\SSW.CodeAuditor\docker:/tmp/lint" github/super-linter
+docker run -e RUN_LOCAL=true -e DEFAULT_VALIDATE_ALL_CODEBASE=false -e VALIDATE_CSS=true -e DISABLE_ERRORS=true -v "C:\AnthonyNguyenData\source\personal\super-linter\.automation\test:/tmp/lint" github/super-linter
+
 docker container run -v "$(Build.SourcesDirectory):/home/lhci/app/src" --rm --cap-add=SYS_ADMIN sswconsulting/codeauditor --url http://staging.sugarlearning.com/ --lighthouse --token 828ea8af-66c6-4ff5-63c1-9606e3c702d2 --ignorefile .gitignore_ca --buildId $(Build.BuildNumber)
 
 docker container run --rm --cap-add=SYS_ADMIN -v "$(Build.SourcesDirectory)/src:/home/lhci/app/src" sswconsulting/codeauditor --url https://sswpeoplestaging.firebaseapp.com/people/ --lighthouse --token 828ea8af-66c6-4ff5-63c1-9606e3c702d2 --buildId $(Build.BuildNumber)

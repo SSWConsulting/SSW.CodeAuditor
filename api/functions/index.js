@@ -71,7 +71,6 @@ app.get('/config/:api/perfthreshold/:url', async (req, res) =>
 app.post('/config/:api/ignore', async (req, res) => {
 	const { ignoreOn, ignoreDuration, urlToIgnore } = req.body;
 	const api = req.params.api;
-
 	await addIgnoreUrl(api, {
 		ignoreOn,
 		ignoreDuration,
