@@ -75,6 +75,12 @@ const _getAgrs = () => {
 			type: 'string',
 			demandOption: false,
 		})
+		.option('maxthread', {
+			describe:
+				'maximum number of concurrent requests for broken links check',
+			type: 'number',
+			demandOption: false,
+		})
 		.option('lighthouse', {
 			describe: 'Include Lighthouse audit',
 			type: 'boolean',
@@ -143,10 +149,20 @@ const main = async () => {
 };
 
 const startScan = (options) => {
-	writeLog(chalk.yellowBright(`Scanning ${chalk.green(options.url)}`));
+	writeLog(
+		chalk.yellowBright(
+			`Scanning ${chalk.green(options.url)} ${
+				options.maxthread
+					? ` with max thread of ${options.maxthread}`
+					: ''
+			}`
+		)
+	);
 
 	try {
-		const comand = `./sswlinkauditor ${options.url}`;
+		const comand = options.maxthread
+			? `./sswlinkauditor ${options.url} ${options.maxthread}`
+			: `./sswlinkauditor ${options.url}`;
 		return [execSync(comand).toString(), null];
 	} catch (error) {
 		return [null, error.message];
@@ -519,8 +535,6 @@ const processAndUpload = async (args, startTime, file) => {
 		}
 		writeLog(`Lighthouse reports output`, lhFiles);
 	};
-
-	
 
 	const __readHtmlHint = async () => {
 		const allgoodLinks = __getGoodUrls(results);
