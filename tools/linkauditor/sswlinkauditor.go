@@ -10,6 +10,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"golang.org/x/net/html"
@@ -203,6 +204,16 @@ func writeResultFile(allUrls map[string]LinkStatus) {
 func main() {
 	allUrls := make(map[string]LinkStatus)
 	startUrl := Link{os.Args[1], "", "a", ""}
+	maxThreadCount := -1
+	concurrentGoroutines := make(chan struct{}, 1)
+	if len(os.Args) > 2 {
+		maxThreadCount, _ = strconv.Atoi(os.Args[2])
+		fmt.Println("Start with max concurrent routines of", maxThreadCount)
+		concurrentGoroutines = make(chan struct{}, maxThreadCount)
+	}
+
+	var wg sync.WaitGroup
+
 	start := time.Now()
 
 	chUrls := make(chan Link)
@@ -232,11 +243,30 @@ func main() {
 				if crawling > max {
 					max = crawling
 				}
-				if strings.Index(link.url, startUrl.url) == 0 && link.linkType == "a" && !isResourceFile(link.url) {
-					go crawl(link, chUrls, chAllUrls, crawling)
+
+				if maxThreadCount != -1 {
+					wg.Add(1)
+					go func() {
+						defer wg.Done()
+						concurrentGoroutines <- struct{}{}
+
+						if strings.Index(link.url, startUrl.url) == 0 && link.linkType == "a" && !isResourceFile(link.url) {
+							crawl(link, chUrls, chAllUrls, crawling)
+						} else {
+							check(link, chAllUrls, crawling)
+						}
+
+						<-concurrentGoroutines
+					}()
 				} else {
-					go check(link, chAllUrls, crawling)
+					// no limit
+					if strings.Index(link.url, startUrl.url) == 0 && link.linkType == "a" && !isResourceFile(link.url) {
+						go crawl(link, chUrls, chAllUrls, crawling)
+					} else {
+						go check(link, chAllUrls, crawling)
+					}
 				}
+
 			}
 
 		case status := <-chAllUrls:
@@ -244,6 +274,7 @@ func main() {
 			fmt.Println("DONE", crawling, status.url)
 			allUrls[status.url] = status
 		}
+
 	}
 
 	elapse := time.Since(start)

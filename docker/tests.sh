@@ -13,6 +13,7 @@ docker run -v "C:\AnthonyNguyenData\source\personal\url-checker\sswcodeauditor:/
 docker run -v "C:\AnthonyNguyenData\source\personal\url-checker\sswcodeauditor:/home/lhci/app/src" sswconsulting/codeauditor --url https://azuregems.io/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4
 docker run -v "C:\AnthonyNguyenData\source\people.ssw.com.au:/home/lhci/app/src" sswconsulting/codeauditor --url https://azuregems.io/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4
 docker run -v "C:\AnthonyNguyenData\source\people.ssw.com.au:/home/lhci/app/src" sswconsulting/codeauditor --url http://staging.sugarlearning.com/ 
+docker run -v "C:\AnthonyNguyenData\source\POSV2\OOEServer:/home/lhci/app/src" sswconsulting/codeauditor --url http://staging.sugarlearning.com/ 
 
 ## sugarlearning
 docker run sswconsulting/codeauditor --url http://staging.sugarlearning.com/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4
@@ -20,7 +21,8 @@ docker run sswconsulting/codeauditor --url https://sswrulesstaging1.firebaseapp.
 docker container run --rm --cap-add=SYS_ADMIN sswconsulting/codeauditor --url http://staging.sugarlearning.com/ --lighthouse --token bbf65654-23d5-4d87-8f68-34d68c30d2e4
 docker container run -v "C:\AnthonyNguyenData\source\ssw\SSW.Induction:/home/lhci/app/src" --rm --cap-add=SYS_ADMIN sswconsulting/codeauditor --url http://staging.sugarlearning.com/ --lighthouse --token bbf65654-23d5-4d87-8f68-34d68c30d2e4 --ignorefile .gitignore_ca
 
-docker run -e RUN_LOCAL=true -e DEFAULT_VALIDATE_ALL_CODEBASE=false -e VALIDATE_JAVASCRIPT_STANDARD=true -v "C:\AnthonyNguyenData\source\POSV2\OOEServer:/tmp/lint" github/super-linter
+docker run -e RUN_LOCAL=true -v "C:\AnthonyNguyenData\source\POSV2\OOEServer:/tmp/lint" github/super-linter > superlinter.log
+docker run -e RUN_LOCAL=true -v "C:\AnthonyNguyenData\source\ssw\SSW.CodeAuditor\tools\linkauditor:/tmp/lint" github/super-linter
 docker run -e RUN_LOCAL=true -e DEFAULT_VALIDATE_ALL_CODEBASE=false -e VALIDATE_JAVASCRIPT_STANDARD=true -v "C:\AnthonyNguyenData\source\personal\super-linter\.automation\test:/tmp/lint" github/super-linter
 docker run -e RUN_LOCAL=true -e DEFAULT_VALIDATE_ALL_CODEBASE=false -e VALIDATE_JAVASCRIPT_ES=true -v "C:\AnthonyNguyenData\source\personal\super-linter\.automation\test:/tmp/lint" github/super-linter
 docker run -e RUN_LOCAL=true -e DEFAULT_VALIDATE_ALL_CODEBASE=false -e VALIDATE_JAVASCRIPT_ES=true -e VALIDATE_JAVASCRIPT_STANDARD=true -v "C:\AnthonyNguyenData\source\POSV2\OOEServer:/tmp/lint" github/super-linter

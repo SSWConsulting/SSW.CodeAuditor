@@ -1,6 +1,5 @@
 const fs = require('fs');
-const folderName = './.superlinter/';
-const XRegExp = require('XRegExp');
+const XRegExp = require('xregexp');
 
 const LINTER_RGX = XRegExp('Linting \\[(?<name>.*)\\] files');
 const FILE_RGX = XRegExp('File:\\[(?<file>.*)\\]');
@@ -38,7 +37,12 @@ const ERROR_SAMELINE = {
 	CLOJURE: '',
 	OPENAPI: '',
 	CFN: '',
-	HTML: '',
+};
+const ERROR_ON_DIFFLINES = {
+	HTML: {
+		location: XRegExp('L(?<line>\\d*)'),
+		message: XRegExp('.\\s\\((?<message>.*)\\)'),
+	},
 };
 
 const processFile = (file) => {
@@ -47,6 +51,8 @@ const processFile = (file) => {
 	const issues = [];
 	let currentLinter = '';
 	let currentFile = '';
+	let currentLocation = '';
+	let currentMessage = '';
 	for (let index = 0; index < rows.length; index++) {
 		const row = rows[index];
 		const linter = XRegExp.exec(row, LINTER_RGX);
@@ -54,21 +60,60 @@ const processFile = (file) => {
 
 		if (linter && linter.name) {
 			currentLinter = linter.name;
+			// reset on new linter
+			currentFile = '';
+			currentLocation = '';
+			currentMessage = '';
 		}
 
 		if (file && file.file) {
 			currentFile = file.file;
+			// reset on new file
+			currentLocation = '';
+			currentMessage = '';
 		}
 
-		if (currentLinter && currentFile && ERROR_SAMELINE[currentLinter]) {
-			const issue = XRegExp.exec(row, ERROR_SAMELINE[currentLinter]);
-			if (issue && issue.line && issue.col && issue.message) {
-				issues.push({
-					location: `${issue.line}:${issue.col}`,
-					message: issue.message,
-					linter: currentLinter,
-					file: currentFile,
-				});
+		if (currentLinter && currentFile) {
+			if (ERROR_SAMELINE[currentLinter]) {
+				// error line and error message is reported in 1 single line of text
+				const issue = XRegExp.exec(row, ERROR_SAMELINE[currentLinter]);
+				if (issue && issue.line && issue.col && issue.message) {
+					issues.push({
+						location: `${issue.line}:${issue.col}`,
+						message: issue.message,
+						linter: currentLinter,
+						file: currentFile,
+					});
+				}
+			} else if (ERROR_ON_DIFFLINES[currentLinter]) {
+				// error line and error message is reported on 2 different lines
+				const location = XRegExp.exec(
+					row,
+					ERROR_ON_DIFFLINES[currentLinter].location
+				);
+				const message = XRegExp.exec(
+					row,
+					ERROR_ON_DIFFLINES[currentLinter].message
+				);
+
+				if (location && location.line) {
+					currentLocation = location.col
+						? `${location.line}:${location.col}`
+						: location.line;
+				}
+
+				if (message && message.message) {
+					currentMessage = message.message;
+				}
+
+				if (currentLocation && currentMessage) {
+					issues.push({
+						location: currentLocation,
+						message: currentMessage,
+						linter: currentLinter,
+						file: currentFile,
+					});
+				}
 			}
 		}
 	}
@@ -76,26 +121,9 @@ const processFile = (file) => {
 	return issues;
 };
 
-const readGithubSuperLinter = () => {
-	if (!fs.existsSync(folderName)) {
-		console.log(
-			'ERROR => No Github Super Linter output report folder found. Run again with `-v "%SUPERLINTER%:/usr/app/.superlinter"` option'
-		);
-		return;
-	}
+exports.readGithubSuperLinter = processFile;
 
-	let reports = fs.readdirSync(folderName);
-	let issues = [];
-	for (let index = 0; index < reports.length; index++) {
-		const errors = processFile(`${folderName}${reports[index]}`);
-		if (errors.length > 0) {
-			console.log(
-				`found ${errors.length} issues on file ${reports[index]}`
-			);
-			errors.forEach((x) => issues.push(x));
-		}
-	}
-	console.log(`Total issues found: ${issues.length}`);
-};
-
-readGithubSuperLinter();
+(function test() {
+	const errors = processFile('./superlinter.log');
+	console.log(errors.slice(0, 1000));
+})();

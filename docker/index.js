@@ -1,30 +1,25 @@
 const fs = require('fs');
 const { execSync } = require('child_process');
 const chalk = require('chalk');
-const minimatch = require('minimatch');
 const yargs = require('yargs');
-const R = require('ramda');
-const {
-	htmlHintConfig,
-	getConfigs,
-	getPerfThreshold,
-	postData,
-	fetchHtml,
-} = require('./api');
+const { getConfigs, getPerfThreshold, postData } = require('./api');
 const {
 	printTimeDiff,
-	getPerfScore,
-	diffInDaysToNow,
-	getLinkToBuild,
+	readLighthouseReport,
 	consoleBox,
 	readCsv,
-	outputBadDataCsv,
-	HTMLERRORS,
+	printResultsToConsole,
+	runCodeAuditor,
+	countLineOfCodes,
+	runBrokenLinkCheck,
+	runHtmlHint,
+	processBrokenLinks,
 } = require('./utils');
 
+const { readGithubSuperLinter } = require('./parseSuperLinter');
+
+const LIGHTHOUSEFOLDER = './.lighthouseci/';
 let _args = {};
-let _cloc;
-let _codeAuditor = [];
 
 const _getAgrs = () => {
 	_args = yargs
@@ -93,13 +88,17 @@ const main = async () => {
 	const options = _getAgrs();
 	const startTime = new Date();
 
+	let _cloc;
+	let _codeAuditor = [];
+	let _superlinter = [];
+
+	// Static Code Analysis and CLOC
 	if (fs.readdirSync('./src').length > 0) {
-		const [result, error] = countLineOfCodes();
-		if (error) {
-			writeLog(`Error running CLOC command: ${error}`);
-			process.exit(1);
+		writeLog(chalk.yellowBright(`Counting lines of codes`));
+		const [result, error] = countLineOfCodes(writeLog);
+		if (!error) {
+			_cloc = result;
 		}
-		_cloc = result;
 
 		const [resultCode, errorCode] = runCodeAuditor(
 			options.ignorefile,
@@ -117,15 +116,24 @@ const main = async () => {
 			const warns = _codeAuditor.filter((x) => !x.error);
 			codeSummary = ` Errors=${errors.length} Warnings=${warns.length}`;
 		}
+
+		// output the result
 		consoleBox(
 			`Codes: Files=${result.header.n_files} Lines=${result.header.n_lines}${codeSummary}`,
 			'green'
 		);
 	}
 
-	const [result, error] = startScan(options);
-	writeLog(`scan finished`, result);
+	// Github Superlinter
+	if (fs.existsSync('./src/superlinter.log')) {
+		writeLog(
+			`We have github SuperLinter output file at ./src/superlinter.log`
+		);
+		_superlinter = readGithubSuperLinter('./src/superlinter.log');
+		writeLog(`total number of issues found`, _superlinter.length);
+	}
 
+	// Lighthouse
 	if (
 		options.lighthouse &&
 		fs.existsSync('/etc/apt/sources.list.d/google.list')
@@ -141,14 +149,6 @@ const main = async () => {
 		}
 	}
 
-	if (error) {
-		writeLog(`Error running command: ${error}`);
-		process.exit(1);
-	}
-	processAndUpload(options, startTime, './all_links.csv');
-};
-
-const startScan = (options) => {
 	writeLog(
 		chalk.yellowBright(
 			`Scanning ${chalk.green(options.url)} ${
@@ -158,427 +158,40 @@ const startScan = (options) => {
 			}`
 		)
 	);
+	const [result, error] = runBrokenLinkCheck(options.url, options.maxthread);
+	writeLog(`scan finished`, result);
 
-	try {
-		const comand = options.maxthread
-			? `./sswlinkauditor ${options.url} ${options.maxthread}`
-			: `./sswlinkauditor ${options.url}`;
-		return [execSync(comand).toString(), null];
-	} catch (error) {
-		return [null, error.message];
+	if (error) {
+		writeLog(`Error running command: ${error}`);
+		process.exit(1);
 	}
-};
-
-const countLineOfCodes = () => {
-	writeLog(chalk.yellowBright(`Counting lines of codes`));
-	try {
-		const json = execSync(
-			`./node_modules/.bin/cloc src --fullpath --not-match-d node_modules --json`
-		).toString();
-		const d = JSON.parse(json);
-		return [d, null];
-	} catch (error) {
-		return [null, error.message];
-	}
-};
-
-const runCodeAuditor = (ignorefile, rulesfolder) => {
-	writeLog(chalk.yellowBright(`run static code analysis`));
-	try {
-		const ignoreParams = ignorefile ? ` -I ./src/${ignorefile} ` : '';
-		const rulesFolderParams = rulesfolder
-			? ` -R ./src/${rulesfolder} `
-			: '';
-		const json = execSync(
-			`./node_modules/.bin/sswcodeauditor ./src ${ignoreParams} ${rulesFolderParams} --json`
-		).toString();
-		const d = JSON.parse(json);
-		return [d, null];
-	} catch (error) {
-		return [null, error.message];
-	}
-};
-
-const runHtmlHint = async (url) => {
-	writeLog(chalk.yellowBright(`Running htmlhint on ${url}`));
-	const HTMLHint = require('htmlhint').default;
-
-	try {
-		const html = await fetchHtml(url);
-		return R.pipe(
-			(html) => HTMLHint.verify(html, htmlHintConfig),
-			R.map((x) => {
-				delete x.evidence;
-				delete x.message;
-				delete x.raw;
-				const error = {
-					...x,
-					ruleName: x.rule.id,
-					url,
-				};
-				delete error.rule;
-				return error;
-			})
-		)(html);
-	} catch (error) {
-		return null;
-	}
-};
-
-const getHtmlHintDetails = (result) => {
-	const getSummarizedErrors = R.pipe(
-		R.flatten,
-		R.filter((x) => !!x),
-		R.groupBy((x) => x.ruleName),
-		R.map((x) => ({
-			type: x[0].type,
-			count: x.length,
-			example: x[0],
-		}))
+	processAndUpload(
+		options,
+		startTime,
+		'./all_links.csv',
+		_cloc,
+		_codeAuditor,
+		_superlinter
 	);
-
-	const getDetailsErrorsOnUrl = R.pipe(
-		R.pipe(
-			R.flatten,
-			R.filter((x) => !!x),
-			R.groupBy(R.prop('url'))
-		),
-		R.converge(
-			R.zipWith((k, v) => ({
-				url: k,
-				errors: R.pipe(
-					R.map((e) => ({
-						loc: `${e.line}:${e.col}`,
-						errorType: e.ruleName,
-					})),
-					R.groupBy(R.prop('errorType')),
-					R.converge(
-						R.zipWith((k, v) => ({
-							[k]: v.map((u) => u.loc),
-						})),
-						[R.keys, R.values]
-					),
-					R.reduce((a, b) => {
-						const key = Object.keys(b)[0];
-						return { ...a, [key]: b[key] };
-					}, {})
-				)(v),
-			})),
-			[R.keys, R.values]
-		)
-	);
-
-	return [getSummarizedErrors(result), getDetailsErrorsOnUrl(result)];
 };
 
-const processAndUpload = async (args, startTime, file) => {
-	/**
-	 ************** CLOSURES ****************
-	 */
-	const __getBadResults = (allUrls) => {
-		return allUrls
-			.filter(
-				(url) =>
-					url['Status Code'] === '0' || url['Status Code'] === '404'
-			)
-			.map((x) => ({
-				src: x.Source,
-				dst: x.Destination,
-				link: x.Anchor,
-				statuscode: x['Status Code'],
-				statusmsg: x.Status,
-			}));
-	};
-
-	const __getGoodUrls = (allUrls) => {
-		const all = allUrls
-			.filter(
-				(url) =>
-					(url.Source || '')
-						.toLowerCase()
-						.indexOf(args.url.toLowerCase()) >= 0
-			)
-			.map((x) => x.Source);
-		return [...new Set(all)];
-	};
-
-	const __getUniqIgnoredUrls = (badUrls, whitelistedUrls) => {
-		// check the scan URL, effective DATE and pattern match
-		const isInIgnoredList = (url, ignoreOn) => {
-			return (
-				whitelistedUrls
-					.filter(
-						(ig) =>
-							ig.ignoreOn === ignoreOn &&
-							(+ig.ignoreDuration === -1 ||
-								diffInDaysToNow(new Date(ig.effectiveFrom)) <
-									+ig.ignoreDuration)
-					)
-					.map((ig) => ig.urlToIgnore)
-					.filter((ignorePattern) => minimatch(url, ignorePattern))
-					.length > 0
-			);
-		};
-
-		// return the URL only
-		const all = badUrls
-			.filter(
-				(url) =>
-					isInIgnoredList(url.dst, 'all', whitelistedUrls) ||
-					isInIgnoredList(url.dst, args.url, whitelistedUrls)
-			)
-			.map((x) => x.dst);
-		return [...new Set(all)];
-	};
-
-	const __printResultsToConsole = (
-		lh,
-		runId,
-		requiredThreshold,
-		badLinks,
-		matchedIgnored,
-		htmlIssuesSummary,
-		htmlIssues
-	) => {
-		let lhScaled;
-		if (lh) {
-			lhScaled = getPerfScore(lh);
-		}
-
-		// output Lighthouse Score Box
-		lhScaled &&
-			consoleBox(
-				`AVG=${lhScaled.average.toFixed(1)} Performance=${
-					lhScaled.performanceScore
-				} Accessibility=${lhScaled.accessibilityScore} Best practices=${
-					lhScaled.bestPracticesScore
-				} SEO=${lhScaled.seoScore} PWA=${lhScaled.pwaScore}`,
-				'green'
-			);
-
-		// output htmlhint summary
-		const getSummaryText = R.pipe(
-			R.converge(
-				R.zipWith((x, y) => ({
-					error: x,
-					count: y.count,
-				})),
-				[R.keys, R.values]
-			),
-			R.map(
-				(x) =>
-					`${x.error} ${
-						HTMLERRORS.indexOf(x.error) >= 0 ? '(Error)' : ''
-					}:${x.count}`
-			),
-			R.join(', ')
-		);
-
-		const getHtmlHintErrors = R.pipe(
-			R.keys,
-			R.filter((x) => HTMLERRORS.indexOf(x) >= 0)
-		);
-
-		htmlIssuesSummary &&
-			consoleBox(
-				'HtmlHint issues: ' + getSummaryText(htmlIssuesSummary),
-				'red'
-			);
-
-		let htmlErrors = htmlIssuesSummary
-			? getHtmlHintErrors(htmlIssuesSummary)
-			: [];
-
-		// output broken links reports
-		const _ignoreLbl = () =>
-			`${
-				matchedIgnored.length > 0
-					? `, ${matchedIgnored.length} URLs in Ignored list`
-					: ''
-			}`;
-		consoleBox(
-			badLinks.length === 0
-				? `All ${chalk.green.bold.underline(
-						results.length
-				  )} links returned 200 OK [${took}]${_ignoreLbl()}`
-				: `Scanned ${results.length}, found ${
-						badLinks.length
-				  } Bad links [${took}]${_ignoreLbl()}`,
-			badLinks.length === 0 ? 'green' : 'red'
-		);
-
-		// check if pass perf threshold or not
-		let failedThreshold = false;
-		if (lhScaled && requiredThreshold) {
-			if (
-				(requiredThreshold.performanceScore &&
-					lhScaled.performanceScore <
-						requiredThreshold.performanceScore) ||
-				(requiredThreshold.accessibilityScore &&
-					lhScaled.accessibilityScore <
-						requiredThreshold.accessibilityScore) ||
-				(requiredThreshold.bestPracticesScore &&
-					lhScaled.bestPracticesScore <
-						requiredThreshold.bestPracticesScore) ||
-				(requiredThreshold.seoScore &&
-					lhScaled.seoScore < requiredThreshold.seoScore) ||
-				(requiredThreshold.pwaScore &&
-					lhScaled.pwaScore < requiredThreshold.pwaScore) ||
-				(requiredThreshold.average &&
-					lhScaled.average < requiredThreshold.average)
-			) {
-				consoleBox(
-					`!!! FAILED Required Threshold: AVG=${requiredThreshold.average.toFixed(
-						1
-					)} Performance=${
-						requiredThreshold.performanceScore
-					} Accessibility=${
-						requiredThreshold.accessibilityScore
-					} Best practices=${
-						requiredThreshold.bestPracticesScore
-					} SEO=${requiredThreshold.seoScore} PWA=${
-						requiredThreshold.pwaScore
-					} !!!`,
-					'red'
-				);
-				failedThreshold = true;
-			}
-		}
-
-		if (runId) {
-			// pushed to cloud, no need to output the CSV
-			consoleBox(getLinkToBuild(runId), 'green');
-		} else {
-			badLinks.length && outputBadDataCsv(badLinks);
-
-			htmlIssues &&
-				R.pipe(
-					// restructure
-					R.map(
-						R.applySpec({
-							url: R.prop('url'),
-							errors: R.pipe(
-								R.identity,
-								R.pipe(
-									R.prop('errors'),
-									R.converge(
-										R.zipWith((x, y) => ({
-											error: x,
-											locations: y,
-										})),
-										[R.keys, R.values]
-									)
-								)
-							),
-						})
-					),
-					R.tap(() => consoleBox('List of HTML Issues', 'red')),
-					R.pipe(
-						R.forEach((x) => {
-							console.log(`${x.url}`);
-							R.pipe(
-								R.prop('errors'),
-								R.forEach((error) => {
-									console.log(`${error.error}`);
-									R.pipe(
-										R.prop('locations'),
-										R.forEach(console.log)
-									)(error);
-									console.log('');
-								})
-							)(x);
-						})
-					)
-				)(htmlIssues);
-		}
-
-		if (
-			badLinks.length > 0 ||
-			failedThreshold ||
-			_codeAuditor.filter((x) => !!x.error).length > 0 ||
-			htmlErrors.length > 0
-		) {
-			consoleBox(`AUDIT FAIL`, 'red');
-			process.exit(1);
-		}
-	};
-
-	const __readLighthouseReport = () => {
-		if (!fs.existsSync('./.lighthouseci/')) {
-			console.log(
-				'ERROR => No lighthouse report found. Run again with `-v "%.LIGHTHOUSECI%:/usr/app/.lighthouseci"` option'
-			);
-			return;
-		}
-		writeLog(`Reading Lighthouse report files`);
-		let lhFiles = fs.readdirSync('./.lighthouseci/');
-		if (lhFiles.filter((x) => x.endsWith('.json')).length > 0) {
-			const jsonReport = lhFiles
-				.filter((x) => x.endsWith('.json'))
-				.splice(-1)[0];
-
-			writeLog(
-				`Include Lighthouse report in the payload as well: ${jsonReport}`
-			);
-
-			lhr = JSON.parse(
-				fs.readFileSync(`./.lighthouseci/${jsonReport}`).toString()
-			);
-
-			lhrSummary = {
-				performanceScore: lhr.categories.performance.score,
-				accessibilityScore: lhr.categories.accessibility.score,
-				bestPracticesScore: lhr.categories['best-practices'].score,
-				seoScore: lhr.categories.seo.score,
-				pwaScore: lhr.categories.pwa.score,
-			};
-		}
-		writeLog(`Lighthouse reports output`, lhFiles);
-	};
-
-	const __readHtmlHint = async () => {
-		const allgoodLinks = __getGoodUrls(results);
-		writeLog(
-			`running htmlhint on ${allgoodLinks.length} URLs under the ${args.url}`
-		);
-
-		const result = await Promise.all(
-			allgoodLinks.map((x) => runHtmlHint(x))
-		);
-
-		const [summary, details] = getHtmlHintDetails(result);
-		htmlIssuesSummary = summary;
-		htmlIssues = details;
-		writeLog('summary of html issues found', htmlIssuesSummary);
-		writeLog('details of html issues', JSON.stringify(htmlIssues, null, 2));
-	};
-
-	const __processBrokenLinks = () => {
-		allBadUrls = __getBadResults(results);
-		if (ignoredUrls && ignoredUrls.length > 0) {
-			writeLog('There are whitelisted URLs configured in online');
-			whiteListed = __getUniqIgnoredUrls(allBadUrls, ignoredUrls);
-		}
-
-		if (args.whitelist) {
-			writeLog('Got the whitelist from command ARGs');
-			const whitelistList = args.whitelist.split(',');
-			const inWhiteListFromArgs = (url) =>
-				whitelistList.filter((ignorePattern) =>
-					minimatch(url, ignorePattern)
-				).length > 0;
-
-			const whiteListedArgs = allBadUrls
-				.filter((u) => inWhiteListFromArgs(u.dst))
-				.map((x) => x.dst);
-
-			whiteListed = whiteListed.concat(whiteListedArgs);
-		}
-	};
-	/**
-	 ************** END CLOSURES ****************
-	 */
-
+/**
+ *
+ * @param {*} args - command line options
+ * @param {Date} startTime - start time
+ * @param {string} file - file containing all scanned URLs
+ * @param {*} cloc - Count Line of Code output
+ * @param {*} codeAuditor - Static Code Analysis output
+ * @param {*} superLinter - Super linter output
+ */
+const processAndUpload = async (
+	args,
+	startTime,
+	file,
+	cloc,
+	codeAuditor,
+	superLinter
+) => {
 	let ignoredUrls;
 	let perfThreshold;
 	let lhrSummary;
@@ -597,11 +210,15 @@ const processAndUpload = async (args, startTime, file) => {
 	writeLog(`Took ${sec} seconds`);
 
 	if (args.lighthouse) {
-		__readLighthouseReport();
+		[lhr, lhrSummary] = readLighthouseReport(LIGHTHOUSEFOLDER, writeLog);
 	}
 
 	if (args.htmlhint) {
-		await __readHtmlHint();
+		[htmlIssuesSummary, htmlIssues] = await runHtmlHint(
+			args.url,
+			results,
+			writeLog
+		);
 	}
 
 	if (args.token) {
@@ -627,7 +244,13 @@ const processAndUpload = async (args, startTime, file) => {
 	}
 
 	if (args.linkcheck) {
-		__processBrokenLinks();
+		[allBadUrls, whiteListed] = processBrokenLinks(
+			args.url,
+			results,
+			ignoredUrls,
+			writeLog,
+			args.whitelist
+		);
 		writeLog('Url found in WhiteList are', whiteListed);
 		badUrls = allBadUrls.filter((x) => whiteListed.indexOf(x.dst) < 0);
 	}
@@ -641,8 +264,8 @@ const processAndUpload = async (args, startTime, file) => {
 				badUrls,
 				whiteListed,
 				lhr,
-				cloc: _cloc,
-				code: _codeAuditor,
+				cloc: cloc,
+				code: codeAuditor,
 				htmlIssuesSummary,
 				htmlIssues,
 			});
@@ -653,14 +276,17 @@ const processAndUpload = async (args, startTime, file) => {
 		}
 	}
 
-	__printResultsToConsole(
+	printResultsToConsole(
+		results,
 		lhrSummary,
 		runId,
 		perfThreshold,
 		badUrls,
 		whiteListed,
 		htmlIssuesSummary,
-		htmlIssues
+		htmlIssues,
+		codeAuditor,
+		took
 	);
 };
 
