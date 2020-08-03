@@ -140,7 +140,7 @@ func parseUrl(startUrl string, url string) string {
 	sUrl, _ := urlP.Parse(startUrl)
 
 	if strings.HasPrefix(url, "//") {
-		return sUrl.Scheme + "://" + url
+		return sUrl.Scheme + ":" + url
 	} else if strings.HasPrefix(url, "/") {
 		u, _ := urlP.Parse(startUrl)
 		return sUrl.Scheme + "://" + u.Hostname() + url
