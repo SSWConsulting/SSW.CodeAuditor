@@ -442,9 +442,9 @@ const printHtmlIssuesToConsole = (htmlIssues) => {
  * @param {array} scannedUrls - all scanned URLs
  * @param {array} lh - lighthouse data
  * @param {string} runId - Run Id
- * @param {object} requiredThreshold - required threshold param
+ * @param {object} reqThreshold - required threshold param
  * @param {array} badLinks - list of broken links
- * @param {array} matchedIgnored - list of matched ignore URLs
+ * @param {array} ignored - list of matched ignore URLs
  * @param {object} htmlIssuesSummary - Html Issue Summary
  * @param {array} htmlIssues - Html Issues Details
  * @param {array} codeAuditorIssues - List of Code Auditor Issues
@@ -454,9 +454,9 @@ exports.printResultsToConsole = (
 	scannedUrls,
 	lh,
 	runId,
-	requiredThreshold,
+	reqThreshold,
 	badLinks,
-	matchedIgnored,
+	ignored,
 	htmlIssuesSummary,
 	htmlIssues,
 	codeAuditorIssues,
@@ -528,8 +528,8 @@ exports.printResultsToConsole = (
 	// output broken links reports
 	const _ignoreLbl = () =>
 		`${
-			matchedIgnored.length > 0
-				? `, ${matchedIgnored.length} URLs in Ignored list`
+			ignored.length > 0
+				? `, ${ignored.length} URLs in Ignored list`
 				: ''
 		}`;
 
@@ -546,34 +546,34 @@ exports.printResultsToConsole = (
 
 	// check if pass perf threshold or not
 	let failedThreshold = false;
-	if (lhScaled && requiredThreshold) {
+	if (lhScaled && reqThreshold) {
 		if (
-			(requiredThreshold.performanceScore &&
+			(reqThreshold.performanceScore &&
 				lhScaled.performanceScore <
-					requiredThreshold.performanceScore) ||
-			(requiredThreshold.accessibilityScore &&
+					reqThreshold.performanceScore) ||
+			(reqThreshold.accessibilityScore &&
 				lhScaled.accessibilityScore <
-					requiredThreshold.accessibilityScore) ||
-			(requiredThreshold.bestPracticesScore &&
+					reqThreshold.accessibilityScore) ||
+			(reqThreshold.bestPracticesScore &&
 				lhScaled.bestPracticesScore <
-					requiredThreshold.bestPracticesScore) ||
-			(requiredThreshold.seoScore &&
-				lhScaled.seoScore < requiredThreshold.seoScore) ||
-			(requiredThreshold.pwaScore &&
-				lhScaled.pwaScore < requiredThreshold.pwaScore) ||
-			(requiredThreshold.average &&
-				lhScaled.average < requiredThreshold.average)
+					reqThreshold.bestPracticesScore) ||
+			(reqThreshold.seoScore &&
+				lhScaled.seoScore < reqThreshold.seoScore) ||
+			(reqThreshold.pwaScore &&
+				lhScaled.pwaScore < reqThreshold.pwaScore) ||
+			(reqThreshold.average &&
+				lhScaled.average < reqThreshold.average)
 		) {
 			consoleBox(
-				`!!! FAILED Required Threshold: AVG=${requiredThreshold.average.toFixed(
+				`!!! FAILED Required Threshold: AVG=${reqThreshold.average.toFixed(
 					1
 				)} Performance=${
-					requiredThreshold.performanceScore
+					reqThreshold.performanceScore
 				} Accessibility=${
-					requiredThreshold.accessibilityScore
-				} Best practices=${requiredThreshold.bestPracticesScore} SEO=${
-					requiredThreshold.seoScore
-				} PWA=${requiredThreshold.pwaScore} !!!`,
+					reqThreshold.accessibilityScore
+				} Best practices=${reqThreshold.bestPracticesScore} SEO=${
+					reqThreshold.seoScore
+				} PWA=${reqThreshold.pwaScore} !!!`,
 				'red'
 			);
 			failedThreshold = true;
