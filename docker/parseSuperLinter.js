@@ -122,8 +122,3 @@ const processFile = (file) => {
 };
 
 exports.readGithubSuperLinter = processFile;
-
-(function test() {
-	const errors = processFile('./superlinter.log');
-	console.log(errors.slice(0, 1000));
-})();
