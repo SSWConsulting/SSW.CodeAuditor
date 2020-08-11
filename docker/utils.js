@@ -597,7 +597,7 @@ exports.printResultsToConsole = (
 		codeAuditorIssues.filter((x) => !!x.error).length > 0 ||
 		htmlErrors.length > 0
 	) {
-		consoleBox(`AUDIT FAIL`, 'red');
+		consoleBox(`AUDIT COMPLETE`, 'red');
 		process.exit(1);
 	}
 };
