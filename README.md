@@ -1,7 +1,5 @@
 # SSW Code Auditor
-
 <img src="ui/public/images/CodeAuditor_Logo.png" alt="drawing" width="400"/>
-
 <table>
 <tr>
 <td>
