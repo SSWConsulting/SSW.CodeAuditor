@@ -9,6 +9,7 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"box-console": "^2.0.0",
 		"boxen": "^4.2.0",
 		"chalk": "^3.0.0",
 		"csv-parser": "^2.3.2",
