@@ -32,8 +32,8 @@
 		"yargs": "^15.3.1"
 	},
 	"devDependencies": {
-		"@lhci/cli": "^0.3.13",
+		"@lhci/cli": "^0.4.4",
 		"cloc": "^2.5.1",
-		"lighthouse": "^5.6.0"
+		"lighthouse": "^6.2.0"
 	}
 }
