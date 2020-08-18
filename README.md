@@ -13,38 +13,8 @@
 ## Demo
 Here is the working web :  https://codeauditor.com/
 
-## Development
-
 ### To start contributing to CodeAuditor:
-- Fork the repo
-- Create a new branch (`git branch branch-name`)
-- Make the appropriate changes in the code
-- Add changes to reflect the changes made
-- Commit your changes (`git commit -a -m 'your commit message'`)
-- Push to the branch (`git push origin branch-name`)
-- Create a Pull Request 
-
-### Initial Setup:
-
-#### Run the UI
-``` bash
-$ cd ui
-$ npm i
-$ npm run dev
-```
-
-#### Build docker images
-``` bash
-$ cd docker
-$ sh build.sh
-```
-
-#### Run the API
-``` bash
-$ cd api
-$ npm i
-$ npm run serve
-```
+We always welcome contributions. If you are interested in contributing, please take a look at our [CONTRIBUTING](./CONTRIBUTING.md) guide
 
 ## Technologies used in SugarLearning
 
@@ -57,5 +27,4 @@ $ npm run serve
 ### Tool:
 - [Docker](https://www.docker.com/) - Platform as a service (PaaS) products that use OS-level virtualization to deliver software in packages
 
-[![Main Actions Status](https://github.com/tombui99/SSW.CodeAuditor/workflows/CI/badge.svg)](https://github.com/tombui99/SSW.CodeAuditor/actions)
-
+[![Build Status](https://github.com/tombui99/SSW.CodeAuditor/workflows/CI/badge.svg)](https://github.com/tombui99/SSW.CodeAuditor/actions)
