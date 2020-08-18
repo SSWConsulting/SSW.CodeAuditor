@@ -7,12 +7,12 @@ const boxen = require('boxen');
 const { htmlHintConfig, fetchHtml } = require('./api');
 const R = require('ramda');
 const { execSync } = require('child_process');
+const boxConsole = require('box-console');
 
 const consoleBox = (text, color) =>
 	console.log(
 		boxen(chalk[color](text), {
 			padding: 1,
-			margin: 1,
 			borderStyle: 'single',
 			borderColor: color,
 		})
@@ -482,14 +482,21 @@ exports.printResultsToConsole = (
 					100
 			),
 		};
-		consoleBox(
-			`AVG=${lhScaled.average.toFixed(1)} Performance=${
-				lhScaled.performanceScore
-			} Accessibility=${lhScaled.accessibilityScore} Best practices=${
-				lhScaled.bestPracticesScore
-			} SEO=${lhScaled.seoScore} PWA=${lhScaled.pwaScore}`,
-			'green'
-		);
+
+		let strAvg = 'AVG: '
+		let strPerformance = 'Performance: '
+		let strSeo = 'SEO: '
+		let strBP = 'Best practices: '
+		let strPwa = 'PWA: '
+
+		let avg = chalk(`${strAvg.padEnd(10)} ${lhScaled.average.toString().padStart(10)} / 100`);
+		let performance = chalk(`${strPerformance.padEnd(10)} ${lhScaled.performanceScore.toString().padStart(7)} / 100`);
+		let seo= chalk(`${strSeo.padEnd(10)} ${lhScaled.seoScore.toString().padStart(10)} / 100`);
+		let bestPractice = chalk(`${strBP.padEnd(10)} ${lhScaled.bestPracticesScore.toString().padStart(4)} / 100`);
+		let pwa = chalk(`${strPwa.padEnd(10)} ${lhScaled.pwaScore.toString().padStart(10)} / 100`);
+
+		boxConsole([avg, performance, bestPractice, seo, pwa])
+
 	}
 
 	// output htmlhint summary
@@ -597,7 +604,7 @@ exports.printResultsToConsole = (
 		codeAuditorIssues.filter((x) => !!x.error).length > 0 ||
 		htmlErrors.length > 0
 	) {
-		consoleBox(`AUDIT FAIL`, 'red');
+		consoleBox(`AUDIT COMPLETE`, 'red');
 		process.exit(1);
 	}
 };
