@@ -18,24 +18,26 @@
 - Make sure Docker is running on your local machine
 - Run the command to scan your website
 
-![](https://user-images.githubusercontent.com/67776356/90599510-588e7b00-e238-11ea-903b-bfc811a4b60e.gif)
+<p align='center'>
+<img src='https://user-images.githubusercontent.com/67776356/90599510-588e7b00-e238-11ea-903b-bfc811a4b60e.gif' width='600' alt='npm start'>
+</p>
 
 ## Site
 ### Home Page
 
-<img src="https://user-images.githubusercontent.com/67776356/90588473-0db43980-e21f-11ea-8ea1-c3b8c098925b.png" width="900"/>
+<img src="https://user-images.githubusercontent.com/67776356/90588473-0db43980-e21f-11ea-8ea1-c3b8c098925b.png" width="700"/>
 
 ### Build Page (Bad Links)
 
-<img src="https://user-images.githubusercontent.com/67776356/90588601-5cfa6a00-e21f-11ea-882f-f33d672e59ac.png" width="900"/>
+<img src="https://user-images.githubusercontent.com/67776356/90588601-5cfa6a00-e21f-11ea-882f-f33d672e59ac.png" width="700"/>
 
 ### Build Page (Bad Codes)
 
-<img src="https://user-images.githubusercontent.com/67776356/90588612-61bf1e00-e21f-11ea-854b-509b700fc0a1.png" width="900"/>
+<img src="https://user-images.githubusercontent.com/67776356/90588612-61bf1e00-e21f-11ea-854b-509b700fc0a1.png" width="700"/>
 
 ### Lighthouse Audit Result Page
 
-<img src="https://user-images.githubusercontent.com/67776356/90588613-64ba0e80-e21f-11ea-9669-7c17070176d0.png" width="900"/>
+<img src="https://user-images.githubusercontent.com/67776356/90588613-64ba0e80-e21f-11ea-9669-7c17070176d0.png" width="700"/>
 
 ## To start contributing to CodeAuditor:
 We always welcome contributions. If you are interested in contributing, please take a look at our [CONTRIBUTING](./CONTRIBUTING.md) guide
