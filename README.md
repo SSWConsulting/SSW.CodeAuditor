@@ -13,7 +13,24 @@
 ## Demo
 Here is the working web :  https://codeauditor.com/
 
-### To start contributing to CodeAuditor:
+## Site
+### Home Page
+
+<img src="https://user-images.githubusercontent.com/67776356/90588473-0db43980-e21f-11ea-8ea1-c3b8c098925b.png" width="900"/>
+
+### Build Page (Bad Links)
+
+<img src="https://user-images.githubusercontent.com/67776356/90588601-5cfa6a00-e21f-11ea-882f-f33d672e59ac.png" width="900"/>
+
+### Build Page (Bad Codes)
+
+<img src="https://user-images.githubusercontent.com/67776356/90588612-61bf1e00-e21f-11ea-854b-509b700fc0a1.png" width="900"/>
+
+### Lighthouse Audit Result Page
+
+<img src="https://user-images.githubusercontent.com/67776356/90588613-64ba0e80-e21f-11ea-9669-7c17070176d0.png" width="900"/>
+
+## To start contributing to CodeAuditor:
 We always welcome contributions. If you are interested in contributing, please take a look at our [CONTRIBUTING](./CONTRIBUTING.md) guide
 
 ## Technologies used in SugarLearning
@@ -28,3 +45,10 @@ We always welcome contributions. If you are interested in contributing, please t
 - [Docker](https://www.docker.com/) - Platform as a service (PaaS) products that use OS-level virtualization to deliver software in packages
 
 [![Build Status](https://github.com/tombui99/SSW.CodeAuditor/workflows/CI/badge.svg)](https://github.com/tombui99/SSW.CodeAuditor/actions)
+
+## Getting help
+
+ - Leave comments on your PR and @ people for attention
+ - Bring it up with the team
+ - Edit the Wiki
+ - For help: email the Product Champion or ask on Teams
