@@ -12,18 +12,11 @@
   - Ignore broken Links - Ignored URLs will not cause build to fail
   - View Code Errors - View HTML code errors and Code errors without leaving the app
 
-
-## Website
-Here is the working web :  https://codeauditor.com
-
 ## Usage
 
-### Pre-reqs
-- Make sure you are logged in CodeAuditor
-- Make sure Docker is running 
-
-### Instruction
-Run the code in Powershell (or Command Prompt) to scan your website
+- Sign up for free at https://codeauditor.com and get your token
+- Make sure Docker is running on your local machine
+- Run the command to scan your website
 
 ![](https://user-images.githubusercontent.com/67776356/90599510-588e7b00-e238-11ea-903b-bfc811a4b60e.gif)
 
