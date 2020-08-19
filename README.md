@@ -32,6 +32,17 @@ Here is the working web :  https://codeauditor.com/
 
 <img src="https://user-images.githubusercontent.com/67776356/90588613-64ba0e80-e21f-11ea-9669-7c17070176d0.png" width="900"/>
 
+## Usage
+### Pre-reqs
+- Make sure you are logged in CodeAuditor
+- Make sure Docker is running 
+### Instruction
+1. Run the code in Powershell (or Command Prompt) to scan your website
+![1](https://user-images.githubusercontent.com/67776356/90595895-275e7c80-e231-11ea-962c-ca93fdff8281.gif)
+
+2. Use the generated URL to navigate to your Build page
+![2](https://user-images.githubusercontent.com/67776356/90596318-0ea29680-e232-11ea-9146-1b0853a81164.gif)
+
 ## To start contributing to CodeAuditor:
 We always welcome contributions. If you are interested in contributing, please take a look at our [CONTRIBUTING](./CONTRIBUTING.md) guide
 
