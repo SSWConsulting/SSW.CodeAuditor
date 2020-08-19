@@ -4,16 +4,28 @@
 
 <img src="https://user-images.githubusercontent.com/67776356/90211512-3c539e00-de34-11ea-900c-ace63b13e387.png" width="300"/>
 
-SSW CodeAuditor is a code and link analysis tool that allows users to identify broken links or code, view the overall performance of your website, ensuring large, complex source code can be simplified, cleaned and maintained. Code Auditor features include:
+  SSW CodeAuditor is a code and link analysis tool that allows users to identify broken links or code, view the overall performance of your website, ensuring large, complex source code can be simplified, cleaned and maintained. With Code Auditor, you can:
   - View prior scans history - Can keep your last 100 scan results for FREE
   - Export to CSV - Export scan result to CSV to perform further analysis (e.g on PowerBI)
   - View Lighthouse Report - View Lighthouse Report without leaving the app
   - Set Lighthouse Threshold - If Performance is less than 80 and SEO score is less than 100, fail the build
   - Ignore broken Links - Ignored URLs will not cause build to fail
   - View Code Errors - View HTML code errors and Code errors without leaving the app
-  
-## Demo
-Here is the working web :  https://codeauditor.com/
+
+
+## Website
+Here is the working web :  https://codeauditor.com
+
+## Usage
+
+### Pre-reqs
+- Make sure you are logged in CodeAuditor
+- Make sure Docker is running 
+
+### Instruction
+Run the code in Powershell (or Command Prompt) to scan your website
+
+![](https://user-images.githubusercontent.com/67776356/90599510-588e7b00-e238-11ea-903b-bfc811a4b60e.gif)
 
 ## Site
 ### Home Page
@@ -31,17 +43,6 @@ Here is the working web :  https://codeauditor.com/
 ### Lighthouse Audit Result Page
 
 <img src="https://user-images.githubusercontent.com/67776356/90588613-64ba0e80-e21f-11ea-9669-7c17070176d0.png" width="900"/>
-
-## Usage
-### Pre-reqs
-- Make sure you are logged in CodeAuditor
-- Make sure Docker is running 
-### Instruction
-1. Run the code in Powershell (or Command Prompt) to scan your website
-![1](https://user-images.githubusercontent.com/67776356/90595895-275e7c80-e231-11ea-962c-ca93fdff8281.gif)
-
-2. Use the generated URL to navigate to your Build page
-![2](https://user-images.githubusercontent.com/67776356/90596318-0ea29680-e232-11ea-9146-1b0853a81164.gif)
 
 ## To start contributing to CodeAuditor:
 We always welcome contributions. If you are interested in contributing, please take a look at our [CONTRIBUTING](./CONTRIBUTING.md) guide
