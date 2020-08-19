@@ -25,19 +25,27 @@
 ## Site
 ### Home Page
 
+<p align='center'>
 <img src="https://user-images.githubusercontent.com/67776356/90588473-0db43980-e21f-11ea-8ea1-c3b8c098925b.png" width="700"/>
+</p>
 
 ### Build Page (Bad Links)
 
+<p align='center'>
 <img src="https://user-images.githubusercontent.com/67776356/90588601-5cfa6a00-e21f-11ea-882f-f33d672e59ac.png" width="700"/>
+</p>
 
 ### Build Page (Bad Codes)
 
+<p align='center'>
 <img src="https://user-images.githubusercontent.com/67776356/90588612-61bf1e00-e21f-11ea-854b-509b700fc0a1.png" width="700"/>
+</p>
 
 ### Lighthouse Audit Result Page
 
+<p align='center'>
 <img src="https://user-images.githubusercontent.com/67776356/90588613-64ba0e80-e21f-11ea-9669-7c17070176d0.png" width="700"/>
+</p>
 
 ## To start contributing to CodeAuditor:
 We always welcome contributions. If you are interested in contributing, please take a look at our [CONTRIBUTING](./CONTRIBUTING.md) guide
