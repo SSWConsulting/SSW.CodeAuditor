@@ -1,5 +1,7 @@
 # SSW Code Auditor
 
+[![Build Status](http://img.shields.io/travis/badges/badgerbadgerbadger.svg?style=flat-square)](https://travis-ci.org/badges/badgerbadgerbadger)
+
 <img src="https://user-images.githubusercontent.com/67776356/90211512-3c539e00-de34-11ea-900c-ace63b13e387.png" width="300"/>
 
 <table>
@@ -43,8 +45,6 @@ We always welcome contributions. If you are interested in contributing, please t
 
 ### Tool:
 - [Docker](https://www.docker.com/) - Platform as a service (PaaS) products that use OS-level virtualization to deliver software in packages
-
-[![Build Status](https://github.com/tombui99/SSW.CodeAuditor/workflows/CI/badge.svg)](https://github.com/tombui99/SSW.CodeAuditor/actions)
 
 ## Getting help
 
