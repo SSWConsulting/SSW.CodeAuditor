@@ -4,14 +4,14 @@
 
 <img src="https://user-images.githubusercontent.com/67776356/90211512-3c539e00-de34-11ea-900c-ace63b13e387.png" width="300"/>
 
-<table>
-<tr>
-<td>
-  SSW CodeAuditor is a code analysis tool that allows developers to take control of your code, ensuring large, complex source code can be simplified, cleaned and maintained
-</td>
-</tr>
-</table>
-
+SSW CodeAuditor is a code and link analysis tool that allows users to identify broken links or code, view the overall performance of your website, ensuring large, complex source code can be simplified, cleaned and maintained. Code Auditor features include:
+  - View prior scans history - Can keep your last 100 scan results for FREE
+  - Export to CSV - Export scan result to CSV to perform further analysis (e.g on PowerBI)
+  - View Lighthouse Report - View Lighthouse Report without leaving the app
+  - Set Lighthouse Threshold - If Performance is less than 80 and SEO score is less than 100, fail the build
+  - Ignore broken Links - Ignored URLs will not cause build to fail
+  - View Code Errors - View HTML code errors and Code errors without leaving the app
+  
 ## Demo
 Here is the working web :  https://codeauditor.com/
 
