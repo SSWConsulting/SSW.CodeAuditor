@@ -70,7 +70,3 @@ In order to test your code changes in the API
 - Run the api (`npm run serve`)
 - View the changes in *console.firebase.google* (contact Anthony for authentication)
 
-## Getting help
-
- - Leave comments on your PR and @ people for attention
- - Reach out to Anthony Nguyen (Product Champion)
