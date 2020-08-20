@@ -4,18 +4,18 @@
 
 <img src="https://user-images.githubusercontent.com/67776356/90211512-3c539e00-de34-11ea-900c-ace63b13e387.png" width="300"/>
 
-  SSW CodeAuditor is a code and link analysis tool that allows users to identify broken links or code, view the overall performance of your website, ensuring large, complex source code can be simplified, cleaned and maintained. With Code Auditor, you can:
-  - View prior scans history - Can keep your last 100 scan results for FREE
-  - Export to CSV - Export scan result to CSV to perform further analysis (e.g on PowerBI)
-  - View Lighthouse Report - View Lighthouse Report without leaving the app
-  - Set Lighthouse Threshold - If Performance is less than 80 and SEO score is less than 100, fail the build
+  SSW CodeAuditor is a code and link analysis tool that allows users to identify broken links or code, view the overall performance of your website, ensuring large, complex source code can be simplified, cleaned and maintained. With CodeAuditor, you can:
+  - View prior scan history - Keep your last 100 scan results for FREE
+  - Export to CSV - Export scan result to CSV to perform further analysis (PowerBI)
+  - View Lighthouse report - See Lighthouse numbers within CodeAuditor
+  - Set Lighthouse Threshold - E.g. If Performance is less than 80 and SEO score is less than 100, fail the build
   - Ignore broken Links - Ignored URLs will not cause build to fail
   - View Code Errors - View HTML code errors and Code errors without leaving the app
 
 ## Usage
 
 - Sign up for free at https://codeauditor.com and get your token
-- Make sure Docker is running on your local machine
+- Make sure [Docker!](https://docs.docker.com/desktop/) is installed and running on your local machine
 - Run the command to scan your website
 
 <p align='center'>
