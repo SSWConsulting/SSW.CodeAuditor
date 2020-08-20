@@ -52,19 +52,19 @@ $ npm run serve
 ```
 
 ## Testing your changes locally 
-1. Front-End UI
+1. Front-End UI  
 In order to test your code changes in the UI
 - Make the changes in the **ui** folder
 - Make sure the ui is already running (`npm run dev`)
 - View the changes in your browser via `localhost:5000`
 
-2. Docker
+2. Docker  
 In order to test your code changes in Docker 
 - Make the changes in the **docker** folder
 - Rebuild the Docker image (`docker build -t sswconsulting/codeauditor .`)
 - Run CodeAuditor code in Powershell to see the changes (`$ docker run sswconsulting/codeauditor --token 3c34a549-dfb3-442c-b0e3-45942104a8bf --url <URL> --buildId [BUILDID]`) 
 
-3. Firebase API
+3. Firebase API  
 In order to test your code changes in the API
 - Make the changes in the **api** folder
 - Run the api (`npm run serve`)
