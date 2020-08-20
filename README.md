@@ -15,7 +15,7 @@
 ## Usage
 
 - Sign up for free at https://codeauditor.com and get your token
-- Make sure [Docker!](https://docs.docker.com/desktop/) is installed and running on your local machine
+- Make sure [Docker](https://docs.docker.com/desktop/) is installed and running on your local machine
 - Run the command to scan your website
 
 <p align='center'>
