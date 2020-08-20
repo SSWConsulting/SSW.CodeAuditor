@@ -19,7 +19,7 @@
 3. Use the token from step 1 and run a command from the [Homepage](https://codeauditor.com/home) 
 
 <p align='center'>
-<img src='https://user-images.githubusercontent.com/67776356/90599510-588e7b00-e238-11ea-903b-bfc811a4b60e.gif' width='600' alt='npm start'>
+<img src='https://user-images.githubusercontent.com/67776356/90726194-aa9cd280-e304-11ea-805c-d8780088d691.gif' width='600' alt='npm start'>
 </p>
 
 ## Site
