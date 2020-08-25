@@ -35,6 +35,7 @@
 	"devDependencies": {
 		"@lhci/cli": "^0.4.4",
 		"cloc": "^2.5.1",
-		"lighthouse": "^6.2.0"
+		"lighthouse": "^6.2.0",
+		"artillery": "^1.6.1"
 	}
 }
