@@ -4,8 +4,9 @@
 [![Docker Pull](https://badgen.net/docker/pulls/sswconsulting/codeauditor?icon=docker&label=pulls)](https://hub.docker.com/r/sswconsulting/codeauditor)
 [![Docker Size](https://badgen.net/docker/size/sswconsulting/codeauditor/latest/amd64?icon=docker&label=size)](https://hub.docker.com/r/sswconsulting/codeauditor)
 
+<p align='center'>
 <img src="https://user-images.githubusercontent.com/67776356/90211512-3c539e00-de34-11ea-900c-ace63b13e387.png" width="300"/>
-
+</p>
   SSW CodeAuditor is a code and link analysis tool that allows users to identify broken links or code, view the overall performance of your website, ensuring large, complex source code can be simplified, cleaned and maintained. With CodeAuditor, you can:
   - View prior scan history - Keep your last 100 scan results for FREE
   - Export to CSV - Export scan result to CSV to perform further analysis (PowerBI)
@@ -21,7 +22,7 @@
 3. Use the token from step 1 and run a command from the [Homepage](https://codeauditor.com/home) 
 
 <p align='center'>
-<img src='https://user-images.githubusercontent.com/67776356/90726194-aa9cd280-e304-11ea-805c-d8780088d691.gif' width='900' alt='npm start'>
+<img src='https://user-images.githubusercontent.com/67776356/90726194-aa9cd280-e304-11ea-805c-d8780088d691.gif' width='700' alt='npm start' />
 </p>
 
 ## Site
