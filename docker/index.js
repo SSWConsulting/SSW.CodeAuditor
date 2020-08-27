@@ -87,6 +87,11 @@ const _getAgrs = () => {
 			describe: 'Include Artillery test',
 			type: 'boolean',
 			default: true,
+		})
+		.option('private', {
+			describe: 'Upload scan results privately',
+			type: 'boolean',
+			default: false,
 		}).argv;
 	return _args;
 };
@@ -225,6 +230,7 @@ const processAndUpload = async (
 	let whiteListed = [];
 	let allBadUrls = [];
 	let badUrls = [];
+	let isPrivate;
 
 	const results = await readCsv(file);
 
@@ -246,6 +252,10 @@ const processAndUpload = async (
 			results,
 			writeLog
 		);
+	}
+
+	if (args.private) {
+		isPrivate = true;
 	}
 
 	if (args.token) {
@@ -296,6 +306,7 @@ const processAndUpload = async (
 				code: codeAuditor,
 				htmlIssuesSummary,
 				htmlIssues,
+				isPrivate
 			});
 		} catch (error) {
 			console.error(
