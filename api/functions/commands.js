@@ -5,7 +5,7 @@ const {
 	deleteEntity,
 } = require('./azurestorage');
 const { BLOB, TABLE } = require('./consts');
-const { replaceProp, newGuid, getReversedTick } = require('./utils');
+const { replaceProp, getReversedTick } = require('./utils');
 const azure = require('azure-storage');
 const slug = require('slug');
 
