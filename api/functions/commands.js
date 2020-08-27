@@ -11,7 +11,6 @@ const slug = require('slug');
 
 exports.insertScanResult = (api, buildId, runId, data, buildDate) => {
 	const entGen = azure.TableUtilities.entityGenerator;
-	// use Log tail pattern to get native sort from Table Storage
 	let entity = {
 		PartitionKey: entGen.String(api),
 		RowKey: entGen.String(`${api}-${newGuid()}`),
