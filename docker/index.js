@@ -86,7 +86,7 @@ const _getAgrs = () => {
 		.option('artillery', {
 			describe: 'Include Artillery test',
 			type: 'boolean',
-			default: false,
+			default: true,
 		}).argv;
 	return _args;
 };
