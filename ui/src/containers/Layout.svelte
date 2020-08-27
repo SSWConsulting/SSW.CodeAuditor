@@ -67,6 +67,9 @@
       {:else}
         <div>
           <span class="text-white mx-2">
+            <Navigate to="/discover">Discover</Navigate>
+          </span>
+          <span class="text-white mx-2">
             <Navigate to="/signup">Sign Up</Navigate>
           </span>
           <button
