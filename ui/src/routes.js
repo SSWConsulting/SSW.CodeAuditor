@@ -5,6 +5,7 @@ import Settings from './containers/Settings.svelte';
 import HtmlHints from './containers/HtmlHints.svelte';
 import BuildDetails from './containers/BuildDetails.svelte';
 import Public from './containers/Public.svelte';
+import PublicBuilds from './containers/PublicBuilds.svelte';
 import LighthouseReport from './containers/LighthouseReport.svelte';
 import AppLayout from './containers/Layout.svelte';
 import { isLoggedIn } from './stores.js';
@@ -21,6 +22,10 @@ const routes = [
 	{
 		name: '/login',
 		component: Login,
+	},
+	{
+		name: '/discover',
+		component: PublicBuilds,
 	},
 	{
 		name: '/signup',
