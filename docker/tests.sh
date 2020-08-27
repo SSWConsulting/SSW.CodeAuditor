@@ -17,6 +17,7 @@ docker run -v "C:\AnthonyNguyenData\source\POSV2\OOEServer:/home/lhci/app/src" s
 
 ## sugarlearning
 docker run sswconsulting/codeauditor --url http://staging.sugarlearning.com/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4
+docker run sswconsulting/codeauditor --url https://azuregems.io/ --token 828ea8af-66c6-4ff5-63c1-9606e3c702d2
 docker run sswconsulting/codeauditor --url https://sswrulesstaging1.firebaseapp.com/rules/ --token bbf65654-23d5-4d87-8f68-34d68c30d2e4
 docker container run --rm --cap-add=SYS_ADMIN sswconsulting/codeauditor --url http://staging.sugarlearning.com/ --lighthouse --token bbf65654-23d5-4d87-8f68-34d68c30d2e4
 docker container run -v "C:\AnthonyNguyenData\source\ssw\SSW.Induction:/home/lhci/app/src" --rm --cap-add=SYS_ADMIN sswconsulting/codeauditor --url http://staging.sugarlearning.com/ --lighthouse --token bbf65654-23d5-4d87-8f68-34d68c30d2e4 --ignorefile .gitignore_ca
