@@ -5,16 +5,15 @@ const {
 	deleteEntity,
 } = require('./azurestorage');
 const { BLOB, TABLE } = require('./consts');
-const { replaceProp, getReversedTick } = require('./utils');
+const { replaceProp, newGuid, getReversedTick } = require('./utils');
 const azure = require('azure-storage');
 const slug = require('slug');
 
 exports.insertScanResult = (api, buildId, runId, data, buildDate) => {
 	const entGen = azure.TableUtilities.entityGenerator;
-	// use Log tail pattern to get native sort from Table Storage
 	let entity = {
 		PartitionKey: entGen.String(api),
-		RowKey: entGen.String(getReversedTick()),
+		RowKey: entGen.String(`${api}-${newGuid()}`),
 		buildId: entGen.String(buildId),
 		runId: entGen.String(runId),
 		buildDate: entGen.DateTime(buildDate),
