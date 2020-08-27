@@ -254,10 +254,6 @@ const processAndUpload = async (
 		);
 	}
 
-	if (args.private) {
-		isPrivate = true;
-	}
-
 	if (args.token) {
 		writeLog(`Retrieving config for token`, args.token);
 
@@ -306,7 +302,7 @@ const processAndUpload = async (
 				code: codeAuditor,
 				htmlIssuesSummary,
 				htmlIssues,
-				isPrivate
+				isPrivate: args.private
 			});
 		} catch (error) {
 			console.error(
