@@ -20,6 +20,7 @@ const {
 } = require('./commands');
 const {
 	getSummary,
+	getPublicSummary,
 	getSummaryById,
 	getConfig,
 	getPerformanceThreshold,
@@ -83,8 +84,11 @@ app.post('/config/:api/ignore', async (req, res) => {
 });
 
 app.get('/scanresult/:api', async (req, res) => {
-	console.log('GET ScanResults for', req.params.api);
 	res.json(await getSummary(req.params.api));
+});
+
+app.get('/scans', async (req, res) => {
+	res.json(await getPublicSummary());
 });
 
 app.get('/viewsource', async (req, res) => {
@@ -115,6 +119,7 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		code,
 		htmlIssuesSummary,
 		htmlIssues,
+		isPrivate
 	} = req.body;
 	let lhrSummary;
 	if (lhr) {
@@ -181,6 +186,7 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		htmlErrors,
 		codeIssues: getCodeErrorSummary(code),
 		htmlIssuesList,
+		isPrivate
 	};
 
 	console.log('adding summary', payload);
