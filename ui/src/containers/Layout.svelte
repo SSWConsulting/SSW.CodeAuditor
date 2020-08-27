@@ -34,7 +34,10 @@
       <div class="text-sm lg:flex-grow" />
       {#if $isLoggedIn}
         <div>
-          <span class="text-white mx-2">{$userName}</span>
+          <span class="text-white mx-2 italic">{$userName}</span>
+          <span class="text-white mx-2">
+            <Navigate to="/discover">Discover</Navigate>
+          </span>
           <Navigate to="/home/settings">
             <Icon cssClass="inline-block text-white mx-1 cursor-pointer">
               <path

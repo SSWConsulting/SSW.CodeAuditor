@@ -1,5 +1,5 @@
 <script>
-  import { userApi, userSession$ } from "../stores";
+  import { userApi, userSession$, isLoggedIn } from "../stores";
   import { onDestroy } from "svelte";
   import marked from "marked";
   import Icon from "../components/Icon.svelte";
@@ -25,17 +25,28 @@
   }
 
   let promise = getLastBuilds();
-  const instructions = `
+  const notLoggedIn = `
   ## Explore CodeAuditor
   Once signed up, you will be able to unlock the following awesome features. All for free!
+  `;
+
+  const isLoggedInMsg = `
+  ## Explore CodeAuditor
+  Showing last 100 public scans completed by all users.
   `;
 </script>
 
 <div class="container mx-auto">
   <div class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
-    <article class="markdown-body">
-      {@html marked(instructions)}
-    </article>
+    {#if !$isLoggedIn}
+      <article class="markdown-body">
+        {@html marked(notLoggedIn)}
+      </article>
+    {:else}
+      <article class="markdown-body">
+        {@html marked(isLoggedInMsg)}
+      </article>
+    {/if}
   </div>
 
   <div class="bg-white shadow-lg rounded px-8 pt-6 mb-6 flex flex-col">
