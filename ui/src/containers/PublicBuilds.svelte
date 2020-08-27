@@ -11,7 +11,6 @@
   import { sort, descend, prop } from "ramda";
   import { CONSTS } from "../utils/utils.js";
 
-  let promise;
   let canClose;
   let lastBuild;
 
@@ -25,6 +24,7 @@
     }
   }
 
+  let promise = getLastBuilds();
   const instructions = `
   ## Explore CodeAuditor
   Once signed up, you will be able to unlock the following awesome features. All for free!

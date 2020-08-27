@@ -26,6 +26,7 @@ const routes = [
 	{
 		name: '/discover',
 		component: PublicBuilds,
+		layout: AppLayout
 	},
 	{
 		name: '/signup',
