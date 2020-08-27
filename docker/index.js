@@ -302,7 +302,7 @@ const processAndUpload = async (
 				code: codeAuditor,
 				htmlIssuesSummary,
 				htmlIssues,
-				isPrivate: args.private
+				isPrivate: args.private ? true : false
 			});
 		} catch (error) {
 			console.error(
