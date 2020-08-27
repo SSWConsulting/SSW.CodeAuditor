@@ -26,3 +26,6 @@ jobs:
           cd ui
           npm install
           npm run deploy
+          cd ../api/functions
+          npm install
+          npm run deploy
