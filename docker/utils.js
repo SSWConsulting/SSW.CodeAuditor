@@ -270,7 +270,6 @@ exports.readArtilleryReport = (folder, writeLog) => {
 		requestsCompleted: atr.aggregate.requestsCompleted,
 		rpsCount: atr.aggregate.rps.count,
 		latencyMedian: atr.aggregate.latency.median,
-		scenarioCount: JSON.stringify(atr.aggregate.scenarioCounts),
 	};
 
 	return [atr, atrSummary];
@@ -548,9 +547,8 @@ exports.printResultsToConsole = (
 		let reqCompleted = chalk(`${strReqCompleted} ${atrSummary.requestsCompleted}`);
 		let latency = chalk(`${strLatency} ${atrSummary.latencyMedian}`);
 		let rps = chalk(`${strRps} ${atrSummary.rpsCount}`);
-		let scenCount = chalk(`${strScenCount} ${atrSummary.scenarioCount}`);
 
-		boxConsole([timestamp, scenCreated, scenCompleted, reqCompleted, latency, rps, scenCount])
+		boxConsole([timestamp, scenCreated, scenCompleted, reqCompleted, latency, rps])
 	}
 
 	// output htmlhint summary
