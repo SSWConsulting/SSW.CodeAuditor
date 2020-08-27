@@ -6,6 +6,7 @@ const { getConfigs, getPerfThreshold, postData } = require('./api');
 const {
 	printTimeDiff,
 	readLighthouseReport,
+	readArtilleryReport,
 	consoleBox,
 	readCsv,
 	printResultsToConsole,
@@ -19,6 +20,7 @@ const {
 const { readGithubSuperLinter } = require('./parseSuperLinter');
 
 const LIGHTHOUSEFOLDER = './.lighthouseci/';
+const ARTILLERYFOLDER = './artilleryOut.json';
 let _args = {};
 
 const _getAgrs = () => {
@@ -80,6 +82,11 @@ const _getAgrs = () => {
 			describe: 'Include Lighthouse audit',
 			type: 'boolean',
 			default: false,
+		})
+		.option('artillery', {
+			describe: 'Include Artillery test',
+			type: 'boolean',
+			default: true,
 		}).argv;
 	return _args;
 };
@@ -149,6 +156,20 @@ const main = async () => {
 		}
 	}
 
+	// Artillery
+	if (
+		options.artillery) {
+		writeLog(`start artillery`);
+		try {
+			const rs = execSync(
+				`./node_modules/.bin/artillery quick -d 60 -r 10 -k -o artilleryOut.json "${options.url}"`
+			).toString();
+			writeLog(`artillery check finished`, rs);
+		} catch (e) {
+			writeLog(`artillery check failed`, e);
+		}
+	}
+
 	writeLog(
 		chalk.yellowBright(
 			`Scanning ${chalk.green(options.url)} ${
@@ -196,6 +217,8 @@ const processAndUpload = async (
 	let perfThreshold;
 	let lhrSummary;
 	let lhr;
+	let atr;
+	let atrSummary;
 	let runId;
 	let htmlIssuesSummary = null;
 	let htmlIssues = null;
@@ -211,6 +234,10 @@ const processAndUpload = async (
 
 	if (args.lighthouse) {
 		[lhr, lhrSummary] = readLighthouseReport(LIGHTHOUSEFOLDER, writeLog);
+	}
+
+	if (args.artillery) {
+		[atr, atrSummary] = readArtilleryReport(ARTILLERYFOLDER, writeLog);
 	}
 
 	if (args.htmlhint) {
@@ -264,6 +291,7 @@ const processAndUpload = async (
 				badUrls,
 				whiteListed,
 				lhr,
+				atr,
 				cloc: cloc,
 				code: codeAuditor,
 				htmlIssuesSummary,
@@ -286,7 +314,8 @@ const processAndUpload = async (
 		htmlIssuesSummary,
 		htmlIssues,
 		codeAuditor,
-		took
+		took,
+		atrSummary
 	);
 };
 

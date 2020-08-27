@@ -245,6 +245,37 @@ exports.readLighthouseReport = (folder, writeLog) => {
 };
 
 /**
+ * parse Artillery Report
+ * @param {string} folder - .lighthouseci folder
+ * @param {func} writeLog - logging method
+ */
+exports.readArtilleryReport = (folder, writeLog) => {
+	if (!fs.existsSync(folder)) {
+		console.log(
+			'ERROR => No Artillery report found'
+		);
+		return [null, null];
+	}
+
+	writeLog(`Reading Artillery report files`);
+
+	const atr = JSON.parse(
+		fs.readFileSync(`artilleryOut.json`).toString()
+	);
+
+	const atrSummary = {
+		timestamp: atr.aggregate.timestamp,
+		scenariosCreated: atr.aggregate.scenariosCreated,
+		scenariosCompleted: atr.aggregate.scenariosCompleted,
+		requestsCompleted: atr.aggregate.requestsCompleted,
+		rpsCount: atr.aggregate.rps.count,
+		latencyMedian: atr.aggregate.latency.median,
+	};
+
+	return [atr, atrSummary];
+};
+
+/**
  * Run HTML Hint on all successfull URLs
  * @param {string} startUrl - URL being scanned
  * @param {array} scannedUrls - list of all scanned URLs
@@ -460,7 +491,8 @@ exports.printResultsToConsole = (
 	htmlIssuesSummary,
 	htmlIssues,
 	codeAuditorIssues,
-	duration
+	duration,
+	atrSummary
 ) => {
 	let lhScaled;
 
@@ -483,11 +515,11 @@ exports.printResultsToConsole = (
 			),
 		};
 
-		let strAvg = 'AVG: '
-		let strPerformance = 'Performance: '
-		let strSeo = 'SEO: '
-		let strBP = 'Best practices: '
-		let strPwa = 'PWA: '
+		let strAvg = 'AVG: ';
+		let strPerformance = 'Performance: ';
+		let strSeo = 'SEO: ';
+		let strBP = 'Best practices: ';
+		let strPwa = 'PWA: ';
 
 		let avg = chalk(`${strAvg.padEnd(10)} ${lhScaled.average.toString().padStart(10)} / 100`);
 		let performance = chalk(`${strPerformance.padEnd(10)} ${lhScaled.performanceScore.toString().padStart(7)} / 100`);
@@ -497,6 +529,26 @@ exports.printResultsToConsole = (
 
 		boxConsole([avg, performance, bestPractice, seo, pwa])
 
+	}
+
+	if (atrSummary) {
+		// Output Artillery report
+		let strTime = 'Timestamp: ';
+		let strScenCreated = 'Scenarios Created: ';
+		let strScenCompleted = 'Scenarios Completed: ';
+		let strReqCompleted = 'Requests Completed: ';
+		let strLatency = 'Latency: ';
+		let strRps = 'RPS: ';
+		let strScenCount = 'Scenarios Count: ';
+
+		let timestamp = chalk(`${strTime} ${atrSummary.timestamp}`);
+		let scenCreated = chalk(`${strScenCreated} ${atrSummary.scenariosCreated}`);
+		let scenCompleted = chalk(`${strScenCompleted} ${atrSummary.scenariosCompleted}`);
+		let reqCompleted = chalk(`${strReqCompleted} ${atrSummary.requestsCompleted}`);
+		let latency = chalk(`${strLatency} ${atrSummary.latencyMedian}`);
+		let rps = chalk(`${strRps} ${atrSummary.rpsCount}`);
+
+		boxConsole([timestamp, scenCreated, scenCompleted, reqCompleted, latency, rps])
 	}
 
 	// output htmlhint summary

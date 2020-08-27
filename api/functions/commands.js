@@ -80,6 +80,9 @@ exports.insertScanSummary = (api, buildId, runId, buildDate, data) => {
 exports.uploadLighthouseReport = (runId, lhr) =>
 	uploadBlob(BLOB.lhr, `${runId}.json`, JSON.stringify(lhr));
 
+exports.uploadArtilleryReport = (runId, atr) =>
+	uploadBlob(BLOB.atr, `${runId}.json`, JSON.stringify(atr));
+
 exports.uploadHtmlHintReport = (runId, htmlIssues) =>
 	uploadBlob(BLOB.htmlhint, `${runId}.json`, JSON.stringify(htmlIssues));
 
