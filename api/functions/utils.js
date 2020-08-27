@@ -78,3 +78,14 @@ exports.getCodeErrorSummary = R.pipe(
 	R.converge(R.zipObj, [R.map(R.prop('issue')), R.map(R.prop('count'))])
 );
 
+function pad(str, max) {
+  str = str.toString();
+  return str.length < max ? pad("0" + str, max) : str;
+}
+
+exports.getReversedTick = () => {
+	const nowUtc = (new Date()).getTime();
+	const maxTime = new Date(9999, 1, 1);
+	return pad(maxTime - nowUtc, 19);
+}
+
