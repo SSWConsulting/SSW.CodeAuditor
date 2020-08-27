@@ -54,6 +54,12 @@ exports.getSummary = (api) =>
 		new azure.TableQuery().where('PartitionKey eq ?', api).top(100)
 	);
 
+exports.getPublicSummary = () =>
+	getTableRows(
+		TABLE.Scans,
+		new azure.TableQuery().where('isPrivate eq ?', 'false').top(100)
+	);
+
 exports.getSummaryById = async (runId) => {
 	const val = await getRun(runId).then((doc) =>
 		getTableRows(
