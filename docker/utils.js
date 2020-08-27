@@ -259,21 +259,21 @@ exports.readArtilleryReport = (folder, writeLog) => {
 
 	writeLog(`Reading Artillery report files`);
 
-	const ar = JSON.parse(
+	const atr = JSON.parse(
 		fs.readFileSync(`artilleryOut.json`).toString()
 	);
 
-	const arSummary = {
-		timestamp: ar.aggregate.timestamp,
-		scenariosCreated: ar.aggregate.scenariosCreated,
-		scenariosCompleted: ar.aggregate.scenariosCompleted,
-		requestsCompleted: ar.aggregate.requestsCompleted,
-		rpsCount: ar.aggregate.rps.count,
-		latencyMedian: ar.aggregate.latency.median,
-		scenarioCount: JSON.stringify(ar.aggregate.scenarioCounts),
+	const atrSummary = {
+		timestamp: atr.aggregate.timestamp,
+		scenariosCreated: atr.aggregate.scenariosCreated,
+		scenariosCompleted: atr.aggregate.scenariosCompleted,
+		requestsCompleted: atr.aggregate.requestsCompleted,
+		rpsCount: atr.aggregate.rps.count,
+		latencyMedian: atr.aggregate.latency.median,
+		scenarioCount: JSON.stringify(atr.aggregate.scenarioCounts),
 	};
 
-	return [ar, arSummary];
+	return [atr, atrSummary];
 };
 
 /**
@@ -493,7 +493,7 @@ exports.printResultsToConsole = (
 	htmlIssues,
 	codeAuditorIssues,
 	duration,
-	arSummary
+	atrSummary
 ) => {
 	let lhScaled;
 
@@ -532,7 +532,7 @@ exports.printResultsToConsole = (
 
 	}
 
-	if (arSummary) {
+	if (atrSummary) {
 		// Output Artillery report
 		let strTime = 'Timestamp: ';
 		let strScenCreated = 'Scenarios Created: ';
@@ -542,13 +542,13 @@ exports.printResultsToConsole = (
 		let strRps = 'RPS: ';
 		let strScenCount = 'Scenarios Count: ';
 
-		let timestamp = chalk(`${strTime} ${arSummary.timestamp}`);
-		let scenCreated = chalk(`${strScenCreated} ${arSummary.scenariosCreated}`);
-		let scenCompleted = chalk(`${strScenCompleted} ${arSummary.scenariosCompleted}`);
-		let reqCompleted = chalk(`${strReqCompleted} ${arSummary.requestsCompleted}`);
-		let latency = chalk(`${strLatency} ${arSummary.latencyMedian}`);
-		let rps = chalk(`${strRps} ${arSummary.rpsCount}`);
-		let scenCount = chalk(`${strScenCount} ${arSummary.scenarioCount}`);
+		let timestamp = chalk(`${strTime} ${atrSummary.timestamp}`);
+		let scenCreated = chalk(`${strScenCreated} ${atrSummary.scenariosCreated}`);
+		let scenCompleted = chalk(`${strScenCompleted} ${atrSummary.scenariosCompleted}`);
+		let reqCompleted = chalk(`${strReqCompleted} ${atrSummary.requestsCompleted}`);
+		let latency = chalk(`${strLatency} ${atrSummary.latencyMedian}`);
+		let rps = chalk(`${strRps} ${atrSummary.rpsCount}`);
+		let scenCount = chalk(`${strScenCount} ${atrSummary.scenarioCount}`);
 
 		boxConsole([timestamp, scenCreated, scenCompleted, reqCompleted, latency, rps, scenCount])
 	}

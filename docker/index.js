@@ -217,8 +217,8 @@ const processAndUpload = async (
 	let perfThreshold;
 	let lhrSummary;
 	let lhr;
-	let ar;
-	let arSummary;
+	let atr;
+	let atrSummary;
 	let runId;
 	let htmlIssuesSummary = null;
 	let htmlIssues = null;
@@ -237,7 +237,7 @@ const processAndUpload = async (
 	}
 
 	if (args.artillery) {
-		[ar, arSummary] = readArtilleryReport(ARTILLERYFOLDER, writeLog);
+		[atr, atrSummary] = readArtilleryReport(ARTILLERYFOLDER, writeLog);
 	}
 
 	if (args.htmlhint) {
@@ -291,7 +291,7 @@ const processAndUpload = async (
 				badUrls,
 				whiteListed,
 				lhr,
-				ar,
+				atr,
 				cloc: cloc,
 				code: codeAuditor,
 				htmlIssuesSummary,
@@ -315,7 +315,7 @@ const processAndUpload = async (
 		htmlIssues,
 		codeAuditor,
 		took,
-		arSummary
+		atrSummary
 	);
 };
 

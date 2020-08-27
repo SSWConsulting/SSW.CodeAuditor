@@ -13,6 +13,7 @@ const {
 	deleteIgnoreUrl,
 	updateConfig,
 	uploadLighthouseReport,
+	uploadArtilleryReport,
 	uploadHtmlHintReport,
 	addPerformanceThreshold,
 	uploadCodeAuditorReport,
@@ -108,6 +109,7 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		scanDuration,
 		url,
 		lhr,
+		atr,
 		whiteListed,
 		cloc,
 		code,
@@ -124,6 +126,20 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 			pwaScore: lhr.categories.pwa.score,
 		};
 	}
+
+	let atrSummary;
+	if (atr) {
+		atrSummary = {
+			timestamp: atr.aggregate.timestamp,
+			scenariosCreated: atr.aggregate.scenariosCreated,
+			scenariosCompleted: atr.aggregate.scenariosCompleted,
+			requestsCompleted: atr.aggregate.requestsCompleted,
+			rpsCount: atr.aggregate.rps.count,
+			latencyMedian: atr.aggregate.latency.median,
+			scenarioCount: JSON.stringify(atr.aggregate.scenarioCounts),
+		};
+	}
+
 	const apikey = req.params.api;
 	const buildId = req.params.buildId;
 	const runId = newGuid();
@@ -149,6 +165,7 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 	// insert summary first
 	const payload = {
 		...lhrSummary,
+		...atrSummary,
 		totalScanned,
 		whiteListed,
 		scanDuration,
@@ -170,9 +187,15 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 	console.log('adding summary', payload);
 	await insertScanSummary(apikey, buildId, runId, buildDate, payload);
 	if (lhr) {
-		console.log('uploading to Blob storage');
+		console.log('uploading Lighthouse report to Blob storage');
 		await uploadLighthouseReport(runId, lhr);
-		console.log('uploading to Blob storage - completed');
+		console.log('uploading Lighthouse report to Blob storage - completed');
+	}
+
+	if (atr) {
+		console.log('uploading Artillery report to Blob storage');
+		await uploadArtilleryReport(runId, atr);
+		console.log('uploading Artillery report to Blob storage - completed');
 	}
 
 	if (htmlIssues) {
