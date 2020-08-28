@@ -230,7 +230,6 @@ const processAndUpload = async (
 	let whiteListed = [];
 	let allBadUrls = [];
 	let badUrls = [];
-	let isPrivate;
 
 	const results = await readCsv(file);
 

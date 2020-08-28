@@ -57,7 +57,7 @@ exports.getSummary = (api) =>
 exports.getPublicSummary = () =>
 	getTableRows(
 		TABLE.Scans,
-		new azure.TableQuery().where('isPrivate eq ?', 'false').top(100)
+		new azure.TableQuery().where('isPrivate eq ?', false).top(100)
 	);
 
 exports.getSummaryById = async (runId) => {
