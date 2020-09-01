@@ -4,14 +4,22 @@
   import addDays from "date-fns/addDays";
   import { Navigate, navigateTo } from "svelte-router-spa";
   import { fade, fly } from "svelte/transition";
-  import LighthouseSummary from "./LighthouseSummary.svelte";
+  import LightHouseAverageScore from "./LightHouseAverageScore.svelte";
   import LinkSummary from "./LinkSummary.svelte";
   import CodeSummary from "./CodeSummary.svelte";
   import Icon from "./Icon.svelte";
   import { printTimeDiff } from "../utils/utils";
   import HistoryChart from "./HistoryChart.svelte";
+  import UrlSummary from "./UrlSummary.svelte";
+  import { groupBy, props } from "ramda";
+
   export let builds = [];
   export let lastBuild;
+  
+  let groupUrlKey = [];
+  let groupUrl;
+  groupUrl = groupBy(props(["url"]))(builds);
+  groupUrlKey = Object.keys(groupUrl);
 
   $: numberOfBuilds = builds.length;
   let count = builds.filter(
@@ -42,53 +50,40 @@
       {/if}
     </div>
   </div>
-  {#each builds as val}
-  <div class="flex mb-4">
-  <div class="flex-1 rounded overflow-hidden shadow-lg">
-    <div class="flex content-center mb-4 px-6 py-4">
 
-    <div class="w-4/6 h-12"
-      on:click={() => navigateTo(`/build/${val.runId}`)}>
-        <a class=" underline font-bold"
-          href={val.url}>
-          {val.url}
-        </a>
-        <div class="font-sans text-sm pt-2">
-          Last scanned {formatDistanceToNow(new Date(val.buildDate), {
-            addSuffix: true
-          })}
-          <span class="font-sans font-bold">{printTimeDiff(+val.scanDuration)}</span>
-        </div>
+  {#each groupUrlKey as url}
+  <div class="flex mb-4">
+    <div class="flex-1 rounded overflow-hidden shadow-lg">
+      <div class="flex content-center mb-4 px-6 py-4">
+    
+      <div class="w-5/6 h-12">
+        <UrlSummary value={builds} url={url} />
       </div>
 
-      <div class="w-1/6 h-12"
-      on:click={() => navigateTo(`/build/${val.runId}`)}>
+      <div class="w-1/6 h-12">
       <span class="font-sans">History</span>
       <br>
       <HistoryChart value={mostCurrentBuild} /> 
       </div>
 
-      <div class="w-1/6 h-12" 
-      on:click={() => navigateTo(`/build/${val.runId}`)}>
-        <LinkSummary value={val} />
+      <div class="w-1/6 h-12">
+        <LinkSummary value={builds} url={url} />
       </div>
 
-      <div class="w-1/6 h-12"
-      on:click={() => navigateTo(`/build/${val.runId}`)}>
-        <CodeSummary value={val} />
+      <div class="w-1/6 h-12">
+        <CodeSummary value={builds} url={url} />
       </div>
 
-      <div class="w-1/6 h-12"
-      on:click={() => navigateTo(`/build/${val.runId}`)}>
-        <LighthouseSummary value={val} />
+      <div class="w-1/6 h-12">
+        <LightHouseAverageScore value={builds} url={url} />
       </div>
 
       <div class="w-1/6 text-center h-12">
-        <i class="fa fa-angle-down fa-3x" aria-hidden="true"></i>
+        <i class="fa fa-angle-down fa-2x" aria-hidden="true"></i>
       </div>
-
-    </div>
+      
   </div>
+</div>
 </div>
 {/each}
 {/if}

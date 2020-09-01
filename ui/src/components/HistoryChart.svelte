@@ -62,6 +62,7 @@
             maintainAspectRatio: false,
             scales:{
                 xAxes: [{
+                    barThickness: 20,
                     ticks: {
                         display: false
                     },
@@ -88,9 +89,9 @@ onMount(() => {
     Chart.Bar('chart', {
       options: options,
       data: data
-    })
     });
+});
     
 </script>
-    
+
 <canvas id="chart" width="10px" height="6px"></canvas>

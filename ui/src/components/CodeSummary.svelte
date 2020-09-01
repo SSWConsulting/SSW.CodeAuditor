@@ -1,17 +1,22 @@
 <script>
-  import Icon from "./Icon.svelte";
   import {
     getCodeIssuesDescriptions,
     getCodeSummary,
     getHtmlIssuesDescriptions
   } from "../utils/utils.js";
+  import { Navigate, navigateTo } from "svelte-router-spa";
   export let value = {};
+  export let url;
 
-  $: codeSummary = getCodeSummary(value);
+  let filterValue = value.filter(function(values) {
+    return values.url == url;
+  })
+
+  $: codeSummary = getCodeSummary(filterValue[0]);
 </script>
 
   {#if codeSummary.html || codeSummary.code}
-    <div class="text-center">
+    <div class="text-center" on:click={() => navigateTo(`/build/${filterValue[0].runId}`)}>
       <span class="font-sans">Code Errors</span>
       <br>
       <span
