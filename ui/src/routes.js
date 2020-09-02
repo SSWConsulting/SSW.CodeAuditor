@@ -7,6 +7,7 @@ import BuildDetails from './containers/BuildDetails.svelte';
 import Public from './containers/Public.svelte';
 import PublicBuilds from './containers/PublicBuilds.svelte';
 import LighthouseReport from './containers/LighthouseReport.svelte';
+import ArtilleryReport from './containers/ArtilleryReport.svelte';
 import AppLayout from './containers/Layout.svelte';
 import { isLoggedIn } from './stores.js';
 
@@ -40,6 +41,11 @@ const routes = [
 	{
 		name: '/lighthouse/:run',
 		component: LighthouseReport,
+		layout: AppLayout
+	},
+	{
+		name: '/artillery/:run',
+		component: ArtilleryReport,
 		layout: AppLayout
 	},
 	{
