@@ -1,6 +1,6 @@
 <script>
   import { Navigate, navigateTo } from "svelte-router-spa";
-  import { getPerfScore, getCodeSummary } from "../utils/utils.js";
+  import { getPerfScore, getCodeSummary, getArtilleryResult } from "../utils/utils.js";
   export let build = {};
   export let displayMode = "";
 
@@ -25,6 +25,21 @@
         "bestPracticesScore",
         "pwaScore"
       ].filter(x => perf[x] < 90);
+    }
+  }
+
+  let artilleryLoadTest = 0;
+  $: {
+    if (build) {
+      const art = getArtilleryResult(build);
+      artilleryLoadTest = [
+        "timestamp",
+        "scenariosCreated",
+        "scenariosCompleted",
+        "requestsCompleted",
+        "latencyMedian",
+        "rpsCount",
+      ].filter(x => art[x] < 90);
     }
   }
 </script>
@@ -52,5 +67,14 @@
         </Navigate>
       </span>
     </li>
+  {/if}
+  {#if build.scenariosCompleted}
+  <li class="mr-1" class:-mb-px={displayMode === 'artillery'}>
+    <span class={baseClass + (displayMode === 'artillery' ? active : '')}>
+      <Navigate to={'/artillery/' + build.runId}>
+        Artillery Load Test{artilleryLoadTest.length ? ` (${artilleryLoadTest.length})` : ''}
+      </Navigate>
+    </span>
+  </li>
   {/if}
 </ul>

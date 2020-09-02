@@ -60,22 +60,25 @@
         <UrlSummary value={builds} url={url} />
       </div>
 
-      <div class="w-1/6 h-12">
+      <!-- <div class="w-1/6 h-12">
       <span class="font-sans">History</span>
       <br>
       <HistoryChart value={mostCurrentBuild} /> 
+      </div> -->
+
+      <div class="w-1/6 h-12">
+        <LinkSummary value={builds.filter(function(values) {
+          return values.url == url})} />
       </div>
 
       <div class="w-1/6 h-12">
-        <LinkSummary value={builds} url={url} />
+        <CodeSummary value={builds.filter(function(values) {
+          return values.url == url})} />
       </div>
 
       <div class="w-1/6 h-12">
-        <CodeSummary value={builds} url={url} />
-      </div>
-
-      <div class="w-1/6 h-12">
-        <LightHouseAverageScore value={builds} url={url} />
+        <LightHouseAverageScore value={builds.filter(function(values) {
+          return values.url == url})} />
       </div>
 
       <div class="w-1/6 text-center h-12">

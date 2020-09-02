@@ -98,6 +98,15 @@ export const getPerfScore = (value) => ({
 	),
 });
 
+export const getArtilleryResult = (value) => ({
+	timestamp: value.timestamp,
+	scenariosCreated: value.scenariosCreated,
+	scenariosCompleted: value.scenariosCompleted,
+	requestsCompleted: value.requestsCompleted,
+	latencyMedian: value.latencyMedian,
+	rpsCount: value.rpsCount,
+});
+
 export const isInIgnored = (url, list) => {
 	function glob(pattern, input) {
 		var re = new RegExp(
