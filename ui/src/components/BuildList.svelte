@@ -7,9 +7,7 @@
   import LightHouseAverageCard from "./LightHouseAverageCard.svelte";
   import LinkSummaryCard from "./LinkSummaryCard.svelte";
   import CodeSummaryCard from "./CodeSummaryCard.svelte";
-  import CodeSummary from "./CodeSummary.svelte";
-  import LinkSummary from "./LinkSummary.svelte";
-  import LighthouseSummary from "./LighthouseSummary.svelte";
+  import DetailListCard from "./DetailListCard.svelte";
   import Icon from "./Icon.svelte";
   import { printTimeDiff } from "../utils/utils";
   import HistoryChart from "./HistoryChart.svelte";
@@ -38,9 +36,11 @@
   }
 
   let showDetailList;
-  function toggle() { 
-    showDetailList = !showDetailList; 
-  } 
+  let currCard;
+  function toggle(n) {
+    currCard = n;
+    showDetailList = !showDetailList
+  }
 
 </script>
 
@@ -59,11 +59,10 @@
     </div>
   </div>
 
-  {#each groupUrlKey as url}
+  {#each groupUrlKey as url, i}
   <div class="flex mb-4">
     <div class="flex-1 rounded overflow-hidden shadow-lg">
       <div class="flex content-center mb-4 px-6 py-4">
-    
       <div class="w-5/6 h-12">
         <UrlSummary value={builds} url={url} />
       </div>
@@ -90,15 +89,24 @@
       </div>
 
       <div class="w-1/6 text-center h-12">
-        <i class="fa fa-angle-down fa-2x" aria-hidden="true" on:click={() => toggle()} ></i>
+        <i class="fa fa-angle-down fa-2x" aria-hidden="true" on:click={() => toggle(i)}></i>
       </div>
   </div>
 
     {#if showDetailList}
-      bruh
+    {#if currCard == i}
+      <DetailListCard value={builds.filter(function(values) {
+        return values.url == url})} {url} />
+    {/if}
     {/if}
   
 </div>
 </div>
 {/each}
+
+<!-- {#each builds.filter(function(values) {
+  return values.url == "https://htmlhint.com/"}) as val}
+  <LinkSummary value={val} />
+{/each} -->
+
 {/if}
