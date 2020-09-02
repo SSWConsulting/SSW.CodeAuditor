@@ -4,9 +4,12 @@
   import addDays from "date-fns/addDays";
   import { Navigate, navigateTo } from "svelte-router-spa";
   import { fade, fly } from "svelte/transition";
-  import LightHouseAverageScore from "./LightHouseAverageScore.svelte";
-  import LinkSummary from "./LinkSummary.svelte";
+  import LightHouseAverageCard from "./LightHouseAverageCard.svelte";
+  import LinkSummaryCard from "./LinkSummaryCard.svelte";
+  import CodeSummaryCard from "./CodeSummaryCard.svelte";
   import CodeSummary from "./CodeSummary.svelte";
+  import LinkSummary from "./LinkSummary.svelte";
+  import LighthouseSummary from "./LighthouseSummary.svelte";
   import Icon from "./Icon.svelte";
   import { printTimeDiff } from "../utils/utils";
   import HistoryChart from "./HistoryChart.svelte";
@@ -33,6 +36,11 @@
     fourthBuild: builds[3],
     fifthBuild: builds[4],
   }
+
+  let showDetailList;
+  function toggle() { 
+    showDetailList = !showDetailList; 
+  } 
 
 </script>
 
@@ -67,25 +75,29 @@
       </div> -->
 
       <div class="w-1/6 h-12">
-        <LinkSummary value={builds.filter(function(values) {
+        <LinkSummaryCard value={builds.filter(function(values) {
           return values.url == url})} />
       </div>
 
       <div class="w-1/6 h-12">
-        <CodeSummary value={builds.filter(function(values) {
+        <CodeSummaryCard value={builds.filter(function(values) {
           return values.url == url})} />
       </div>
 
       <div class="w-1/6 h-12">
-        <LightHouseAverageScore value={builds.filter(function(values) {
+        <LightHouseAverageCard value={builds.filter(function(values) {
           return values.url == url})} />
       </div>
 
       <div class="w-1/6 text-center h-12">
-        <i class="fa fa-angle-down fa-2x" aria-hidden="true"></i>
+        <i class="fa fa-angle-down fa-2x" aria-hidden="true" on:click={() => toggle()} ></i>
       </div>
-      
   </div>
+
+    {#if showDetailList}
+      bruh
+    {/if}
+  
 </div>
 </div>
 {/each}
