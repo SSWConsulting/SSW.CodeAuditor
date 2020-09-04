@@ -11,7 +11,7 @@
   import Icon from "./Icon.svelte";
   import { printTimeDiff } from "../utils/utils";
   import HistoryChart from "./HistoryChart.svelte";
-  import UrlSummary from "./UrlSummary.svelte";
+  import UrlSummaryCard from "./UrlSummaryCard.svelte";
   import { groupBy, props } from "ramda";
 
   export let builds = [];
@@ -60,11 +60,16 @@
   </div>
 
   {#each groupUrlKey as url, i}
-  <div class="flex mb-4">
-    <div class="flex-1 rounded overflow-hidden shadow-lg">
+  <div class="grid grid-rows-2 gap-y-1">
+
+  <div class="row-span-2">
+    <div class="flex mb-4">
+      <div class="flex-1 rounded overflow-hidden shadow-lg">
       <div class="flex content-center mb-4 px-6 py-4">
-      <div class="w-5/6 h-12">
-        <UrlSummary value={builds} url={url} />
+
+      <div class="w-4/6 h-12">
+        <UrlSummaryCard value={builds.filter(function(values) {
+          return values.url == url})} url={url} />
       </div>
 
       <!-- <div class="w-1/6 h-12">
@@ -73,17 +78,17 @@
       <HistoryChart value={mostCurrentBuild} /> 
       </div> -->
 
-      <div class="w-1/6 h-12">
+      <div class="w-1/6 h-12 text-gray-700">
         <LinkSummaryCard value={builds.filter(function(values) {
           return values.url == url})} />
       </div>
 
-      <div class="w-1/6 h-12">
+      <div class="w-1/6 h-12 text-gray-700">
         <CodeSummaryCard value={builds.filter(function(values) {
           return values.url == url})} />
       </div>
 
-      <div class="w-1/6 h-12">
+      <div class="w-1/6 h-12 text-gray-700">
         <LightHouseAverageCard value={builds.filter(function(values) {
           return values.url == url})} />
       </div>
@@ -91,16 +96,21 @@
       <div class="w-1/6 text-center h-12">
         <i class="fa fa-angle-down fa-2x" aria-hidden="true" on:click={() => toggle(i)}></i>
       </div>
+
+    </div>
+    </div>
+    </div>
   </div>
 
-    {#if showDetailList}
-    {#if currCard == i}
-      <DetailListCard value={builds.filter(function(values) {
-        return values.url == url})} {url} />
-    {/if}
-    {/if}
-  
-</div>
+    <div class="row-span-2 text-base">
+      {#if showDetailList}
+      {#if currCard == i}
+          <DetailListCard value={builds.filter(function(values) {
+            return values.url == url})}/> 
+      {/if}
+      {/if}
+    </div>
+    
 </div>
 {/each}
 

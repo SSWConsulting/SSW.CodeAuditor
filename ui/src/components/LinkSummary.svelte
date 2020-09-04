@@ -2,24 +2,24 @@
     export let value = {};
   </script>
   
-  <div class="grid grid-cols-3 gap-1 row-gap-2">
-    <div class="text-center">
-      <span class="block font-mono">Scanned</span>
-      <span class="font-bold block">{value.totalScanned}</span>
+  <div class="grid grid-cols-4">
+    <div class="col-span-1 text-start">
+      <span class="block font-sans">SCANNED</span>
+      <span class="font-sans font-bold block lg:inline-block my-2">{value.totalScanned}</span>
     </div>
-    <div class="text-center">
-      <span class="block whitespace-no-wrap font-mono">Bad</span>
+    <div class="col-span-1 text-start">
+      <span class="block whitespace-no-wrap font-sans">BAD LINKS</span>
       <span
-        class="font-bold whitespace-no-wrap"
+        class="font-sans font-bold block lg:inline-block my-2"
         class:text-red-600={value.totalBrokenLinks > 0}
         class:text-green-600={value.totalBrokenLinks === 0}>
         {value.uniqueBrokenLinks} / {value.totalBrokenLinks}
       </span>
     </div>
-    <div class="text-center">
-      <span class="block whitespace-no-wrap font-mono">404</span>
+    <div class="col-span-1 text-start">
+      <span class="block whitespace-no-wrap font-sans">404 ERRORS</span>
       <span
-        class="font-bold"
+        class="font-sans font-bold block lg:inline-block my-2"
         class:text-red-600={value.totalUnique404 > 0}
         class:text-green-600={value.totalUnique404 === 0}>
         {value.totalUnique404}

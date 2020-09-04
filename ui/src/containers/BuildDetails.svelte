@@ -79,14 +79,15 @@
     {#await promise}
       <LoadingFlat />
     {:then data}
-      <Tabs build={data ? data.summary : {}} displayMode="url" />
 
-      <Breadcrumbs
+      <!-- <Breadcrumbs
         build={data ? data.summary : {}}
         runId={currentRoute.namedParams.id}
-        displayMode="Links" />
+        displayMode="Links" /> -->
 
       <BuildDetailsCard build={data ? data.summary : {}} />
+      
+      <Tabs build={data ? data.summary : {}} displayMode="url" />
 
       <DetailsTable
         on:download={() => onDownload(data)}

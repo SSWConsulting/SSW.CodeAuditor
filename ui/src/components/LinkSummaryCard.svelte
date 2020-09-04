@@ -4,7 +4,7 @@
 </script>
 
   <div class="text-center" on:click={() => navigateTo(`/build/${value[0].runId}`)}>
-    <span class="font-sans">Bad Links</span>
+    <span class="font-sans">BAD LINKS</span>
     <br>
     <span
       class="font-sans font-bold block lg:inline-block m-2"
