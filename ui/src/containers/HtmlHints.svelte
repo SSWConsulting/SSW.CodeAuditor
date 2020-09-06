@@ -28,7 +28,7 @@
   let promise = getHtmlHints(runId);
   async function getHtmlHints(id) {
     const d = await fetch(
-      `https://urlchecker.blob.core.windows.net/htmlhint/${id}.json`
+      `https://codeauditorstorage.blob.core.windows.net/htmlhint/${id}.json`
     );
     let htmlHint = await d.json();
 
@@ -36,7 +36,7 @@
     let codeIssues = [];
     if (summary.summary.codeIssues) {
       const c = await fetch(
-        `https://urlchecker.blob.core.windows.net/codeauditor/${id}.json`
+        `https://codeauditorstorage.blob.core.windows.net/codeauditor/${id}.json`
       );
       codeIssues = await c.json();
     }
@@ -101,14 +101,15 @@
     {#await promise}
       <LoadingFlat />
     {:then data}
-      <Tabs build={data ? data.summary : {}} displayMode="code" />
 
-      <Breadcrumbs
+      <!-- <Breadcrumbs
         build={data ? data.summary : {}}
         runId={currentRoute.namedParams.id}
-        displayMode="Code Issues" />
-
+        displayMode="Code Issues" /> -->
+    
       <BuildDetailsCard build={data ? data.summary : {}} />
+
+      <Tabs build={data ? data.summary : {}} displayMode="code" />
 
       <HtmlErrorsTable
         on:download={() => onDownload(data)}
