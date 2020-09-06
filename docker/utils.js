@@ -270,6 +270,9 @@ exports.readArtilleryReport = (folder, writeLog) => {
 		requestsCompleted: atr.aggregate.requestsCompleted,
 		rpsCount: atr.aggregate.rps.count,
 		latencyMedian: atr.aggregate.latency.median,
+		scenarioDurationMedian: atr.aggregate.scenarioDuration.median,
+		scenarioDurationP95: atr.aggregate.scenarioDuration.p95,
+		scenarioDurationP99: atr.aggregate.scenarioDuration.p99
 	};
 
 	return [atr, atrSummary];
@@ -539,7 +542,9 @@ exports.printResultsToConsole = (
 		let strReqCompleted = 'Requests Completed: ';
 		let strLatency = 'Latency: ';
 		let strRps = 'RPS: ';
-		let strScenCount = 'Scenarios Count: ';
+		let strScenarioDurationMedian = 'Scenario Duration Median: ';
+		let strScenarioDurationP95 = 'Scenario Duration P95: ';
+		let strScenarioDurationP99 = 'Scenario Duration P99: '
 
 		let timestamp = chalk(`${strTime} ${atrSummary.timestamp}`);
 		let scenCreated = chalk(`${strScenCreated} ${atrSummary.scenariosCreated}`);
@@ -547,8 +552,11 @@ exports.printResultsToConsole = (
 		let reqCompleted = chalk(`${strReqCompleted} ${atrSummary.requestsCompleted}`);
 		let latency = chalk(`${strLatency} ${atrSummary.latencyMedian}`);
 		let rps = chalk(`${strRps} ${atrSummary.rpsCount}`);
+		let scenarioDurationMedian = chalk(`${strScenarioDurationMedian} ${atrSummary.scenarioDurationMedian}`);
+		let scenarioDurationP95 = chalk(`${strScenarioDurationP95} ${atrSummary.scenarioDurationP95}`);
+		let scenarioDurationP99 = chalk(`${strScenarioDurationP99} ${atrSummary.scenarioDurationP99}`);
 
-		boxConsole([timestamp, scenCreated, scenCompleted, reqCompleted, latency, rps])
+		boxConsole([timestamp, scenCreated, scenCompleted, reqCompleted, latency, rps, scenarioDurationMedian, scenarioDurationP95, scenarioDurationP99])
 	}
 
 	// output htmlhint summary

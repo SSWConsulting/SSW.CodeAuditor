@@ -141,6 +141,9 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 			requestsCompleted: atr.aggregate.requestsCompleted,
 			rpsCount: atr.aggregate.rps.count,
 			latencyMedian: atr.aggregate.latency.median,
+			scenarioDurationMedian: atr.aggregate.scenarioDuration.median,
+			scenarioDurationP95: atr.aggregate.scenarioDuration.p95,
+			scenarioDurationP99: atr.aggregate.scenarioDuration.p99
 		};
 	}
 
