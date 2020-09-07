@@ -140,10 +140,15 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 			scenariosCompleted: atr.aggregate.scenariosCompleted,
 			requestsCompleted: atr.aggregate.requestsCompleted,
 			rpsCount: atr.aggregate.rps.count,
+			latencyMax: atr.aggregate.latency.max,
+			latencyMin: atr.aggregate.latency.min,
 			latencyMedian: atr.aggregate.latency.median,
+			latencyP95: atr.aggregate.latency.p95,
+			latencyP99: atr.aggregate.latency.p99,
 			scenarioDurationMedian: atr.aggregate.scenarioDuration.median,
 			scenarioDurationP95: atr.aggregate.scenarioDuration.p95,
-			scenarioDurationP99: atr.aggregate.scenarioDuration.p99
+			scenarioDurationP99: atr.aggregate.scenarioDuration.p99,
+			errors: Object.keys(atr.aggregate.errors).length
 		};
 	}
 
