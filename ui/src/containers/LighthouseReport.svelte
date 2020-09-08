@@ -85,13 +85,13 @@
       {#await promise}
         <LoadingFlat />
       {:then data}
-        <Tabs build={data ? data.summary : {}} displayMode="lighthouse" />
-
-        <Breadcrumbs
+        <!-- <Breadcrumbs
           build={data ? data.summary : {}}
           runId={currentRoute.namedParams.id}
-          displayMode="Lighthouse Audit" />
+          displayMode="Lighthouse Audit" /> -->
 
+        <Tabs build={data ? data.summary : {}} displayMode="lighthouse" />
+        
         <LighthouseDetailsCard
           build={data ? data.summary : {}}
           on:perfThreshold={() => showPerfThreshold(data.summary, $userSession$)} />

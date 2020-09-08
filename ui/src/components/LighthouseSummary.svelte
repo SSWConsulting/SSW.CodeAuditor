@@ -14,7 +14,7 @@
       <div class="col-span-1 text-start whitespace-no-wrap">
         <span class="block font-sans">AVERAGE</span>
         <span
-          class="font-bold block lg:inline-block textgrey my-2"
+          class="font-bold block lg:inline-block textgrey "
           title="Average"
           class:text-red-400={perf.average < 50}>
           {perf.average.toFixed(1)}
@@ -24,7 +24,7 @@
         <span class="block font-sans">PERFORMANCE</span>
         <span
           title="Performance"
-          class="font-bold block lg:inline-block textgrey my-2"
+          class="font-bold block lg:inline-block textgrey "
           class:text-red-400={perf.performanceScore < 50}>
           {perf.performanceScore}
         </span>
@@ -32,7 +32,7 @@
       <div class="col-span-1 text-start">
         <span class="block font-sans">ACCESSIBILITY</span>
         <span
-          class="font-bold block lg:inline-block textgrey my-2"
+          class="font-bold block lg:inline-block textgrey "
           title="Accessibility"
           class:text-red-400={perf.accessibilityScore < 50}>
           {perf.accessibilityScore}
@@ -43,7 +43,7 @@
         <span class="block font-sans">SEO</span>
         <span
           title="SEO"
-          class="font-bold block lg:inline-block textgrey my-2"
+          class="font-bold block lg:inline-block textgrey "
           class:text-red-400={perf.seoScore < 50}>
           {perf.seoScore}
         </span>
@@ -51,7 +51,7 @@
       <div class="col-span-1 text-start">
         <span class="block font-sans">PWA</span>
         <span
-          class="font-bold block lg:inline-block textgrey my-2"
+          class="font-bold block lg:inline-block textgrey "
           title="PWA"
           class:text-red-400={perf.pwaScore < 50}>
           {perf.pwaScore}
@@ -60,7 +60,7 @@
       <div class="text-start">
         <span class="block font-sans">BEST PRACTICE</span>
         <span
-          class="font-bold block lg:inline-block textgrey my-2"
+          class="font-bold block lg:inline-block textgrey "
           title="Best Practice"
           class:text-red-400={perf.bestPracticesScore < 50}>
           {perf.bestPracticesScore}

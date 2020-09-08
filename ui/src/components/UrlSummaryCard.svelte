@@ -4,7 +4,6 @@
     import { Navigate, navigateTo } from "svelte-router-spa";
     export let value = {};
     export let url;
-  
   </script>
   
     <div class="text-start" on:click={() => navigateTo(`/build/${value[0].runId}`)}>

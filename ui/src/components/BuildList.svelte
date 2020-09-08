@@ -12,7 +12,7 @@
   import { printTimeDiff } from "../utils/utils";
   import HistoryChart from "./HistoryChart.svelte";
   import UrlSummaryCard from "./UrlSummaryCard.svelte";
-  import { groupBy, props } from "ramda";
+  import { forEach, groupBy, props } from "ramda";
 
   export let builds = [];
   export let lastBuild;
@@ -26,14 +26,6 @@
   let count = builds.filter(
     x => new Date(x.buildDate) > addDays(new Date(), -30)
   ).length;
-
-  let mostCurrentBuild = {
-    firstBuild: builds[0],
-    secondBuild: builds[1],
-    thirdBuild: builds[2],
-    fourthBuild: builds[3],
-    fifthBuild: builds[4],
-  }
 
   let showDetailList;
   let currCard;
@@ -64,36 +56,35 @@
 
   <div class="row-span-2">
     <div class="flex mb-4">
-      <div class="flex-1 rounded overflow-hidden shadow-lg">
+      <div class="flex-1 overflow-hidden shadow-lg">
       <div class="flex content-center mb-4 px-6 py-4">
 
-      <div class="w-4/6 h-12">
+      <div class="w-5/6 h-12">
         <UrlSummaryCard value={builds.filter(function(values) {
-          return values.url == url})} url={url} />
+          return values.url == url})} {url}/>
       </div>
 
-      <!-- <div class="w-1/6 h-12">
-      <span class="font-sans">History</span>
-      <br>
-      <HistoryChart value={mostCurrentBuild} /> 
-      </div> -->
+      <div class="w-1/6 h-12">
+      <HistoryChart value={builds.filter(function(values) {
+        return values.url == url})} />                                                                                                                      
+      </div>
 
-      <div class="w-1/6 h-12 text-gray-700">
+      <div class="w-1/6 h-12 text-base text-gray-700">
         <LinkSummaryCard value={builds.filter(function(values) {
           return values.url == url})} />
       </div>
 
-      <div class="w-1/6 h-12 text-gray-700">
+      <div class="w-1/6 h-12 text-base text-gray-700">
         <CodeSummaryCard value={builds.filter(function(values) {
           return values.url == url})} />
       </div>
 
-      <div class="w-1/6 h-12 text-gray-700">
+      <div class="w-1/6 h-12 text-base text-gray-700">
         <LightHouseAverageCard value={builds.filter(function(values) {
           return values.url == url})} />
       </div>
 
-      <div class="w-1/6 text-center h-12">
+      <div class="w-0.9/6 text-center h-12">
         <i class="fa fa-angle-down fa-2x" aria-hidden="true" on:click={() => toggle(i)}></i>
       </div>
 
@@ -101,15 +92,17 @@
     </div>
     </div>
   </div>
-
-    <div class="row-span-2 text-base">
-      {#if showDetailList}
-      {#if currCard == i}
-          <DetailListCard value={builds.filter(function(values) {
-            return values.url == url})}/> 
-      {/if}
-      {/if}
+ 
+  {#if showDetailList}
+  {#if currCard == i}
+    <div class="row-span-2">
+      <div class="grid grid-rows-2 gap-y-5">
+      <DetailListCard value={builds.filter(function(values) {
+        return values.url == url})}/> 
+      </div>
     </div>
+  {/if}
+  {/if}
     
 </div>
 {/each}

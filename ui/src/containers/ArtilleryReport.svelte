@@ -7,6 +7,7 @@
     import Icon from "../components/Icon.svelte";
     import Tabs from "../components/Tabs.svelte";
     import Toastr from "../components/Toastr.svelte";
+    import HistoryChart from "../components/HistoryChart.svelte";
     import slug from "slug";
     import {
       getBuildDetails,
@@ -42,6 +43,8 @@
             displayMode="Artillery Load Test" />
 
             <ArtilleryDetailTable value={data} />
+
+            <HistoryChart />
         
         {:catch error}
           <p class="text-red-600 mx-auto text-2xl py-8">{error.message}</p>

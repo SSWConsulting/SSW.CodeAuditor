@@ -19,19 +19,24 @@
     "rollup-plugin-svelte": "^5.0.3",
     "rollup-plugin-terser": "^7.0.0",
     "surge": "^0.21.6",
-    "svelte": "^3.0.0"
+    "svelte": "^3.24.1"
   },
   "dependencies": {
+    "@sveltejs/pancake": "0.0.17",
     "chart.js": "^2.9.3",
     "date-fns": "^2.12.0",
     "export-to-csv": "^0.2.1",
     "firebase": "^7.14.1",
     "firebase-tools": "^8.7.0",
+    "frappe-charts": "^1.5.2",
+    "fusioncharts": "^3.15.2",
     "lighthouse": "^6.2.0",
     "query-string": "^6.12.1",
     "ramda": "^0.27.0",
     "sirv-cli": "^0.4.4",
     "slug": "^2.1.1",
+    "svelte-frappe-charts": "^1.2.2",
+    "svelte-fusioncharts": "^1.0.0",
     "svelte-preprocess": "^3.7.4",
     "svelte-router-spa": "^5.5.0"
   }
