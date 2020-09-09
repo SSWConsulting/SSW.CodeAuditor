@@ -658,27 +658,6 @@ exports.printResultsToConsole = (
 		}
 	}
 
-	// let finalEval;
-	// if (
-	// 	badLinks.length > 0 ||
-	// 	failedThreshold ||
-	// 	codeAuditorIssues.filter((x) => !!x.error).length > 0 ||
-	// 	htmlErrors.length > 0
-	// ) {
-	// 	finalEval = 'FAIL';
-	// 	consoleBox(finalEval, 'red');
-	// 	return finalEval;
-	// } else if (
-	// 	badLinks.length == 0 &&
-	// 	failedThreshold == true &&
-	// 	codeAuditorIssues.filter((x) => !!x.error).length == 0 &&
-	// 	htmlErrors.length == 0
-	// ) {
-	// 	finalEval = 'PASS';
-	// 	consoleBox(finalEval, 'red');
-	// 	return finalEval;
-	// }
-
 	if (
 		badLinks.length == 0 &&
 		failedThreshold == true &&
