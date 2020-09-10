@@ -119,7 +119,8 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		code,
 		htmlIssuesSummary,
 		htmlIssues,
-		isPrivate
+		isPrivate,
+		finalEval
 	} = req.body;
 	let lhrSummary;
 	if (lhr) {
@@ -189,7 +190,8 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		htmlErrors,
 		codeIssues: getCodeErrorSummary(code),
 		htmlIssuesList,
-		isPrivate
+		isPrivate,
+		finalEval
 	};
 
 	console.log('adding summary', payload);

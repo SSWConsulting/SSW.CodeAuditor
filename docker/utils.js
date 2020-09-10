@@ -659,12 +659,14 @@ exports.printResultsToConsole = (
 	}
 
 	if (
-		badLinks.length > 0 ||
-		failedThreshold ||
-		codeAuditorIssues.filter((x) => !!x.error).length > 0 ||
-		htmlErrors.length > 0
+		badLinks.length == 0 &&
+		failedThreshold == true &&
+		codeAuditorIssues.filter((x) => !!x.error).length == 0 &&
+		htmlErrors.length == 0
 	) {
-		consoleBox(`AUDIT COMPLETE`, 'red');
-		process.exit(1);
+		return 'PASS';
 	}
+	return 'FAIL'
 };
+
+

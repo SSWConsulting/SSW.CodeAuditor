@@ -15,6 +15,7 @@ const {
 	runBrokenLinkCheck,
 	runHtmlHint,
 	processBrokenLinks,
+	getFinalEval
 } = require('./utils');
 
 const { readGithubSuperLinter } = require('./parseSuperLinter');
@@ -275,6 +276,22 @@ const processAndUpload = async (
 		}
 	}
 
+	let finalEval = printResultsToConsole(
+		results,
+		lhrSummary,
+		runId,
+		perfThreshold,
+		badUrls,
+		whiteListed,
+		htmlIssuesSummary,
+		htmlIssues,
+		codeAuditor,
+		took,
+		atrSummary
+	);
+
+	writeLog(`finalEval is: `, finalEval)
+
 	if (args.linkcheck) {
 		[allBadUrls, whiteListed] = processBrokenLinks(
 			args.url,
@@ -301,7 +318,8 @@ const processAndUpload = async (
 				code: codeAuditor,
 				htmlIssuesSummary,
 				htmlIssues,
-				isPrivate: args.private
+				isPrivate: args.private,
+				finalEval
 			});
 		} catch (error) {
 			console.error(
