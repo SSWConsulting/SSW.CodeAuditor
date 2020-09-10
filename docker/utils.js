@@ -269,10 +269,15 @@ exports.readArtilleryReport = (folder, writeLog) => {
 		scenariosCompleted: atr.aggregate.scenariosCompleted,
 		requestsCompleted: atr.aggregate.requestsCompleted,
 		rpsCount: atr.aggregate.rps.count,
+		latencyMin: atr.aggregate.latency.min,
+		latencyMax: atr.aggregate.latency.max,
 		latencyMedian: atr.aggregate.latency.median,
+		latencyP95: atr.aggregate.latency.p95,
+		latencyP99: atr.aggregate.latency.p99,
 		scenarioDurationMedian: atr.aggregate.scenarioDuration.median,
 		scenarioDurationP95: atr.aggregate.scenarioDuration.p95,
-		scenarioDurationP99: atr.aggregate.scenarioDuration.p99
+		scenarioDurationP99: atr.aggregate.scenarioDuration.p99,
+		errors: Object.keys(atr.aggregate.errors).length
 	};
 
 	return [atr, atrSummary];
@@ -540,23 +545,33 @@ exports.printResultsToConsole = (
 		let strScenCreated = 'Scenarios Created: ';
 		let strScenCompleted = 'Scenarios Completed: ';
 		let strReqCompleted = 'Requests Completed: ';
-		let strLatency = 'Latency: ';
+		let strLatencyMedian = 'Latency Median: ';
+		let strLatencyMin = 'Latency Min: ';
+		let strLatencyMax = 'Latency Max: ';
+		let strLatencyP95 = 'Latency P95: ';
+		let strLatencyP99 = 'Latency P99: ';
 		let strRps = 'RPS: ';
 		let strScenarioDurationMedian = 'Scenario Duration Median: ';
 		let strScenarioDurationP95 = 'Scenario Duration P95: ';
-		let strScenarioDurationP99 = 'Scenario Duration P99: '
+		let strScenarioDurationP99 = 'Scenario Duration P99: ';
+		let strErrors = 'Errors: '
 
 		let timestamp = chalk(`${strTime} ${atrSummary.timestamp}`);
 		let scenCreated = chalk(`${strScenCreated} ${atrSummary.scenariosCreated}`);
 		let scenCompleted = chalk(`${strScenCompleted} ${atrSummary.scenariosCompleted}`);
 		let reqCompleted = chalk(`${strReqCompleted} ${atrSummary.requestsCompleted}`);
-		let latency = chalk(`${strLatency} ${atrSummary.latencyMedian}`);
+		let latencyMax = chalk(`${strLatencyMax} ${atrSummary.latencyMax}`);
+		let latencyMin = chalk(`${strLatencyMin} ${atrSummary.latencyMin}`);
+		let latencyMedian = chalk(`${strLatencyMedian} ${atrSummary.latencyMedian}`);
+		let latencyP95 = chalk(`${strLatencyP95} ${atrSummary.latencyP95}`);
+		let latencyP99 = chalk(`${strLatencyP99} ${atrSummary.latencyP99}`);
 		let rps = chalk(`${strRps} ${atrSummary.rpsCount}`);
 		let scenarioDurationMedian = chalk(`${strScenarioDurationMedian} ${atrSummary.scenarioDurationMedian}`);
 		let scenarioDurationP95 = chalk(`${strScenarioDurationP95} ${atrSummary.scenarioDurationP95}`);
 		let scenarioDurationP99 = chalk(`${strScenarioDurationP99} ${atrSummary.scenarioDurationP99}`);
+		let errors = chalk(`${strErrors} ${atrSummary.errors}`);
 
-		boxConsole([timestamp, scenCreated, scenCompleted, reqCompleted, latency, rps, scenarioDurationMedian, scenarioDurationP95, scenarioDurationP99])
+		boxConsole([timestamp, scenCreated, scenCompleted, reqCompleted, latencyMax, latencyMin, latencyMedian, latencyP95, latencyP99, rps, scenarioDurationMedian, scenarioDurationP95, scenarioDurationP99, errors])
 	}
 
 	// output htmlhint summary
