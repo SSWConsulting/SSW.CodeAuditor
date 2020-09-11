@@ -30,7 +30,13 @@
   {#each value as val}
       <div class="overflow-hidden shadow-lg">
 
-        <div class="bg-gray-500 h-2"></div>
+        {#if val.finalEval == "FAIL"}
+        <div class="bg-red-500 h-2"></div>
+        {:else if val.finalEval == "PASS"}
+        <div class="bg-green-500 h-2"></div>
+        {:else}
+        <div class="bg-orange-500 h-2"></div>
+        {/if}
 
           <div class="px-6 py-2">
           <div class="grid grid-rows-2 grid-flow-col" on:click={() => navigateTo(`/build/${val.runId}`)}>

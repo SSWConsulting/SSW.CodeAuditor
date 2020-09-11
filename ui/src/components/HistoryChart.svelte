@@ -5,18 +5,32 @@
     export let value = [];
 
     let scanDur = [];
+    let score = [];
     
     value.forEach(i => {
         scanDur.push(i.scanDuration)
     })
 
-    console.log(scanDur)
+    value.forEach(i => {
+        score.push(i.finalEval)
+    })
 
+    let barColor = [];
+    score.forEach(i => {
+        if (i == 'FAIL'){
+            barColor.push('red')
+        } else if (i == 'PASS') {
+            barColor.push('green')
+        } else {
+            barColor.push('orange')
+        }
+    })
+     
     export let data = {
-            labels: ["1", "2", "3", "4", "5"],
+            labels: [score[0], score[1], score[2], score[3], score[4]],
             datasets: [{
                 data: scanDur,
-                backgroundColor: 'green',
+                backgroundColor: barColor
             }]
         };
     

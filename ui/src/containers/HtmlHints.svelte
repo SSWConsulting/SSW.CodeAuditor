@@ -14,13 +14,15 @@
   import slug from "slug";
   import Toastr from "../components/Toastr.svelte";
   import BuildDetailsCard from "../components/BuildDetailsCard.svelte";
-  import { CONSTS, getPerfScore, HTMLERRORS } from "../utils/utils.js";
+  import { CONSTS, getPerfScore, HTMLERRORS, printTimeDiff } from "../utils/utils.js";
   import { ExportToCsv } from "export-to-csv";
   import { Navigate, navigateTo } from "svelte-router-spa";
   import LoadingFlat from "../components/LoadingFlat.svelte";
   import Modal from "../components/Modal.svelte";
   import UpdateIgnoreUrl from "../components/UpdateIgnoreUrl.svelte";
   import UpdatePerfThreshold from "../components/UpdatePerfThreshold.svelte";
+  import { format } from 'date-fns';
+  import formatDistanceToNow from "date-fns/formatDistanceToNow";
 
   export let currentRoute;
 
@@ -28,7 +30,7 @@
   let promise = getHtmlHints(runId);
   async function getHtmlHints(id) {
     const d = await fetch(
-      `https://urlchecker.blob.core.windows.net/htmlhint/${id}.json`
+      `https://codeauditorstorage.blob.core.windows.net/htmlhint/${id}.json`
     );
     let htmlHint = await d.json();
 
@@ -36,7 +38,7 @@
     let codeIssues = [];
     if (summary.summary.codeIssues) {
       const c = await fetch(
-        `https://urlchecker.blob.core.windows.net/codeauditor/${id}.json`
+        `https://codeauditorstorage.blob.core.windows.net/codeauditor/${id}.json`
       );
       codeIssues = await c.json();
     }
@@ -102,10 +104,20 @@
       <LoadingFlat />
     {:then data}
 
-      <!-- <Breadcrumbs
-        build={data ? data.summary : {}}
-        runId={currentRoute.namedParams.id}
-        displayMode="Code Issues" /> -->
+    <Breadcrumbs
+    build={data ? data.summary : {}}
+    runId={currentRoute.namedParams.id}
+    displayMode="Code Issues" />
+    <br>
+    
+    <div class="grid grid-rows-2">
+      <div class="text-center">
+        <span class="text-4xl font-sans font-bold text-gray-800">{format(new Date(data.summary.buildDate), 'dd.MM.yyyy')}</span>
+      </div>
+      <div class="text-center">
+        <span class="text-xl font-sans block lg:inline-block text-gray-600">Last scanned: {formatDistanceToNow(new Date(data.summary.buildDate), {addSuffix: true})} at {format(new Date(data.summary.buildDate), 'hh:mm')}</span>
+      </div>
+    </div>
     
       <BuildDetailsCard build={data ? data.summary : {}} />
 

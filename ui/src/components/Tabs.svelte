@@ -59,6 +59,13 @@
       </Navigate>
     </span>
   </li>
+  <li class="mr-1" class:-mb-px={displayMode === 'artillery'}>
+    <span class={baseClass + (displayMode === 'artillery' ? active : '')}>
+      <Navigate to={'/artillery/' + build.runId}>
+        Artillery Load Test{artilleryLoadTest.length ? ` (${artilleryLoadTest.length})` : ''}
+      </Navigate>
+    </span>
+  </li>
   {#if build.performanceScore}
     <li class="mr-1" class:-mb-px={displayMode === 'lighthouse'}>
       <span class={baseClass + (displayMode === 'lighthouse' ? active : '')}>
@@ -67,14 +74,5 @@
         </Navigate>
       </span>
     </li>
-  {/if}
-  {#if build.scenariosCompleted}
-  <li class="mr-1" class:-mb-px={displayMode === 'artillery'}>
-    <span class={baseClass + (displayMode === 'artillery' ? active : '')}>
-      <Navigate to={'/artillery/' + build.runId}>
-        Artillery Load Test{artilleryLoadTest.length ? ` (${artilleryLoadTest.length})` : ''}
-      </Navigate>
-    </span>
-  </li>
   {/if}
 </ul>

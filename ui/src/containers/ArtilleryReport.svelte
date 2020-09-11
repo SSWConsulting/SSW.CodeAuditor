@@ -4,11 +4,14 @@
     import ArtilleryDetailTable from "../components/ArtilleryDetailTable.svelte";
     import Breadcrumbs from "../components/Breadcrumbs.svelte";
     import LoadingFlat from "../components/LoadingFlat.svelte";
-    import Icon from "../components/Icon.svelte";
     import Tabs from "../components/Tabs.svelte";
     import Toastr from "../components/Toastr.svelte";
     import HistoryChart from "../components/HistoryChart.svelte";
     import slug from "slug";
+    import { format } from 'date-fns';
+    import formatDistanceToNow from "date-fns/formatDistanceToNow";
+    import BuildDetailsCard from "../components/BuildDetailsCard.svelte";
+    import ArtilleryChart from "../components/ArtilleryChart.svelte";
     import {
       getBuildDetails,
       userApi,
@@ -35,16 +38,29 @@
         {#await promise}
           <LoadingFlat />
         {:then data}
-          <Tabs build={data ? data.summary : {}} displayMode="artillery" />
         
           <Breadcrumbs
             build={data ? data.summary : {}}
             runId={currentRoute.namedParams.id}
             displayMode="Artillery Load Test" />
+          <br>
 
-            <ArtilleryDetailTable value={data} />
+          <div class="grid grid-rows-2">
+            <div class="text-center">
+              <span class="text-4xl font-sans font-bold text-gray-800">{format(new Date(data.summary.buildDate), 'dd.MM.yyyy')}</span>
+            </div>
+            <div class="text-center">
+              <span class="text-xl font-sans block lg:inline-block text-gray-600">Last scanned: {formatDistanceToNow(new Date(data.summary.buildDate), {addSuffix: true})} at {format(new Date(data.summary.buildDate), 'hh:mm')}</span>
+            </div>
+          </div>
+    
+          <BuildDetailsCard build={data ? data.summary : {}} />
 
-            <HistoryChart />
+          <Tabs build={data ? data.summary : {}} displayMode="artillery" />
+
+          <ArtilleryChart value={data.summary}/>
+
+          <ArtilleryDetailTable value={data} />
         
         {:catch error}
           <p class="text-red-600 mx-auto text-2xl py-8">{error.message}</p>

@@ -65,7 +65,7 @@
       </div>
 
       <div class="w-1/6 h-12">
-      <HistoryChart value={builds.filter(function(values) {
+        <HistoryChart value={builds.filter(function(values) {
         return values.url == url})} />                                                                                                                      
       </div>
 
