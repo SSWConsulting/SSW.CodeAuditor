@@ -134,6 +134,7 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 	}
 
 	let atrSummary;
+	let atrFull = [];
 	if (atr) {
 		atrSummary = {
 			timestamp: atr.aggregate.timestamp,
@@ -151,6 +152,14 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 			scenarioDurationP99: atr.aggregate.scenarioDuration.p99,
 			errors: Object.keys(atr.aggregate.errors).length
 		};
+
+		atr.intermediate.forEach(i => {
+			atrFull.push({			
+				fullLatencyMedian: i.latency.median,
+				fullLatencyP95: i.latency.p95,
+				fullLatencyP99: i.latency.p99
+			})
+		})
 	}
 
 	const apikey = req.params.api;
@@ -179,6 +188,7 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 	const payload = {
 		...lhrSummary,
 		...atrSummary,
+		...atrFull,
 		totalScanned,
 		whiteListed,
 		scanDuration,
