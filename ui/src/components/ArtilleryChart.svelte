@@ -1,46 +1,55 @@
 <script>
     import {onMount} from 'svelte';
+    import { format } from 'date-fns';
 
-    export let value = {};
+    export let value;
+  
+    let latencyMedian = [];
+    let latencyP95 = [];
+    let latencyP99 = [];
+    let timestamp = [];
+    
+    value.forEach(i => {
+        timestamp.push(format(new Date(i.fullTimestamp), 'HH:mm:ss'));
+        latencyMedian.push(i.fullLatencyMedian);
+        latencyP99.push(i.fullLatencyP99);
+        latencyP95.push(i.fullLatencyP95)
+    })
 
-    export let data = {
+    let data = {
+        labels: timestamp,
         datasets: [{
-            label: 'Line Dataset',
-            data: [0, value.latencyMedian],
-            type: 'line',
-            order: 1,
+            label: 'latency Median',
+            data: latencyMedian, 
             fill: false,
             borderColor: 'orange',
-            backgroundColor: '#2196f3', 
             borderWidth: 1 
         }, {
-            label: 'Line Dataset',
-            data: [0, value.latencyP95],
-            type: 'line',
-            order: 2,
+            label: 'latency P95',
+            data: latencyP95,
             fill: false,
             borderColor: 'green',
-            backgroundColor: '#2196f3', 
             borderWidth: 1 
         }, {
-            label: 'Line Dataset',
-            data: [0, value.latencyP99],
-            type: 'line',
-            order: 2,
+            label: 'latency P99',
+            data: latencyP99,
             fill: false,
-            borderColor: '#2196f3',
-            backgroundColor: '#2196f3', 
+            borderColor: 'red',
             borderWidth: 1 
         }]
         };
     
-    export let options = {
-        responsive: true, // Instruct chart js to respond nicely.
-        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
-        legend: {
-                display: false
-             }
-        };
+    let options = {
+        responsive: true, 
+        maintainAspectRatio: false,
+        scales: {
+            yAxes: [{
+            scaleLabel: {
+                display: true,
+                labelString: 'Millisecond (mm)'
+            }
+            }]
+        },};
 
     let chartRef;
     onMount(() => {

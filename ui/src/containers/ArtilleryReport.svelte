@@ -19,7 +19,7 @@
       getIgnoreList
     } from "../stores";
     import { printTimeDiff, CONSTS} from "../utils/utils";
-  
+    
     export let currentRoute;
   
     let loading;
@@ -27,6 +27,32 @@
     let promise = getBuildDetails(currentRoute.namedParams.run);
     let runId;
     let userNotLoginToast;
+
+    const download = () => {
+      window.location.href = `https://codeauditorstorage.blob.core.windows.net/atr/${currentRoute.namedParams.run}.json`;
+    };
+  
+    let atrFull = [];
+    const getAtrFull = async (path) => {
+      await fetch(
+        `https://codeauditorstorage.blob.core.windows.net/atr/${path}.json`
+      )
+        .then(x => x.json())
+        .then(res => {
+          res.intermediate.forEach(i => {
+            atrFull.push({		
+              fullTimestamp: i.timestamp,	
+              fullLatencyMedian: i.latency.median,
+              fullLatencyP95: i.latency.p95,
+              fullLatencyP99: i.latency.p99
+            })
+        })
+      });
+      return atrFull;
+    } 
+
+    let getAtrData = getAtrFull(currentRoute.namedParams.run)
+   
   </script>
   
   <div class="container mx-auto">
@@ -57,8 +83,12 @@
           <BuildDetailsCard build={data ? data.summary : {}} />
 
           <Tabs build={data ? data.summary : {}} displayMode="artillery" />
-
-          <ArtilleryChart value={data.summary}/>
+          
+          {#await getAtrData}
+          <LoadingFlat />
+          {:then atrFull}
+          <ArtilleryChart value={atrFull}/>
+          {/await}
 
           <ArtilleryDetailTable value={data} />
         
