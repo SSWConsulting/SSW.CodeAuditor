@@ -4,12 +4,25 @@
 
     export let value = [];
 
-    let scanDur = [];
+    let allScanDur = [];
     let score = [];
     
     value.forEach(i => {
-        scanDur.push(i.scanDuration)
+        allScanDur.push(i.scanDuration)
     })
+
+    let scanDur = allScanDur.slice(0, 10);
+
+    for (let i=0; i < 10; i++){
+        if (scanDur.length < 10) {
+            scanDur.push(5)
+        }
+    }
+
+    let maxBarHeight = [];
+    maxBarHeight = scanDur.reduce(function(a, b) {
+        return Math.max(a, b);
+    });
 
     value.forEach(i => {
         score.push(i.finalEval)
@@ -27,7 +40,7 @@
     })
      
     export let data = {
-            labels: [score[0], score[1], score[2], score[3], score[4]],
+            labels: scanDur,
             datasets: [{
                 data: scanDur,
                 backgroundColor: barColor
@@ -39,8 +52,10 @@
             maintainAspectRatio: false,
             scales:{
                 xAxes: [{
+                    maxBarThickness: 5,
                     ticks: {
-                        display: false
+                        display: false,
+                        beginAtZero: true
                     },
                     gridLines: {
                         display: false
@@ -49,7 +64,8 @@
                 yAxes: [{
                     ticks: {
                         display: false,
-                        beginAtZero: true
+                        max: maxBarHeight,
+                        beginAtZero: true,
                     },
                     gridLines: {
                         display: false

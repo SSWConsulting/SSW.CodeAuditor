@@ -46,7 +46,13 @@
             yAxes: [{
             scaleLabel: {
                 display: true,
-                labelString: 'Millisecond (mm)'
+                labelString: 'Millisecond (ms)'
+            }
+            }],
+            xAxes: [{
+            scaleLabel: {
+                display: true,
+                labelString: 'Time (hh:mm:ss)'
             }
             }]
         },};
