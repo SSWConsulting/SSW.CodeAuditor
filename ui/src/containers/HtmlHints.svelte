@@ -30,7 +30,7 @@
   let promise = getHtmlHints(runId);
   async function getHtmlHints(id) {
     const d = await fetch(
-      `${CONSTS.BlobURL}/htmlhint/${id}.json`
+      `${CONSTS.URLChecker}/htmlhint/${id}.json`
     );
     let htmlHint = await d.json();
 

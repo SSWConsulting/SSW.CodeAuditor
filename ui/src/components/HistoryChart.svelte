@@ -3,41 +3,29 @@
     import { forEach, groupBy, props } from "ramda";
 
     export let value = [];
-
-    let allScanDur = [];
-    let score = [];
     
-    value.forEach(i => {
-        allScanDur.push(i.scanDuration)
-    })
+    let allScanDur = value.map(i => i.scanDuration);
 
     let scanDur = allScanDur.slice(0, 10);
-
-    for (let i=0; i < 10; i++){
-        if (scanDur.length < 10) {
-            scanDur.push(5)
-        }
-    }
 
     let maxBarHeight = [];
     maxBarHeight = scanDur.reduce(function(a, b) {
         return Math.max(a, b);
     });
 
-    value.forEach(i => {
-        score.push(i.finalEval)
-    })
-
-    let barColor = [];
-    score.forEach(i => {
-        if (i == 'FAIL'){
-            barColor.push('red')
-        } else if (i == 'PASS') {
-            barColor.push('green')
-        } else {
-            barColor.push('orange')
+    for (let i=0; i < 10; i++){
+        if (scanDur.length < 10) {
+            scanDur.push(maxBarHeight/10)
         }
-    })
+    }
+
+    let score = value.map(i => i.finalEval);
+
+    let barColor = score.map(i => {
+    if (i === 'FAIL') return 'red';
+    if (i === 'PASS') return 'green'; 
+    return 'orange';
+    });
      
     export let data = {
             labels: scanDur,

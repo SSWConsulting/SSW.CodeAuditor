@@ -53,7 +53,6 @@
       throw new Error("Failed to load");
     }
   };
-  console.log(lastBuild)
 </script>
 
 <Modal

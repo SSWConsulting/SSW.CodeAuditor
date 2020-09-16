@@ -33,9 +33,9 @@
 
 <div class="overflow-hidden shadow-lg my-5">
 
-    {#if val.finalEval == "FAIL"}
+    {#if val.finalEval === "FAIL"}
       <div class="bg-red-500 h-2"></div>
-    {:else if val.finalEval == "PASS"}
+    {:else if val.finalEval === "PASS"}
       <div class="bg-green-500 h-2"></div>
     {:else}
       <div class="bg-orange-500 h-2"></div>
