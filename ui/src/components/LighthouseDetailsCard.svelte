@@ -56,8 +56,8 @@
           {#if val.buildDate}
             <button
               on:click={perfThreshold}
-              class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2
-              px-4 rounded inline-flex items-center text-center">
+              class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
+              border hover:border-transparent rounded">
               <span class="ml-2">Set Performance Threshold</span>
             </button>
           {/if}

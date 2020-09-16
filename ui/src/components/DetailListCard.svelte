@@ -37,8 +37,7 @@
 
   
   {#each value as val}
-    <div class="container">
-      <div class="overflow-hidden shadow-lg">
+      <div class="container overflow-hidden shadow-lg my-2">
 
         {#if val.finalEval === "FAIL"}
         <div class="bg-red-500 h-2"></div>
@@ -77,14 +76,13 @@
 
             {#if val.performanceScore}
               <div class="row-span-1 text-sm my-2" on:click={() => navigateTo(`/build/${val.runId}`)}>
-              <h2><span class="font-bold font-sans text-gray-600">LIGHTHOUSE</span></h2>
-                <LighthouseSummary value={val} />
+                <h2><span class="font-bold font-sans text-gray-600">LIGHTHOUSE</span></h2>
+                  <LighthouseSummary value={val} />
               </div>
             {/if}
           
           </div> 
         </div>
       </div>
-    </div>
   {/each}
   

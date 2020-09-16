@@ -114,11 +114,7 @@
  
   {#if showDetailList}
   {#if currCard == i}
-    <div class="row-span-2">
-      <div class="grid grid-rows-2 gap-y-5">
-      <DetailListCard value={groupUrl[url]}/> 
-      </div>
-    </div>
+    <DetailListCard value={groupUrl[url]}/> 
   {/if}
   {/if}
     
