@@ -78,4 +78,4 @@
 <div class="text-center">
 <span class="font-sans">HISTORY</span>
 </div>
-<canvas bind:this={chartRef} width="10px" height="6px"></canvas>
+<canvas bind:this={chartRef} width="10px"></canvas>
