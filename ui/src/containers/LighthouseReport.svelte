@@ -33,7 +33,7 @@
   let threshold;
 
   const download = () => {
-    window.location.href = `https://codeauditorstorage.blob.core.windows.net/lhr/${currentRoute.namedParams.run}.json`;
+    window.location.href = `${CONSTS.BlobURL}/lhr/${currentRoute.namedParams.run}.json`;
   };
 
   const showPerfThreshold = async (summary, user) => {
@@ -64,7 +64,7 @@
       loading = true;
       runId = currentRoute.namedParams.run;
       fetch(
-        `https://codeauditorstorage.blob.core.windows.net/lhr/${currentRoute.namedParams.run}.json`
+        `${CONSTS.BlobURL}/lhr/${currentRoute.namedParams.run}.json`
       )
         .then(x => x.json())
         .then(json => {

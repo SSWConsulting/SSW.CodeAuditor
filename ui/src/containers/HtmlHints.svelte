@@ -30,7 +30,7 @@
   let promise = getHtmlHints(runId);
   async function getHtmlHints(id) {
     const d = await fetch(
-      `https://codeauditorstorage.blob.core.windows.net/htmlhint/${id}.json`
+      `${CONSTS.BlobURL}/htmlhint/${id}.json`
     );
     let htmlHint = await d.json();
 
@@ -38,7 +38,7 @@
     let codeIssues = [];
     if (summary.summary.codeIssues) {
       const c = await fetch(
-        `https://codeauditorstorage.blob.core.windows.net/codeauditor/${id}.json`
+        `${CONSTS.BlobURL}/codeauditor/${id}.json`
       );
       codeIssues = await c.json();
     }

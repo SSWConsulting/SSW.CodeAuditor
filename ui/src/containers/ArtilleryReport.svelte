@@ -29,13 +29,13 @@
     let userNotLoginToast;
 
     const download = () => {
-      window.location.href = `https://codeauditorstorage.blob.core.windows.net/atr/${currentRoute.namedParams.run}.json`;
+      window.location.href = `${CONSTS.BlobURL}/atr/${currentRoute.namedParams.run}.json`;
     };
   
     let atrFull = [];
     const getAtrFull = async (path) => {
       await fetch(
-        `https://codeauditorstorage.blob.core.windows.net/atr/${path}.json`
+        `${CONSTS.BlobURL}/atr/${path}.json`
       )
         .then(x => x.json())
         .then(res => {

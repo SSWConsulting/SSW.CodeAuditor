@@ -56,6 +56,7 @@ export const newGuid = () => {
 export const CONSTS = {
 	USERS: 'users',
 	API: 'https://asia-east2-sswlinkauditor-c1131.cloudfunctions.net',
+	BlobURL: 'https://codeauditorstorage.blob.core.windows.net'
 };
 
 export const printTimeDiff = (took) =>
