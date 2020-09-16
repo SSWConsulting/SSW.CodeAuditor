@@ -10,10 +10,15 @@
     let timestamp = [];
     
     value.forEach(i => {
-        timestamp.push(format(new Date(i.fullTimestamp), 'HH:mm:ss'));
-        latencyMedian.push(i.fullLatencyMedian);
-        latencyP99.push(i.fullLatencyP99);
-        latencyP95.push(i.fullLatencyP95)
+        if (i.fullLatencyMedian !== null ||
+        i.fullLatencyP99 !== null ||
+        i.fullLatencyP99 !== null) 
+        {
+            timestamp.push(format(new Date(i.fullTimestamp), 'HH:mm:ss'));
+            latencyMedian.push(i.fullLatencyMedian);
+            latencyP99.push(i.fullLatencyP99);
+            latencyP95.push(i.fullLatencyP95)
+        }
     })
 
     let data = {
