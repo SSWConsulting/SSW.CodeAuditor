@@ -43,7 +43,8 @@
                     maxBarThickness: 5,
                     ticks: {
                         display: false,
-                        beginAtZero: true
+                        beginAtZero: true,
+                        reverse: true
                     },
                     gridLines: {
                         display: false
