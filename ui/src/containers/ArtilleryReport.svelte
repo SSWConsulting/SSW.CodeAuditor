@@ -83,6 +83,10 @@
           <BuildDetailsCard build={data ? data.summary : {}} />
 
           <Tabs build={data ? data.summary : {}} displayMode="artillery" />
+
+          <div class="grid grid-rows-1">
+            <div class="h-5"></div>
+          </div>
           
           {#await getAtrData}
           <LoadingFlat />

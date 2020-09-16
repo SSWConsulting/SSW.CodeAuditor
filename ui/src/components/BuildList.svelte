@@ -36,6 +36,28 @@
 
 </script>
 
+<style>
+  .btn {
+    border: none;
+    color: black;
+    padding: 5px 10px;
+    transition: 0.3s;
+  }
+  
+  .btn:hover {
+    background-color: #D5D5D5;
+    color: white;
+  }
+  .container {
+  transition: 0.3s;
+  }
+
+  .container:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  cursor: pointer;
+  }
+</style>
+
 {#if numberOfBuilds === 0}
   <div class="md:flex md:items-center mb-6">You have 0 scans!</div>
 {:else}
@@ -55,39 +77,36 @@
   <div class="grid grid-rows-2 gap-y-1">
 
   <div class="row-span-2">
+    <div class="container">
     <div class="flex mb-4">
       <div class="flex-1 overflow-hidden shadow-lg">
       <div class="flex content-center mb-4 px-6 py-4">
-
+      
       <div class="w-5/6 h-12">
-        <UrlSummaryCard value={builds.filter(function(values) {
-          return values.url == url})} {url}/>
+          <UrlSummaryCard value={groupUrl[url]} {url}/>
       </div>
 
       <div class="w-1/6 h-12">
-        <HistoryChart value={builds.filter(function(values) {
-        return values.url == url})} />                                                                                                                      
+          <HistoryChart value={groupUrl[url]} />      
       </div>
 
       <div class="w-1/6 h-12 text-base text-gray-700">
-        <LinkSummaryCard value={builds.filter(function(values) {
-          return values.url == url})} />
+          <LinkSummaryCard value={groupUrl[url]} />
       </div>
 
       <div class="w-1/6 h-12 text-base text-gray-700">
-        <CodeSummaryCard value={builds.filter(function(values) {
-          return values.url == url})} />
+          <CodeSummaryCard value={groupUrl[url]} />
       </div>
 
       <div class="w-1/6 h-12 text-base text-gray-700">
-        <LightHouseAverageCard value={builds.filter(function(values) {
-          return values.url == url})} />
+          <LightHouseAverageCard value={groupUrl[url]} />
       </div>
 
       <div class="w-0.9/6 text-center h-12">
-        <i class="fa fa-angle-down fa-2x" aria-hidden="true" on:click={() => toggle(i)}></i>
+        <button class="btn" on:click={() => toggle(i)}><i class="fa fa-angle-down fa-2x" aria-hidden="true"></i></button>
       </div>
 
+    </div>
     </div>
     </div>
     </div>
@@ -97,8 +116,7 @@
   {#if currCard == i}
     <div class="row-span-2">
       <div class="grid grid-rows-2 gap-y-5">
-      <DetailListCard value={builds.filter(function(values) {
-        return values.url == url})}/> 
+      <DetailListCard value={groupUrl[url]}/> 
       </div>
     </div>
   {/if}
@@ -106,10 +124,4 @@
     
 </div>
 {/each}
-
-<!-- {#each builds.filter(function(values) {
-  return values.url == "https://htmlhint.com/"}) as val}
-  <LinkSummary value={val} />
-{/each} -->
-
 {/if}
