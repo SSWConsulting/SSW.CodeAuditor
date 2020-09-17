@@ -4,6 +4,7 @@
   "description": "``` bash\r $ cd ui\r $ npm i\r $ npm run dev\r ```",
   "main": "index.js",
   "dependencies": {
+    "audit": "0.0.6",
     "boxen": "^4.2.0",
     "chalk": "^3.0.0",
     "csv-parser": "^2.3.2",
@@ -11,7 +12,7 @@
     "export-to-csv": "^0.2.1",
     "express": "^4.17.1",
     "htmlhint": "^0.11.0",
-    "node-sass": "^4.14.0",
+    "node-sass": "^4.14.1",
     "ramda": "^0.27.0",
     "sass": "^1.26.5",
     "yargs": "^15.3.1"
