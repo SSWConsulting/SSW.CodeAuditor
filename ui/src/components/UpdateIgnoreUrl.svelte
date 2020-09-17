@@ -63,6 +63,7 @@
   }
 
   input[type="radio"]:checked + label span {
+    background-color: black;
     box-shadow: 0px 0px 0px 2px white inset;
   }
 

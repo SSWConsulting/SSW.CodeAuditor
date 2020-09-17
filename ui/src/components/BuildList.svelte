@@ -4,19 +4,64 @@
   import addDays from "date-fns/addDays";
   import { Navigate, navigateTo } from "svelte-router-spa";
   import { fade, fly } from "svelte/transition";
-  import LighthouseSummary from "./LighthouseSummary.svelte";
-  import LinkSummary from "./LinkSummary.svelte";
-  import CodeSummary from "./CodeSummary.svelte";
+  import LightHouseAverageCard from "./LightHouseAverageCard.svelte";
+  import LinkSummaryCard from "./LinkSummaryCard.svelte";
+  import CodeSummaryCard from "./CodeSummaryCard.svelte";
+  import DetailListCard from "./DetailListCard.svelte";
   import Icon from "./Icon.svelte";
   import { printTimeDiff } from "../utils/utils";
+  import HistoryChart from "./HistoryChart.svelte";
+  import UrlSummaryCard from "./UrlSummaryCard.svelte";
+  import { forEach, groupBy, props } from "ramda";
+
   export let builds = [];
   export let lastBuild;
+  
+  let groupUrlKey = [];
+  let groupUrl;
+  groupUrl = groupBy(props(["url"]))(builds);
+  groupUrlKey = Object.keys(groupUrl);
 
   $: numberOfBuilds = builds.length;
   let count = builds.filter(
     x => new Date(x.buildDate) > addDays(new Date(), -30)
   ).length;
+
+  let showDetailList;
+  let currCard;
+  function toggle(n) {
+    currCard = n;
+    var x = document.getElementById("detailCard");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  }
+
 </script>
+
+<style>
+  .btn {
+    border: none;
+    color: black;
+    padding: 5px 10px;
+    transition: 0.3s;
+  }
+  
+  .btn:hover {
+    background-color: #D5D5D5;
+    color: white;
+  }
+  .container {
+  transition: 0.3s;
+  }
+
+  .container:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  cursor: pointer;
+  }
+</style>
 
 {#if numberOfBuilds === 0}
   <div class="md:flex md:items-center mb-6">You have 0 scans!</div>
@@ -32,70 +77,52 @@
       {/if}
     </div>
   </div>
-  <table class="table-auto mb-6">
-    <thead>
-      <tr class="flex">
-        <th class="w-1/12 px-4 py-2">Build #</th>
-        <th class="w-5/12 py-2 px-5">Url</th>
-        <th class="w-3/12 px-4 py-2 font-mono">Links</th>
-        <th class="w-3/12 px-4 py-2 font-mono">Code</th>
-        <th class="w-3/12 px-4 py-2 font-mono">Lighthouse</th>
-      </tr>
-    </thead>
-    <tbody>
-      {#each builds as val}
-        <tr class="flex cursor-pointer">
-          <td
-            class="border py-2 w-1/12 mx-auto hover:bg-gray-100"
-            on:click={() => navigateTo(`/build/${val.runId}`)}>
-            <span class="block align-middle hover:text-blue-800 text-center">
-              <Icon
-                cssClass={val.totalBrokenLinks === 0 ? 'inline-block text-green-600' : 'inline-block text-red-600'}>
-                {#if val.totalBrokenLinks === 0}
-                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                {:else}
-                  <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                {/if}
-              </Icon>
-            </span>
-            <span class="block text-center text-sm truncate">
-              {val.buildId}
-            </span>
-          </td>
-          <td
-            class="border px-4 py-2 w-5/12 hover:bg-gray-100"
-            on:click={() => navigateTo(`/build/${val.runId}`)}>
-            <a
-              class="inline-block align-baseline link truncate max-w-xs text-sm"
-              target="_blank"
-              href={val.url}>
-              {val.url}
-            </a>
-            <div class="text-sm pt-2">
-              {formatDistanceToNow(new Date(val.buildDate), {
-                addSuffix: true
-              })}, took
-              <span class="font-bold">{printTimeDiff(+val.scanDuration)}</span>
-            </div>
 
-          </td>
-          <td
-            class="border px-4 py-2 text-right w-3/12 hover:bg-gray-100"
-            on:click={() => navigateTo(`/build/${val.runId}`)}>
-            <LinkSummary value={val} />
-          </td>
-          <td
-            class="border px-4 py-2 text-center w-3/12 hover:bg-gray-100"
-            on:click={() => navigateTo(`/htmlhint/${val.runId}`)}>
-            <CodeSummary value={val} />
-          </td>
-          <td
-            class="border px-4 py-2 text-center w-3/12 hover:bg-gray-100"
-            on:click={() => navigateTo(`/lighthouse/${val.runId}`)}>
-            <LighthouseSummary value={val} />
-          </td>
-        </tr>
-      {/each}
-    </tbody>
-  </table>
+  {#each groupUrlKey as url, i}
+  <div class="grid grid-rows-2 gap-y-1">
+
+  <div class="row-span-2">
+    <div class="container">
+    <div class="flex mb-4">
+      <div class="flex-1 overflow-hidden shadow-lg">
+      <div class="flex content-center mb-4 px-6 py-4">
+      
+      <div class="w-5/6 h-12">
+          <UrlSummaryCard value={groupUrl[url]} {url}/>
+      </div>
+
+      <div class="w-1/6 h-12">
+          <HistoryChart value={groupUrl[url]} />      
+      </div>
+
+      <div class="w-1/6 h-12 text-base text-gray-700">
+          <LinkSummaryCard value={groupUrl[url]} />
+      </div>
+
+      <div class="w-1/6 h-12 text-base text-gray-700">
+          <CodeSummaryCard value={groupUrl[url]} />
+      </div>
+
+      <div class="w-1/6 h-12 text-base text-gray-700">
+          <LightHouseAverageCard value={groupUrl[url]} />
+      </div>
+
+      <div class="w-0.9/6 text-center h-12">
+        <button class="btn" on:click={() => toggle(i)}><i class="fa fa-angle-down fa-2x" aria-hidden="true"></i></button>
+      </div>
+
+    </div>
+    </div>
+    </div>
+    </div>
+  </div>
+ 
+  {#if currCard == i}
+    <div id="detailCard">
+      <DetailListCard value={groupUrl[url]}/> 
+    </div>
+  {/if}
+  
+</div>
+{/each}
 {/if}

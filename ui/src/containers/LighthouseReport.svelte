@@ -16,6 +16,8 @@
   import LighthouseDetailsCard from "../components/LighthouseDetailsCard.svelte";
   import UpdatePerfThreshold from "../components/UpdatePerfThreshold.svelte";
   import { printTimeDiff, CONSTS } from "../utils/utils";
+  import { format } from 'date-fns';
+  import formatDistanceToNow from "date-fns/formatDistanceToNow";
 
   export let currentRoute;
 
@@ -31,7 +33,7 @@
   let threshold;
 
   const download = () => {
-    window.location.href = `https://codeauditorstorage.blob.core.windows.net/lhr/${currentRoute.namedParams.run}.json`;
+    window.location.href = `${CONSTS.BlobURL}/lhr/${currentRoute.namedParams.run}.json`;
   };
 
   const showPerfThreshold = async (summary, user) => {
@@ -62,7 +64,7 @@
       loading = true;
       runId = currentRoute.namedParams.run;
       fetch(
-        `https://codeauditorstorage.blob.core.windows.net/lhr/${currentRoute.namedParams.run}.json`
+        `${CONSTS.BlobURL}/lhr/${currentRoute.namedParams.run}.json`
       )
         .then(x => x.json())
         .then(json => {
@@ -85,16 +87,27 @@
       {#await promise}
         <LoadingFlat />
       {:then data}
-        <Tabs build={data ? data.summary : {}} displayMode="lighthouse" />
-
-        <Breadcrumbs
-          build={data ? data.summary : {}}
-          runId={currentRoute.namedParams.id}
-          displayMode="Lighthouse Audit" />
-
+      <Breadcrumbs
+      build={data ? data.summary : {}}
+      runId={currentRoute.namedParams.id}
+      displayMode="Lighthouse Audit" />
+      <br>
+      
+      <div class="grid grid-rows-2">
+        <div class="text-center">
+          <span class="text-4xl font-sans font-bold text-gray-800">{format(new Date(data.summary.buildDate), 'dd.MM.yyyy')}</span>
+        </div>
+        <div class="text-center">
+          <span class="text-xl font-sans block lg:inline-block text-gray-600">Last scanned: {formatDistanceToNow(new Date(data.summary.buildDate), {addSuffix: true})} at {format(new Date(data.summary.buildDate), 'hh:mm')}</span>
+        </div>
+      </div>
+        
         <LighthouseDetailsCard
           build={data ? data.summary : {}}
           on:perfThreshold={() => showPerfThreshold(data.summary, $userSession$)} />
+
+        <Tabs build={data ? data.summary : {}} displayMode="lighthouse" />
+        
       {:catch error}
         <p class="text-red-600 mx-auto text-2xl py-8">{error.message}</p>
       {/await}

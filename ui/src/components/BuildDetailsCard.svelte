@@ -4,106 +4,77 @@
   import Modal from "./Modal.svelte";
   import { navigateTo } from "svelte-router-spa";
   import LighthouseSummary from "./LighthouseSummary.svelte";
+  import CodeSummary from "./CodeSummary.svelte";
+  import LinkSummary from "./LinkSummary.svelte";
+  import ArtillerySummary from  "./ArtillerySummary.svelte";
   import Icon from "./Icon.svelte";
   import Toastr from "./Toastr.svelte";
+  import { format } from 'date-fns';
 
   export let build = {};
+  let val = build;
   $: codeSummary = getCodeSummary(build);
 </script>
 
-<div
-  class="mx-5 bggrey pb-3 my-3 w-full justify-center items-center
-  overflow-hidden rounded-lg shadow-sm mx-auto">
-  <div class="mt-8 mb-4 text-center">
-    <span class="text-3xl font-semibold">
-      <a href={build.url} target="_blank">{build.url}</a>
-    </span>
+<style>
+  h2 {
+   text-align: left; 
+   border-bottom: 1px dotted #000; 
+   line-height: 0.1em;
+   margin-bottom: 15px; 
+  }
 
-    {#if build.performanceScore}
-      <div class="mx-auto px-12 pt-3">
-        <LighthouseSummary value={build} showLabel={true} />
-      </div>
-    {/if}
-  </div>
-  <div class="flex flex-wrap mx-6 border-t justify-center items-center">
-    {#if build.buildDate}
-      <div
-        class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
-        text-green-600 border-green-600 cursor-default">
-        {formatDistanceToNow(new Date(build.buildDate), { addSuffix: true })}
-      </div>
-    {/if}
-    <div
-      class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
-      text-green-600 border-green-600 cursor-default">
-      Scanned: {build.totalScanned}
-    </div>
-    <div
-      class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
-      text-indigo-600 border-indigo-600 cursor-default">
-      Duration: {printTimeDiff(+build.scanDuration)}
-    </div>
-    <div
-      class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
-      text-indigo-600 border-indigo-600 cursor-default">
-      Broken: {build.totalBrokenLinks}
-    </div>
-    <div
-      class="text-xs mr-2 my-1 uppercase tracking-wider border px-2 text-red-600
-      border-red-600 cursor-default">
-      404 URL: {build.totalUnique404}
-    </div>
-    <div
-      class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
-      text-indigo-600 border-indigo-600 cursor-default">
-      Unique Bad: {build.uniqueBrokenLinks}
-    </div>
-    {#if build.whiteListed}
-      <div
-        class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
-        text-indigo-600 border-indigo-600 cursor-default">
-        Whitelisted: {build.whiteListed.length}
-      </div>
+  h2 span { 
+    background:#fff; 
+    padding-left: 0px; 
+    padding-right: 10px; 
+  }
+  </style>
+
+<div class="overflow-hidden shadow-lg my-5">
+
+    {#if val.finalEval === "FAIL"}
+      <div class="bg-red-500 h-2"></div>
+    {:else if val.finalEval === "PASS"}
+      <div class="bg-green-500 h-2"></div>
+    {:else}
+      <div class="bg-orange-500 h-2"></div>
     {/if}
 
-    {#if codeSummary.html}
-      <div
-        class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
-        text-red-800 border-red-800 cursor-default">
-        Html Errors: {codeSummary.htmlErrors}
+    <div class="px-6 py-2">
+    <div class="grid grid-rows-2 grid-flow-col" on:click={() => navigateTo(`/build/${val.runId}`)}>
+      <div class="row-span-4 col-span-2">
+          <span class="font-sans text-base font-bold text-gray-800 underline">{format(new Date(val.buildDate), 'dd.MM.yyyy')}</span>
+          <br>
+          <span class="font-sans text-base pt-2">Last scanned: {formatDistanceToNow(new Date(val.buildDate), {addSuffix: true})} at {format(new Date(val.buildDate), 'hh:mm')}</span>
+          <br>
+          <span class="font-sans text-base pt-2">Duration: {printTimeDiff(+val.scanDuration)} </span>
+          <br>
+          <span class="font-sans text-base pt-2">Scanned: {val.totalScanned} items</span>
       </div>
-      <div
-        class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
-        text-orange-600 border-orange-600 cursor-default">
-        Html Warnings: {codeSummary.htmlWarnings}
-      </div>
-    {/if}
 
-    {#if codeSummary.cloc}
-      <div
-        class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
-        text-green-600 border-green-600 cursor-default">
-        Code Files: {codeSummary.totalFiles}
+      <div class="row-span-1 text-sm my-2" on:click={() => navigateTo(`/build/${val.runId}`)}>
+        <h2><span class="font-bold font-sans text-gray-600">LINKS</span></h2>
+          <LinkSummary value={val} />
       </div>
-      <div
-        class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
-        text-green-600 border-green-600 cursor-default">
-        Lines of Code: {codeSummary.totalLines}
+      
+      <div class="row-span-1 text-sm my-2" on:click={() => navigateTo(`/build/${val.runId}`)}>
+        <h2><span class="font-bold font-sans text-gray-600">CODE</span></h2>
+          <CodeSummary value={val} />
       </div>
-    {/if}
 
-    {#if codeSummary.code}
-      <div
-        class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
-        text-red-800 border-red-800 cursor-default">
-        Code Errors: {codeSummary.codeErrors}
-      </div>
-      <div
-        class="text-xs mr-2 my-1 uppercase tracking-wider border px-2
-        text-orange-600 border-orange-600 cursor-default">
-        Code Warnings: {codeSummary.codeWarnings}
-      </div>
-    {/if}
+      {#if val.performanceScore}
+        <div class="row-span-1 text-sm my-2" on:click={() => navigateTo(`/build/${val.runId}`)}>
+          <h2><span class="font-bold font-sans text-gray-600">LIGHTHOUSE</span></h2>
+            <LighthouseSummary value={val} />
+        </div>
+      {/if}
 
+      <div class="row-span-1 text-sm my-2" on:click={() => navigateTo(`/build/${val.runId}`)}>
+        <h2><span class="font-bold font-sans text-gray-600">LOAD TEST</span></h2>
+          <ArtillerySummary value={val} />
+      </div>
+    
+    </div> 
   </div>
 </div>

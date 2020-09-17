@@ -13,12 +13,14 @@
   import slug from "slug";
   import Toastr from "../components/Toastr.svelte";
   import BuildDetailsCard from "../components/BuildDetailsCard.svelte";
-  import { CONSTS, getPerfScore } from "../utils/utils.js";
+  import { CONSTS, getPerfScore, printTimeDiff } from "../utils/utils.js";
   import { ExportToCsv } from "export-to-csv";
   import { Navigate, navigateTo } from "svelte-router-spa";
   import LoadingFlat from "../components/LoadingFlat.svelte";
   import Modal from "../components/Modal.svelte";
   import UpdateIgnoreUrl from "../components/UpdateIgnoreUrl.svelte";
+  import { format } from 'date-fns';
+  import formatDistanceToNow from "date-fns/formatDistanceToNow";
 
   export let currentRoute;
 
@@ -79,14 +81,25 @@
     {#await promise}
       <LoadingFlat />
     {:then data}
-      <Tabs build={data ? data.summary : {}} displayMode="url" />
 
-      <Breadcrumbs
-        build={data ? data.summary : {}}
-        runId={currentRoute.namedParams.id}
-        displayMode="Links" />
+    <Breadcrumbs
+      build={data ? data.summary : {}}
+      runId={currentRoute.namedParams.id}
+      displayMode="Links" />
+    <br>
+      
+      <div class="grid grid-rows-2">
+          <div class="text-center">
+            <span class="text-4xl font-sans font-bold text-gray-800">{format(new Date(data.summary.buildDate), 'dd.MM.yyyy')}</span>
+          </div>
+          <div class="text-center">
+            <span class="text-xl font-sans block lg:inline-block text-gray-600">Last scanned: {formatDistanceToNow(new Date(data.summary.buildDate), {addSuffix: true})} at {format(new Date(data.summary.buildDate), 'hh:mm')}</span>
+          </div>
+      </div>
 
       <BuildDetailsCard build={data ? data.summary : {}} />
+      
+      <Tabs build={data ? data.summary : {}} displayMode="url" />
 
       <DetailsTable
         on:download={() => onDownload(data)}

@@ -56,7 +56,8 @@ export const newGuid = () => {
 export const CONSTS = {
 	USERS: 'users',
 	API: 'https://asia-east2-sswlinkauditor-c1131.cloudfunctions.net',
-	//API: 'http://localhost:5001/sswlinkauditor-c1131/asia-east2',
+	BlobURL: 'https://codeauditorstorage.blob.core.windows.net',
+	URLChecker: 'https://urlchecker.blob.core.windows.net'
 };
 
 export const printTimeDiff = (took) =>
@@ -96,6 +97,15 @@ export const getPerfScore = (value) => ({
 			5) *
 			100
 	),
+});
+
+export const getArtilleryResult = (value) => ({
+	timestamp: value.timestamp,
+	scenariosCreated: value.scenariosCreated,
+	scenariosCompleted: value.scenariosCompleted,
+	requestsCompleted: value.requestsCompleted,
+	latencyMedian: value.latencyMedian,
+	rpsCount: value.rpsCount,
 });
 
 export const isInIgnored = (url, list) => {
