@@ -31,6 +31,7 @@
   async function getHtmlHints(id) {
     const d = await fetch(
       `${CONSTS.BlobURL}/htmlhint/${id}.json`
+
     );
     let htmlHint = await d.json();
 
