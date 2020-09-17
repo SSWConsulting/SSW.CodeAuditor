@@ -31,7 +31,12 @@
   let currCard;
   function toggle(n) {
     currCard = n;
-    showDetailList = !showDetailList
+    var x = document.getElementById("detailCard");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
   }
 
 </script>
@@ -112,12 +117,12 @@
     </div>
   </div>
  
-  {#if showDetailList}
   {#if currCard == i}
-    <DetailListCard value={groupUrl[url]}/> 
+    <div id="detailCard">
+      <DetailListCard value={groupUrl[url]}/> 
+    </div>
   {/if}
-  {/if}
-    
+  
 </div>
 {/each}
 {/if}
