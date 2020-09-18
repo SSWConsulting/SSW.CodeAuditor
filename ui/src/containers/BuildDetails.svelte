@@ -95,6 +95,9 @@
           <div class="text-center">
             <span class="text-xl font-sans block lg:inline-block text-gray-600">Last scanned: {formatDistanceToNow(new Date(data.summary.buildDate), {addSuffix: true})} at {format(new Date(data.summary.buildDate), 'hh:mm')}</span>
           </div>
+          <div class="text-center">
+            <a href="{data.summary.url}" class="underline font-sans text-xl">{data.summary.url}</a>
+          </div>
       </div>
 
       <BuildDetailsCard build={data ? data.summary : {}} />
