@@ -19,6 +19,7 @@
       getIgnoreList
     } from "../stores";
     import { printTimeDiff, CONSTS} from "../utils/utils";
+    import CardSummary from "../components/CardSummary.svelte";
     
     export let currentRoute;
   
@@ -71,17 +72,7 @@
             displayMode="Artillery Load Test" />
           <br>
 
-          <div class="grid grid-rows-2">
-            <div class="text-center">
-              <span class="text-4xl font-sans font-bold text-gray-800">{format(new Date(data.summary.buildDate), 'dd.MM.yyyy')}</span>
-            </div>
-            <div class="text-center">
-              <span class="text-xl font-sans block lg:inline-block text-gray-600">Last scanned: {formatDistanceToNow(new Date(data.summary.buildDate), {addSuffix: true})} at {format(new Date(data.summary.buildDate), 'hh:mm')}</span>
-            </div>           
-          <div class="text-center">
-            <a href="{data.summary.url}" class="underline font-sans text-xl">{data.summary.url}</a>
-          </div>
-          </div>
+          <CardSummary value={data.summary} />
     
           <BuildDetailsCard build={data ? data.summary : {}} />
 
