@@ -31,13 +31,13 @@
   }
 
   let token;
-  userSession$.subscribe(x => {
+  userSession$.subscribe((x) => {
     if (x) {
       unsubscription = firebase
         .firestore()
         .collection(CONSTS.USERS)
         .doc(x.uid)
-        .onSnapshot(usr => {
+        .onSnapshot((usr) => {
           const userD = usr.data();
           if (userD.lastBuild) {
             lastBuild = userD.lastBuild.toDate();
@@ -108,7 +108,7 @@
       {#if canClose}
         <a
           class="text-right align-baseline text-sm font-bold text-blue
-          hover:text-blue-darker text-2xl"
+            hover:text-blue-darker text-2xl"
           on:click={() => (showInstruction = false)}
           href="javascript:void(0)">
           <Icon cssClass="inline-block">
@@ -126,7 +126,7 @@
     {#if !showInstruction}
       <a
         class="text-right align-baseline underline text-sm text-blue font-bold
-        pb-6 hover:text-blue-darker"
+          pb-6 hover:text-blue-darker"
         on:click={() => (showInstruction = true)}
         href="javascript:void(0)">
         Show instructions
