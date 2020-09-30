@@ -43,7 +43,19 @@ exports.getPerfThreshold = (api, url) => {
 		if (res.ok) {
 			return res.json();
 		} else {
-			throw Error('Failed to load config');
+			throw Error('Failed to load perf threshold config');
+		}
+	});
+};
+
+exports.getLoadThreshold = (api, url) => {
+	return fetch(
+		`${endpoint}/api/config/${api}/loadthreshold/${slug(url)}`
+	).then((res) => {
+		if (res.ok) {
+			return res.json();
+		} else {
+			throw Error('Failed to load artillery threshold config');
 		}
 	});
 };

@@ -2,7 +2,7 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const chalk = require('chalk');
 const yargs = require('yargs');
-const { getConfigs, getPerfThreshold, postData } = require('./api');
+const { getConfigs, getPerfThreshold, postData, getLoadThreshold } = require('./api');
 const {
 	printTimeDiff,
 	readLighthouseReport,
@@ -221,6 +221,7 @@ const processAndUpload = async (
 ) => {
 	let ignoredUrls;
 	let perfThreshold;
+	let loadThreshold;
 	let lhrSummary;
 	let lhr;
 	let atr;
@@ -274,6 +275,17 @@ const processAndUpload = async (
 				console.error('failed to load perfthreshold');
 			}
 		}
+
+		if (args.artillery) {
+			writeLog(`getting load test threshold for `, args.url);
+			try {
+				loadThreshold = await getLoadThreshold(args.token, args.url);
+				loadThreshold &&
+					writeLog(`Load Test Threshold`, loadThreshold);
+			} catch (error) {
+				console.error('failed to load loadThreshold');
+			}
+		}
 	}
 
 	let finalEval = printResultsToConsole(
@@ -281,6 +293,7 @@ const processAndUpload = async (
 		lhrSummary,
 		runId,
 		perfThreshold,
+		loadThreshold,
 		badUrls,
 		whiteListed,
 		htmlIssuesSummary,
@@ -333,6 +346,7 @@ const processAndUpload = async (
 		lhrSummary,
 		runId,
 		perfThreshold,
+		loadThreshold,
 		badUrls,
 		whiteListed,
 		htmlIssuesSummary,
