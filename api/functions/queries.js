@@ -1,7 +1,14 @@
 const slug = require('slug');
-const { getService, getTableRows } = require('./azurestorage');
-const { getRun } = require('./firestore');
-const { TABLE } = require('./consts');
+const {
+	getService,
+	getTableRows
+} = require('./azurestorage');
+const {
+	getRun
+} = require('./firestore');
+const {
+	TABLE
+} = require('./consts');
 const azure = require('azure-storage');
 
 exports.getConfig = (api) =>
@@ -22,9 +29,9 @@ exports.getScanDetails = (runId) =>
 		getTableRows(
 			TABLE.ScanResults,
 			new azure.TableQuery()
-				.top(50)
-				.where('PartitionKey eq ?', doc.apikey)
-				.and('runId eq ?', doc.runId)
+			.top(50)
+			.where('PartitionKey eq ?', doc.apikey)
+			.and('runId eq ?', doc.runId)
 		)
 	);
 
@@ -38,8 +45,22 @@ exports.getPerformanceThreshold = async (api, url) => {
 	const val = await getTableRows(
 		TABLE.PerformanceThreshold,
 		new azure.TableQuery()
-			.where('PartitionKey eq ?', api)
-			.and('RowKey eq ?', slug(url))
+		.where('PartitionKey eq ?', api)
+		.and('RowKey eq ?', slug(url))
+	);
+
+	if (val && val.length > 0) {
+		return val[0];
+	}
+	return null;
+};
+
+exports.getLoadThreshold = async (api, url) => {
+	const val = await getTableRows(
+		TABLE.LoadThreshold,
+		new azure.TableQuery()
+		.where('PartitionKey eq ?', api)
+		.and('RowKey eq ?', slug(url))
 	);
 
 	if (val && val.length > 0) {
@@ -65,8 +86,8 @@ exports.getSummaryById = async (runId) => {
 		getTableRows(
 			TABLE.Scans,
 			new azure.TableQuery()
-				.where('PartitionKey eq ?', doc.apikey)
-				.and('runId eq ?', doc.runId)
+			.where('PartitionKey eq ?', doc.apikey)
+			.and('runId eq ?', doc.runId)
 		)
 	);
 	if (val && val.length > 0) {
