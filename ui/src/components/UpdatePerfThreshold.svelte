@@ -27,7 +27,7 @@
       seoScore: 0,
       accessibilityScore: 0,
       bestPracticesScore: 0,
-      average: 0
+      average: 0,
     });
   const useLastBuild = () => (threshold = getPerfScore(lastBuild));
 
@@ -39,9 +39,9 @@
         method: "PUT",
         body: JSON.stringify({
           url,
-          ...threshold
+          ...threshold,
         }),
-        headers: { "Content-Type": "application/json" }
+        headers: { "Content-Type": "application/json" },
       }
     );
 
@@ -145,8 +145,7 @@
 
 <Toastr bind:show={addedSuccess}>
   <p class="font-bold">Performance threshold updated for</p>
-  <span
-    class="inline-block align-baseline font-bold text-sm link">
+  <span class="inline-block align-baseline font-bold text-sm link">
     <a href={url} target="_blank">{url}</a>
   </span>
 </Toastr>

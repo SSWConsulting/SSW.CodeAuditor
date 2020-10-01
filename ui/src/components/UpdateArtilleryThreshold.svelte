@@ -24,21 +24,21 @@
     (threshold = {
       performanceScore: 0,
       accessibilityScore: 0,
-      average: 0
+      average: 0,
     });
   const useLastBuild = () => (threshold = getPerfScore(lastBuild));
 
   const updateIgnore = async () => {
     saving = true;
     const res = await fetch(
-      `${CONSTS.API}/api/config/${user.apiKey}/perfthreshold`,
+      `${CONSTS.API}/api/config/${user.apiKey}/loadthreshold`,
       {
         method: "PUT",
         body: JSON.stringify({
           url,
-          ...threshold
+          ...threshold,
         }),
-        headers: { "Content-Type": "application/json" }
+        headers: { "Content-Type": "application/json" },
       }
     );
 

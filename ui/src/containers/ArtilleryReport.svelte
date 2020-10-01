@@ -14,7 +14,7 @@
     getBuildDetails,
     userApi,
     userSession$,
-    getIgnoreList
+    getIgnoreList,
   } from "../stores";
   import { printTimeDiff, CONSTS } from "../utils/utils";
   import CardSummary from "../components/CardSummary.svelte";
@@ -49,7 +49,7 @@
     loadingArtillerySettings = true;
     try {
       const res = await fetch(
-        `${CONSTS.API}/api/config/${user.apiKey}/perfthreshold/${slug(scanUrl)}`
+        `${CONSTS.API}/api/config/${user.apiKey}/loadthreshold/${slug(scanUrl)}`
       );
       const result = await res.json();
       threshold = result || blank;
@@ -62,16 +62,16 @@
   };
 
   let atrFull = [];
-  const getAtrFull = async path => {
+  const getAtrFull = async (path) => {
     await fetch(`${CONSTS.BlobURL}/atr/${path}.json`)
-      .then(x => x.json())
-      .then(res => {
-        res.intermediate.forEach(i => {
+      .then((x) => x.json())
+      .then((res) => {
+        res.intermediate.forEach((i) => {
           atrFull.push({
             fullTimestamp: i.timestamp,
             fullLatencyMedian: i.latency.median,
             fullLatencyP95: i.latency.p95,
-            fullLatencyP99: i.latency.p99
+            fullLatencyP99: i.latency.p99,
           });
         });
       });
@@ -83,14 +83,12 @@
 
 <div class="container mx-auto">
   <div class="bg-white shadow-lg rounded px-8 pt-6 mb-6 flex flex-col">
-
     {#if loading}
       <LoadingFlat />
     {:else}
       {#await promise}
         <LoadingFlat />
       {:then data}
-
         <Breadcrumbs
           build={data ? data.summary : {}}
           runId={currentRoute.namedParams.id}
@@ -116,7 +114,6 @@
         {/await}
 
         <ArtilleryDetailTable value={data} />
-
       {:catch error}
         <p class="text-red-600 mx-auto text-2xl py-8">{error.message}</p>
       {/await}

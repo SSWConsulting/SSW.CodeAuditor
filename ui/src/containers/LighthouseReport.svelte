@@ -11,7 +11,7 @@
     getBuildDetails,
     userApi,
     userSession$,
-    getIgnoreList
+    getIgnoreList,
   } from "../stores";
   import LighthouseDetailsCard from "../components/LighthouseDetailsCard.svelte";
   import UpdatePerfThreshold from "../components/UpdatePerfThreshold.svelte";
@@ -48,7 +48,7 @@
     loadingPerfSettings = true;
     try {
       const res = await fetch(
-        `${CONSTS.API}/api/config/${user.apiKey}/loadthreshold/${slug(scanUrl)}`
+        `${CONSTS.API}/api/config/${user.apiKey}/perfthreshold/${slug(scanUrl)}`
       );
       const result = await res.json();
       threshold = result || blank;
@@ -65,8 +65,8 @@
       loading = true;
       runId = currentRoute.namedParams.run;
       fetch(`${CONSTS.BlobURL}/lhr/${currentRoute.namedParams.run}.json`)
-        .then(x => x.json())
-        .then(json => {
+        .then((x) => x.json())
+        .then((json) => {
           loading = false;
           const dom = new DOM(document);
           const renderer = new ReportRenderer(dom);
@@ -79,7 +79,6 @@
 
 <div class="container mx-auto">
   <div class="bg-white shadow-lg rounded px-8 pt-6 mb-6 flex flex-col">
-
     {#if loading}
       <LoadingFlat />
     {:else}
@@ -99,7 +98,6 @@
           on:perfThreshold={() => showPerfThreshold(data.summary, $userSession$)} />
 
         <Tabs build={data ? data.summary : {}} displayMode="lighthouse" />
-
       {:catch error}
         <p class="text-red-600 mx-auto text-2xl py-8">{error.message}</p>
       {/await}
