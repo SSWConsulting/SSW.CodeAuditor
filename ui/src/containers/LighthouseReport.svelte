@@ -16,7 +16,7 @@
   import LighthouseDetailsCard from "../components/LighthouseDetailsCard.svelte";
   import UpdatePerfThreshold from "../components/UpdatePerfThreshold.svelte";
   import { printTimeDiff, CONSTS } from "../utils/utils";
-  import { format } from 'date-fns';
+  import { format } from "date-fns";
   import formatDistanceToNow from "date-fns/formatDistanceToNow";
   import CardSummary from "../components/CardSummary.svelte";
 
@@ -48,7 +48,7 @@
     loadingPerfSettings = true;
     try {
       const res = await fetch(
-        `${CONSTS.API}/api/config/${user.apiKey}/perfthreshold/${slug(scanUrl)}`
+        `${CONSTS.API}/api/config/${user.apiKey}/loadthreshold/${slug(scanUrl)}`
       );
       const result = await res.json();
       threshold = result || blank;
@@ -64,9 +64,7 @@
     if (currentRoute && currentRoute.namedParams.run) {
       loading = true;
       runId = currentRoute.namedParams.run;
-      fetch(
-        `${CONSTS.BlobURL}/lhr/${currentRoute.namedParams.run}.json`
-      )
+      fetch(`${CONSTS.BlobURL}/lhr/${currentRoute.namedParams.run}.json`)
         .then(x => x.json())
         .then(json => {
           loading = false;
@@ -88,20 +86,20 @@
       {#await promise}
         <LoadingFlat />
       {:then data}
-      <Breadcrumbs
-      build={data ? data.summary : {}}
-      runId={currentRoute.namedParams.id}
-      displayMode="Lighthouse Audit" />
-      <br>
-      
-      <CardSummary value={data.summary} />
-        
+        <Breadcrumbs
+          build={data ? data.summary : {}}
+          runId={currentRoute.namedParams.id}
+          displayMode="Lighthouse Audit" />
+        <br />
+
+        <CardSummary value={data.summary} />
+
         <LighthouseDetailsCard
           build={data ? data.summary : {}}
           on:perfThreshold={() => showPerfThreshold(data.summary, $userSession$)} />
 
         <Tabs build={data ? data.summary : {}} displayMode="lighthouse" />
-        
+
       {:catch error}
         <p class="text-red-600 mx-auto text-2xl py-8">{error.message}</p>
       {/await}
