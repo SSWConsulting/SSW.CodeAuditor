@@ -22,9 +22,12 @@
   const dismiss = () => (show = false);
   const clearAll = () =>
     (threshold = {
-      performanceScore: 0,
-      accessibilityScore: 0,
-      average: 0,
+      latencyMin: 0,
+      latencyMax: 0,
+      latencyMedian: 0,
+      latencyP95: 0,
+      latencyP99: 0,
+      errors: 0,
     });
   const useLastBuild = () => (threshold = getPerfScore(lastBuild));
 
@@ -72,7 +75,8 @@
       <input
         class="shadow appearance-none border rounded w-full py-2 px-3
         text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        value={threshold.average}
+        type="number"
+        value={threshold.latencyMin}
         required={false} />
 
       <label
@@ -83,7 +87,8 @@
       <input
         class="shadow appearance-none border rounded w-full py-2 px-3
         text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        value={threshold.average}
+        type="number"
+        value={threshold.latencyMax}
         required={false} />
 
       <label
@@ -94,7 +99,8 @@
       <input
         class="shadow appearance-none border rounded w-full py-2 px-3
         text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        value={threshold.average}
+        type="number"
+        value={threshold.latencyMedian}
         required={false} />
 
       <label
@@ -105,7 +111,8 @@
       <input
         class="shadow appearance-none border rounded w-full py-2 px-3
         text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        value={threshold.average}
+        type="number"
+        value={threshold.latencyP95}
         required={false} />
 
       <label
@@ -116,7 +123,8 @@
       <input
         class="shadow appearance-none border rounded w-full py-2 px-3
         text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        value={threshold.average}
+        type="number"
+        value={threshold.latencyP99}
         required={false} />
 
         <label
@@ -127,7 +135,8 @@
       <input
         class="shadow appearance-none border rounded w-full py-2 px-3
         text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        value={threshold.average}
+        type="number"
+        value={threshold.errors}
         required={false} />
 
       <div class="italic text-center pb-3">0 = ignore criteria</div>
@@ -158,7 +167,7 @@
 </Modal>
 
 <Toastr bind:show={addedSuccess}>
-  <p class="font-bold">Performance threshold updated for</p>
+  <p class="font-bold">Artillery Load threshold updated for</p>
   <span class="inline-block align-baseline font-bold text-sm link">
     <a href={url} target="_blank">{url}</a>
   </span>
