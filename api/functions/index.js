@@ -16,6 +16,7 @@ const {
 	uploadArtilleryReport,
 	uploadHtmlHintReport,
 	addPerformanceThreshold,
+	addLoadThreshold,
 	uploadCodeAuditorReport,
 } = require('./commands');
 const {
@@ -24,6 +25,7 @@ const {
 	getSummaryById,
 	getConfig,
 	getPerformanceThreshold,
+	getLoadThreshold,
 	getScanDetails,
 	getIgnoredUrls,
 } = require('./queries');
@@ -33,7 +35,10 @@ const {
 	getErrorAndWarnCount,
 	getErrorsName,
 } = require('./utils');
-const { updateLastBuild, getUserIdFromApiKey } = require('./firestore');
+const {
+	updateLastBuild,
+	getUserIdFromApiKey
+} = require('./firestore');
 
 var cors = require('cors');
 admin.initializeApp();
@@ -47,31 +52,35 @@ app.use(cors());
 app.get('/healthz', async (req, res) => res.json('ok'));
 
 app.get('/config/:api', async (req, res) =>
-	res.json(await getConfig(req.params.api))
-);
+	res.json(await getConfig(req.params.api)));
 
 app.get('/config/:api/ignore', async (req, res) =>
-	res.json(await getIgnoredUrls(req.params.api))
-);
+	res.json(await getIgnoredUrls(req.params.api)));
 
 app.delete('/config/:api/ignore/:url', async (req, res) =>
-	res.json(await deleteIgnoreUrl(req.params.api, req.params.url))
-);
+	res.json(await deleteIgnoreUrl(req.params.api, req.params.url)));
 
 app.put('/config/:api', async (req, res) =>
-	res.json(await updateConfig(req.params.api, req.body))
-);
+	res.json(await updateConfig(req.params.api, req.body)));
 
 app.put('/config/:api/perfthreshold', async (req, res) =>
-	res.json(await addPerformanceThreshold(req.params.api, req.body))
-);
+	res.json(await addPerformanceThreshold(req.params.api, req.body)));
 
 app.get('/config/:api/perfthreshold/:url', async (req, res) =>
-	res.json(await getPerformanceThreshold(req.params.api, req.params.url))
-);
+	res.json(await getPerformanceThreshold(req.params.api, req.params.url)));
+
+app.put('/config/:api/loadthreshold', async (req, res) =>
+	res.json(await addLoadThreshold(req.params.api, req.body)));
+
+app.get('/config/:api/loadthreshold/:url', async (req, res) =>
+	res.json(await getLoadThreshold(req.params.api, req.params.url)));
 
 app.post('/config/:api/ignore', async (req, res) => {
-	const { ignoreOn, ignoreDuration, urlToIgnore } = req.body;
+	const {
+		ignoreOn,
+		ignoreDuration,
+		urlToIgnore
+	} = req.body;
 	const api = req.params.api;
 	await addIgnoreUrl(api, {
 		ignoreOn,
@@ -169,7 +178,10 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 	let htmlIssuesList;
 
 	if (htmlIssuesSummary) {
-		const { warn, error } = getErrorAndWarnCount(htmlIssuesSummary);
+		const {
+			warn,
+			error
+		} = getErrorAndWarnCount(htmlIssuesSummary);
 		htmlWarnings = warn;
 		htmlErrors = error;
 		htmlIssuesList = getErrorsName(htmlIssuesSummary);
@@ -239,8 +251,9 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 						buildDate
 					);
 					cb(data);
-				},
-				{ concurrent: 10 }
+				}, {
+					concurrent: 10
+				}
 			);
 
 			badUrls.forEach((d) => q.push(d));

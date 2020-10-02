@@ -4,9 +4,14 @@ const csv = require('csv-parser');
 const chalk = require('chalk');
 const minimatch = require('minimatch');
 const boxen = require('boxen');
-const { htmlHintConfig, fetchHtml } = require('./api');
+const {
+	htmlHintConfig,
+	fetchHtml
+} = require('./api');
 const R = require('ramda');
-const { execSync } = require('child_process');
+const {
+	execSync
+} = require('child_process');
 const boxConsole = require('box-console');
 
 const consoleBox = (text, color) =>
@@ -24,12 +29,12 @@ exports.printTimeDiff = (t1, t2) => {
 	var dif = t1 - t2;
 	const took =
 		Math.floor(dif / 1000 / 60)
-			.toString()
-			.padStart(2, '0') +
+		.toString()
+		.padStart(2, '0') +
 		':' +
 		Math.floor((dif / 1000) % 60)
-			.toString()
-			.padStart(2, '0');
+		.toString()
+		.padStart(2, '0');
 	return [took, Math.floor(dif / 1000)];
 };
 
@@ -101,9 +106,9 @@ exports.countLineOfCodes = () => {
 exports.runCodeAuditor = (ignorefile, rulesfolder) => {
 	try {
 		const ignoreParams = ignorefile ? ` -I ./src/${ignorefile} ` : '';
-		const rulesFolderParams = rulesfolder
-			? ` -R ./src/${rulesfolder} `
-			: '';
+		const rulesFolderParams = rulesfolder ?
+			` -R ./src/${rulesfolder} ` :
+			'';
 		const json = execSync(
 			`./node_modules/.bin/sswcodeauditor ./src ${ignoreParams} ${rulesFolderParams} --json`
 		).toString();
@@ -182,7 +187,10 @@ const getHtmlHintDetails = (result) => {
 					),
 					R.reduce((a, b) => {
 						const key = Object.keys(b)[0];
-						return { ...a, [key]: b[key] };
+						return {
+							...a,
+							[key]: b[key]
+						};
 					}, {})
 				)(v),
 			})),
@@ -200,9 +208,9 @@ const getHtmlHintDetails = (result) => {
  */
 exports.runBrokenLinkCheck = (url, maxthread) => {
 	try {
-		const comand = maxthread
-			? `./sswlinkauditor ${url} ${maxthread}`
-			: `./sswlinkauditor ${url}`;
+		const comand = maxthread ?
+			`./sswlinkauditor ${url} ${maxthread}` :
+			`./sswlinkauditor ${url}`;
 		return [execSync(comand).toString(), null];
 	} catch (error) {
 		return [null, error.message];
@@ -294,9 +302,9 @@ exports.runHtmlHint = async (startUrl, scannedUrls, writeLog) => {
 		const all = allUrls
 			.filter(
 				(url) =>
-					(url.Source || '')
-						.toLowerCase()
-						.indexOf(startUrl.toLowerCase()) >= 0
+				(url.Source || '')
+				.toLowerCase()
+				.indexOf(startUrl.toLowerCase()) >= 0
 			)
 			.map((x) => x.Source);
 		return [...new Set(all)];
@@ -330,33 +338,33 @@ exports.processBrokenLinks = (
 ) => {
 	const __getBadResults = (allUrls) =>
 		allUrls
-			.filter(
-				(url) =>
-					url['Status Code'] === '0' || url['Status Code'] === '404'
-			)
-			.map((x) => ({
-				src: x.Source,
-				dst: x.Destination,
-				link: x.Anchor,
-				statuscode: x['Status Code'],
-				statusmsg: x.Status,
-			}));
+		.filter(
+			(url) =>
+			url['Status Code'] === '0' || url['Status Code'] === '404'
+		)
+		.map((x) => ({
+			src: x.Source,
+			dst: x.Destination,
+			link: x.Anchor,
+			statuscode: x['Status Code'],
+			statusmsg: x.Status,
+		}));
 
 	const __getUniqIgnoredUrls = (badUrls, whitelistedUrls) => {
 		// check the scan URL, effective DATE and pattern match
 		const isInIgnoredList = (url, ignoreOn) => {
 			return (
 				whitelistedUrls
-					.filter(
-						(ig) =>
-							ig.ignoreOn === ignoreOn &&
-							(+ig.ignoreDuration === -1 ||
-								diffInDaysToNow(new Date(ig.effectiveFrom)) <
-									+ig.ignoreDuration)
-					)
-					.map((ig) => ig.urlToIgnore)
-					.filter((ignorePattern) => minimatch(url, ignorePattern))
-					.length > 0
+				.filter(
+					(ig) =>
+					ig.ignoreOn === ignoreOn &&
+					(+ig.ignoreDuration === -1 ||
+						diffInDaysToNow(new Date(ig.effectiveFrom)) <
+						+ig.ignoreDuration)
+				)
+				.map((ig) => ig.urlToIgnore)
+				.filter((ignorePattern) => minimatch(url, ignorePattern))
+				.length > 0
 			);
 		};
 
@@ -364,8 +372,8 @@ exports.processBrokenLinks = (
 		const all = badUrls
 			.filter(
 				(url) =>
-					isInIgnoredList(url.dst, 'all', whitelistedUrls) ||
-					isInIgnoredList(url.dst, startUrl, whitelistedUrls)
+				isInIgnoredList(url.dst, 'all', whitelistedUrls) ||
+				isInIgnoredList(url.dst, startUrl, whitelistedUrls)
 			)
 			.map((x) => x.dst);
 		return [...new Set(all)];
@@ -409,9 +417,9 @@ const HTMLERRORS = [
 ];
 
 const getLinkToBuild = (runId) =>
-	runId
-		? `Report URL => https://codeauditor.com/build/${_replaceQuote(runId)}`
-		: '';
+	runId ?
+	`Report URL => https://codeauditor.com/build/${_replaceQuote(runId)}` :
+	'';
 
 const outputBadDataCsv = (records) => {
 	const createCsvStringifier = require('csv-writer')
@@ -419,12 +427,26 @@ const outputBadDataCsv = (records) => {
 
 	const csvStringifier = createCsvStringifier({
 		alwaysQuote: true,
-		header: [
-			{ id: 'src', title: 'Source' },
-			{ id: 'dst', title: 'Destination' },
-			{ id: 'link', title: 'Anchor' },
-			{ id: 'statuscode', title: 'Status Code' },
-			{ id: 'statusmsg', title: 'Status' },
+		header: [{
+				id: 'src',
+				title: 'Source'
+			},
+			{
+				id: 'dst',
+				title: 'Destination'
+			},
+			{
+				id: 'link',
+				title: 'Anchor'
+			},
+			{
+				id: 'statuscode',
+				title: 'Status Code'
+			},
+			{
+				id: 'statusmsg',
+				title: 'Status'
+			},
 		],
 	});
 	console.log(`"Source","Destination","Anchor","Status Code","Status"`);
@@ -481,7 +503,8 @@ const printHtmlIssuesToConsole = (htmlIssues) => {
  * @param {array} scannedUrls - all scanned URLs
  * @param {array} lh - lighthouse data
  * @param {string} runId - Run Id
- * @param {object} reqThreshold - required threshold param
+ * @param {object} reqThreshold - required perf threshold param
+ * @param {object} reqLoadThres - required load threshold param
  * @param {array} badLinks - list of broken links
  * @param {array} ignored - list of matched ignore URLs
  * @param {object} htmlIssuesSummary - Html Issue Summary
@@ -494,6 +517,7 @@ exports.printResultsToConsole = (
 	lh,
 	runId,
 	reqThreshold,
+	reqLoadThres,
 	badLinks,
 	ignored,
 	htmlIssuesSummary,
@@ -514,12 +538,12 @@ exports.printResultsToConsole = (
 			bestPracticesScore: Math.round(lh.bestPracticesScore * 100),
 			average: Math.round(
 				((lh.performanceScore +
-					lh.seoScore +
-					lh.bestPracticesScore +
-					lh.accessibilityScore +
-					lh.pwaScore) /
+						lh.seoScore +
+						lh.bestPracticesScore +
+						lh.accessibilityScore +
+						lh.pwaScore) /
 					5) *
-					100
+				100
 			),
 		};
 
@@ -531,7 +555,7 @@ exports.printResultsToConsole = (
 
 		let avg = chalk(`${strAvg.padEnd(10)} ${lhScaled.average.toString().padStart(10)} / 100`);
 		let performance = chalk(`${strPerformance.padEnd(10)} ${lhScaled.performanceScore.toString().padStart(7)} / 100`);
-		let seo= chalk(`${strSeo.padEnd(10)} ${lhScaled.seoScore.toString().padStart(10)} / 100`);
+		let seo = chalk(`${strSeo.padEnd(10)} ${lhScaled.seoScore.toString().padStart(10)} / 100`);
 		let bestPractice = chalk(`${strBP.padEnd(10)} ${lhScaled.bestPracticesScore.toString().padStart(4)} / 100`);
 		let pwa = chalk(`${strPwa.padEnd(10)} ${lhScaled.pwaScore.toString().padStart(10)} / 100`);
 
@@ -585,7 +609,7 @@ exports.printResultsToConsole = (
 		),
 		R.map(
 			(x) =>
-				`${x.error} ${
+			`${x.error} ${
 					HTMLERRORS.indexOf(x.error) >= 0 ? '(Error)' : ''
 				}:${x.count}`
 		),
@@ -603,9 +627,8 @@ exports.printResultsToConsole = (
 			'red'
 		);
 
-	let htmlErrors = htmlIssuesSummary
-		? getHtmlHintErrors(htmlIssuesSummary)
-		: [];
+	let htmlErrors = htmlIssuesSummary ?
+		getHtmlHintErrors(htmlIssuesSummary) : [];
 
 	// output broken links reports
 	const _ignoreLbl = () =>
@@ -616,11 +639,11 @@ exports.printResultsToConsole = (
 		}`;
 
 	consoleBox(
-		badLinks.length === 0
-			? `All ${chalk.green.bold.underline(
+		badLinks.length === 0 ?
+		`All ${chalk.green.bold.underline(
 					scannedUrls.length
-			  )} links returned 200 OK [${duration}]${_ignoreLbl()}`
-			: `Scanned ${scannedUrls.length}, found ${
+			  )} links returned 200 OK [${duration}]${_ignoreLbl()}` :
+		`Scanned ${scannedUrls.length}, found ${
 					badLinks.length
 			  } Bad links [${duration}]${_ignoreLbl()}`,
 		badLinks.length === 0 ? 'green' : 'red'
@@ -632,13 +655,13 @@ exports.printResultsToConsole = (
 		if (
 			(reqThreshold.performanceScore &&
 				lhScaled.performanceScore <
-					reqThreshold.performanceScore) ||
+				reqThreshold.performanceScore) ||
 			(reqThreshold.accessibilityScore &&
 				lhScaled.accessibilityScore <
-					reqThreshold.accessibilityScore) ||
+				reqThreshold.accessibilityScore) ||
 			(reqThreshold.bestPracticesScore &&
 				lhScaled.bestPracticesScore <
-					reqThreshold.bestPracticesScore) ||
+				reqThreshold.bestPracticesScore) ||
 			(reqThreshold.seoScore &&
 				lhScaled.seoScore < reqThreshold.seoScore) ||
 			(reqThreshold.pwaScore &&
@@ -662,6 +685,37 @@ exports.printResultsToConsole = (
 		}
 	}
 
+	// check if pass load test threshold or not
+	let failedLoadThres = false;
+	if (atrSummary && reqLoadThres) {
+		if (
+			(reqLoadThres.latencyMin &&
+				atrSummary.latencyMin <
+				reqLoadThres.latencyMin) ||
+			(reqLoadThres.latencyMax &&
+				atrSummary.latencyMax <
+				reqLoadThres.latencyMax) ||
+			(reqLoadThres.latencyMedian &&
+				atrSummary.latencyMedian <
+				reqLoadThres.latencyMedian) ||
+			(reqLoadThres.latencyP95 &&
+				atrSummary.latencyP95 <
+				reqLoadThres.latencyP95) ||
+			(reqLoadThres.latencyP99 &&
+				atrSummary.latencyP99 <
+				reqLoadThres.latencyP99) ||
+			(reqLoadThres.errors &&
+				atrSummary.errors <
+				reqLoadThres.errors)
+		) {
+			consoleBox(
+				`!!! FAILED Required Threshold`,
+				'red'
+			);
+			failedLoadThres = true;
+		}
+	}
+
 	if (runId) {
 		// pushed to cloud, no need to output the CSV
 		consoleBox(getLinkToBuild(runId), 'green');
@@ -676,6 +730,7 @@ exports.printResultsToConsole = (
 	if (
 		badLinks.length == 0 &&
 		failedThreshold == true &&
+		failedLoadThres == true &&
 		codeAuditorIssues.filter((x) => !!x.error).length == 0 &&
 		htmlErrors.length == 0
 	) {
@@ -683,5 +738,3 @@ exports.printResultsToConsole = (
 	}
 	return 'FAIL'
 };
-
-

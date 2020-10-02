@@ -4,8 +4,15 @@ const {
 	updateEntity,
 	deleteEntity,
 } = require('./azurestorage');
-const { BLOB, TABLE } = require('./consts');
-const { replaceProp, newGuid, getReversedTick } = require('./utils');
+const {
+	BLOB,
+	TABLE
+} = require('./consts');
+const {
+	replaceProp,
+	newGuid,
+	getReversedTick
+} = require('./utils');
 const azure = require('azure-storage');
 const slug = require('slug');
 
@@ -56,6 +63,17 @@ exports.addPerformanceThreshold = (api, data) => {
 	const entGen = azure.TableUtilities.entityGenerator;
 	return updateEntity(
 		TABLE.PerformanceThreshold,
+		replaceProp(data, {
+			PartitionKey: entGen.String(api),
+			RowKey: entGen.String(slug(data.url)),
+		})
+	);
+};
+
+exports.addLoadThreshold = (api, data) => {
+	const entGen = azure.TableUtilities.entityGenerator;
+	return updateEntity(
+		TABLE.LoadThreshold,
 		replaceProp(data, {
 			PartitionKey: entGen.String(api),
 			RowKey: entGen.String(slug(data.url)),

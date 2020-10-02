@@ -11,12 +11,12 @@
     getBuildDetails,
     userApi,
     userSession$,
-    getIgnoreList
+    getIgnoreList,
   } from "../stores";
   import LighthouseDetailsCard from "../components/LighthouseDetailsCard.svelte";
   import UpdatePerfThreshold from "../components/UpdatePerfThreshold.svelte";
   import { printTimeDiff, CONSTS } from "../utils/utils";
-  import { format } from 'date-fns';
+  import { format } from "date-fns";
   import formatDistanceToNow from "date-fns/formatDistanceToNow";
   import CardSummary from "../components/CardSummary.svelte";
 
@@ -64,11 +64,9 @@
     if (currentRoute && currentRoute.namedParams.run) {
       loading = true;
       runId = currentRoute.namedParams.run;
-      fetch(
-        `${CONSTS.BlobURL}/lhr/${currentRoute.namedParams.run}.json`
-      )
-        .then(x => x.json())
-        .then(json => {
+      fetch(`${CONSTS.BlobURL}/lhr/${currentRoute.namedParams.run}.json`)
+        .then((x) => x.json())
+        .then((json) => {
           loading = false;
           const dom = new DOM(document);
           const renderer = new ReportRenderer(dom);
@@ -81,27 +79,25 @@
 
 <div class="container mx-auto">
   <div class="bg-white shadow-lg rounded px-8 pt-6 mb-6 flex flex-col">
-
     {#if loading}
       <LoadingFlat />
     {:else}
       {#await promise}
         <LoadingFlat />
       {:then data}
-      <Breadcrumbs
-      build={data ? data.summary : {}}
-      runId={currentRoute.namedParams.id}
-      displayMode="Lighthouse Audit" />
-      <br>
-      
-      <CardSummary value={data.summary} />
-        
+        <Breadcrumbs
+          build={data ? data.summary : {}}
+          runId={currentRoute.namedParams.id}
+          displayMode="Lighthouse Audit" />
+        <br />
+
+        <CardSummary value={data.summary} />
+
         <LighthouseDetailsCard
           build={data ? data.summary : {}}
           on:perfThreshold={() => showPerfThreshold(data.summary, $userSession$)} />
 
         <Tabs build={data ? data.summary : {}} displayMode="lighthouse" />
-        
       {:catch error}
         <p class="text-red-600 mx-auto text-2xl py-8">{error.message}</p>
       {/await}

@@ -8,6 +8,7 @@ exports.TABLE = {
 	Scans: 'Scans',
 	IgnoredUrls: 'IgnoredUrls',
 	PerformanceThreshold: 'PerformanceThreshold',
+	LoadThreshold: 'LoadThreshold',
 	Subscriptions: 'Subscriptions',
 	ScanResults: 'ScanResults',
 };
