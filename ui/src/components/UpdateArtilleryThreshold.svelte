@@ -68,8 +68,7 @@
     <!-- else content here -->
     <div class="ml-5">
       <label
-        class="block uppercase tracking-wide text-gray-700 text-xs font-bold
-        mb-2">
+        class="block uppercase tracking-wide text-gray-700 text-xs font-bold">
         Latency Min (ms)
       </label>
       <input
@@ -80,8 +79,7 @@
         required={false} />
 
       <label
-        class="block uppercase tracking-wide text-gray-700 text-xs font-bold
-        mb-2">
+        class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-3">
         Latency Max (ms)
       </label>
       <input
@@ -92,8 +90,7 @@
         required={false} />
 
       <label
-        class="block uppercase tracking-wide text-gray-700 text-xs font-bold
-        mb-2">
+        class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-3">
         Latency Median (ms)
       </label>
       <input
@@ -104,8 +101,7 @@
         required={false} />
 
       <label
-        class="block uppercase tracking-wide text-gray-700 text-xs font-bold
-        mb-2">
+        class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-3">
         Latency P95 (ms)
       </label>
       <input
@@ -116,8 +112,7 @@
         required={false} />
 
       <label
-        class="block uppercase tracking-wide text-gray-700 text-xs font-bold
-        mb-2">
+        class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-3">
         Latency P99 (ms)
       </label>
       <input
@@ -128,8 +123,7 @@
         required={false} />
 
         <label
-        class="block uppercase tracking-wide text-gray-700 text-xs font-bold
-        mb-2">
+        class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-3">
         Number of errors
       </label>
       <input
@@ -159,9 +153,6 @@
         </button>
       </div>
 
-    </div>
-    <div class="pt-3">
-      <ArtillerySummary value={lastBuild} />
     </div>
   {/if}
 </Modal>
