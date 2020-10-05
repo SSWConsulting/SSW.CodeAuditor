@@ -5,7 +5,7 @@
   import Toastr from "../components/Toastr.svelte";
   import TextField from "../components/TextField.svelte";
   import { Navigate, navigateTo } from "svelte-router-spa";
-  import { CONSTS, getPerfScore } from "../utils/utils.js";
+  import { CONSTS, getLoadThresholdResult } from "../utils/utils.js";
   import Modal from "../components/Modal.svelte";
   import LoadingFlat from "./LoadingFlat.svelte";
 
@@ -22,14 +22,12 @@
   const dismiss = () => (show = false);
   const clearAll = () =>
     (threshold = {
-      latencyMin: 0,
-      latencyMax: 0,
       latencyMedian: 0,
       latencyP95: 0,
       latencyP99: 0,
       errors: 0,
     });
-  const useLastBuild = () => (threshold = getPerfScore(lastBuild));
+  const useLastBuild = () => (threshold = getLoadThresholdResult(lastBuild));
 
   const updateIgnore = async () => {
     saving = true;
@@ -68,69 +66,47 @@
     <!-- else content here -->
     <div class="ml-5">
       <label
-        class="block uppercase tracking-wide text-gray-700 text-xs font-bold">
-        Latency Min (ms)
+        class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-3">
+        Median latency (ms) is &lt {threshold.latencyMedian}
       </label>
       <input
         class="shadow appearance-none border rounded w-full py-2 px-3
         text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         type="number"
-        value={threshold.latencyMin}
+        bind:value={threshold.latencyMedian}
         required={false} />
 
       <label
         class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-3">
-        Latency Max (ms)
+        P95 latency (ms) is &lt {threshold.latencyP95}
       </label>
       <input
         class="shadow appearance-none border rounded w-full py-2 px-3
         text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         type="number"
-        value={threshold.latencyMax}
+        bind:value={threshold.latencyP95}
         required={false} />
 
       <label
         class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-3">
-        Latency Median (ms)
+        P99 latency (ms) is &lt {threshold.latencyP99}
       </label>
       <input
         class="shadow appearance-none border rounded w-full py-2 px-3
         text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         type="number"
-        value={threshold.latencyMedian}
-        required={false} />
-
-      <label
-        class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-3">
-        Latency P95 (ms)
-      </label>
-      <input
-        class="shadow appearance-none border rounded w-full py-2 px-3
-        text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        type="number"
-        value={threshold.latencyP95}
-        required={false} />
-
-      <label
-        class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-3">
-        Latency P99 (ms)
-      </label>
-      <input
-        class="shadow appearance-none border rounded w-full py-2 px-3
-        text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        type="number"
-        value={threshold.latencyP99}
+        bind:value={threshold.latencyP99}
         required={false} />
 
         <label
         class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-3">
-        Number of errors
+        Number of errors &lt {threshold.errors}
       </label>
       <input
         class="shadow appearance-none border rounded w-full py-2 px-3
         text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         type="number"
-        value={threshold.errors}
+        bind:value={threshold.errors}
         required={false} />
 
       <div class="italic text-center pb-3">0 = ignore criteria</div>

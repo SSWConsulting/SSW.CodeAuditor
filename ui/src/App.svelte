@@ -8,7 +8,7 @@
     oauthLoginError,
     loginCompleted,
     userSession$,
-    performingLogin
+    performingLogin,
   } from "./stores.js";
 
   firebase.initializeApp({
@@ -19,15 +19,15 @@
     storageBucket: "sswlinkauditor-c1131.appspot.com",
     messagingSenderId: "258817453920",
     appId: "1:258817453920:web:9779e0dfae77ff2c4c3805",
-    measurementId: "G-2EFQW0NCSJ"
+    measurementId: "G-2EFQW0NCSJ",
   });
 
-  firebase.auth().onAuthStateChanged(user => loginCompleted(user));
+  firebase.auth().onAuthStateChanged((user) => loginCompleted(user));
   // handle error from OAUTH redirect
   firebase
     .auth()
     .getRedirectResult()
-    .catch(error => oauthLoginError.set(error));
+    .catch((error) => oauthLoginError.set(error));
 </script>
 
 {#if $performingLogin}
