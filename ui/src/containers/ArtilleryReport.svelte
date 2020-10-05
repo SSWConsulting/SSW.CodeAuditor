@@ -5,6 +5,7 @@
   import Breadcrumbs from "../components/Breadcrumbs.svelte";
   import LoadingFlat from "../components/LoadingFlat.svelte";
   import Tabs from "../components/Tabs.svelte";
+  import Icon from "../components/Icon.svelte";
   import Toastr from "../components/Toastr.svelte";
   import slug from "slug";
   import { format } from "date-fns";
@@ -102,6 +103,21 @@
           on:artilleryThreshold={() => showArtilleryThreshold(data.summary, $userSession$)} />
 
         <Tabs build={data ? data.summary : {}} displayMode="artillery" />
+
+        <div class="my-4">
+          <div class="float-right">
+            <button
+              on:click={download}
+              title="Download JSON"
+              class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-1
+              rounded-lg inline-flex items-center">
+              <Icon cssClass="">
+                <path
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </Icon>
+            </button>
+          </div>
+        </div>
 
         <div class="grid grid-rows-1">
           <div class="h-5" />

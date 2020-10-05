@@ -27,7 +27,7 @@ export const truncate = (len) =>
 		propSatisfies(gt(__, len), 'length'),
 		pipe(takeLast(len), prepend('…'), join(''))
 	);
-	
+
 export function isValidEmail(value) {
 	if (!value) return true;
 	const pattern = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -62,12 +62,12 @@ export const CONSTS = {
 
 export const printTimeDiff = (took) =>
 	Math.floor((took || 0) / 60)
-		.toString()
-		.padStart(2, '0') +
+	.toString()
+	.padStart(2, '0') +
 	':' +
 	Math.floor((took || 0) % 60)
-		.toString()
-		.padStart(2, '0');
+	.toString()
+	.padStart(2, '0');
 
 export const updateQuery = (q) => {
 	if (history.pushState) {
@@ -78,7 +78,9 @@ export const updateQuery = (q) => {
 			window.location.pathname +
 			'?' +
 			q;
-		window.history.pushState({ path: newurl }, '', newurl);
+		window.history.pushState({
+			path: newurl
+		}, '', newurl);
 	}
 };
 
@@ -90,12 +92,12 @@ export const getPerfScore = (value) => ({
 	bestPracticesScore: Math.round(value.bestPracticesScore * 100),
 	average: Math.round(
 		((value.performanceScore +
-			value.seoScore +
-			value.bestPracticesScore +
-			value.accessibilityScore +
-			value.pwaScore) /
+				value.seoScore +
+				value.bestPracticesScore +
+				value.accessibilityScore +
+				value.pwaScore) /
 			5) *
-			100
+		100
 	),
 });
 
@@ -108,12 +110,19 @@ export const getArtilleryResult = (value) => ({
 	rpsCount: value.rpsCount,
 });
 
+export const getLoadThresholdResult = (value) => ({
+	latencyMedian: value.latencyMedian,
+	latencyP95: value.latencyP95,
+	latencyP99: value.latencyP99,
+	errors: value.errors
+});
+
 export const isInIgnored = (url, list) => {
 	function glob(pattern, input) {
 		var re = new RegExp(
 			pattern
-				.replace(/([.?+^$[\]\\(){}|\/-])/g, '\\$1')
-				.replace(/\*/g, '.*')
+			.replace(/([.?+^$[\]\\(){}|\/-])/g, '\\$1')
+			.replace(/\*/g, '.*')
 		);
 		return re.test(input);
 	}
@@ -220,8 +229,7 @@ export const getCodeSummary = (value) => {
 			html: true,
 			htmlErrors: value.htmlErrors || 0,
 			htmlWarnings: value.htmlWarnings || 0,
-			htmlIssueList:
-				'HTML Issues:\n' +
+			htmlIssueList: 'HTML Issues:\n' +
 				getHtmlIssuesDescriptions(value.htmlIssuesList),
 		};
 	}
