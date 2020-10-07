@@ -12,9 +12,6 @@
 </script>
 
 <style>
-  :root {
-    filter: invert(1) hue-rotate(180deg);
-  }
   .brand {
     color: white !important;
   }
