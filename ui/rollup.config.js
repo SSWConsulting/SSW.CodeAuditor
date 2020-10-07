@@ -3,7 +3,9 @@ import autoPreprocess from 'svelte-preprocess';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
-import { terser } from 'rollup-plugin-terser';
+import {
+	terser
+} from 'rollup-plugin-terser';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -72,8 +74,7 @@ function serve() {
 
 				require('child_process').spawn(
 					'npm',
-					['run', 'start', '--', '--dev'],
-					{
+					['run', 'start', '--', '--dev'], {
 						stdio: ['ignore', 'inherit', 'inherit'],
 						shell: true,
 					}

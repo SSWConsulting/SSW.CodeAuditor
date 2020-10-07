@@ -1,8 +1,15 @@
 const fs = require('fs');
-const { execSync } = require('child_process');
+const {
+	execSync
+} = require('child_process');
 const chalk = require('chalk');
 const yargs = require('yargs');
-const { getConfigs, getPerfThreshold, postData, getLoadThreshold } = require('./api');
+const {
+	getConfigs,
+	getPerfThreshold,
+	postData,
+	getLoadThreshold
+} = require('./api');
 const {
 	printTimeDiff,
 	readLighthouseReport,
@@ -18,7 +25,9 @@ const {
 	getFinalEval
 } = require('./utils');
 
-const { readGithubSuperLinter } = require('./parseSuperLinter');
+const {
+	readGithubSuperLinter
+} = require('./parseSuperLinter');
 
 const LIGHTHOUSEFOLDER = './.lighthouseci/';
 const ARTILLERYFOLDER = './artilleryOut.json';
@@ -74,8 +83,7 @@ const _getAgrs = () => {
 			demandOption: false,
 		})
 		.option('maxthread', {
-			describe:
-				'maximum number of concurrent requests for broken links check',
+			describe: 'maximum number of concurrent requests for broken links check',
 			type: 'number',
 			demandOption: false,
 		})
@@ -288,19 +296,14 @@ const processAndUpload = async (
 		}
 	}
 
-	let finalEval = printResultsToConsole(
-		results,
+	let finalEval = getFinalEval(
+		atrSummary,
 		lhrSummary,
-		runId,
-		perfThreshold,
-		loadThreshold,
 		badUrls,
-		whiteListed,
-		htmlIssuesSummary,
-		htmlIssues,
 		codeAuditor,
-		took,
-		atrSummary
+		htmlIssuesSummary,
+		perfThreshold,
+		loadThreshold
 	);
 
 	writeLog(`finalEval is: `, finalEval)
@@ -345,13 +348,9 @@ const processAndUpload = async (
 		results,
 		lhrSummary,
 		runId,
-		perfThreshold,
-		loadThreshold,
 		badUrls,
 		whiteListed,
 		htmlIssuesSummary,
-		htmlIssues,
-		codeAuditor,
 		took,
 		atrSummary
 	);

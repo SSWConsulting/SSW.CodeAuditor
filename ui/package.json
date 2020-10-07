@@ -24,7 +24,6 @@
   "dependencies": {
     "@sveltejs/pancake": "0.0.17",
     "chart.js": "^2.9.3",
-    "darkreader": "^4.9.21",
     "date-fns": "^2.12.0",
     "export-to-csv": "^0.2.1",
     "firebase": "^7.22.0",

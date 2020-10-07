@@ -516,13 +516,9 @@ exports.printResultsToConsole = (
 	scannedUrls,
 	lh,
 	runId,
-	reqThreshold,
-	reqLoadThres,
 	badLinks,
 	ignored,
 	htmlIssuesSummary,
-	htmlIssues,
-	codeAuditorIssues,
 	duration,
 	atrSummary
 ) => {
@@ -649,9 +645,60 @@ exports.printResultsToConsole = (
 		badLinks.length === 0 ? 'green' : 'red'
 	);
 
+	if (runId) {
+		// pushed to cloud, no need to output the CSV
+		consoleBox(getLinkToBuild(runId), 'green');
+	} else {
+		badLinks.length && outputBadDataCsv(badLinks);
+
+		// if (htmlIssues) {
+		// 	printHtmlIssuesToConsole(htmlIssues);
+		// }
+	}
+};
+
+/**
+ * Get Pass/Fail Evaluation
+ * @param {array} atrSummary - Artillery data
+ * @param {array} lh - lighthouse data
+ * @param {array} badLinks - list of broken links
+ * @param {array} codeAuditorIssues - List of Code Auditor Issues
+ * @param {object} htmlIssuesSummary - Html Issue Summary
+ * @param {object} reqThreshold - required perf threshold param
+ * @param {object} reqLoadThres - required load threshold param
+ */
+exports.getFinalEval = (
+	atrSummary,
+	lh,
+	badLinks,
+	codeAuditorIssues,
+	htmlIssuesSummary,
+	reqThreshold,
+	reqLoadThres) => {
+	let lhScaled;
+	if (lh) {
+		// output Lighthouse Score Box
+		lhScaled = {
+			performanceScore: Math.round(lh.performanceScore * 100),
+			pwaScore: Math.round(lh.pwaScore * 100),
+			seoScore: Math.round(lh.seoScore * 100),
+			accessibilityScore: Math.round(lh.accessibilityScore * 100),
+			bestPracticesScore: Math.round(lh.bestPracticesScore * 100),
+			average: Math.round(
+				((lh.performanceScore +
+						lh.seoScore +
+						lh.bestPracticesScore +
+						lh.accessibilityScore +
+						lh.pwaScore) /
+					5) *
+				100
+			),
+		};
+	}
+
 	// check if pass perf threshold or not
 	let failedThreshold = false;
-	if (lhScaled && reqThreshold) {
+	if (reqThreshold) {
 		if (
 			(reqThreshold.performanceScore &&
 				lhScaled.performanceScore <
@@ -671,14 +718,14 @@ exports.printResultsToConsole = (
 		) {
 			consoleBox(
 				`!!! FAILED Required Threshold: AVG=${reqThreshold.average.toFixed(
-					1
-				)} Performance=${
-					reqThreshold.performanceScore
-				} Accessibility=${
-					reqThreshold.accessibilityScore
-				} Best practices=${reqThreshold.bestPracticesScore} SEO=${
-					reqThreshold.seoScore
-				} PWA=${reqThreshold.pwaScore} !!!`,
+						1
+					)} Performance=${
+						reqThreshold.performanceScore
+					} Accessibility=${
+						reqThreshold.accessibilityScore
+					} Best practices=${reqThreshold.bestPracticesScore} SEO=${
+						reqThreshold.seoScore
+					} PWA=${reqThreshold.pwaScore} !!!`,
 				'red'
 			);
 			failedThreshold = true;
@@ -687,14 +734,8 @@ exports.printResultsToConsole = (
 
 	// check if pass load test threshold or not
 	let failedLoadThres = false;
-	if (atrSummary && reqLoadThres) {
+	if (reqLoadThres) {
 		if (
-			(reqLoadThres.latencyMin &&
-				atrSummary.latencyMin <
-				reqLoadThres.latencyMin) ||
-			(reqLoadThres.latencyMax &&
-				atrSummary.latencyMax <
-				reqLoadThres.latencyMax) ||
 			(reqLoadThres.latencyMedian &&
 				atrSummary.latencyMedian <
 				reqLoadThres.latencyMedian) ||
@@ -709,23 +750,20 @@ exports.printResultsToConsole = (
 				reqLoadThres.errors)
 		) {
 			consoleBox(
-				`!!! FAILED Required Threshold`,
+				`!!! FAILED Load Threshold`,
 				'red'
 			);
 			failedLoadThres = true;
 		}
 	}
 
-	if (runId) {
-		// pushed to cloud, no need to output the CSV
-		consoleBox(getLinkToBuild(runId), 'green');
-	} else {
-		badLinks.length && outputBadDataCsv(badLinks);
+	const getHtmlHintErrors = R.pipe(
+		R.keys,
+		R.filter((x) => HTMLERRORS.indexOf(x) >= 0)
+	);
 
-		if (htmlIssues) {
-			printHtmlIssuesToConsole(htmlIssues);
-		}
-	}
+	let htmlErrors = htmlIssuesSummary ?
+		getHtmlHintErrors(htmlIssuesSummary) : [];
 
 	if (
 		badLinks.length == 0 &&
@@ -734,7 +772,9 @@ exports.printResultsToConsole = (
 		codeAuditorIssues.filter((x) => !!x.error).length == 0 &&
 		htmlErrors.length == 0
 	) {
+		consoleBox(`Build Pass`, 'green')
 		return 'PASS';
 	}
+	consoleBox(`Build Fail`, 'red')
 	return 'FAIL'
-};
+}
