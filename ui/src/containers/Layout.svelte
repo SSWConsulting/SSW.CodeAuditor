@@ -27,7 +27,7 @@
         <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
       </Icon>
       <a href="/" class="ml-2 font-semibold text-xl tracking-tight brand">
-        CodeAuditor
+        SSW CodeAuditor
       </a>
     </div>
     <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
@@ -36,7 +36,7 @@
         <div>
           <span class="text-white mx-2 italic">{$userName}</span>
           <span class="text-white mx-2">
-            <Navigate to="/discover">Discover</Navigate>
+            <Navigate to="/discover">Explore</Navigate>
           </span>
           <Navigate to="/home/settings">
             <Icon cssClass="inline-block text-white mx-1 cursor-pointer">
@@ -70,7 +70,7 @@
       {:else}
         <div>
           <span class="text-white mx-2">
-            <Navigate to="/discover">Discover</Navigate>
+            <Navigate to="/discover">Explore</Navigate>
           </span>
           <span class="text-white mx-2">
             <Navigate to="/signup">Sign Up</Navigate>
