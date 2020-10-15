@@ -53,15 +53,18 @@
           <span
             class="font-sans text-base font-bold text-gray-800 underline">{format(new Date(val.buildDate), 'dd.MM.yyyy')}</span>
           <br />
-          <span class="font-sans text-base pt-2">Last scanned: {formatDistanceToNow(
-              new Date(val.buildDate),
-              { addSuffix: true }
-            )} at {format(new Date(val.buildDate), 'hh:mm')}</span>
+          <span class="font-sans text-base pt-2">Last scanned:
+            {formatDistanceToNow(new Date(val.buildDate), { addSuffix: true })}
+            at
+            {format(new Date(val.buildDate), 'hh:mma')}</span>
           <br />
-          <span class="font-sans text-base pt-2">Duration: {printTimeDiff(+val.scanDuration)}
+          <span class="font-sans text-base pt-2">Duration:
+            {printTimeDiff(+val.scanDuration)}
           </span>
           <br />
-          <span class="font-sans text-base pt-2">Scanned: {val.totalScanned} items</span>
+          <span class="font-sans text-base pt-2">Scanned:
+            {val.totalScanned}
+            items</span>
         </div>
 
         <div

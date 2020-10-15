@@ -16,7 +16,7 @@
     return firebase
       .auth()
       .signInWithEmailAndPassword(username, password)
-      .catch(err => (serverError = err.message))
+      .catch((err) => (serverError = err.message))
       .finally(() => (loading = false));
   };
 
@@ -33,7 +33,7 @@
         <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
       </Icon>
       <span on:click={() => navigateTo('/')} class="text-3xl align-middle ml-2">
-        SSW LinkAuditor
+        SSW CodeAuditor
       </span>
     </div>
     <SocialLogin bind:serverError />

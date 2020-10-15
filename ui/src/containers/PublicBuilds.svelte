@@ -26,12 +26,12 @@
 
   let promise = getLastBuilds();
   const notLoggedIn = `
-  ## Explore CodeAuditor
+  ## Explore SSW CodeAuditor
   Once signed up, you will be able to unlock the following awesome features. All for free!
   `;
 
   const isLoggedInMsg = `
-  ## Explore CodeAuditor
+  ## Explore SSW CodeAuditor
   Showing last 100 public scans completed by all users.
   `;
 </script>
