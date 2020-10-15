@@ -15,6 +15,14 @@
     showMore = !showMore;
   }
 
+  const systemRequirements = `
+  ## System Requirements
+  Make sure your system meets the following requirements:
+  \`\`\` bash
+  - Able to download and run Docker Desktop in the background 
+  - Have at least 1GB of storage to download the Docker image
+  \`\`\``;
+
   const summarizedInstructions = `
   ## SSW CodeAuditor
   Scan any website for broken links, [HTML Issues](https://htmlhint.com), [Google Lighthouse Audit](https://developers.google.com/web/tools/lighthouse) and [Artillery Load Test](https://artillery.io/) by running the following command:
@@ -66,6 +74,9 @@
         More Options
       </a>
     {/if}
+    <article class="markdown-body mt-5">
+      {@html marked(systemRequirements)}
+    </article>
   </div>
 
   <section class="text-gray-700 body-font">
