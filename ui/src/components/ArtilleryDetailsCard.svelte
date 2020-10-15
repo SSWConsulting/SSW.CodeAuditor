@@ -32,7 +32,6 @@
 </style>
 
 <div class="overflow-hidden shadow-lg my-5">
-
   {#if val.finalEval == 'FAIL'}
     <div class="bg-red-500 h-2" />
   {:else if val.finalEval == 'PASS'}
@@ -49,17 +48,21 @@
         </span>
         <br />
         <span class="font-sans text-base pt-2">
-          Last scanned: {formatDistanceToNow(new Date(val.buildDate), {
-            addSuffix: true
-          })} at {format(new Date(val.buildDate), 'hh:mm')}
+          Last scanned:
+          {formatDistanceToNow(new Date(val.buildDate), { addSuffix: true })}
+          at
+          {format(new Date(val.buildDate), 'hh:mma')}
         </span>
         <br />
         <span class="font-sans text-base pt-2">
-          Duration: {printTimeDiff(+val.scanDuration)}
+          Duration:
+          {printTimeDiff(+val.scanDuration)}
         </span>
         <br />
         <span class="font-sans text-base pt-2">
-          Scanned: {val.totalScanned} items
+          Scanned:
+          {val.totalScanned}
+          items
         </span>
         <br />
         <br />
@@ -74,16 +77,12 @@
       </div>
 
       <div class="row-span-1 text-sm my-2">
-        <h2>
-          <span class="font-bold font-sans text-gray-600">LINKS</span>
-        </h2>
+        <h2><span class="font-bold font-sans text-gray-600">LINKS</span></h2>
         <LinkSummary value={val} />
       </div>
 
       <div class="row-span-1 text-sm my-2">
-        <h2>
-          <span class="font-bold font-sans text-gray-600">CODE</span>
-        </h2>
+        <h2><span class="font-bold font-sans text-gray-600">CODE</span></h2>
         <CodeSummary value={val} />
       </div>
 
@@ -102,7 +101,6 @@
         </h2>
         <ArtillerySummary value={val} />
       </div>
-
     </div>
   </div>
 </div>
