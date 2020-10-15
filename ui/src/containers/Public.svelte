@@ -106,9 +106,10 @@
           class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">
           Sign up now! It's free
         </h1>
-        <p class="mb-8 leading-relaxed">
+        <p class="mb-8 text-lg leading-relaxed">
           Once signed up, you will be able to unlock the following awesome
-          features. All for free!!
+          features that allows you to take control of your code, ensuring large,
+          complex source code can be simplified, cleaned and maintained
         </p>
 
         <div class="flex justify-center">
