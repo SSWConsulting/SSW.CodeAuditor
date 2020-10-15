@@ -29,12 +29,12 @@
       <a href="/" class="ml-2 font-semibold text-xl tracking-tight brand">
         SSW CodeAuditor
       </a>
+      <span class="text-white m-3">
+        <Navigate to="/discover">Explore</Navigate>
+      </span>
       {#if $isLoggedIn}
-        <span class="text-white m-4">
-          <Navigate to="/">{$userName}</Navigate></span>
         <span class="text-white">
-          <Navigate to="/discover">Explore</Navigate>
-        </span>
+          <Navigate to="/">{$userName}</Navigate></span>
       {/if}
     </div>
     <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
