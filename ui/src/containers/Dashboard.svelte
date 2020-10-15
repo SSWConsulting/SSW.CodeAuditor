@@ -54,8 +54,20 @@
     }
   });
 
+  let showMore = false;
+  function showFullInstruction() {
+    showMore = !showMore;
+  }
+
+  const summarizedInstructions = `
+  ## SSW CodeAuditor
+  Scan any website for broken links and [HTML Issues](https://htmlhint.com) by running the following command:
+  \`\`\` bash
+  $ docker run sswconsulting/codeauditor --token ${token} --url <URL> --buildId [BUILDID]
+  \`\`\``;
+
   const instructions = `
-  ## CodeAuditor
+  ## SSW CodeAuditor
   Scan any website for broken links and [HTML Issues](https://htmlhint.com) by running the following command:
   \`\`\` bash
   $ docker run sswconsulting/codeauditor --token ${token} --url <URL> --buildId [BUILDID]
@@ -116,9 +128,27 @@
           </Icon>
         </a>
       {/if}
-      <article class="markdown-body">
-        {@html marked(instructions)}
-      </article>
+      {#if showMore}
+        <article class="markdown-body">
+          {@html marked(instructions)}
+        </article>
+        <a
+          class="text-left mt-3 text-sm font-bold text-blue hover:text-blue-darker"
+          on:click={showFullInstruction}
+          href="javascript:void(0)">
+          Collapse
+        </a>
+      {:else}
+        <article class="markdown-body">
+          {@html marked(summarizedInstructions)}
+        </article>
+        <a
+          class="text-left mt-3 text-sm font-bold text-blue hover:text-blue-darker"
+          on:click={showFullInstruction}
+          href="javascript:void(0)">
+          More Options
+        </a>
+      {/if}
     </div>
   {/if}
 

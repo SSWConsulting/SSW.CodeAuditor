@@ -10,24 +10,67 @@
     }
   });
 
-  async function getReadMe() {
-    const res = await fetch(`/README.md`);
-    instructions = await res.text();
+  let showMore = false;
+  function showFullInstruction() {
+    showMore = !showMore;
   }
-  getReadMe();
-  let instructions = "";
+
+  const summarizedInstructions = `
+  ## SSW CodeAuditor
+  Scan any website for broken links, [HTML Issues](https://htmlhint.com), [Google Lighthouse Audit](https://developers.google.com/web/tools/lighthouse) and [Artillery Load Test](https://artillery.io/) by running the following command:
+  \`\`\` bash
+  $ docker container run --cap-add=SYS_ADMIN sswconsulting/codeauditor --lighthouse --url <URL>
+  \`\`\``;
+
+  const instruction = `
+  ## SSW CodeAuditor
+  Scan any website for broken links, [HTML Issues](https://htmlhint.com), [Google Lighthouse Audit](https://developers.google.com/web/tools/lighthouse) and [Artillery Load Test](https://artillery.io/) by running the following command:
+  \`\`\` bash
+  $ docker container run --cap-add=SYS_ADMIN sswconsulting/codeauditor --lighthouse --url <URL>
+  \`\`\`
+  Include [Static Code Analysis](https://sswcodingstandards.web.app/):
+  \`\`\` bash
+  $ docker container run --cap-add=SYS_ADMIN \
+    -v "<YOUR_SOURCE_CODE>:/home/lhci/app/src" \
+    sswconsulting/codeauditor --lighthouse --url <URL>
+  \`\`\`
+  If you don't want Lighthouse audit, you can use the lighter version
+  \`\`\` bash
+  $ docker container run \
+    -v "<YOUR_SOURCE_CODE>:/usr/app/src" \
+    sswconsulting/codeauditor:light --url <URL>
+  \`\`\`
+  `;
 </script>
 
 <div class="container mx-auto">
   <div class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
-    <article class="markdown-body">
-      {@html marked(instructions)}
-    </article>
+    {#if showMore}
+      <article class="markdown-body">
+        {@html marked(instruction)}
+      </article>
+      <a
+        class="text-left mt-3 text-sm font-bold text-blue hover:text-blue-darker"
+        on:click={showFullInstruction}
+        href="javascript:void(0)">
+        Collapse
+      </a>
+    {:else}
+      <article class="markdown-body">
+        {@html marked(summarizedInstructions)}
+      </article>
+      <a
+        class="text-left mt-3 text-sm font-bold text-blue hover:text-blue-darker"
+        on:click={showFullInstruction}
+        href="javascript:void(0)">
+        More Options
+      </a>
+    {/if}
   </div>
 
   <section class="text-gray-700 body-font">
     <div
-      class="container mx-auto flex px-5 py-24 items-center justify-center
+      class="container mx-auto flex px-5 py-10 items-center justify-center
       flex-col">
       <div class="text-center lg:w-2/3 w-full">
         <h1
