@@ -70,7 +70,25 @@
 
   <section class="text-gray-700 body-font">
     <div
-      class="container mx-auto flex px-5 py-10 items-center justify-center
+      class="container mx-auto flex px-5 py-20 items-center justify-center
+      flex-col">
+      <div class="text-center lg:w-2/3 w-full">
+        <h1
+          class="title-font sm:text-4xl text-3xl mb-10 font-medium text-gray-900">
+          Check out our Github
+        </h1>
+      </div>
+      <a
+        href="https://github.com/SSWConsulting/SSW.CodeAuditor"
+        target="_blank">
+        <img width="110" height="100" alt="hero" src="/images/githublogo.png" />
+      </a>
+    </div>
+  </section>
+
+  <section class="text-gray-700 body-font">
+    <div
+      class="container mx-auto flex px-5 pb-20 pt-15 items-center justify-center
       flex-col">
       <div class="text-center lg:w-2/3 w-full">
         <h1
@@ -96,7 +114,7 @@
 
   <section class="text-gray-700 body-font">
     <div
-      class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
+      class="container mx-auto flex px-5 py-19 md:flex-row flex-col items-center">
       <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
         <a href="/images/dashboard.png" target="_blank">
           <img
