@@ -104,32 +104,50 @@
 
         <Tabs build={data ? data.summary : {}} displayMode="artillery" />
 
-        <div class="my-4">
-          <div class="float-right">
-            <button
-              on:click={download}
-              title="Download JSON"
-              class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-1
+        {#if data.summary.latencyP95 !== undefined}
+          <div class="my-4">
+            <div class="float-right">
+              <button
+                on:click={download}
+                title="Download JSON"
+                class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-1
               rounded-lg inline-flex items-center">
-              <Icon cssClass="">
-                <path
-                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </Icon>
-            </button>
+                <Icon cssClass="">
+                  <path
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </Icon>
+              </button>
+            </div>
           </div>
-        </div>
 
-        <div class="grid grid-rows-1">
-          <div class="h-5" />
-        </div>
+          <div class="grid grid-rows-1">
+            <div class="h-5" />
+          </div>
 
-        {#await getAtrData}
-          <LoadingFlat />
-        {:then atrFull}
-          <ArtilleryChart value={atrFull} />
-        {/await}
+          {#await getAtrData}
+            <LoadingFlat />
+          {:then atrFull}
+            {#if atrFull.fullLatencyP99 !== undefined}
+              <ArtilleryChart value={atrFull} />
+            {/if}
+          {/await}
 
-        <ArtilleryDetailTable value={data} />
+          <ArtilleryDetailTable value={data} />
+        {:else}
+          <div class="mb-6 text-center text-xl py-8">
+            <Icon cssClass="text-yellow-800 inline-block">
+              <path
+                d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13
+              21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            </Icon>
+            Artillery Load Test was not executed
+            <Icon cssClass="text-yellow-800 inline-block">
+              <path
+                d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13
+              21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            </Icon>
+          </div>
+        {/if}
       {:catch error}
         <p class="text-red-600 mx-auto text-2xl py-8">{error.message}</p>
       {/await}
