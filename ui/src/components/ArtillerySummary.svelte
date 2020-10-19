@@ -6,7 +6,8 @@
   <div class="col-span-1 text-start">
     <span class="block font-sans">Latency P95</span>
     <span
-      class="font-sans font-bold block lg:inline-block">{value.latencyP95}</span>
+      class="font-sans font-bold block lg:inline-block">{value.latencyP95 === undefined ? '0' : value.latencyP95}
+    </span>
   </div>
   <div class="col-span-1 text-start">
     <span class="block whitespace-no-wrap font-sans">REQUESTS</span>
