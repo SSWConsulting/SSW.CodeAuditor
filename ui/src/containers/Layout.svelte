@@ -4,11 +4,14 @@
   import { Navigate, navigateTo } from "svelte-router-spa";
   import Icon from "../components/Icon.svelte";
   import { userSession, userName, isLoggedIn } from "../stores.js";
+  import { scale } from "svelte/transition";
 
   export let currentRoute;
+  let menu = false;
 
   const params = {};
   const signOut = () => userSession.logout();
+  const showMenu = () => (menu = !menu);
 </script>
 
 <style>
@@ -29,46 +32,44 @@
       <a href="/" class="ml-2 font-semibold text-xl tracking-tight brand">
         SSW CodeAuditor
       </a>
-      <span class="text-white m-3">
-        <Navigate to="/discover">Explore</Navigate>
+      <span class="text-white text-xl mx-5">
+        <Navigate to="/explore">Explore</Navigate>
       </span>
-      {#if $isLoggedIn}
-        <span class="text-white">
-          <Navigate to="/">{$userName}</Navigate></span>
-      {/if}
     </div>
     <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
       <div class="text-sm lg:flex-grow" />
       {#if $isLoggedIn}
         <div>
-          <Navigate to="/home/settings">
-            <Icon cssClass="inline-block text-white mx-1 cursor-pointer">
-              <path
-                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0
-              002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065
-              2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066
-              2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572
-              1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0
-              00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0
-              00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0
-              001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07
-              2.572-1.065z" />
-              <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            </Icon>
-          </Navigate>
-          <button
-            on:click={signOut}
-            type="button"
-            class="inline-block text-sm px-4 py-2 leading-none border rounded
+          <span class="text-white">
+            <div class="relative">
+              <button
+                on:click={showMenu}
+                class="inline-block text-l px-4 py-2 leading-none border rounded
             text-white border-white hover:border-transparent hover:text-teal-500
-            hover:bg-white mt-4 lg:mt-0">
-            <Icon cssClass="inline-block">
-              <path
-                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0
-                01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-            </Icon>
-            Sign Out
-          </button>
+            hover:bg-white mt-4 lg:mt-0">{$userName}
+              </button>
+              {#if menu}
+                <span
+                  in:scale={{ duration: 100, start: 0.95 }}
+                  out:scale={{ duration: 75, start: 0.95 }}
+                  class="origin-top-right absolute right-0 w-48 py-2 mt-10 bg-gray-800
+                rounded shadow-md">
+                  <span
+                    class="block px-4 py-2 hover:bg-green-500 hover:text-green-100">
+                    <Navigate to="/home">👌 Your Scans</Navigate>
+                  </span>
+                  <span
+                    class="block px-4 py-2 hover:bg-green-500 hover:text-green-100">
+                    <Navigate to="/home/settings">🏷️ Ignored URLs</Navigate>
+                  </span>
+                  <span
+                    on:click={signOut}
+                    class="block px-4 py-2 hover:bg-green-500 hover:text-green-100">🚪
+                    Logout</span>
+                </span>
+              {/if}
+            </div>
+          </span>
         </div>
       {:else}
         <div>

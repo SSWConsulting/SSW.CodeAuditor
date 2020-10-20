@@ -25,7 +25,7 @@ const routes = [
 		component: Login,
 	},
 	{
-		name: '/discover',
+		name: '/explore',
 		component: PublicBuilds,
 		layout: AppLayout
 	},

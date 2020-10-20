@@ -20,6 +20,6 @@
   </div>
   <div class="text-center">
     <span
-      class="text-3xl font-sans font-bold text-gray-800">{format(new Date(value.buildDate), 'dd.MM.yyyy')}</span>
+      class="text-2xl font-sans font-bold text-gray-800">{format(new Date(value.buildDate), 'dd.MM.yyyy')}</span>
   </div>
 </div>
