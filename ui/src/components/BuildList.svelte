@@ -70,10 +70,9 @@
         <label
           class="block text-gray-700 font-bold md:text-right mb-1 md:mb-0 pr-4"
           for="inline-full-name">
-          {count} builds in last 30 days, last build: {formatDistanceToNow(
-            lastBuild,
-            { addSuffix: true }
-          )}
+          {count}
+          builds in last 30 days, last build:
+          {formatDistanceToNow(lastBuild, { addSuffix: true })}
         </label>
       {/if}
     </div>
@@ -87,9 +86,7 @@
             class="sm:flex-1 md:flex-1 lg:flex xl:flex content-center mb-4 px-6
               py-4">
             <div class="xl:w-5/6 lg:w-5/6 h-12">
-              <div class="text-center sm:text-left w-64">
-                <UrlSummaryCard value={groupUrl[url]} {url} />
-              </div>
+              <UrlSummaryCard value={groupUrl[url]} {url} />
             </div>
 
             <div

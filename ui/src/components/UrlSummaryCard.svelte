@@ -10,8 +10,9 @@
   <span class="font-sans font-bold text-gray-800 underline">{url}</span>
   <br />
   <div class="font-sans text-sm pt-2">
-    Last scanned {formatDistanceToNow(new Date(value[0].buildDate), { addSuffix: true })}
-    <span
-      class="font-sans font-bold">{printTimeDiff(+value[0].scanDuration)}</span>
+    Last scanned
+    {formatDistanceToNow(new Date(value[0].buildDate), { addSuffix: true })}
+    &#8287 ⌚
+    {printTimeDiff(+value[0].scanDuration)}
   </div>
 </div>

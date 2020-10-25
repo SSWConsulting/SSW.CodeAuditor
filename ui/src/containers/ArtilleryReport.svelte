@@ -127,9 +127,7 @@
           {#await getAtrData}
             <LoadingFlat />
           {:then atrFull}
-            {#if atrFull.fullLatencyP99 !== undefined}
-              <ArtilleryChart value={atrFull} />
-            {/if}
+            <ArtilleryChart value={atrFull} />
           {/await}
 
           <ArtilleryDetailTable value={data} />
