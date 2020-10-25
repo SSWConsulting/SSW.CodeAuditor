@@ -56,16 +56,15 @@
                 rounded shadow-md">
                   <span
                     class="block px-4 py-2 hover:bg-green-500 hover:text-green-100">
-                    <Navigate to="/home">👌 Your Scans</Navigate>
+                    <Navigate to="/home">Your Scans</Navigate>
                   </span>
                   <span
                     class="block px-4 py-2 hover:bg-green-500 hover:text-green-100">
-                    <Navigate to="/home/settings">🏷️ Ignored URLs</Navigate>
+                    <Navigate to="/home/settings">Ignored URLs</Navigate>
                   </span>
                   <span
                     on:click={signOut}
-                    class="block px-4 py-2 hover:bg-green-500 hover:text-green-100">🚪
-                    Logout</span>
+                    class="block px-4 py-2 hover:bg-green-500 hover:text-green-100">Logout</span>
                 </span>
               {/if}
             </div>
