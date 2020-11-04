@@ -39,6 +39,7 @@
     "svelte-frappe-charts": "^1.2.2",
     "svelte-fusioncharts": "^1.0.0",
     "svelte-preprocess": "^3.7.4",
-    "svelte-router-spa": "^5.5.0"
+    "svelte-router-spa": "^5.5.0",
+    "tailwindcss": "^1.9.6"
   }
 }

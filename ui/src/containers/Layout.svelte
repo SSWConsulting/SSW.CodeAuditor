@@ -25,14 +25,15 @@
 
 <main class="container mx-auto">
   <nav class="flex items-center justify-between flex-wrap p-6 nav">
-    <div class="flex items-center flex-shrink-0 text-white mr-6">
-      <Icon cssClass="inline-block text-red-600" height="24" width="24">
-        <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-      </Icon>
-      <a href="/" class="ml-2 font-semibold text-xl tracking-tight brand">
-        SSW CodeAuditor
+    <div class="flex flex-shrink-0 text-white mr-6">
+      <a href="/" class="flex-4 ml-2">
+        <img
+          src="images/CodeAuditor_logo.png"
+          alt="CodeAuditor"
+          width="300"
+          height="400" />
       </a>
-      <span class="text-white text-xl mx-5">
+      <span class="flex-2 text-white text-xl mx-5 pt-2">
         <Navigate to="/explore">Explore</Navigate>
       </span>
     </div>
