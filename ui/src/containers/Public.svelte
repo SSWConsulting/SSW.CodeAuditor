@@ -304,10 +304,11 @@
       href="/"
       class="flex title-font font-medium items-center md:justify-start
       justify-center text-gray-900">
-      <Icon cssClass="inline-block text-red-600" height="24" width="24">
-        <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-      </Icon>
-      <span class="ml-3 text-xl">SSW CodeAuditor</span>
+      <img
+        src="images/CodeAuditor_footer.png"
+        alt="CodeAuditor"
+        width="200"
+        height="300" />
     </a>
     <p
       class="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2

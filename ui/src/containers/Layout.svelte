@@ -21,23 +21,27 @@
   .nav {
     background-color: #414141;
   }
+  img {
+    max-width: 100%;
+    height: auto;
+  }
 </style>
 
 <main class="container mx-auto">
-  <nav class="flex items-center justify-between flex-wrap p-6 nav">
-    <div class="flex flex-shrink-0 text-white mr-6">
-      <a href="/" class="flex-4 ml-2">
+  <nav class="flex items-center justify-between p-6 nav">
+    <div class="flex items-center flex-wrap text-white mr-6">
+      <div href="/" class="sm:w-4/4 lg:w-1/3 ml-2">
         <img
+          class="h-7 object-cover"
           src="images/CodeAuditor_logo.png"
-          alt="CodeAuditor"
-          width="300"
-          height="400" />
-      </a>
-      <span class="flex-2 text-white text-xl mx-5 pt-2">
+          alt="CodeAuditor" />
+      </div>
+      <span class="w-1/3 text-white text-lg lg:text-xl pt-4 lg:pt-1 lg:mx-5">
         <Navigate to="/explore">Explore</Navigate>
       </span>
     </div>
-    <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+
+    <div class="w-full block flex-grow lg:flex lg:items-center">
       <div class="text-sm lg:flex-grow" />
       {#if $isLoggedIn}
         <div>
