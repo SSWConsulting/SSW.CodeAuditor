@@ -24,7 +24,7 @@
 
   let loading;
 
-  let promise = getBuildDetails(currentRoute.namedParams.run);
+  let promise = getBuildDetails(currentRoute.namedParams.id);
   let runId;
   let userNotLoginToast;
   let perfThresholdShown;
@@ -34,7 +34,7 @@
   let threshold;
 
   const download = () => {
-    window.location.href = `${CONSTS.BlobURL}/lhr/${currentRoute.namedParams.run}.json`;
+    window.location.href = `${CONSTS.BlobURL}/lhr/${currentRoute.namedParams.id}.json`;
   };
 
   const showPerfThreshold = async (summary, user) => {
@@ -61,10 +61,10 @@
   };
 
   onMount(() => {
-    if (currentRoute && currentRoute.namedParams.run) {
+    if (currentRoute && currentRoute.namedParams.id) {
       loading = true;
-      runId = currentRoute.namedParams.run;
-      fetch(`${CONSTS.BlobURL}/lhr/${currentRoute.namedParams.run}.json`)
+      runId = currentRoute.namedParams.id;
+      fetch(`${CONSTS.BlobURL}/lhr/${currentRoute.namedParams.id}.json`)
         .then((x) => x.json())
         .then((json) => {
           loading = false;

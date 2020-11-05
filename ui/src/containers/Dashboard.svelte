@@ -165,13 +165,12 @@
 
   <div class="bg-white shadow-lg rounded px-8 pt-6 mb-6 flex flex-col">
     {#if !showInstruction}
-      <a
+      <p
         class="text-right align-baseline underline text-sm text-blue font-bold
           pb-6 hover:text-blue-darker"
-        on:click={() => (showInstruction = true)}
-        href="javascript:void(0)">
+        on:click={() => (showInstruction = true)}>
         Show instructions
-      </a>
+      </p>
     {/if}
     {#await promise}
       <LoadingFlat />

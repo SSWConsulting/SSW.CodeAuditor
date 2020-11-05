@@ -39,12 +39,12 @@ const routes = [
 		layout: AppLayout
 	},
 	{
-		name: '/lighthouse/:run',
+		name: '/lighthouse/:id',
 		component: LighthouseReport,
 		layout: AppLayout
 	},
 	{
-		name: '/artillery/:run',
+		name: '/artillery/:id',
 		component: ArtilleryReport,
 		layout: AppLayout
 	},
