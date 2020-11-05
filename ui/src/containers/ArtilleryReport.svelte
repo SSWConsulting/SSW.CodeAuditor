@@ -26,8 +26,7 @@
 
   let loading;
 
-  let promise = getBuildDetails(currentRoute.namedParams.run);
-  let runId;
+  let promise = getBuildDetails(currentRoute.namedParams.id);
   let userNotLoginToast;
   let artilleryThresholdShown;
   let scanUrl;

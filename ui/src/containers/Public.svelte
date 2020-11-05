@@ -305,7 +305,7 @@
       class="flex title-font font-medium items-center md:justify-start
       justify-center text-gray-900">
       <img
-        src="images/CodeAuditor_footer.png"
+        src="https://i.ibb.co/8mfYrX2/Code-Auditor-footer.png"
         alt="CodeAuditor"
         width="200"
         height="300" />

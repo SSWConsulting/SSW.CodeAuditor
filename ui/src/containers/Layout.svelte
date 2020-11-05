@@ -30,12 +30,12 @@
 <main class="container mx-auto">
   <nav class="flex items-center justify-between p-6 nav">
     <div class="flex items-center flex-wrap text-white mr-6">
-      <div href="/" class="sm:w-4/4 lg:w-1/3 ml-2">
+      <a href="/" class="sm:w-4/4 lg:w-1/3 ml-2">
         <img
           class="h-7 object-cover"
-          src="images/CodeAuditor_logo.png"
+          src="https://i.ibb.co/QYTq9D3/Code-Auditor-logo.png"
           alt="CodeAuditor" />
-      </div>
+      </a>
       <span class="w-1/3 text-white text-lg lg:text-xl pt-4 lg:pt-1 lg:mx-5">
         <Navigate to="/explore">Explore</Navigate>
       </span>
