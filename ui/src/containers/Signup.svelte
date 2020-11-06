@@ -15,7 +15,7 @@
     firebase
       .auth()
       .createUserWithEmailAndPassword(username, password)
-      .catch((err) => (serverError = err.message))
+      .catch(err => (serverError = err.message))
       .finally(() => (loading = false));
   };
 
@@ -43,16 +43,17 @@
 </script>
 
 <style>
+
 </style>
 
 <form class="container mx-auto max-w-sm py-12">
   <div class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
     <div class="mb-8 mx-auto">
-      <Icon cssClass="inline-block text-red-600" height="35" width="35">
-        <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-      </Icon>
-      <span on:click={() => navigateTo('/')} class="text-3xl align-middle ml-2">
-        SSW CodeAuditor
+      <span on:click={() => navigateTo('/')} class="align-middle ml-2">
+        <img
+          class="h-7 object-cover"
+          src="https://i.ibb.co/8mfYrX2/Code-Auditor-footer.png"
+          alt="CodeAuditor" />
       </span>
     </div>
     <SocialLogin bind:serverError />
@@ -90,8 +91,7 @@
         disabled={!valid}
         on:click|preventDefault={signup}
         type="button"
-        class="bg-blue-100 hover:bg-blue-500 text-blue-800 font-semibold
-        hover:text-white py-2 px-4 border border-blue-500
+        class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4 border
         hover:border-transparent rounded">
         {#if loading}
           <LoadingCirle />
