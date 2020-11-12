@@ -121,7 +121,7 @@
                   aria-hidden="true" /></button>
               {#if (currCard == i) & (showTotalBuild == true)}
                 <p class="truncate font-sans font-bold text-xs">
-                  Total build:
+                  Total builds:
                   {groupUrl[url].length}
                 </p>
               {/if}
