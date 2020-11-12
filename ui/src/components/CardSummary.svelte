@@ -9,7 +9,7 @@
     <a
       href={value.url}
       target="_blank"
-      class="underline text-2xl font-sans font-bold text-gray-800">{value.url}</a>
+      class="underline text-2xl font-sans font-bold text-gray-800 hover:text-red-600">{value.url}</a>
   </div>
   <div class="text-center">
     <span class="text-xl font-sans block lg:inline-block text-gray-600">Last

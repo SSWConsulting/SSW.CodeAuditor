@@ -17,6 +17,7 @@
   export let builds = [];
   export let lastBuild;
 
+  let showTotalBuild = false;
   let groupUrlKey = [];
   let groupUrl;
   groupUrl = groupBy(props(["url"]))(builds);
@@ -30,6 +31,7 @@
   let currCard;
   function toggle(n) {
     currCard = n;
+    showTotalBuild = !showTotalBuild;
     var x = document.getElementById("detailCard");
     if (x.style.display === "none") {
       x.style.display = "block";
@@ -117,6 +119,12 @@
               <button class="btn" on:click={() => toggle(i)}><i
                   class="fa fa-angle-down fa-2x"
                   aria-hidden="true" /></button>
+              {#if (currCard == i) & (showTotalBuild == true)}
+                <p class="truncate font-sans font-bold text-xs">
+                  Total build:
+                  {groupUrl[url].length}
+                </p>
+              {/if}
             </div>
           </div>
         </div>
