@@ -9,7 +9,7 @@
 
   import { fade, fly } from "svelte/transition";
   import { sort, descend, prop } from "ramda";
-  import { CONSTS } from "../utils/utils.js";
+  import { CONSTS, truncate } from "../utils/utils.js";
 
   let canClose;
   let lastBuild;
@@ -25,14 +25,32 @@
   }
 
   let promise = getLastBuilds();
+
+  async function getAllBuilds() {
+    const res = await fetch(`${CONSTS.API}/api/allscans`);
+    const result = await res.json();
+    if (res.ok) {
+      return sort(descend(prop("buildDate")), result);
+    } else {
+      throw new Error("Failed to load");
+    }
+  }
+
+  let promiseAllScan = getAllBuilds();
+
+  let allScan = false;
+  function showAllScan() {
+    allScan = !allScan;
+  }
+
   const notLoggedIn = `
   ## Explore SSW CodeAuditor
-  Once signed up, you will be able to unlock the following awesome features. All for free!
+  Showing last 100 public scans completed by all users. <br> 
+  Sign up to see more scans and unlock more awesome features. All for free!
   `;
 
   const isLoggedInMsg = `
   ## Explore SSW CodeAuditor
-  Showing last 100 public scans completed by all users.
   `;
 </script>
 
@@ -45,19 +63,44 @@
     {:else}
       <article class="markdown-body">
         {@html marked(isLoggedInMsg)}
+        {#if allScan === true}
+          <button
+            class="cursor-pointer underline text-gray-700 font-sans font-bold hover:text-red-600"
+            on:click={showAllScan}>
+            Show last 100 scans
+          </button>
+        {:else}
+          <button
+            class="cursor-pointer underline text-gray-700 font-sans font-bold hover:text-red-600"
+            on:click={showAllScan}>
+            Show all scans
+          </button>
+        {/if}
       </article>
     {/if}
   </div>
 
   <div class="bg-white shadow-lg rounded px-8 pt-6 mb-6 flex flex-col">
-    {#await promise}
-      <LoadingFlat />
-    {:then data}
-      {#if data}
-        <BuildList builds={data} {lastBuild} />
-      {/if}
-    {:catch error}
-      <p style="color: red">{error.message}</p>
-    {/await}
+    {#if allScan === true}
+      {#await promiseAllScan}
+        <LoadingFlat />
+      {:then data}
+        {#if data}
+          <BuildList builds={data} {lastBuild} />
+        {/if}
+      {:catch error}
+        <p style="color: red">{error.message}</p>
+      {/await}
+    {:else}
+      {#await promise}
+        <LoadingFlat />
+      {:then data}
+        {#if data}
+          <BuildList builds={data} {lastBuild} />
+        {/if}
+      {:catch error}
+        <p style="color: red">{error.message}</p>
+      {/await}
+    {/if}
   </div>
 </div>
