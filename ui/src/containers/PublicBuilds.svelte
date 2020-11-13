@@ -63,19 +63,12 @@
     {:else}
       <article class="markdown-body">
         {@html marked(isLoggedInMsg)}
-        {#if allScan === true}
-          <button
-            class="cursor-pointer underline text-gray-700 font-sans font-bold hover:text-red-600"
-            on:click={showAllScan}>
-            Show last 100 scans
-          </button>
-        {:else}
-          <button
-            class="cursor-pointer underline text-gray-700 font-sans font-bold hover:text-red-600"
-            on:click={showAllScan}>
-            Show all scans
-          </button>
-        {/if}
+        <button
+          class="cursor-pointer underline text-gray-700 font-sans font-bold
+          hover:text-red-600"
+          on:click={showAllScan}>
+          {allScan === true ? 'Show last 100 scans' : 'Show all Scan'}
+        </button>
       </article>
     {/if}
   </div>

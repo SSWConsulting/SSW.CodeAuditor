@@ -22,7 +22,6 @@ const {
 const {
 	getSummary,
 	getPublicSummary,
-	getAllPublicSummary,
 	getSummaryById,
 	getConfig,
 	getPerformanceThreshold,
@@ -99,10 +98,6 @@ app.get('/scanresult/:api', async (req, res) => {
 
 app.get('/scans', async (req, res) => {
 	res.json(await getPublicSummary());
-});
-
-app.get('/allscans', async (req, res) => {
-	res.json(await getAllPublicSummary());
 });
 
 app.get('/viewsource', async (req, res) => {
