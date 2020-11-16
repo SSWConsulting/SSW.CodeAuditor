@@ -17,6 +17,7 @@
   export let builds = [];
   export let lastBuild;
 
+  let showTotalBuild = false;
   let groupUrlKey = [];
   let groupUrl;
   groupUrl = groupBy(props(["url"]))(builds);
@@ -24,12 +25,13 @@
 
   $: numberOfBuilds = builds.length;
   let count = builds.filter(
-    (x) => new Date(x.buildDate) > addDays(new Date(), -30)
+    x => new Date(x.buildDate) > addDays(new Date(), -30)
   ).length;
 
   let currCard;
   function toggle(n) {
     currCard = n;
+    showTotalBuild = !showTotalBuild;
     var x = document.getElementById("detailCard");
     if (x.style.display === "none") {
       x.style.display = "block";
@@ -70,9 +72,10 @@
         <label
           class="block text-gray-700 font-bold md:text-right mb-1 md:mb-0 pr-4"
           for="inline-full-name">
-          {count}
-          builds in last 30 days, last build:
-          {formatDistanceToNow(lastBuild, { addSuffix: true })}
+          {count} builds in last 30 days, last build: {formatDistanceToNow(
+            lastBuild,
+            { addSuffix: true }
+          )}
         </label>
       {/if}
     </div>
@@ -84,39 +87,45 @@
         <div class="container flex-wrap mb-4 overflow-hidden shadow-lg">
           <div
             class="sm:flex-1 md:flex-1 lg:flex xl:flex content-center mb-4 px-6
-              py-4">
+            py-4">
             <div class="xl:w-5/6 lg:w-5/6 h-12">
               <UrlSummaryCard value={groupUrl[url]} {url} />
             </div>
 
             <div
               class="xl:w-1/6 lg:w-1/6 h-12 hidden sm:hidden md:hidden lg:block
-                xl:block">
+              xl:block">
               <HistoryChart value={groupUrl[url]} />
             </div>
 
             <div
               class="xl:w-1/6 lg:w-1/6 h-12 sm:text-xs md:text-xs lg:text-base
-                xl:text-base text-gray-700">
+              xl:text-base text-gray-700">
               <LinkSummaryCard value={groupUrl[url]} />
             </div>
 
             <div
               class="xl:w-1/6 lg:w-1/6 h-12 sm:text-xs md:text-xs lg:text-base
-                xl:text-base text-gray-700">
+              xl:text-base text-gray-700">
               <CodeSummaryCard value={groupUrl[url]} />
             </div>
 
             <div
               class="xl:w-1/6 lg:w-1/6 h-12 sm:text-xs md:text-xs lg:text-base
-                xl:text-base text-gray-700">
+              xl:text-base text-gray-700">
               <LightHouseAverageCard value={groupUrl[url]} />
             </div>
 
             <div class="xl:w-0.9/6 lg:w-0.9/6 text-center h-12">
-              <button class="btn" on:click={() => toggle(i)}><i
-                  class="fa fa-angle-down fa-2x"
-                  aria-hidden="true" /></button>
+              <button class="btn" on:click={() => toggle(i)}>
+                <i class="fa fa-angle-down fa-2x" aria-hidden="true" />
+              </button>
+              {#if (currCard == i) & (showTotalBuild == true)}
+                <p class="truncate font-sans font-bold text-xs">
+                  {groupUrl[url].length}
+                  {groupUrl[url].length > 1 ? 'builds' : 'build'}
+                </p>
+              {/if}
             </div>
           </div>
         </div>

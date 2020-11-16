@@ -50,34 +50,42 @@
         class="grid grid-rows-2 sm:gap-auto lg:grid-flow-col sm:grid-cols-3"
         on:click={() => navigateTo(`/build/${val.runId}`)}>
         <div class="row-span-1 lg:row-span-4 col-span-4">
-          <span
-            class="font-sans text-base font-bold text-gray-800 underline">{format(new Date(val.buildDate), 'dd.MM.yyyy')}</span>
-          <br />
-          <span class="font-sans text-base pt-2">Last scanned:
-            {formatDistanceToNow(new Date(val.buildDate), { addSuffix: true })}
-            at
-            {format(new Date(val.buildDate), 'hh:mma')}</span>
-          <br />
-          <span class="font-sans text-base pt-2">Duration:
-            {printTimeDiff(+val.scanDuration)}
+          <span class="font-sans text-xl font-bold text-gray-800">
+            {format(new Date(val.buildDate), 'hh:mm a')}
           </span>
           <br />
-          <span class="font-sans text-base pt-2">Scanned:
-            {val.totalScanned}
-            items</span>
+          <span class="font-sans text-lg font-bold text-gray-800">
+            {format(new Date(val.buildDate), 'dd MMMM yyyy')}
+          </span>
+          <br />
+          <span class="font-sans text-base pt-2">
+            Last scanned: {formatDistanceToNow(new Date(val.buildDate), { addSuffix: true })}
+          </span>
+          <br />
+          <span class="font-sans text-base pt-2">
+            Duration: {printTimeDiff(+val.scanDuration)}
+          </span>
+          <br />
+          <span class="font-sans text-base pt-2">
+            Scanned: {val.totalScanned} items
+          </span>
         </div>
 
         <div
           class="row-span-1 col-span-4 text-sm my-2"
           on:click={() => navigateTo(`/build/${val.runId}`)}>
-          <h2><span class="font-bold font-sans text-gray-600">LINKS</span></h2>
+          <h2>
+            <span class="font-bold font-sans text-gray-600">LINKS</span>
+          </h2>
           <LinkSummary value={val} />
         </div>
 
         <div
           class="row-span-1 col-span-4 text-sm my-2"
           on:click={() => navigateTo(`/build/${val.runId}`)}>
-          <h2><span class="font-bold font-sans text-gray-600">CODE</span></h2>
+          <h2>
+            <span class="font-bold font-sans text-gray-600">CODE</span>
+          </h2>
           <CodeSummary value={val} />
         </div>
 
