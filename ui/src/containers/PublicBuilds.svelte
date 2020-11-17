@@ -45,8 +45,7 @@
 
   const notLoggedIn = `
   ## Explore SSW CodeAuditor
-  Showing last 100 public scans completed by all users. <br> 
-  Sign up to see more scans and unlock more awesome features. All for free!
+  Showing last 100 public scans - [See all](https://codeauditor.com/login)
   `;
 
   const isLoggedInMsg = `
