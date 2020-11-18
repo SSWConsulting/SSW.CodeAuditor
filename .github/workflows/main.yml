@@ -26,4 +26,4 @@ jobs:
           npm run deploy
           cd ../api/functions
           npm install
-          npm run deploy
+          firebase deploy --token 1//0gSqqX2IdfHAJCgYIARAAGBASNwF-L9IrYDd4hFcDtMEWrQxRnXiKT5VSV5gDE-6ghmLe3UVVDB94veIIOMtbNyM7qbWIUhtyBWc --only functions
