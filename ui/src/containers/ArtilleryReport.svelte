@@ -78,7 +78,7 @@
     return atrFull;
   };
 
-  let getAtrData = getAtrFull(currentRoute.namedParams.run);
+  let getAtrData = getAtrFull(currentRoute.namedParams.id);
 </script>
 
 <div class="container mx-auto">
