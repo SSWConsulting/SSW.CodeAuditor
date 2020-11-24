@@ -116,15 +116,16 @@
             </div>
 
             <div class="xl:w-0.9/6 lg:w-0.9/6 text-center h-12">
-              <button class="btn" on:click={() => toggle(i)}><i
-                  class="fa fa-angle-down fa-2x"
-                  aria-hidden="true" /></button>
-              {#if (currCard == i) & (showTotalBuild == true)}
-                <p class="truncate font-sans font-bold text-xs">
-                  Total builds:
-                  {groupUrl[url].length}
-                </p>
-              {/if}
+              <button
+                type="button"
+                class="hover:bg-gray-300 border-0 rounded-md px-3 py-1"
+                on:click={() => toggle(i)}>
+                <i class="fa fa-angle-down fa-2x" aria-hidden="true" />
+              </button>
+              <p class="truncate font-sans font-bold text-xs">
+                Total build:
+                {groupUrl[url].length}
+              </p>
             </div>
           </div>
         </div>
