@@ -40,7 +40,7 @@
 
   let allScan = false;
   function showAllScan() {
-    allScan = !allScan;
+    allScan = true;
   }
 
   const notLoggedIn = `
@@ -62,12 +62,19 @@
     {:else}
       <article class="markdown-body">
         {@html marked(isLoggedInMsg)}
-        <button
-          class="cursor-pointer underline text-gray-700 font-sans font-bold
-          hover:text-red-600"
-          on:click={showAllScan}>
-          {allScan === true ? 'Show last 100 scans' : 'Show all Scan'}
-        </button>
+        {#await promiseAllScan}
+          <LoadingFlat />
+        {:then data}
+          <p
+            class="cursor-pointer underline text-gray-700 font-sans font-bold hover:text-red-600"
+            on:click={showAllScan}>
+            Showing all
+            {data.length}
+            Public Scans
+          </p>
+        {:catch error}
+          <p style="color: red">{error.message}</p>
+        {/await}
       </article>
     {/if}
   </div>

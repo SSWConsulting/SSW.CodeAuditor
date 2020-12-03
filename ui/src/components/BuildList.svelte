@@ -117,20 +117,27 @@
             </div>
 
             <div class="xl:w-0.9/6 lg:w-0.9/6 text-center h-12">
-              <button class="btn" on:click={() => toggle(i)}>
-                <i class="fa fa-angle-down fa-2x" aria-hidden="true" />
-              </button>
-              {#if (currCard == i) & (showTotalBuild == true)}
-                <p class="truncate font-sans font-bold text-xs">
-                  {groupUrl[url].length}
-                  {groupUrl[url].length > 1 ? 'builds' : 'build'}
-                </p>
-              {/if}
+              <span
+                type="button"
+                class="hover:bg-gray-300 border-0 rounded-md px-3 py-1"
+                on:click={() => toggle(i)}>
+                <svg
+                  class="w-6 h-6"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"><path
+                    fill-rule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clip-rule="evenodd" /></svg>
+              </span>
+              <p class="truncate font-sans font-bold text-xs">
+                Total build:
+                {groupUrl[url].length}
+              </p>
             </div>
           </div>
         </div>
       </div>
-
       {#if currCard == i}
         <div id="detailCard">
           <DetailListCard value={groupUrl[url]} />
