@@ -81,7 +81,17 @@
 </script>
 
 <div class="text-center">
-  <span class="font-sans">HISTORY</span>
-  <i class="fas fa-long-arrow-alt-right" />
+  <span class="inline-block font-sans">HISTORY</span>
+  <svg
+    class="inline-block w-6 h-6"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"><path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M17 8l4 4m0 0l-4 4m4-4H3" />
+  </svg>
 </div>
 <canvas bind:this={chartRef} width="10px" />
