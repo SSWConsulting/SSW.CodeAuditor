@@ -25,7 +25,7 @@
 
   $: numberOfBuilds = builds.length;
   let count = builds.filter(
-    (x) => new Date(x.buildDate) > addDays(new Date(), -30)
+    x => new Date(x.buildDate) > addDays(new Date(), -30)
   ).length;
 
   let currCard;
@@ -72,9 +72,10 @@
         <label
           class="block text-gray-700 font-bold md:text-right mb-1 md:mb-0 pr-4"
           for="inline-full-name">
-          {count}
-          builds in last 30 days, last build:
-          {formatDistanceToNow(lastBuild, { addSuffix: true })}
+          {count} builds in last 30 days, last build: {formatDistanceToNow(
+            lastBuild,
+            { addSuffix: true }
+          )}
         </label>
       {/if}
     </div>
@@ -86,32 +87,32 @@
         <div class="container flex-wrap mb-4 overflow-hidden shadow-lg">
           <div
             class="sm:flex-1 md:flex-1 lg:flex xl:flex content-center mb-4 px-6
-              py-4">
+            py-4">
             <div class="xl:w-5/6 lg:w-5/6 h-12">
               <UrlSummaryCard value={groupUrl[url]} {url} />
             </div>
 
             <div
               class="xl:w-1/6 lg:w-1/6 h-12 hidden sm:hidden md:hidden lg:block
-                xl:block">
+              xl:block">
               <HistoryChart value={groupUrl[url]} />
             </div>
 
             <div
               class="xl:w-1/6 lg:w-1/6 h-12 sm:text-xs md:text-xs lg:text-base
-                xl:text-base text-gray-700">
+              xl:text-base text-gray-700">
               <LinkSummaryCard value={groupUrl[url]} />
             </div>
 
             <div
               class="xl:w-1/6 lg:w-1/6 h-12 sm:text-xs md:text-xs lg:text-base
-                xl:text-base text-gray-700">
+              xl:text-base text-gray-700">
               <CodeSummaryCard value={groupUrl[url]} />
             </div>
 
             <div
               class="xl:w-1/6 lg:w-1/6 h-12 sm:text-xs md:text-xs lg:text-base
-                xl:text-base text-gray-700">
+              xl:text-base text-gray-700">
               <LightHouseAverageCard value={groupUrl[url]} />
             </div>
 
@@ -137,7 +138,6 @@
           </div>
         </div>
       </div>
-
       {#if currCard == i}
         <div id="detailCard">
           <DetailListCard value={groupUrl[url]} />
