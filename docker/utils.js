@@ -211,7 +211,7 @@ exports.runBrokenLinkCheck = (url, maxthread) => {
 		const comand = maxthread ?
 			`./sswlinkauditor ${url} ${maxthread}` :
 			`./sswlinkauditor ${url}`;
-		return [execSync(comand).toString(), null];
+		return [execSync(comand, {maxBuffer:20000*1024}).toString(), null];
 	} catch (error) {
 		return [null, error.message];
 	}

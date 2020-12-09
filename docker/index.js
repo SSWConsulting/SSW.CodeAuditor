@@ -176,7 +176,7 @@ const main = async () => {
 		writeLog(`start artillery`);
 		try {
 			const rs = execSync(
-				`./node_modules/.bin/artillery quick -d 60 -r 10 -k -o artilleryOut.json "${options.url}"`
+				`./node_modules/.bin/artillery quick -d 20 -r 10 -k -o artilleryOut.json "${options.url}"`
 			).toString();
 			writeLog(`artillery check finished`, rs);
 		} catch (e) {
