@@ -29,7 +29,6 @@ exports.getScanDetails = (runId) =>
 		getTableRows(
 			TABLE.ScanResults,
 			new azure.TableQuery()
-			.top(50)
 			.where('PartitionKey eq ?', doc.apikey)
 			.and('runId eq ?', doc.runId)
 		)
