@@ -67,7 +67,7 @@ We always welcome contributions. If you are interested in contributing, please t
 
 ### Back End:
 [Firebase](https://firebase.google.com/) - CodeAuditor uses Firebase API, allowing developers to avoid managing servers or writing server-side code
-##### Why Firebase?
+#### Why Firebase?
 - Easy to use and save a lot time because all the server operations and internal functions are taken care of by the Firebase interface 
 - Developers can spend more time developing the app
 - The idea of firebase is to quickly validate your idea then you can simply migrate that to a proper "enterprise" set up
