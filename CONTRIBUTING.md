@@ -13,7 +13,7 @@
  - Editor
     - Visual Studio or Visual Studio Code (latest version recommended)
     
-### Required Tools
+## Required Tools
 - Install nodejs via [NodeJs](https://nodejs.org/en/) (required versions: ^8.10.0 or ^10.13.0 or >=11.10.1)
 - Install Docker for Windows via [Docker for Windows](https://docs.docker.com/docker-for-windows/)
 
