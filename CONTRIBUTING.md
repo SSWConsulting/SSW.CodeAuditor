@@ -12,8 +12,10 @@
     - Javascript
  - Editor
     - Visual Studio or Visual Studio Code (latest version recommended)
- - Misc tools 
-    - [Docker for Windows](https://docs.docker.com/docker-for-windows/)
+    
+### Required Tools
+- Install nodejs via [NodeJs](https://nodejs.org/en/) (required versions: ^8.10.0 or ^10.13.0 or >=11.10.1)
+- Install Docker for Windows via [Docker for Windows](https://docs.docker.com/docker-for-windows/)
 
 ## Change flow
 
@@ -28,6 +30,21 @@ The general flow for making a change to the script host is:
 7. 💌 Open a PR to the dev branch
 8. 📢 Address feedback and make sure tests pass (yes even if it's an "unrelated" test failure)
 9. ✂️ Delete your branch (optional) 
+
+## Definition of Done
+
+- Code Compiles
+- Check the Acceptance Criteria.
+- Code is squash-merged to main via a pull request that was approved by a 2nd developer.
+- Another team member agrees it’s ready for Production.
+- Pushed to Production.
+- Use @Mention (**OR** Send email) to notify Product Owner/PBI stakeholder that PBI is done (be sure to include screenshots/done video as proof) 
+
+> <As per rule: [Done - Do you go beyond 'Done' and follow a 'Definition of Done'](https://rules.ssw.com.au/done-do-you-go-beyond-done-and-follow-a-definition-of-done)?>
+
+## Deployment
+
+🚀 Once your Pull Request has been approved, your changes will get deployed to production automatically
 
 ## Running the Project
 
