@@ -63,16 +63,19 @@ We always welcome contributions. If you are interested in contributing, please t
 ## Technologies used in SugarLearning
 
 ### Front End:
-- [SvelteJs](https://svelte.dev/) - Free and open-source JavaScript framework
+[SvelteJs](https://svelte.dev/) - Free and open-source JavaScript framework
 
 ### Back End:
-- [Firebase](https://firebase.google.com/) - CodeAuditor uses Firebase API, allowing developers to avoid managing servers or writing server-side code
+[Firebase](https://firebase.google.com/) - CodeAuditor uses Firebase API, allowing developers to avoid managing servers or writing server-side code
+##### Why Firebase?
+- Easy to use and save a lot time because all the server operations and internal functions are taken care of by the Firebase interface 
+- Developers can spend more time developing the app
+- The idea of firebase is to quickly validate your idea then you can simply migrate that to a proper "enterprise" set up
 
 ### Tool:
-- [Docker](https://www.docker.com/) - Platform as a service (PaaS) product that uses OS-level virtualization to deliver software in packages
+[Docker](https://www.docker.com/) - Platform as a service (PaaS) product that uses OS-level virtualization to deliver software in packages
 
 ## Getting help
-
  - Leave comments on your PR and @ people for attention
  - Bring it up with the team
  - Edit the Wiki
