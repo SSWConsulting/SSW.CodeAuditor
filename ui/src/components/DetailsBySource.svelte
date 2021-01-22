@@ -25,6 +25,15 @@
     (hiddenRows[key] = key in hiddenRows ? !hiddenRows[key] : true);
 </script>
 
+<style>
+  .truncate {
+    width: 400px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>
+
 {#each sourcesKeys as url}
   <div class="mb-3">
     <span class="font-bold mr-2">
@@ -59,9 +68,7 @@
       <tbody>
         {#each sources[url] as val}
           <tr>
-            <td
-              class="whitespace-no-wrap break-all w-6/12 border px-4 py-2
-              break-all">
+            <td class="w-6/12 border px-4 py-2 break-all">
               {#if isInIgnored(val.dst, ignoredPatterns)}
                 <span
                   class="text-red-600 inline-block align-middle"
@@ -86,7 +93,7 @@
                 </button>
               {/if}
               <a
-                class="inline-block align-baseline link"
+                class="inline-block align-baseline link truncate"
                 target="_blank"
                 href={val.dst}>
                 {val.dst}
