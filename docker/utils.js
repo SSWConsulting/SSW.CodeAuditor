@@ -340,11 +340,11 @@ exports.processBrokenLinks = (
 		allUrls
 		.filter((url) => url['Status Code'] !== '200')
 		.map((x) => ({
-			src: x.Source,
-			dst: x.Destination,
-			link: x.Anchor,
-			statuscode: x['Status Code'],
-			statusmsg: x.Status,
+			src: x.Source || '',
+			dst: x.Destination || '',
+			link: x.Anchor || '',
+			statuscode: x['Status Code'] || '',
+			statusmsg: x.Status || '',
 		}));
 
 	const __getUniqIgnoredUrls = (badUrls, whitelistedUrls) => {
