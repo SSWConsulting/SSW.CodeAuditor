@@ -63,7 +63,7 @@
   ## System Requirements
   Make sure your system meets the following requirements:
   \`\`\` bash
-  - Able to download and run Docker Desktop in the background 
+  - Have Docker Desktop in the background 
   - Have at least 1GB of storage to download the Docker image
   \`\`\``;
 
@@ -81,7 +81,7 @@
   $ docker run sswconsulting/codeauditor --token ${token} --url <URL> 
   \`\`\`
 
-  If you don't you your scan to be uploaded publicly, simply add --private
+  If you don't you your scan to be uploaded publicly, following command will upload your scan to your private profile:
   \`\`\` bash
   $ docker run sswconsulting/codeauditor --token ${token} --url <URL> --private
   \`\`\`
