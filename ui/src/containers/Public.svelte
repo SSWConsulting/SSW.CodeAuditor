@@ -1,7 +1,5 @@
 <script>
   import marked from "marked";
-  import { fade, fly } from "svelte/transition";
-  import Icon from "../components/Icon.svelte";
   import { isLoggedIn } from "../stores.js";
   import { navigateTo } from "svelte-router-spa";
   isLoggedIn.subscribe((x) => {
@@ -19,7 +17,7 @@
   ## System Requirements
   Make sure your system meets the following requirements:
   \`\`\` bash
-  - Able to download and run Docker Desktop in the background 
+  - Have Docker Desktop running in the background 
   - Have at least 1GB of storage to download the Docker image
   \`\`\``;
 
@@ -45,6 +43,26 @@
   $ docker container run -v "<YOUR_SOURCE_CODE>:/usr/app/src" sswconsulting/codeauditor:light --url <URL>
   \`\`\`
   `;
+
+  const instructionSteps = `
+  ## Instruction to scan an URL 
+  ### On Windows 
+  \`\`\` bash
+  1. Download Docker for Windows at https://docs.docker.com/docker-for-windows/install/
+  2. Follow the installation steps and run Docker
+  3. On CodeAuditor, copy the following command: docker run sswconsulting/codeauditor --url <URL>
+  4. Open Windows Powershell and paste the above command, repace <URL> with your designated url 
+  5. Once scan is complete, a result script will display which gives you a link to your scan result page
+  \`\`\`
+
+  ### On Mac 
+  \`\`\` bash
+  1. Download Docker for Mac at https://docs.docker.com/docker-for-mac/install/
+  2. Follow the installation steps and run Docker
+  3. On CodeAuditor, copy the following command: docker run sswconsulting/codeauditor --url <URL>
+  4. Open the Terminal and paste the above command, repace <URL> with your designated url 
+  5. Once scan is complete, a result script will display which gives you a link to your scan result page
+  \`\`\``;
 </script>
 
 <div class="container mx-auto">
@@ -72,6 +90,9 @@
     {/if}
     <article class="markdown-body mt-5">
       {@html marked(systemRequirements)}
+    </article>
+    <article class="markdown-body mt-5">
+      {@html marked(instructionSteps)}
     </article>
   </div>
 

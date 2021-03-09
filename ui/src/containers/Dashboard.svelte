@@ -71,14 +71,19 @@
   ## SSW CodeAuditor
   Scan any website for broken links and [HTML Issues](https://htmlhint.com) by running the following command:
   \`\`\` bash
-  $ docker run sswconsulting/codeauditor --token ${token} --url <URL> --buildId [BUILDID]
+  $ docker run sswconsulting/codeauditor --token ${token} --url <URL> 
   \`\`\``;
 
   const instructions = `
   ## SSW CodeAuditor
   Scan any website for broken links and [HTML Issues](https://htmlhint.com) by running the following command:
   \`\`\` bash
-  $ docker run sswconsulting/codeauditor --token ${token} --url <URL> --buildId [BUILDID]
+  $ docker run sswconsulting/codeauditor --token ${token} --url <URL> 
+  \`\`\`
+
+  If you don't you your scan to be uploaded publicly, simply add --private
+  \`\`\` bash
+  $ docker run sswconsulting/codeauditor --token ${token} --url <URL> --private
   \`\`\`
 
   Include [Lighthouse](https://developers.google.com/web/tools/lighthouse) Audit:
@@ -117,6 +122,25 @@
           --token ${token} --url <URL> 
   \`\`\`
   `;
+  const instructionSteps = `
+  ## Instruction to scan an URL 
+  ### On Windows 
+  \`\`\` bash
+  1. Download Docker for Windows at https://docs.docker.com/docker-for-windows/install/
+  2. Follow the installation steps and run Docker
+  3. On CodeAuditor, copy the following command: docker run sswconsulting/codeauditor --token ${token} --url <URL>
+  4. Open Windows Powershell and paste the above command, repace <URL> with your designated url 
+  5. Once scan is complete, a result script will display which gives you a link to your scan result page
+  \`\`\`
+
+  ### On Mac 
+  \`\`\` bash
+  1. Download Docker for Mac at https://docs.docker.com/docker-for-mac/install/
+  2. Follow the installation steps and run Docker
+  3. On CodeAuditor, copy the following command: docker run sswconsulting/codeauditor --token ${token} --url <URL>
+  4. Open the Terminal and paste the above command, repace <URL> with your designated url 
+  5. Once scan is complete, a result script will display which gives you a link to your scan result page
+  \`\`\``;
 </script>
 
 <div class="container mx-auto">
@@ -160,6 +184,9 @@
       <article class="markdown-body mt-5">
         {@html marked(systemRequirements)}
       </article>
+      <article class="markdown-body mt-5">
+      {@html marked(instructionSteps)}
+    </article>
     </div>
   {/if}
 
