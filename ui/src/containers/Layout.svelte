@@ -96,6 +96,7 @@
     </div>
   </nav>
   <Route {currentRoute} {params} />
+</main>
   <footer class="py-6 text-white md:py-4 lg:py-2">
     <section class="main-container">
       <div class="xl:mx-6">
@@ -123,33 +124,21 @@
               class="footer-link footer-facebook"
               href="https://www.facebook.com/SSW.page"
             >
-              FIND US ON
-            </a>
-            <span class="px-2">|</span>
-            <a
-              class="footer-link footer-html"
-              href="https://www.w3.org/html/logo/faq.html"
-            >
-              HTML
+              FIND US ON FACEBOOK
             </a>
           </div>
         </div>
         <hr class="border-gray-800 my-2" />
         <div class="flex flex-col md:flex-row justify-between mx-6">
           <div class="py-2">
-            Our website is under{" "}
+            Our website is under
             <a
               class="footer-link"
               href="https://rules.ssw.com.au/WebSites/RulestoBetterWebsites-Deployment/Pages/Do-your-developers-deploy-manually.aspx"
             >
-              CONSTANT CONTINUOUS DEPLOYMENT
+              CONSTANT CONTINUOUS DEPLOYMENT.
             </a>
-            . Last deployed 10/03/2021
-            <a
-              class="footer-link"
-              href="https://github.com/SSWConsulting/SSW.Rules/releases/latest"
-            />
-            )
+            Last deployed 10/03/2021
           </div>
           <div class="md:text-right py-2">
             Powered by{" "}
@@ -165,7 +154,6 @@
       </div>
     </section>
   </footer>
-</main>
 
 <style>
   .brand {
