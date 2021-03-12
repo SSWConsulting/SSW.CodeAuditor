@@ -338,7 +338,7 @@ exports.processBrokenLinks = (
 ) => {
 	const __getBadResults = (allUrls) =>
 		allUrls
-		.filter((url) => url['Status Code'] !== '200')
+		.filter((url) => url['Status Code'] === '404')
 		.map((x) => ({
 			src: x.Source || '',
 			dst: x.Destination || '',
