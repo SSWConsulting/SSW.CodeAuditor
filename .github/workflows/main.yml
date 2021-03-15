@@ -18,14 +18,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run a multi-line script
+        env:
+          FIREBASETOKEN: ${{ secrets.FIREBASETOKEN }}
         run: |
-          echo "::set-output name=date::$(date +'%Y-%m-%d')"
           cd ui
           npm install
           npm run deploy
           cd ../api/functions
           npm install
           npm run deploy
-        env:
-          FIREBASETOKEN: ${{ secrets.FIREBASETOKEN }}
-          BUILDDATE: ${{ steps.date.outputs.date }}
