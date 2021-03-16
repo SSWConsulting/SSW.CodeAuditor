@@ -3,7 +3,6 @@
   import { Navigate, navigateTo } from "svelte-router-spa";
   import { userSession, userName, isLoggedIn } from "../stores.js";
   import { scale } from "svelte/transition";
-  // import { preval } from "preval.macro";
 
   export let currentRoute;
 
@@ -15,7 +14,7 @@
 
   const showMenu = () => (menu = !menu);
 
-  // const dateTimeStamp = preval`module.exports = new Date().getTime();`;
+  const buildTimeStamp = __myapp.env.TIME
 </script>
 
 <main class="container mx-auto">
@@ -138,7 +137,7 @@
             >
               CONSTANT CONTINUOUS DEPLOYMENT.
             </a>
-            Last deployed 10/03/2021
+            Last deployed {buildTimeStamp}
           </div>
           <div class="md:text-right py-2">
             Powered by{" "}
