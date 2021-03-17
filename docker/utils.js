@@ -153,7 +153,7 @@ const runHtmlHint = async (url) => {
 					  mapAttrs = parser.getMapAttrs(event.attrs),
 					  col = event.col + tagName.length + 1,
 					if (tagName === "pre" || tagName === "code") {
-					  if (!("class" in mapAttrs)) {
+					  if (!("class" in mapAttrs) || !(mapAttrs['class'].includes('language'))) {
 						reporter.warn(
 						  "Code blocks must contain a language specifier.",
 						  event.line,
