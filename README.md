@@ -30,31 +30,31 @@ SSW CodeAuditor is a code and link analysis tool that allows users to identify b
 ### Home Page
 
 <p align='center'>
-<img src="ui/public/images/dashboard.png" width="700"/>
+<img width="700" alt="image" src="https://user-images.githubusercontent.com/67776356/111554107-cd7b6080-87d9-11eb-9fdd-02ece996a9d4.png">
 </p>
 
-### Link Auditor Tab
+### Links Tab
 
 <p align='center'>
-<img src="https://user-images.githubusercontent.com/67776356/93558059-f2744f80-f9bf-11ea-8454-8cf1df8b5a30.png" width="700"/>
+<img width="700" alt="image" src="https://user-images.githubusercontent.com/67776356/111554211-fef42c00-87d9-11eb-95e5-a166696776af.png">
 </p>
 
 ### Code Issue Tab (HTML Hint)
 
 <p align='center'>
-<img src="https://user-images.githubusercontent.com/67776356/93558242-5bf45e00-f9c0-11ea-8c8e-0237f9a02435.png" width="700"/>
+<img width="700" alt="image" src="https://user-images.githubusercontent.com/67776356/111554237-087d9400-87da-11eb-880f-96af1c7cf07a.png">
 </p>
 
 ### Lighthouse Audit Tab
 
 <p align='center'>
-<img src="https://user-images.githubusercontent.com/67776356/93558287-775f6900-f9c0-11ea-9709-aae03f67c5eb.png" width="700"/>
+<img width="700" alt="image" src="https://user-images.githubusercontent.com/67776356/111554329-39f65f80-87da-11eb-9f6e-76ee2275eaf1.png">
 </p>
 
 ### Artillery Load Test Tab
 
 <p align='center'>
-<img src="https://user-images.githubusercontent.com/67776356/93558358-a07ff980-f9c0-11ea-8318-2abccb14106c.png" width="700"/>
+<img width="3008" alt="image" src="https://user-images.githubusercontent.com/67776356/111554279-1e8b5480-87da-11eb-8776-ee1d276b1235.png">
 </p>
 
 ## To start contributing to CodeAuditor:
