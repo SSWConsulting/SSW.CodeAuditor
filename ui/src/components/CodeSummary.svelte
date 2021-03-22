@@ -8,7 +8,7 @@
   export let value = {};
 
   function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return x.toLocaleString()
   }
 
   $: codeSummary = getCodeSummary(value);
@@ -35,20 +35,20 @@
   {/if}
 
   {#if codeSummary.html || codeSummary.code}
-    <div class="col-span-1 text-start">
-      <span class="block whitespace-no-wrap font-sans">CODE ERRORS</span>
-      <span
-        class="font-sans font-bold block lg:inline-block"
-        title={(codeSummary.codeIssueList || '') + '\n\n\n' + (codeSummary.htmlIssueList || '')}>
-        {numberWithCommas((codeSummary.htmlErrors || 0) + (codeSummary.codeErrors || 0))}
-      </span>
-    </div>
+  <div class="col-span-1 text-start">
+    <span class="block whitespace-no-wrap font-sans">BAD CODES</span>
+    <span
+      class="font-sans font-bold block lg:inline-block"
+      title={(codeSummary.codeIssueList || '') + '\n\n\n' + (codeSummary.htmlIssueList || '')}>
+      {numberWithCommas((codeSummary.htmlWarnings || 0) + (codeSummary.codeWarnings || 0))}
+    </span>
+  </div>
     <div class="col-span-1 text-start">
       <span class="block whitespace-no-wrap font-sans">CODE WARNINGS</span>
       <span
         class="font-sans font-bold block lg:inline-block"
         title={(codeSummary.codeIssueList || '') + '\n\n\n' + (codeSummary.htmlIssueList || '')}>
-        {numberWithCommas((codeSummary.htmlWarnings || 0) + (codeSummary.codeWarnings || 0))}
+        {numberWithCommas((codeSummary.htmlErrors || 0) + (codeSummary.codeErrors || 0))}
       </span>
     </div>
   {/if}
