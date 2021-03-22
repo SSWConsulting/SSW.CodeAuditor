@@ -54,8 +54,11 @@
       : HTMLERRORS;
 
   let hiddenRows = {};
-  const hideShow = key =>
+  let showHide = false;
+  const hideShow = (key) => {
+    showHide = true;
     (hiddenRows[key] = key in hiddenRows ? !hiddenRows[key] : true);
+  }
 </script>
 
 {#each allErrors as error}
@@ -87,7 +90,7 @@
       {error.error}
     </a>
   </div>
-  {#if !hiddenRows[error.error]}
+  {#if showHide && !hiddenRows[error.error]}
     <table
       class="table-auto mb-8"
       in:fade={{ y: 100, duration: 400 }}
