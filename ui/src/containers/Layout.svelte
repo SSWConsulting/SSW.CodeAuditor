@@ -95,8 +95,8 @@
     </div>
   </nav>
   <Route {currentRoute} {params} />
-</main>
-  <footer class="py-6 text-white md:py-4 lg:py-2">
+  </main>
+  <footer class="footer py-6 text-white md:py-4 lg:py-2">
     <section class="main-container">
       <div class="xl:mx-6">
         <div class="mx-6 flex flex-col-reverse md:flex-row justify-between">
@@ -166,11 +166,4 @@
     max-width: 100%;
     height: auto;
   }
-  footer {
-    position: fixed; 
-    padding: 10px 10px 0px 10px; 
-    bottom: 0; 
-    width: 100%; 
-    height: auto;  
-}
 </style>
