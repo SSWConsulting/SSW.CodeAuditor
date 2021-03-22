@@ -7,6 +7,10 @@
   } from "../utils/utils.js";
   export let value = {};
 
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   $: codeSummary = getCodeSummary(value);
 </script>
 
@@ -36,7 +40,7 @@
       <span
         class="font-sans font-bold block lg:inline-block"
         title={(codeSummary.codeIssueList || '') + '\n\n\n' + (codeSummary.htmlIssueList || '')}>
-        {(codeSummary.htmlErrors || 0) + (codeSummary.codeErrors || 0)}
+        {numberWithCommas((codeSummary.htmlErrors || 0) + (codeSummary.codeErrors || 0))}
       </span>
     </div>
     <div class="col-span-1 text-start">
@@ -44,7 +48,7 @@
       <span
         class="font-sans font-bold block lg:inline-block"
         title={(codeSummary.codeIssueList || '') + '\n\n\n' + (codeSummary.htmlIssueList || '')}>
-        {(codeSummary.htmlWarnings || 0) + (codeSummary.codeWarnings || 0)}
+        {numberWithCommas((codeSummary.htmlWarnings || 0) + (codeSummary.codeWarnings || 0))}
       </span>
     </div>
   {/if}
