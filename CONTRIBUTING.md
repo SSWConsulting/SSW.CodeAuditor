@@ -21,7 +21,7 @@
 
 The general flow for making a change to the script host is:
 1. 👍🏻 Make sure your Github account is in SSW Organization
-2. 🍴 Fork the repo (add the fork via `git remote add me <clone url here>`
+2. 🍴 Clone the repo (clone the project via `git clone <clone url here>`
 3. 🌳 Create a branch for your change (generally use dev) (`git checkout -b my-change`)
 4. 🛠 Make your change
 5. ✔️ Test your changes
