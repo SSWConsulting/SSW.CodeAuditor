@@ -87,3 +87,18 @@ In order to test your code changes in the API
 - Run the api (`npm run serve`)
 - View the changes in *console.firebase.google* (contact Anthony for authentication)
 
+## Adding your own custom HTML rule
+1. In your local repo, go to ```docker/customHtmlRules.js```
+2. Have a look at [HtmlHint Rules](https://github.com/htmlhint/HTMLHint/tree/master/src/core/rules) to see how you can code your own custom rule
+3. Add your custom Rule under "// Add new custom rule below" using the following template:
+```javascript
+ HTMLHint.addRule({
+        id: "your-custom-rule-name",
+        description: "Your custom rule description",
+        init: function (parser, reporter) {
+          // Your rule logic
+          });
+        },
+      })
+```
+4. Make a Pull Request and have it checked by CodeAuditor Team
