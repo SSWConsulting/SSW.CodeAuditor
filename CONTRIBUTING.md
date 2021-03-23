@@ -90,7 +90,7 @@ In order to test your code changes in the API
 ## Adding your own custom HTML rule
 1. In your local repo, go to ```docker/customHtmlRules.js```
 2. Have a look at [HtmlHint Rules](https://github.com/htmlhint/HTMLHint/tree/master/src/core/rules) to see how you can code your own custom rule
-3. Add your custom Rule under "// Add new custom rule below" using the following template:
+3. Add your custom Rule under ```// Add new custom rule below``` using the following template:
 ```javascript
  HTMLHint.addRule({
         id: "your-custom-rule-name",
