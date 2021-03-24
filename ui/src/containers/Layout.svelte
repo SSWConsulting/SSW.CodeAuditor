@@ -17,7 +17,8 @@
   const buildTimeStamp = __myapp.env.TIME
 </script>
 
-<main class="container mx-auto">
+<body class="flex flex-col min-h-screen ">
+<main class="flex-grow container mx-auto">
   <nav class="flex items-center justify-between p-6 nav">
     <div class="flex items-center flex-wrap text-white mr-6">
       <a href="/" class="sm:w-4/4 lg:w-1/3 ml-2">
@@ -133,7 +134,7 @@
             Our website is under
             <a
               class="footer-link"
-              href="https://rules.ssw.com.au/WebSites/RulestoBetterWebsites-Deployment/Pages/Do-your-developers-deploy-manually.aspx"
+              href="https://www.ssw.com.au/rules/rules-to-better-continuous-deployment-with-tfs"
             >
               CONSTANT CONTINUOUS DEPLOYMENT.
             </a>
@@ -153,6 +154,7 @@
       </div>
     </section>
   </footer>
+</body>
 
 <style>
   .brand {
@@ -166,4 +168,12 @@
     max-width: 100%;
     height: auto;
   }
+  body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+main {
+  flex: 1; /* Or flex-grow: 1;*/
+}
 </style>
