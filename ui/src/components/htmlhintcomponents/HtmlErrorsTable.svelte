@@ -1,8 +1,8 @@
 <script>
   import { updateQuery, CONSTS } from "../../utils/utils.js";
-  import Icon from "../miscComponents/Icon.svelte";
-  import Modal from "../miscComponents/Modal.svelte";
-  import LoadingFlat from "../miscComponents/LoadingFlat.svelte";
+  import Icon from "../misccomponents/Icon.svelte";
+  import Modal from "../misccomponents/Modal.svelte";
+  import LoadingFlat from "../misccomponents/LoadingFlat.svelte";
   import ParsedQuery from "query-string";
   import HtmlErrorsBySource from "./HtmlErrorsBySource.svelte";
   import HtmlErrorsByReason from "./HtmlErrorsByReason.svelte";

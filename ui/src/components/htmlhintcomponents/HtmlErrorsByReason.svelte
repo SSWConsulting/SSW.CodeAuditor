@@ -12,7 +12,7 @@
   import { fade, fly } from "svelte/transition";
   import { ignoredUrls$ } from "../../stores.js";
   import { createEventDispatcher } from "svelte";
-  import Icon from "../miscComponents/Icon.svelte";
+  import Icon from "../misccomponents/Icon.svelte";
 
   export let errors = [];
   export let codeIssues = [];

@@ -9,7 +9,7 @@
   } from "../../utils/utils.js";
   import { fade } from "svelte/transition";
   import { createEventDispatcher } from "svelte";
-  import Icon from "../miscComponents/Icon.svelte";
+  import Icon from "../misccomponents/Icon.svelte";
 
   export let errors = [];
   export let codeIssues = [];
