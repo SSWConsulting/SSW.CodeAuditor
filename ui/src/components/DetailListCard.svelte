@@ -6,9 +6,11 @@
   import formatDistanceToNow from "date-fns/formatDistanceToNow";
   import { format } from "date-fns";
   import { printTimeDiff } from "../utils/utils";
-  import { Navigate, navigateTo } from "svelte-router-spa";
-  import ArtilleryDetailTable from "./ArtilleryDetailTable.svelte";
+  import { navigateTo } from "svelte-router-spa";
   export let value = {};
+  function numberWithCommas(x) {
+    return x.toLocaleString()
+  }
 </script>
 
 <style>
@@ -67,7 +69,7 @@
           </span>
           <br />
           <span class="font-sans text-base pt-2">
-            Scanned: {val.totalScanned} items
+            Scanned: {numberWithCommas(val.totalScanned)} items
           </span>
         </div>
 
