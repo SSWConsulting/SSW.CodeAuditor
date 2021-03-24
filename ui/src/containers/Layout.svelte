@@ -133,7 +133,7 @@
             Our website is under
             <a
               class="footer-link"
-              href="https://rules.ssw.com.au/WebSites/RulestoBetterWebsites-Deployment/Pages/Do-your-developers-deploy-manually.aspx"
+              href="https://www.ssw.com.au/rules/rules-to-better-continuous-deployment-with-tfs"
             >
               CONSTANT CONTINUOUS DEPLOYMENT.
             </a>
