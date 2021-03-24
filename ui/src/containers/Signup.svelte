@@ -3,8 +3,8 @@
   import { navigateTo } from "svelte-router-spa";
   import TextField from "../components/misccomponents/TextField.svelte";
   import { isValidEmail } from "../utils/utils.js";
-  import SocialLogin from "../components/miscComponents/SocialLogin.svelte";
-  import LoadingCirle from "../components/miscComponents/LoadingCircle.svelte";
+  import SocialLogin from "../components/misccomponents/SocialLogin.svelte";
+  import LoadingCirle from "../components/misccomponents/LoadingCircle.svelte";
 
   let loading;
   const signup = () => {
