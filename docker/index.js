@@ -255,7 +255,9 @@ const processAndUpload = async (
 		[atr, atrSummary] = readArtilleryReport(ARTILLERYFOLDER, writeLog);
 	}
 
+	const {addCustomHtmlRule} = require('./customHtmlRules')
 	if (args.htmlhint) {
+		addCustomHtmlRule();
 		[htmlIssuesSummary, htmlIssues] = await runHtmlHint(
 			args.url,
 			results,

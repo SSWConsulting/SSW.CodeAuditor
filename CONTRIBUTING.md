@@ -21,7 +21,7 @@
 
 The general flow for making a change to the script host is:
 1. 👍🏻 Make sure your Github account is in SSW Organization
-2. 🍴 Fork the repo (add the fork via `git remote add me <clone url here>`
+2. 🍴 Clone the repo (clone the project via `git clone <clone url here>`
 3. 🌳 Create a branch for your change (generally use dev) (`git checkout -b my-change`)
 4. 🛠 Make your change
 5. ✔️ Test your changes
@@ -58,7 +58,7 @@ $ npm run dev
 2. To build your docker image, first make sure that Docker is running then type the following in your terminal:
 ``` bash
 $ cd docker
-$ sh build.sh
+$ docker build -t sswconsulting/codeauditor .
 ```
 
 3. To run the Firebase API, type the following in your terminal:
@@ -87,3 +87,18 @@ In order to test your code changes in the API
 - Run the api (`npm run serve`)
 - View the changes in *console.firebase.google* (contact Anthony for authentication)
 
+## Adding your own custom HTML rule
+1. In your local repo, go to ```docker/customHtmlRules.js```
+2. Have a look at [HtmlHint Rules](https://github.com/htmlhint/HTMLHint/tree/master/src/core/rules) to see how you can code your own custom rule
+3. Add your custom Rule under ```// Add new custom rule below``` using the following template:
+```javascript
+ HTMLHint.addRule({
+        id: "your-custom-rule-name",
+        description: "Your custom rule description",
+        init: function (parser, reporter) {
+          // Your rule logic
+          });
+        },
+      })
+```
+4. Make a Pull Request and have it checked by CodeAuditor Team

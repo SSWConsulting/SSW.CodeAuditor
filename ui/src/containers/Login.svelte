@@ -1,12 +1,10 @@
 <script>
   import firebase from "firebase/app";
   import "firebase/auth";
-  import Icon from "../components/Icon.svelte";
-  import LoadingCirle from "../components/LoadingCirle.svelte";
-  import { createEventDispatcher, onMount } from "svelte";
-  import { Navigate, navigateTo } from "svelte-router-spa";
-  import TextField from "../components/TextField.svelte";
-  import SocialLogin from "../components/SocialLogin.svelte";
+  import LoadingCirle from "../components/misccomponents/LoadingCircle.svelte";
+  import { navigateTo } from "svelte-router-spa";
+  import TextField from "../components/misccomponents/TextField.svelte";
+  import SocialLogin from "../components/misccomponents/SocialLogin.svelte";
   import { oauthLoginError } from "../stores.js";
 
   let loading;
