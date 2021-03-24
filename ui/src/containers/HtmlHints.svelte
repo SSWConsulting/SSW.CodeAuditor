@@ -10,13 +10,13 @@
   import HtmlErrorsTable from "../components/htmlhintcomponents/HtmlErrorsTable.svelte";
   import Breadcrumbs from "../components/misccomponents/Breadcrumbs.svelte";
   import Toastr from "../components/misccomponents/Toastr.svelte";
-  import BuildDetailsCard from "../components/detailcard/BuildDetailsCard.svelte";
+  import BuildDetailsCard from "../components/detailcardcomponents/BuildDetailsCard.svelte";
   import { CONSTS, HTMLERRORS } from "../utils/utils.js";
   import { ExportToCsv } from "export-to-csv";
   import { Navigate } from "svelte-router-spa";
   import LoadingFlat from "../components/misccomponents/LoadingFlat.svelte";
   import UpdateIgnoreUrl from "../components/misccomponents/UpdateIgnoreUrl.svelte";
-  import CardSummary from "../components/summaryitem/CardSummary.svelte";
+  import CardSummary from "../components/summaryitemcomponents/CardSummary.svelte";
 
   export let currentRoute;
 

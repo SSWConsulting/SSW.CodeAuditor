@@ -2,10 +2,10 @@
   import formatDistanceToNow from "date-fns/formatDistanceToNow";
   import { printTimeDiff, getCodeSummary } from "../../utils/utils";
   import { navigateTo } from "svelte-router-spa";
-  import LighthouseSummary from "../summaryitem/LighthouseSummary.svelte";
-  import CodeSummary from "../summaryitem/CodeSummary.svelte";
-  import LinkSummary from "../summaryitem/LinkSummary.svelte";
-  import ArtillerySummary from "../summaryitem/ArtillerySummary.svelte";
+  import LighthouseSummary from "../summaryitemcomponents/LighthouseSummary.svelte";
+  import CodeSummary from "../summaryitemcomponents/CodeSummary.svelte";
+  import LinkSummary from "../summaryitemcomponents/LinkSummary.svelte";
+  import ArtillerySummary from "../summaryitemcomponents/ArtillerySummary.svelte";
   import { format } from "date-fns";
 
   export let build = {};

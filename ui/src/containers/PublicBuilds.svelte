@@ -1,7 +1,7 @@
 <script>
   import { isLoggedIn } from "../stores";
   import marked from "marked";
-  import BuildList from "../components/buildlistcardcomponent/BuildList.svelte";
+  import BuildList from "../components/buildlistcardcomponents/BuildList.svelte";
   import LoadingFlat from "../components/misccomponents/LoadingFlat.svelte";
 
   import { sort, descend, prop } from "ramda";

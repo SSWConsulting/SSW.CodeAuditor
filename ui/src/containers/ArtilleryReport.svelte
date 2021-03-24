@@ -1,21 +1,21 @@
 <script>
   import { Navigate } from "svelte-router-spa";
-  import ArtilleryDetailTable from "../components/artilerycomponents/ArtilleryDetailTable.svelte";
+  import ArtilleryDetailTable from "../components/artillerycomponents/ArtilleryDetailTable.svelte";
   import Breadcrumbs from "../components/misccomponents/Breadcrumbs.svelte";
   import LoadingFlat from "../components/misccomponents/LoadingFlat.svelte";
   import Tabs from "../components/misccomponents/Tabs.svelte";
   import Icon from "../components/misccomponents/Icon.svelte";
   import Toastr from "../components/misccomponents/Toastr.svelte";
   import slug from "slug";
-  import ArtilleryChart from "../components/artilerycomponents/ArtilleryChart.svelte";
+  import ArtilleryChart from "../components/artillerycomponents/ArtilleryChart.svelte";
   import {
     getBuildDetails,
     userSession$,
   } from "../stores";
   import { CONSTS } from "../utils/utils";
-  import CardSummary from "../components/summaryitem/CardSummary.svelte";
-  import UpdateArtilleryThreshold from "../components/artilerycomponents/UpdateArtilleryThreshold.svelte";
-  import ArtilleryDetailsCard from "../components/artilerycomponents/ArtilleryDetailsCard.svelte";
+  import CardSummary from "../components/summaryitemcomponents/CardSummary.svelte";
+  import UpdateArtilleryThreshold from "../components/artillerycomponents/UpdateArtilleryThreshold.svelte";
+  import ArtilleryDetailsCard from "../components/artillerycomponents/ArtilleryDetailsCard.svelte";
 
   export let currentRoute;
 

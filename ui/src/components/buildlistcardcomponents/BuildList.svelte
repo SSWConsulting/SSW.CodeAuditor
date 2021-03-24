@@ -4,7 +4,7 @@
   import LightHouseAverageCard from "./LightHouseAverageCard.svelte";
   import LinkSummaryCard from "./LinkSummaryCard.svelte";
   import CodeSummaryCard from "./CodeSummaryCard.svelte";
-  import DetailListCard from "../detailCard/DetailListCard.svelte";
+  import DetailListCard from "../detailcardcomponents/DetailListCard.svelte";
   import HistoryChart from "./HistoryChart.svelte";
   import UrlSummaryCard from "./UrlSummaryCard.svelte";
   import { groupBy, props } from "ramda";

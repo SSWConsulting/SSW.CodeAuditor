@@ -1,7 +1,7 @@
 <script>
   import firebase from "firebase/app";
   import "firebase/auth";
-  import LoadingCirle from "./LoadingCirle.svelte";
+  import LoadingCirle from "./LoadingCircle.svelte";
 
   let loading;
   const login = promise => {

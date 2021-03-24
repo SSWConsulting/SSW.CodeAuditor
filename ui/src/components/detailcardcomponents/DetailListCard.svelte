@@ -1,8 +1,8 @@
 <script>
-  import CodeSummary from "../summaryitem/CodeSummary.svelte";
-  import LinkSummary from "../summaryitem/LinkSummary.svelte";
-  import LighthouseSummary from "../summaryitem/LighthouseSummary.svelte";
-  import ArtillerySummary from "../summaryitem/ArtillerySummary.svelte";
+  import CodeSummary from "../summaryitemcomponents/CodeSummary.svelte";
+  import LinkSummary from "../summaryitemcomponents/LinkSummary.svelte";
+  import LighthouseSummary from "../summaryitemcomponents/LighthouseSummary.svelte";
+  import ArtillerySummary from "../summaryitemcomponents/ArtillerySummary.svelte";
   import formatDistanceToNow from "date-fns/formatDistanceToNow";
   import { format } from "date-fns";
   import { printTimeDiff } from "../../utils/utils";

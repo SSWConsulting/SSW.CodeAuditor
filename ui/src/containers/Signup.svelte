@@ -4,7 +4,7 @@
   import TextField from "../components/misccomponents/TextField.svelte";
   import { isValidEmail } from "../utils/utils.js";
   import SocialLogin from "../components/miscComponents/SocialLogin.svelte";
-  import LoadingCirle from "../components/miscComponents/LoadingCirle.svelte";
+  import LoadingCirle from "../components/miscComponents/LoadingCircle.svelte";
 
   let loading;
   const signup = () => {

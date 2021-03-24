@@ -4,7 +4,7 @@
   import marked from "marked";
   import Icon from "../components/misccomponents/Icon.svelte";
   import firebase from "firebase/app";
-  import BuildList from "../components/buildlistcardcomponent/BuildList.svelte";
+  import BuildList from "../components/buildlistcardcomponents/BuildList.svelte";
   import LoadingFlat from "../components/misccomponents/LoadingFlat.svelte";
 
   import { fade, fly } from "svelte/transition";

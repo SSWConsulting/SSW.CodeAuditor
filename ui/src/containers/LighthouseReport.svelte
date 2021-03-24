@@ -14,7 +14,7 @@
   import LighthouseDetailsCard from "../components/lighthousecomponents/LighthouseDetailsCard.svelte";
   import UpdatePerfThreshold from "../components/lighthousecomponents/UpdatePerfThreshold.svelte";
   import { CONSTS } from "../utils/utils";
-  import CardSummary from "../components/summaryitem/CardSummary.svelte";
+  import CardSummary from "../components/summaryitemcomponents/CardSummary.svelte";
 
   export let currentRoute;
 
