@@ -1,12 +1,10 @@
 <script>
-  import { createEventDispatcher } from "svelte";
   import firebase from "firebase/app";
-  import Icon from "../components/Icon.svelte";
-  import { Navigate, navigateTo } from "svelte-router-spa";
-  import TextField from "../components/TextField.svelte";
+  import { navigateTo } from "svelte-router-spa";
+  import TextField from "../components/miscComponents/TextField.svelte";
   import { isValidEmail } from "../utils/utils.js";
-  import SocialLogin from "../components/SocialLogin.svelte";
-  import LoadingCirle from "../components/LoadingCirle.svelte";
+  import SocialLogin from "../components/miscComponents/SocialLogin.svelte";
+  import LoadingCirle from "../components/miscComponents/LoadingCirle.svelte";
 
   let loading;
   const signup = () => {

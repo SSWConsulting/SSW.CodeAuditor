@@ -1,18 +1,13 @@
 <script>
-  import TextField from "./TextField.svelte";
   import formatDistanceToNow from "date-fns/formatDistanceToNow";
   import addDays from "date-fns/addDays";
-  import { Navigate, navigateTo } from "svelte-router-spa";
-  import { fade, fly } from "svelte/transition";
   import LightHouseAverageCard from "./LightHouseAverageCard.svelte";
   import LinkSummaryCard from "./LinkSummaryCard.svelte";
   import CodeSummaryCard from "./CodeSummaryCard.svelte";
-  import DetailListCard from "./DetailListCard.svelte";
-  import Icon from "./Icon.svelte";
-  import { printTimeDiff } from "../utils/utils";
+  import DetailListCard from "../detailCard/DetailListCard.svelte";
   import HistoryChart from "./HistoryChart.svelte";
   import UrlSummaryCard from "./UrlSummaryCard.svelte";
-  import { forEach, groupBy, props } from "ramda";
+  import { groupBy, props } from "ramda";
 
   export let builds = [];
   export let lastBuild;

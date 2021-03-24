@@ -8,11 +8,11 @@
     getHtmlHintIssues,
     getCodeErrorsByRule,
     HTMLERRORS
-  } from "../utils/utils.js";
+  } from "../../utils/utils.js";
   import { fade, fly } from "svelte/transition";
-  import { ignoredUrls$ } from "../stores.js";
+  import { ignoredUrls$ } from "../../stores.js";
   import { createEventDispatcher } from "svelte";
-  import Icon from "./Icon.svelte";
+  import Icon from "../miscComponents/Icon.svelte";
 
   export let errors = [];
   export let codeIssues = [];

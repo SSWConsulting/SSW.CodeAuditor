@@ -1,19 +1,18 @@
 <script>
   import formatDistanceToNow from "date-fns/formatDistanceToNow";
-  import { Navigate, navigateTo } from "svelte-router-spa";
-  import { printTimeDiff, CONSTS } from "../utils/utils";
-  import LighthouseSummary from "./LighthouseSummary.svelte";
+  import { printTimeDiff, CONSTS } from "../../utils/utils";
+  import LighthouseSummary from "../summaryItem/LighthouseSummary.svelte";
   import { createEventDispatcher } from "svelte";
   import { format } from "date-fns";
-  import CodeSummary from "./CodeSummary.svelte";
-  import LinkSummary from "./LinkSummary.svelte";
-  import ArtillerySummary from "./ArtillerySummary.svelte";
+  import CodeSummary from "../summaryItem/CodeSummary.svelte";
+  import LinkSummary from "../summaryItem/LinkSummary.svelte";
+  import ArtillerySummary from "../summaryItem/ArtillerySummary.svelte";
 
   export let build = {};
   let val = build;
 
   const dispatch = createEventDispatcher();
-  const perfThreshold = () => dispatch("perfThreshold");
+  const artilleryThreshold = () => dispatch("artilleryThreshold");
 </script>
 
 <style>
@@ -43,29 +42,35 @@
   <div class="px-6 py-2">
     <div class="grid grid-rows-2 grid-flow-col">
       <div class="row-span-4 col-span-2">
-        <span
-          class="font-sans text-base font-bold text-gray-800 underline">{format(new Date(val.buildDate), 'dd.MM.yyyy')}</span>
+        <span class="font-sans text-base font-bold text-gray-800 underline">
+          {format(new Date(val.buildDate), 'dd.MM.yyyy')}
+        </span>
         <br />
-        <span class="font-sans text-base pt-2">Last scanned:
+        <span class="font-sans text-base pt-2">
+          Last scanned:
           {formatDistanceToNow(new Date(val.buildDate), { addSuffix: true })}
           at
-          {format(new Date(val.buildDate), 'hh:mma')}</span>
+          {format(new Date(val.buildDate), 'hh:mma')}
+        </span>
         <br />
-        <span class="font-sans text-base pt-2">Duration:
+        <span class="font-sans text-base pt-2">
+          Duration:
           {printTimeDiff(+val.scanDuration)}
         </span>
         <br />
-        <span class="font-sans text-base pt-2">Scanned:
+        <span class="font-sans text-base pt-2">
+          Scanned:
           {val.totalScanned}
-          items</span>
+          items
+        </span>
         <br />
         <br />
         {#if val.buildDate}
           <button
-            on:click={perfThreshold}
+            on:click={artilleryThreshold}
             class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
-              border hover:border-transparent rounded">
-            <span class="ml-2">Set Performance Threshold</span>
+            border hover:border-transparent rounded">
+            <span class="ml-2">Set Load Test Threshold</span>
           </button>
         {/if}
       </div>

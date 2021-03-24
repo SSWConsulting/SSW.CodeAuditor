@@ -1,19 +1,19 @@
 <script>
   import formatDistanceToNow from "date-fns/formatDistanceToNow";
-  import { printTimeDiff, getCodeSummary } from "../utils/utils";
-  import Modal from "./Modal.svelte";
-  import { navigateTo } from "svelte-router-spa";
-  import LighthouseSummary from "./LighthouseSummary.svelte";
-  import CodeSummary from "./CodeSummary.svelte";
-  import LinkSummary from "./LinkSummary.svelte";
-  import ArtillerySummary from "./ArtillerySummary.svelte";
-  import Icon from "./Icon.svelte";
-  import Toastr from "./Toastr.svelte";
+  import { Navigate, navigateTo } from "svelte-router-spa";
+  import { printTimeDiff, CONSTS } from "../../utils/utils";
+  import LighthouseSummary from "../summaryItem/LighthouseSummary.svelte";
+  import { createEventDispatcher } from "svelte";
   import { format } from "date-fns";
+  import CodeSummary from "../summaryItem/CodeSummary.svelte";
+  import LinkSummary from "../summaryItem/LinkSummary.svelte";
+  import ArtillerySummary from "../summaryItem/ArtillerySummary.svelte";
 
   export let build = {};
   let val = build;
-  $: codeSummary = getCodeSummary(build);
+
+  const dispatch = createEventDispatcher();
+  const perfThreshold = () => dispatch("perfThreshold");
 </script>
 
 <style>
@@ -32,18 +32,16 @@
 </style>
 
 <div class="overflow-hidden shadow-lg my-5">
-  {#if val.finalEval === 'FAIL'}
+  {#if val.finalEval == 'FAIL'}
     <div class="bg-red-500 h-2" />
-  {:else if val.finalEval === 'PASS'}
+  {:else if val.finalEval == 'PASS'}
     <div class="bg-green-500 h-2" />
   {:else}
     <div class="bg-orange-500 h-2" />
   {/if}
 
   <div class="px-6 py-2">
-    <div
-      class="grid grid-rows-2 grid-flow-col"
-      on:click={() => navigateTo(`/build/${val.runId}`)}>
+    <div class="grid grid-rows-2 grid-flow-col">
       <div class="row-span-4 col-span-2">
         <span
           class="font-sans text-base font-bold text-gray-800 underline">{format(new Date(val.buildDate), 'dd.MM.yyyy')}</span>
@@ -60,26 +58,30 @@
         <span class="font-sans text-base pt-2">Scanned:
           {val.totalScanned}
           items</span>
+        <br />
+        <br />
+        {#if val.buildDate}
+          <button
+            on:click={perfThreshold}
+            class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
+              border hover:border-transparent rounded">
+            <span class="ml-2">Set Performance Threshold</span>
+          </button>
+        {/if}
       </div>
 
-      <div
-        class="row-span-1 text-sm my-2"
-        on:click={() => navigateTo(`/build/${val.runId}`)}>
+      <div class="row-span-1 text-sm my-2">
         <h2><span class="font-bold font-sans text-gray-600">LINKS</span></h2>
         <LinkSummary value={val} />
       </div>
 
-      <div
-        class="row-span-1 text-sm my-2"
-        on:click={() => navigateTo(`/build/${val.runId}`)}>
+      <div class="row-span-1 text-sm my-2">
         <h2><span class="font-bold font-sans text-gray-600">CODE</span></h2>
         <CodeSummary value={val} />
       </div>
 
       {#if val.performanceScore}
-        <div
-          class="row-span-1 text-sm my-2"
-          on:click={() => navigateTo(`/build/${val.runId}`)}>
+        <div class="row-span-1 text-sm my-2">
           <h2>
             <span class="font-bold font-sans text-gray-600">LIGHTHOUSE</span>
           </h2>
@@ -87,9 +89,7 @@
         </div>
       {/if}
 
-      <div
-        class="row-span-1 text-sm my-2"
-        on:click={() => navigateTo(`/build/${val.runId}`)}>
+      <div class="row-span-1 text-sm my-2">
         <h2>
           <span class="font-bold font-sans text-gray-600">LOAD TEST</span>
         </h2>

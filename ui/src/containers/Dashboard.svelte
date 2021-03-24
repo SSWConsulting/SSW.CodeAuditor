@@ -2,10 +2,10 @@
   import { userApi, userSession$ } from "../stores";
   import { onDestroy } from "svelte";
   import marked from "marked";
-  import Icon from "../components/Icon.svelte";
+  import Icon from "../components/miscComponents/Icon.svelte";
   import firebase from "firebase/app";
-  import BuildList from "../components/BuildList.svelte";
-  import LoadingFlat from "../components/LoadingFlat.svelte";
+  import BuildList from "../components/buildListCardComponent/BuildList.svelte";
+  import LoadingFlat from "../components/miscComponents/LoadingFlat.svelte";
 
   import { fade, fly } from "svelte/transition";
   import { sort, descend, prop } from "ramda";

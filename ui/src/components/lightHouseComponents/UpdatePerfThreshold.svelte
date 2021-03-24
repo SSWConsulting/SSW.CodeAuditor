@@ -1,13 +1,10 @@
 <script>
-  import { userApi, userSession$, ignoredUrls$ } from "../stores";
-  import SelectField from "../components/SelectField.svelte";
-  import LighthouseSummary from "./LighthouseSummary.svelte";
-  import Toastr from "../components/Toastr.svelte";
-  import TextField from "../components/TextField.svelte";
-  import { Navigate, navigateTo } from "svelte-router-spa";
-  import { CONSTS, getPerfScore } from "../utils/utils.js";
-  import Modal from "../components/Modal.svelte";
-  import LoadingFlat from "./LoadingFlat.svelte";
+  import LighthouseSummary from "../summaryItem/LighthouseSummary.svelte";
+  import Toastr from "../miscComponents/Toastr.svelte";
+  import TextField from "../miscComponents/TextField.svelte";
+  import { CONSTS, getPerfScore } from "../../utils/utils.js";
+  import Modal from "../miscComponents/Modal.svelte";
+  import LoadingFlat from "../miscComponents/LoadingFlat.svelte";
 
   export let url;
   export let threshold = {};

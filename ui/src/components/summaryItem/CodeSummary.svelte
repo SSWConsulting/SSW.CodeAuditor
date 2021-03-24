@@ -1,10 +1,7 @@
 <script>
-  import Icon from "./Icon.svelte";
   import {
-    getCodeIssuesDescriptions,
-    getCodeSummary,
-    getHtmlIssuesDescriptions,
-  } from "../utils/utils.js";
+   getCodeSummary,
+  } from "../../utils/utils";
   export let value = {};
 
   function numberWithCommas(x) {

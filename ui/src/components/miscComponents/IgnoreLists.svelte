@@ -3,7 +3,7 @@
   import Toastr from "./Toastr.svelte";
   import LoadingCirle from "./LoadingCirle.svelte";
   import Icon from "./Icon.svelte";
-  import { userSession$, deleteIgnoreUrl } from "../stores";
+  import { userSession$, deleteIgnoreUrl } from "../../stores";
 
   export let builds = [];
 

@@ -1,15 +1,11 @@
 <script>
-  import { userApi, userSession$, isLoggedIn } from "../stores";
-  import { onDestroy } from "svelte";
+  import { isLoggedIn } from "../stores";
   import marked from "marked";
-  import Icon from "../components/Icon.svelte";
-  import firebase from "firebase/app";
-  import BuildList from "../components/BuildList.svelte";
-  import LoadingFlat from "../components/LoadingFlat.svelte";
+  import BuildList from "../components/buildListCardComponent/BuildList.svelte";
+  import LoadingFlat from "../components/miscComponents/LoadingFlat.svelte";
 
-  import { fade, fly } from "svelte/transition";
   import { sort, descend, prop } from "ramda";
-  import { CONSTS, truncate } from "../utils/utils.js";
+  import { CONSTS } from "../utils/utils.js";
 
   let canClose;
   let lastBuild;

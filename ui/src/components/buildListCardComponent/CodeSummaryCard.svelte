@@ -1,10 +1,8 @@
 <script>
   import {
-    getCodeIssuesDescriptions,
     getCodeSummary,
-    getHtmlIssuesDescriptions
-  } from "../utils/utils.js";
-  import { Navigate, navigateTo } from "svelte-router-spa";
+  } from "../../utils/utils.js";
+  import { navigateTo } from "svelte-router-spa";
   export let value = {};
 
   $: codeSummary = getCodeSummary(value[0]);

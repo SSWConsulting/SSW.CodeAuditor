@@ -5,25 +5,18 @@
     userSession$,
     getIgnoreList
   } from "../stores";
-  import { onMount } from "svelte";
-  import Tabs from "../components/Tabs.svelte";
-  import Icon from "../components/Icon.svelte";
+  import Tabs from "../components/miscComponents/Tabs.svelte";
   import { pipe, map, flatten } from "ramda";
-  import HtmlErrorsTable from "../components/HtmlErrorsTable.svelte";
-  import Breadcrumbs from "../components/Breadcrumbs.svelte";
-  import slug from "slug";
-  import Toastr from "../components/Toastr.svelte";
-  import BuildDetailsCard from "../components/BuildDetailsCard.svelte";
-  import { CONSTS, getPerfScore, HTMLERRORS, printTimeDiff } from "../utils/utils.js";
+  import HtmlErrorsTable from "../components/htmlhintComponents/HtmlErrorsTable.svelte";
+  import Breadcrumbs from "../components/miscComponents/Breadcrumbs.svelte";
+  import Toastr from "../components/miscComponents/Toastr.svelte";
+  import BuildDetailsCard from "../components/detailCard/BuildDetailsCard.svelte";
+  import { CONSTS, HTMLERRORS } from "../utils/utils.js";
   import { ExportToCsv } from "export-to-csv";
-  import { Navigate, navigateTo } from "svelte-router-spa";
-  import LoadingFlat from "../components/LoadingFlat.svelte";
-  import Modal from "../components/Modal.svelte";
-  import UpdateIgnoreUrl from "../components/UpdateIgnoreUrl.svelte";
-  import UpdatePerfThreshold from "../components/UpdatePerfThreshold.svelte";
-  import { format } from 'date-fns';
-  import formatDistanceToNow from "date-fns/formatDistanceToNow";
-  import CardSummary from "../components/CardSummary.svelte";
+  import { Navigate } from "svelte-router-spa";
+  import LoadingFlat from "../components/miscComponents/LoadingFlat.svelte";
+  import UpdateIgnoreUrl from "../components/miscComponents/UpdateIgnoreUrl.svelte";
+  import CardSummary from "../components/summaryItem/CardSummary.svelte";
 
   export let currentRoute;
 
@@ -146,10 +139,4 @@
   bind:show={ignoreUrlShown}
   user={$userSession$} />
 
-<UpdatePerfThreshold
-  url={scanUrl}
-  loading={loadingPerfSettings}
-  {lastBuild}
-  {threshold}
-  bind:show={perfThresholdShown}
-  user={$userSession$} />
+

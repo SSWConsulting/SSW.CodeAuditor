@@ -5,8 +5,8 @@
     getIgnoreList,
     loadingIgnored$
   } from "../stores";
-  import IgnoreLists from "../components/IgnoreLists.svelte";
-  import LoadingFlat from "../components/LoadingFlat.svelte";
+  import IgnoreLists from "../components/miscComponents/IgnoreLists.svelte";
+  import LoadingFlat from "../components/miscComponents/LoadingFlat.svelte";
 
   userSession$.subscribe(x => {
     if (x) {

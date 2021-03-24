@@ -1,11 +1,11 @@
 <script>
-  import { userApi, userSession$, ignoredUrls$ } from "../stores";
-  import SelectField from "../components/SelectField.svelte";
-  import Toastr from "../components/Toastr.svelte";
-  import TextField from "../components/TextField.svelte";
-  import { Navigate, navigateTo } from "svelte-router-spa";
-  import { CONSTS } from "../utils/utils.js";
-  import Modal from "../components/Modal.svelte";
+  import { ignoredUrls$ } from "../../stores";
+  import SelectField from "./SelectField.svelte";
+  import Toastr from "./Toastr.svelte";
+  import TextField from "./TextField.svelte";
+  import { Navigate } from "svelte-router-spa";
+  import { CONSTS } from "../../utils/utils";
+  import Modal from "./Modal.svelte";
 
   export let url;
   export let scanUrl;

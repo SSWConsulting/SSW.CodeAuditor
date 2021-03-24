@@ -1,27 +1,19 @@
 <script>
   import {
     getBuildDetails,
-    userApi,
     userSession$,
     getIgnoreList
   } from "../stores";
-  import { onMount } from "svelte";
-  import Tabs from "../components/Tabs.svelte";
-  import Icon from "../components/Icon.svelte";
-  import Breadcrumbs from "../components/Breadcrumbs.svelte";
-  import DetailsTable from "../components/DetailsTable.svelte";
-  import slug from "slug";
-  import Toastr from "../components/Toastr.svelte";
-  import BuildDetailsCard from "../components/BuildDetailsCard.svelte";
-  import { CONSTS, getPerfScore, printTimeDiff } from "../utils/utils.js";
+  import Tabs from "../components/miscComponents/Tabs.svelte";
+  import Breadcrumbs from "../components/miscComponents/Breadcrumbs.svelte";
+  import DetailsTable from "../components/linkauditorComponents/DetailsTable.svelte";
+  import Toastr from "../components/miscComponents/Toastr.svelte";
+  import BuildDetailsCard from "../components/detailCard/BuildDetailsCard.svelte";
   import { ExportToCsv } from "export-to-csv";
-  import { Navigate, navigateTo } from "svelte-router-spa";
-  import LoadingFlat from "../components/LoadingFlat.svelte";
-  import Modal from "../components/Modal.svelte";
-  import UpdateIgnoreUrl from "../components/UpdateIgnoreUrl.svelte";
-  import { format } from 'date-fns';
-  import formatDistanceToNow from "date-fns/formatDistanceToNow";
-  import CardSummary from "../components/CardSummary.svelte";
+  import { Navigate } from "svelte-router-spa";
+  import LoadingFlat from "../components/miscComponents/LoadingFlat.svelte";
+  import UpdateIgnoreUrl from "../components/miscComponents/UpdateIgnoreUrl.svelte";
+  import CardSummary from "../components/summaryItem/CardSummary.svelte";
 
   export let currentRoute;
 
@@ -48,15 +40,6 @@
         return x;
       })
     );
-  };
-
-  const blank = {
-    performanceScore: 0,
-    pwaScore: 0,
-    seoScore: 0,
-    accessibilityScore: 0,
-    bestPracticesScore: 0,
-    average: 0
   };
 
   const showIgnore = (mainUrl, url, user) => {

@@ -1,26 +1,21 @@
 <script>
-  import { onMount, onDestroy } from "svelte";
-  import { Navigate, navigateTo } from "svelte-router-spa";
-  import ArtilleryDetailTable from "../components/ArtilleryDetailTable.svelte";
-  import Breadcrumbs from "../components/Breadcrumbs.svelte";
-  import LoadingFlat from "../components/LoadingFlat.svelte";
-  import Tabs from "../components/Tabs.svelte";
-  import Icon from "../components/Icon.svelte";
-  import Toastr from "../components/Toastr.svelte";
+  import { Navigate } from "svelte-router-spa";
+  import ArtilleryDetailTable from "../components/artileryComponents/ArtilleryDetailTable.svelte";
+  import Breadcrumbs from "../components/miscComponents/Breadcrumbs.svelte";
+  import LoadingFlat from "../components/miscComponents/LoadingFlat.svelte";
+  import Tabs from "../components/miscComponents/Tabs.svelte";
+  import Icon from "../components/miscComponents/Icon.svelte";
+  import Toastr from "../components/miscComponents/Toastr.svelte";
   import slug from "slug";
-  import { format } from "date-fns";
-  import formatDistanceToNow from "date-fns/formatDistanceToNow";
-  import ArtilleryChart from "../components/ArtilleryChart.svelte";
+  import ArtilleryChart from "../components/artileryComponents/ArtilleryChart.svelte";
   import {
     getBuildDetails,
-    userApi,
     userSession$,
-    getIgnoreList,
   } from "../stores";
-  import { printTimeDiff, CONSTS } from "../utils/utils";
-  import CardSummary from "../components/CardSummary.svelte";
-  import UpdateArtilleryThreshold from "../components/UpdateArtilleryThreshold.svelte";
-  import ArtilleryDetailsCard from "../components/ArtilleryDetailsCard.svelte";
+  import { CONSTS } from "../utils/utils";
+  import CardSummary from "../components/summaryItem/CardSummary.svelte";
+  import UpdateArtilleryThreshold from "../components/artileryComponents/UpdateArtilleryThreshold.svelte";
+  import ArtilleryDetailsCard from "../components/artileryComponents/ArtilleryDetailsCard.svelte";
 
   export let currentRoute;
 
