@@ -1,11 +1,11 @@
 <script>
-  import CodeSummary from "./CodeSummary.svelte";
-  import LinkSummary from "./LinkSummary.svelte";
-  import LighthouseSummary from "./LighthouseSummary.svelte";
-  import ArtillerySummary from "./ArtillerySummary.svelte";
+  import CodeSummary from "../summaryitemcomponents/CodeSummary.svelte";
+  import LinkSummary from "../summaryitemcomponents/LinkSummary.svelte";
+  import LighthouseSummary from "../summaryitemcomponents/LighthouseSummary.svelte";
+  import ArtillerySummary from "../summaryitemcomponents/ArtillerySummary.svelte";
   import formatDistanceToNow from "date-fns/formatDistanceToNow";
   import { format } from "date-fns";
-  import { printTimeDiff } from "../utils/utils";
+  import { printTimeDiff } from "../../utils/utils";
   import { navigateTo } from "svelte-router-spa";
   export let value = {};
   function numberWithCommas(x) {

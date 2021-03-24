@@ -1,26 +1,21 @@
 <script>
-  import { onMount, onDestroy } from "svelte";
-  import { Navigate, navigateTo } from "svelte-router-spa";
-  import ArtilleryDetailTable from "../components/ArtilleryDetailTable.svelte";
-  import Breadcrumbs from "../components/Breadcrumbs.svelte";
-  import LoadingFlat from "../components/LoadingFlat.svelte";
-  import Tabs from "../components/Tabs.svelte";
-  import Icon from "../components/Icon.svelte";
-  import Toastr from "../components/Toastr.svelte";
+  import { Navigate } from "svelte-router-spa";
+  import ArtilleryDetailTable from "../components/artillerycomponents/ArtilleryDetailTable.svelte";
+  import Breadcrumbs from "../components/misccomponents/Breadcrumbs.svelte";
+  import LoadingFlat from "../components/misccomponents/LoadingFlat.svelte";
+  import Tabs from "../components/misccomponents/Tabs.svelte";
+  import Icon from "../components/misccomponents/Icon.svelte";
+  import Toastr from "../components/misccomponents/Toastr.svelte";
   import slug from "slug";
-  import { format } from "date-fns";
-  import formatDistanceToNow from "date-fns/formatDistanceToNow";
-  import ArtilleryChart from "../components/ArtilleryChart.svelte";
+  import ArtilleryChart from "../components/artillerycomponents/ArtilleryChart.svelte";
   import {
     getBuildDetails,
-    userApi,
     userSession$,
-    getIgnoreList,
   } from "../stores";
-  import { printTimeDiff, CONSTS } from "../utils/utils";
-  import CardSummary from "../components/CardSummary.svelte";
-  import UpdateArtilleryThreshold from "../components/UpdateArtilleryThreshold.svelte";
-  import ArtilleryDetailsCard from "../components/ArtilleryDetailsCard.svelte";
+  import { CONSTS } from "../utils/utils";
+  import CardSummary from "../components/summaryitemcomponents/CardSummary.svelte";
+  import UpdateArtilleryThreshold from "../components/artillerycomponents/UpdateArtilleryThreshold.svelte";
+  import ArtilleryDetailsCard from "../components/artillerycomponents/ArtilleryDetailsCard.svelte";
 
   export let currentRoute;
 

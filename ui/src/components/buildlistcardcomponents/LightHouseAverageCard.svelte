@@ -1,5 +1,5 @@
 <script>
-    import { getPerfScore, updateQuery } from "../utils/utils.js";
+    import { getPerfScore, updateQuery } from "../../utils/utils.js";
     import { Navigate, navigateTo } from "svelte-router-spa";
     export let value = {};
     

@@ -1,24 +1,20 @@
 <script>
-  import { onMount, onDestroy } from "svelte";
-  import { Navigate, navigateTo } from "svelte-router-spa";
-  import Breadcrumbs from "../components/Breadcrumbs.svelte";
-  import LoadingFlat from "../components/LoadingFlat.svelte";
-  import Icon from "../components/Icon.svelte";
-  import Tabs from "../components/Tabs.svelte";
-  import Toastr from "../components/Toastr.svelte";
+  import { onMount } from "svelte";
+  import { Navigate } from "svelte-router-spa";
+  import Breadcrumbs from "../components/misccomponents/Breadcrumbs.svelte";
+  import LoadingFlat from "../components/misccomponents/LoadingFlat.svelte";
+  import Icon from "../components/misccomponents/Icon.svelte";
+  import Tabs from "../components/misccomponents/Tabs.svelte";
+  import Toastr from "../components/misccomponents/Toastr.svelte";
   import slug from "slug";
   import {
     getBuildDetails,
-    userApi,
     userSession$,
-    getIgnoreList,
   } from "../stores";
-  import LighthouseDetailsCard from "../components/LighthouseDetailsCard.svelte";
-  import UpdatePerfThreshold from "../components/UpdatePerfThreshold.svelte";
-  import { printTimeDiff, CONSTS } from "../utils/utils";
-  import { format } from "date-fns";
-  import formatDistanceToNow from "date-fns/formatDistanceToNow";
-  import CardSummary from "../components/CardSummary.svelte";
+  import LighthouseDetailsCard from "../components/lighthousecomponents/LighthouseDetailsCard.svelte";
+  import UpdatePerfThreshold from "../components/lighthousecomponents/UpdatePerfThreshold.svelte";
+  import { CONSTS } from "../utils/utils";
+  import CardSummary from "../components/summaryitemcomponents/CardSummary.svelte";
 
   export let currentRoute;
 

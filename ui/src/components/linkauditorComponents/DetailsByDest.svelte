@@ -1,9 +1,9 @@
-<script>
+w<script>
   import { fade, fly } from "svelte/transition";
-  import Icon from "./Icon.svelte";
+  import Icon from "../misccomponents/Icon.svelte";
   import { groupBy, props } from "ramda";
-  import { ignoredUrls$, deleteIgnoreUrl } from "../stores.js";
-  import { isInIgnored } from "../utils/utils.js";
+  import { ignoredUrls$, deleteIgnoreUrl } from "../../stores.js";
+  import { isInIgnored } from "../../utils/utils.js";
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
 

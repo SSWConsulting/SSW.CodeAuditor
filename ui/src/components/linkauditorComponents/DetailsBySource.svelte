@@ -1,10 +1,10 @@
 <script>
   import { groupBy, props } from "ramda";
-  import { isInIgnored } from "../utils/utils.js";
+  import { isInIgnored } from "../../utils/utils.js";
   import { fade, fly } from "svelte/transition";
-  import { ignoredUrls$ } from "../stores.js";
+  import { ignoredUrls$ } from "../../stores.js";
   import { createEventDispatcher } from "svelte";
-  import Icon from "./Icon.svelte";
+  import Icon from "../misccomponents/Icon.svelte";
   export let builds = [];
   const dispatch = createEventDispatcher();
   const ignore = url => dispatch("ignore", url);

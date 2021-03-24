@@ -1,14 +1,11 @@
 <script>
-  import { groupBy, props } from "ramda";
-  import DetailsByDest from "./DetailsByDest.svelte";
-  import { updateQuery, CONSTS } from "../utils/utils.js";
-  import Icon from "./Icon.svelte";
-  import Modal from "./Modal.svelte";
-  import LoadingFlat from "./LoadingFlat.svelte";
+  import { updateQuery, CONSTS } from "../../utils/utils.js";
+  import Icon from "../miscComponents/Icon.svelte";
+  import Modal from "../miscComponents/Modal.svelte";
+  import LoadingFlat from "../miscComponents/LoadingFlat.svelte";
   import ParsedQuery from "query-string";
   import HtmlErrorsBySource from "./HtmlErrorsBySource.svelte";
   import HtmlErrorsByReason from "./HtmlErrorsByReason.svelte";
-  import DetailsByReason from "./DetailsByReason.svelte";
   import { onMount } from "svelte";
   import { createEventDispatcher } from "svelte";
 

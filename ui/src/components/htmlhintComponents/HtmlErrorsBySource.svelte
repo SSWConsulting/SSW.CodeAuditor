@@ -1,16 +1,15 @@
 <script>
-  import { groupBy, props, slice } from "ramda";
+  import { slice } from "ramda";
   import {
     isInIgnored,
     HTMLERRORS,
     getHtmlHintIssues,
     getCodeErrorRules,
     getCodeErrorsByFile
-  } from "../utils/utils.js";
-  import { fade, fly } from "svelte/transition";
-  import { ignoredUrls$ } from "../stores.js";
+  } from "../../utils/utils.js";
+  import { fade } from "svelte/transition";
   import { createEventDispatcher } from "svelte";
-  import Icon from "./Icon.svelte";
+  import Icon from "../miscComponents/Icon.svelte";
 
   export let errors = [];
   export let codeIssues = [];

@@ -1,11 +1,7 @@
 <script>
   import firebase from "firebase/app";
   import "firebase/auth";
-  import LoadingCirle from "../components/LoadingCirle.svelte";
-  import { createEventDispatcher, onMount } from "svelte";
-  import { Navigate } from "svelte-router-spa";
-  import TextField from "../components/TextField.svelte";
-  import { oauthLoginError } from "../stores.js";
+  import LoadingCirle from "./LoadingCircle.svelte";
 
   let loading;
   const login = promise => {

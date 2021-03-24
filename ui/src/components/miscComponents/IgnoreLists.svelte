@@ -1,9 +1,9 @@
 <script>
   import format from "date-fns/format";
   import Toastr from "./Toastr.svelte";
-  import LoadingCirle from "./LoadingCirle.svelte";
+  import LoadingCirle from "./LoadingCircle.svelte";
   import Icon from "./Icon.svelte";
-  import { userSession$, deleteIgnoreUrl } from "../stores";
+  import { userSession$, deleteIgnoreUrl } from "../../stores";
 
   export let builds = [];
 

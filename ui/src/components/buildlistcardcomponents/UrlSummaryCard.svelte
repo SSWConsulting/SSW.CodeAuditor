@@ -1,7 +1,7 @@
 <script>
-  import { printTimeDiff } from "../utils/utils";
+  import { printTimeDiff } from "../../utils/utils";
   import formatDistanceToNow from "date-fns/formatDistanceToNow";
-  import { Navigate, navigateTo } from "svelte-router-spa";
+  import { navigateTo } from "svelte-router-spa";
   export let value = {};
   export let url;
 

@@ -1,8 +1,5 @@
 <script>
-  import { getPerfScore, updateQuery } from "../utils/utils.js";
-  import ParsedQuery from "query-string";
-  import Icon from "./Icon.svelte";
-  import { navigateTo } from "svelte-router-spa";
+  import { getPerfScore } from "../../utils/utils.js";
   export let value = {};
   $: perf = getPerfScore(value);
 </script>

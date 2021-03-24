@@ -1,6 +1,6 @@
 <script>
-  import { Navigate, navigateTo } from "svelte-router-spa";
-  import { getPerfScore, getCodeSummary, getArtilleryResult } from "../utils/utils.js";
+  import { Navigate } from "svelte-router-spa";
+  import { getPerfScore, getCodeSummary, getArtilleryResult } from "../../utils/utils";
   export let build = {};
   export let displayMode = "";
 
