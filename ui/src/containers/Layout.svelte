@@ -173,7 +173,7 @@
   min-height: 100vh;
   flex-direction: column;
 }
-main {
+  main {
   flex: 1; /* Or flex-grow: 1;*/
 }
 </style>
