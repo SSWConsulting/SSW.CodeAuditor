@@ -58,7 +58,7 @@ $ npm run dev
 2. To build your docker image, first make sure that Docker is running then type the following in your terminal:
 ``` bash
 $ cd docker
-$ sh build.sh
+$ docker build -t sswconsulting/codeauditor .
 ```
 
 3. To run the Firebase API, type the following in your terminal:
