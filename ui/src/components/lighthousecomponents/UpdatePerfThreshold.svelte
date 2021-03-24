@@ -1,10 +1,10 @@
 <script>
   import LighthouseSummary from "../summaryitemcomponents/LighthouseSummary.svelte";
-  import Toastr from "../miscComponents/Toastr.svelte";
-  import TextField from "../miscComponents/TextField.svelte";
+  import Toastr from "../misccomponents/Toastr.svelte";
+  import TextField from "../misccomponents/TextField.svelte";
   import { CONSTS, getPerfScore } from "../../utils/utils.js";
-  import Modal from "../miscComponents/Modal.svelte";
-  import LoadingFlat from "../miscComponents/LoadingFlat.svelte";
+  import Modal from "../misccomponents/Modal.svelte";
+  import LoadingFlat from "../misccomponents/LoadingFlat.svelte";
 
   export let url;
   export let threshold = {};
