@@ -1,5 +1,5 @@
 <script>
-  import { userApi, userSession$ } from "../stores";
+  import { userSession$ } from "../stores";
   import { onDestroy } from "svelte";
   import marked from "marked";
   import Icon from "../components/misccomponents/Icon.svelte";
