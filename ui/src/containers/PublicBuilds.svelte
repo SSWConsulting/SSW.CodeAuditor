@@ -1,8 +1,8 @@
 <script>
   import { isLoggedIn } from "../stores";
   import marked from "marked";
-  import BuildList from "../components/buildListCardComponent/BuildList.svelte";
-  import LoadingFlat from "../components/miscComponents/LoadingFlat.svelte";
+  import BuildList from "../components/buildlistcardcomponent/BuildList.svelte";
+  import LoadingFlat from "../components/misccomponents/LoadingFlat.svelte";
 
   import { sort, descend, prop } from "ramda";
   import { CONSTS } from "../utils/utils.js";

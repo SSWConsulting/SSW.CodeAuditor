@@ -1,7 +1,7 @@
 <script>
   import firebase from "firebase/app";
   import { navigateTo } from "svelte-router-spa";
-  import TextField from "../components/miscComponents/TextField.svelte";
+  import TextField from "../components/misccomponents/TextField.svelte";
   import { isValidEmail } from "../utils/utils.js";
   import SocialLogin from "../components/miscComponents/SocialLogin.svelte";
   import LoadingCirle from "../components/miscComponents/LoadingCirle.svelte";

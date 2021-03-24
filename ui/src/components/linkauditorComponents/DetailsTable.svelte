@@ -1,7 +1,7 @@
 <script>
   import DetailsByDest from "./DetailsByDest.svelte";
   import { updateQuery } from "../../utils/utils.js";
-  import Icon from "../miscComponents/Icon.svelte";
+  import Icon from "../misccomponents/Icon.svelte";
   import ParsedQuery from "query-string";
   import DetailsBySource from "./DetailsBySource.svelte";
   import DetailsByReason from "./DetailsByReason.svelte";

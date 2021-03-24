@@ -1,12 +1,12 @@
 <script>
   import formatDistanceToNow from "date-fns/formatDistanceToNow";
   import { printTimeDiff, CONSTS } from "../../utils/utils";
-  import LighthouseSummary from "../summaryItem/LighthouseSummary.svelte";
+  import LighthouseSummary from "../summaryitem/LighthouseSummary.svelte";
   import { createEventDispatcher } from "svelte";
   import { format } from "date-fns";
-  import CodeSummary from "../summaryItem/CodeSummary.svelte";
-  import LinkSummary from "../summaryItem/LinkSummary.svelte";
-  import ArtillerySummary from "../summaryItem/ArtillerySummary.svelte";
+  import CodeSummary from "../summaryitem/CodeSummary.svelte";
+  import LinkSummary from "../summaryitem/LinkSummary.svelte";
+  import ArtillerySummary from "../summaryitem/ArtillerySummary.svelte";
 
   export let build = {};
   let val = build;

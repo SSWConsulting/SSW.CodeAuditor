@@ -5,18 +5,18 @@
     userSession$,
     getIgnoreList
   } from "../stores";
-  import Tabs from "../components/miscComponents/Tabs.svelte";
+  import Tabs from "../components/misccomponents/Tabs.svelte";
   import { pipe, map, flatten } from "ramda";
-  import HtmlErrorsTable from "../components/htmlhintComponents/HtmlErrorsTable.svelte";
-  import Breadcrumbs from "../components/miscComponents/Breadcrumbs.svelte";
-  import Toastr from "../components/miscComponents/Toastr.svelte";
-  import BuildDetailsCard from "../components/detailCard/BuildDetailsCard.svelte";
+  import HtmlErrorsTable from "../components/htmlhintcomponents/HtmlErrorsTable.svelte";
+  import Breadcrumbs from "../components/misccomponents/Breadcrumbs.svelte";
+  import Toastr from "../components/misccomponents/Toastr.svelte";
+  import BuildDetailsCard from "../components/detailcard/BuildDetailsCard.svelte";
   import { CONSTS, HTMLERRORS } from "../utils/utils.js";
   import { ExportToCsv } from "export-to-csv";
   import { Navigate } from "svelte-router-spa";
-  import LoadingFlat from "../components/miscComponents/LoadingFlat.svelte";
-  import UpdateIgnoreUrl from "../components/miscComponents/UpdateIgnoreUrl.svelte";
-  import CardSummary from "../components/summaryItem/CardSummary.svelte";
+  import LoadingFlat from "../components/misccomponents/LoadingFlat.svelte";
+  import UpdateIgnoreUrl from "../components/misccomponents/UpdateIgnoreUrl.svelte";
+  import CardSummary from "../components/summaryitem/CardSummary.svelte";
 
   export let currentRoute;
 

@@ -1,5 +1,5 @@
 <script>
-  import LighthouseSummary from "../summaryItem/LighthouseSummary.svelte";
+  import LighthouseSummary from "../summaryitem/LighthouseSummary.svelte";
   import Toastr from "../miscComponents/Toastr.svelte";
   import TextField from "../miscComponents/TextField.svelte";
   import { CONSTS, getPerfScore } from "../../utils/utils.js";

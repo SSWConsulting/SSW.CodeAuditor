@@ -1,7 +1,7 @@
 <script>
   import firebase from "firebase/app";
   import "firebase/auth";
-  import Spinner from "./components/miscComponents/Spinner.svelte";
+  import Spinner from "./components/misccomponents/Spinner.svelte";
   import { Router } from "svelte-router-spa";
   import { routes } from "./routes";
   import {
