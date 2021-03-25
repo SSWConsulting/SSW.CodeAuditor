@@ -17,6 +17,7 @@ const {
 	uploadHtmlHintReport,
 	addPerformanceThreshold,
 	addLoadThreshold,
+	addHTMLHintRules,
 	uploadCodeAuditorReport,
 } = require('./commands');
 const {
@@ -27,6 +28,7 @@ const {
 	getConfig,
 	getPerformanceThreshold,
 	getLoadThreshold,
+	getHTMLHintRules,
 	getScanDetails,
 	getIgnoredUrls,
 } = require('./queries');
@@ -75,6 +77,12 @@ app.put('/config/:api/loadthreshold', async (req, res) =>
 
 app.get('/config/:api/loadthreshold/:url', async (req, res) =>
 	res.json(await getLoadThreshold(req.params.api, req.params.url)));
+
+app.put('/config/:api/htmlhintrules', async (req, res) =>
+	res.json(await addHTMLHintRules(req.params.api, req.body)));
+
+app.get('/config/:api/htmlhintrules/:url', async (req, res) =>
+	res.json(await getHTMLHintRules(req.params.api, req.params.url)));
 
 app.post('/config/:api/ignore', async (req, res) => {
 	const {

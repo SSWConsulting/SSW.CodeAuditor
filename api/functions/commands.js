@@ -81,6 +81,17 @@ exports.addLoadThreshold = (api, data) => {
 	);
 };
 
+exports.addHTMLHintRules = (api, data) => {
+	const entGen = azure.TableUtilities.entityGenerator;
+	return updateEntity(
+		TABLE.htmlhintrules,
+		replaceProp(data, {
+			PartitionKey: entGen.String(api),
+			RowKey: entGen.String(slug(data.url)),
+		})
+	);
+};
+
 exports.insertScanSummary = (api, buildId, runId, buildDate, data) => {
 	var entGen = azure.TableUtilities.entityGenerator;
 	// use Log tail pattern to get native sort from Table Storage

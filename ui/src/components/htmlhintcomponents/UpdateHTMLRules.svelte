@@ -14,28 +14,20 @@
   let saving;
   let addedSuccess;
 
-  let group = 1;
 	let selection = [];
 
   const dismiss = () => (show = false);
-  const clearAll = () =>
-    (threshold = {
-      latencyMedian: 0,
-      latencyP95: 0,
-      latencyP99: 0,
-      errors: 0,
-    });
   const useLastBuild = () => (threshold = getLoadThresholdResult(lastBuild));
 
   const updateIgnore = async () => {
     saving = true;
     const res = await fetch(
-      `${CONSTS.API}/api/config/${user.apiKey}/loadthreshold`,
+      `${CONSTS.API}/api/config/${user.apiKey}/htmlhintrules`,
       {
         method: "PUT",
         body: JSON.stringify({
           url,
-          ...threshold,
+          selection,
         }),
         headers: { "Content-Type": "application/json" },
       }
@@ -49,6 +41,30 @@
       throw new Error("Failed to load");
     }
   };
+  
+  const htmlHintRules = [
+     { rule: "tagname-lowercase" },
+     { rule: "attr-lowercase" }, 
+     { rule: "attr-value-double-quotes" },
+     { rule: "attr-value-not-empty" },
+     { rule: "attr-no-duplication" },
+     { rule: "doctype-first" },
+     { rule: "tag-pair" },
+     { rule: "empty-tag-not-self-closed" },
+     { rule: "spec-char-escape" },
+     { rule: "id-unique" },
+     { rule: "src-not-empty" },
+     { rule: "title-require" },
+     { rule: "alt-require" },
+     { rule: "doctype-html5" },
+     { rule: "style-disabled" },
+     { rule: "inline-style-disabled" },
+     { rule: "inline-script-disabled" },
+     { rule: "id-class-ad-disabled" },
+     { rule: "href-abs-or-rel" },
+     { rule: "attr-unsafe-chars" },
+     { rule: "head-script-disabled" },
+  ];
 </script>
 
 <Modal
@@ -63,24 +79,30 @@
   {:else}
     <!-- else content here -->
     <h3 class="font-bold">HTML Hint Rules: </h3>
-    <label><input type="checkbox" bind:group={selection} value={1} /> alt-require</label>
-    <label><input type="checkbox" bind:group={selection} value={2} /> attr-lowercase</label>
-    <label><input type="checkbox" bind:group={selection} value={3} /> src-not-empty</label>
-    <label><input type="checkbox" bind:group={selection} value={4} /> tagname-lowercase</label>
-    <label><input type="checkbox" bind:group={selection} value={5} /> tag-pair</label>
-    <label><input type="checkbox" bind:group={selection} value={6} /> inline-style-disabled</label>
+    {#each htmlHintRules as rule}
+      <label>
+        <input type="checkbox" bind:group={selection} value={rule.rule} /> 
+          <a 
+          class="text-blue-700" 
+          href="https://htmlhint.com/docs/user-guide/rules/{rule.rule}">
+            {rule.rule}
+          </a>
+      </label>
+    {/each}
     <br />
     <h3 class="font-bold">Custom Rules: </h3>
     <label><input type="checkbox" bind:group={selection} value={1} /> language-code-block</label>
-    <label><input type="checkbox" bind:group={selection} value={2} /> ssw-rocks</label>
     <br/>
-    <a class="underline text-blue-700">How to add your own Custom Rule</a>
-
+    <a 
+      class="underline text-blue-700" 
+      href="https://github.com/SSWConsulting/SSW.CodeAuditor/blob/main/CONTRIBUTING.md">
+      How to add your own Custom Rule
+    </a>
   {/if}
 </Modal>
 
 <Toastr bind:show={addedSuccess}>
-  <p class="font-bold">Artillery Load threshold updated for</p>
+  <p class="font-bold">HTML Rules updated for</p>
   <span class="inline-block align-baseline font-bold text-sm link">
     <a href={url} target="_blank">{url}</a>
   </span>
