@@ -93,7 +93,7 @@ In order to test your code changes in the API
 3. Add your custom Rule under ```// Add new custom rule below``` using the following template:
 ```javascript
  HTMLHint.addRule({
-        id: "your-custom-rule-name",
+        id: "your-custom-rule-id",
         description: "Your custom rule description",
         init: function (parser, reporter) {
           // Your rule logic
@@ -101,4 +101,12 @@ In order to test your code changes in the API
         },
       })
 ```
-4. Make a Pull Request and have it checked by CodeAuditor Team
+4. Go to ```docker/api.js```: On the last export function named ```htmlHintConfig```, add your new custom rule id to the top of the list
+E.g: 
+```javascript
+ exports.htmlHintConfig = {
+   your-custom-rule-id: true,
+   ...
+ }
+```
+5. Make a Pull Request and have it checked by CodeAuditor Team
