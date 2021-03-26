@@ -38,6 +38,11 @@
           <Navigate to="/howitworks">How It Works</Navigate>
         </span>
       </span>
+      <span class="underline text-white text-lg lg:text-xl pt-4 lg:pt-0 lg:mx-4">
+        <span class="hover:text-red-600">        
+          <Navigate to="/rules">CodeAuditor Rules</Navigate>
+        </span>
+      </span>
     </div>
 
     <div class="w-full block flex-grow lg:flex lg:items-center">
