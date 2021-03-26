@@ -19,7 +19,7 @@
 
 <body class="flex flex-col min-h-screen ">
 <main class="flex-grow container mx-auto">
-  <nav class="flex items-center justify-between p-6 nav">
+  <nav class="flex items-center justify-between p-6 mt-4 nav">
     <div class="flex items-center flex-wrap text-white mr-6">
       <a href="/" class="sm:w-4/4 lg:w-1/3 ml-2">
         <img
@@ -172,6 +172,7 @@
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+  padding: 0;
 }
   main {
   flex: 1; /* Or flex-grow: 1;*/
