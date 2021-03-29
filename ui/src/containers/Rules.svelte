@@ -14,18 +14,18 @@
       <div>
         <table class="table-auto">
           <tr>
-            <th>Title</th>
+            <th>Issue</th>
             <th>SSW Rule</th>
             <th>Description</th>
           </tr>
           <tr>
             <td>language-code-block-require</td>
-            <td><a href="https://www.ssw.com.au/rules/">SSW Rules</a></td>
+            <td><a href="https://www.ssw.com.au/rules/set-language-on-code-blocks">Markdown – Do you set rules on code blocks</a></td>
             <td>Code blocks must contain a language specifier.</td>
           </tr>
           <tr>
             <td>TODO: incorrect-agile-scrum-terms</td>
-            <td><a href="https://www.ssw.com.au/rules/">SSW Rules</a></td>
+            <td></td>
             <td>Pages that reference Agile Scrum must have correct case for Scrum terminology.</td>
           </tr>
         </table>
