@@ -28,11 +28,19 @@
           alt="CodeAuditor"
         />
       </a>
-      <span
-        class="w-1/3 underline text-white text-lg lg:text-xl pt-4 lg:pt-0 lg:mx-10"
-      >
+      <span class="underline text-white text-lg lg:text-xl pt-4 lg:pt-0 lg:mx-4">
         <span class="hover:text-red-600">
-          <Navigate to="/explore">Explore</Navigate>
+          <Navigate to="/explore">Explore</Navigate> 
+        </span>
+      </span>
+      <span class="underline text-white text-lg lg:text-xl pt-4 lg:pt-0 lg:mx-4">
+        <span class="hover:text-red-600">        
+          <Navigate to="/howitworks">How It Works</Navigate>
+        </span>
+      </span>
+      <span class="underline text-white text-lg lg:text-xl pt-4 lg:pt-0 lg:mx-4">
+        <span class="hover:text-red-600">        
+          <Navigate to="/rules">CodeAuditor Rules</Navigate>
         </span>
       </span>
     </div>

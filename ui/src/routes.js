@@ -6,6 +6,8 @@ import HtmlHints from './containers/HtmlHints.svelte';
 import BuildDetails from './containers/BuildDetails.svelte';
 import Public from './containers/Public.svelte';
 import PublicBuilds from './containers/PublicBuilds.svelte';
+import HowItWorks from './containers/HowItWorks.svelte';
+import Rules from './containers/Rules.svelte';
 import LighthouseReport from './containers/LighthouseReport.svelte';
 import ArtilleryReport from './containers/ArtilleryReport.svelte';
 import AppLayout from './containers/Layout.svelte';
@@ -32,6 +34,16 @@ const routes = [
 	{
 		name: '/signup',
 		component: Signup,
+	},
+	{
+		name: '/howitworks',
+		component: HowItWorks,
+		layout: AppLayout
+	},
+	{
+		name: '/rules',
+		component: Rules,
+		layout: AppLayout
 	},
 	{
 		name: '/build/:id',
