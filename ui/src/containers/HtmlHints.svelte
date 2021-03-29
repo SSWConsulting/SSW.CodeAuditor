@@ -18,6 +18,7 @@
   import CardSummary from "../components/summaryitemcomponents/CardSummary.svelte";
   import UpdateHtmlRules from "../components/htmlhintcomponents/UpdateHTMLRules.svelte"
   import HtmlHintDetailsCard from "../components/htmlhintcomponents/HTMLHintDetailsCard.svelte"
+  import slug from "slug";
 
   export let currentRoute;
 
@@ -105,7 +106,7 @@
     loadingHtmlHintSettings = true;
     try {
       const res = await fetch(
-        `${CONSTS.API}/api/config/${user.apiKey}/loadthreshold/${slug(scanUrl)}`
+        `${CONSTS.API}/api/config/${user.apiKey}/htmlhintrules/${slug(scanUrl)}`
       );
       const result = await res.json();
       threshold = result || blank;

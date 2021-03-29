@@ -1,14 +1,13 @@
 <script>
   import Toastr from "../misccomponents/Toastr.svelte";
-  import { CONSTS, getLoadThresholdResult } from "../../utils/utils";
+  import { CONSTS } from "../../utils/utils";
   import Modal from "../misccomponents//Modal.svelte";
   import LoadingFlat from "../misccomponents/LoadingFlat.svelte";
-
+  import slug from "slug";
+  
   export let url;
-  export let threshold = {};
   export let show;
   export let loading;
-  export let lastBuild;
   export let user;
 
   let saving;
@@ -17,30 +16,66 @@
 	let selection = [];
 
   const dismiss = () => (show = false);
-  const useLastBuild = () => (threshold = getLoadThresholdResult(lastBuild));
+
+  const getSelectedRules = async() => {
+    await fetch(
+        `${CONSTS.API}/api/config/${user.apiKey}/htmlhintrules/${slug(url)}`).then(
+          res => res.json()
+        ).then(
+          data => console.log(data.selection)
+        )
+  }
 
   const updateIgnore = async () => {
     saving = true;
-    const res = await fetch(
-      `${CONSTS.API}/api/config/${user.apiKey}/htmlhintrules`,
-      {
-        method: "PUT",
-        body: JSON.stringify({
-          url,
-          selection,
-        }),
-        headers: { "Content-Type": "application/json" },
+    if (selection.length > 0) {
+      const res = await fetch(
+        `${CONSTS.API}/api/config/${user.apiKey}/htmlhintrules`,
+        {
+          method: "PUT",
+          body: JSON.stringify({
+            url,
+            selection,
+          }),
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+  
+      if (res.ok) {
+        saving = false;
+        show = false;
+        addedSuccess = true;
+      } else {
+        throw new Error("Failed to load");
       }
-    );
-
-    if (res.ok) {
-      saving = false;
-      show = false;
-      addedSuccess = true;
-    } else {
-      throw new Error("Failed to load");
     }
+    alert('select something')
   };
+
+  const htmlHintConfig = {
+    "language-code-block-require": false,
+    "tagname-lowercase": false,
+    "attr-lowercase": false,
+    "attr-value-double-quotes": false,
+    "attr-value-not-empty": false,
+    "attr-no-duplication": false,
+    "doctype-first": false,
+    "tag-pair": false,
+    "empty-tag-not-self-closed": false,
+    "spec-char-escape": false,
+    "id-unique": false,
+    "src-not-empty": false,
+    "title-require": false,
+    "alt-require": false,
+    "doctype-html5": false,
+    "style-disabled": false,
+    "inline-style-disabled": false,
+    "inline-script-disabled": false,
+    "id-class-ad-disabled": false,
+    "href-abs-or-rel": false,
+    "attr-unsafe-chars": false,
+    "head-script-disabled": false
+};
   
   const htmlHintRules = [
      { rule: "tagname-lowercase" },
