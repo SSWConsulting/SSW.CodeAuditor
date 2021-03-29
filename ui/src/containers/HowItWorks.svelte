@@ -37,7 +37,7 @@
   \`\`\``;
 
   const instruction = `
-  ## SSW CodeAuditor - How It Works
+  ## How to Use CodeAuditor
   Scan any website for broken links, [HTML Issues](https://htmlhint.com), [Google Lighthouse Audit](https://developers.google.com/web/tools/lighthouse) and [Artillery Load Test](https://artillery.io/) by running the following command:
   \`\`\` bash
   $ docker container run ${tokenText} sswconsulting/codeauditor --lighthouse --url <URL>
@@ -74,23 +74,54 @@
 </script>
 
 <div class="container mx-auto">
-<div class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
-    <article class="markdown-body">
-      {@html marked(instruction)}
+  <div class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
+    <article class="markdown-body mt-5">
+      <h1>SSW CodeAuditor - How It Works</h1>
+      <h3>What is CodeAuditor?</h3>
+      <p>
+        CodeAuditor is a tool that automatically scans your website and its code to check 
+      </p>
+      <ul>
+        <li>Broken Links - links to pages which do not work</li>
+        <li>HTML Formatting - which may cause pages to be incorrectly shown to the user.</li>
+        <li>Lighthouse Scan - audits for performance, accessibility, SEO and more</li>
+        <li>Artillary Load Test - load tested to see how it behaves when there are a lot of users accessing it at once</li>
+      </ul> 
     </article>
     <article class="markdown-body mt-5">
-      {@html marked(systemRequirements)}
+      <h3>How does it work?</h3>
+      <p>
+        CodeAuditor runs scans and checks for issues on your website, and can then generate a report which can be viewed online.
+      </p>
+      <p>
+        CodeAuditor is simple to use and can be either be run manually, or embedded directly into your build pipeline where it can be configured to automatically fail a build based on a number of broken links, SEO issues or other rules failures to ensure quality.
+      </p>
+      <p>Signing up for free and logging in to CodeAuditor will allow you to view and track your website's changes and improvements over time.</p>
     </article>
     <article class="markdown-body mt-5">
-      {@html marked(instructionSteps)}
+      <h3>What are the benefits?</h3>
+      <p>
+        CodeAuditor will automatically pick up and report issues which may exist in your website during the build process which enables you to catch any issues and fix them before they are published and cause bigger problems.
+      </p>
     </article>
-    <article class="markdown-body mt-5">
-      <h3>Video</h3>
-      <div>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/DCDAtmvaPUY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
-    </article>
-</div>
+  </div>
+  <div class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
+      <article class="markdown-body">
+        {@html marked(instruction)}
+      </article>
+      <article class="markdown-body mt-5">
+        {@html marked(systemRequirements)}
+      </article>
+      <article class="markdown-body mt-5">
+        {@html marked(instructionSteps)}
+      </article>
+      <article class="markdown-body mt-5">
+        <h3>Video</h3>
+        <div>
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/DCDAtmvaPUY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </article>
+  </div>
 
 <section class="text-gray-700 body-font">
     <div
