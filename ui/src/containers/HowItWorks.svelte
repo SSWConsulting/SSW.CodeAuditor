@@ -9,22 +9,16 @@
   let unsubscription;
 
   let tokenText;
-    userSession$.subscribe((x) => {
-      if (x) {
-        unsubscription = firebase
-            .firestore()
-            .collection(CONSTS.USERS)
-            .doc(x.uid);
-        tokenText = '--token ' + x.apiKey;
-      }
-      else {
-        tokenText = '--cap-add=SYS_ADMIN';
-      }
-    });
-
-  onDestroy(() => {
-    if (unsubscription) {
-      unsubscription();
+  userSession$.subscribe((x) => {
+    if (x) {
+      unsubscription = firebase
+          .firestore()
+          .collection(CONSTS.USERS)
+          .doc(x.uid);
+      tokenText = '--token ' + x.apiKey;
+    }
+    else {
+      tokenText = '--cap-add=SYS_ADMIN';
     }
   });
 
