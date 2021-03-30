@@ -1,9 +1,8 @@
 <script>
   import Toastr from "../misccomponents/Toastr.svelte";
-  import { CONSTS } from "../../utils/utils";
+  import { CONSTS, htmlHintRules, customHtmlHintRules } from "../../utils/utils";
   import Modal from "../misccomponents//Modal.svelte";
   import LoadingFlat from "../misccomponents/LoadingFlat.svelte";
-  import slug from "slug";
   
   export let url;
   export let show;
@@ -47,31 +46,6 @@
     }
   };
   
-  const htmlHintRules = [
-     { rule: "tagname-lowercase" },
-     { rule: "attr-lowercase" }, 
-     { rule: "attr-value-double-quotes" },
-     { rule: "attr-value-not-empty" },
-     { rule: "attr-no-duplication" },
-     { rule: "doctype-first" },
-     { rule: "tag-pair" },
-     { rule: "empty-tag-not-self-closed" },
-     { rule: "spec-char-escape" },
-     { rule: "id-unique" },
-     { rule: "src-not-empty" },
-     { rule: "title-require" },
-     { rule: "alt-require" },
-     { rule: "doctype-html5" },
-     { rule: "style-disabled" },
-     { rule: "inline-style-disabled" },
-     { rule: "inline-script-disabled" },
-     { rule: "id-class-ad-disabled" },
-     { rule: "href-abs-or-rel" },
-     { rule: "attr-unsafe-chars" },
-     { rule: "head-script-disabled" },
-     { rule: "head-script-disabled" },
-     { rule: "language-code-block-require" },
-  ];
 </script>
 
 <Modal
@@ -92,6 +66,17 @@
           <a 
           class="text-blue-700" 
           href="https://htmlhint.com/docs/user-guide/rules/{rule.rule}">
+            {rule.rule}
+          </a>
+      </label>
+    {/each}
+    <br />
+    <h3 class="font-bold">Custom HTML Rules: </h3>
+    {#each customHtmlHintRules as rule}
+      <label>
+        <input type="checkbox" bind:group={selection} value={rule.rule} /> 
+          <a 
+          class="text-black-700" >
             {rule.rule}
           </a>
       </label>

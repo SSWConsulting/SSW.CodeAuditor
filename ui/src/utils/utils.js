@@ -308,3 +308,33 @@ export const getHtmlHintIssues = pipe(
 	flatten,
 	uniq
 );
+
+export const htmlHintRules = [
+	{ rule: "tagname-lowercase" },
+	{ rule: "attr-lowercase" }, 
+	{ rule: "attr-value-double-quotes" },
+	{ rule: "attr-value-not-empty" },
+	{ rule: "attr-no-duplication" },
+	{ rule: "doctype-first" },
+	{ rule: "tag-pair" },
+	{ rule: "empty-tag-not-self-closed" },
+	{ rule: "spec-char-escape" },
+	{ rule: "id-unique" },
+	{ rule: "src-not-empty" },
+	{ rule: "title-require" },
+	{ rule: "alt-require" },
+	{ rule: "doctype-html5" },
+	{ rule: "style-disabled" },
+	{ rule: "inline-style-disabled" },
+	{ rule: "inline-script-disabled" },
+	{ rule: "id-class-ad-disabled" },
+	{ rule: "href-abs-or-rel" },
+	{ rule: "attr-unsafe-chars" },
+	{ rule: "head-script-disabled" },
+	{ rule: "head-script-disabled" },
+ ];
+
+ export const customHtmlHintRules = [
+	{ rule: "Code block - missing language" },
+	// Add new rule id below
+ ];

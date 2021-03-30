@@ -72,7 +72,7 @@ exports.getHTMLHintRules = (api, url) => {
 };
 
 exports.htmlHintConfig = {
-  "language-code-block-require": true,
+  "Code block - missing language": true,
   "tagname-lowercase": true,
   "attr-lowercase": true,
   "attr-value-double-quotes": true,
