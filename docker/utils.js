@@ -4,10 +4,11 @@ const csv = require("csv-parser");
 const chalk = require("chalk");
 const minimatch = require("minimatch");
 const boxen = require("boxen");
-const { htmlHintConfig, fetchHtml } = require("./api");
+const { htmlHintConfig, fetchHtml, getHTMLHintRules } = require("./api");
 const R = require("ramda");
 const { execSync } = require("child_process");
 const boxConsole = require("box-console");
+const slug = require('slug');
 
 const consoleBox = (text, color) =>
   console.log(
@@ -116,16 +117,21 @@ exports.runCodeAuditor = (ignorefile, rulesfolder) => {
  * Send GET request and then perform HTML Hint check on it
  * @param {string} url - URL to scan
  */
-const runHtmlHint = async (url) => {
+const runHtmlHint = async (url, startUrl, tokenApi) => {
   const HTMLHint = require("htmlhint").default;
-  const res = await fetch(
-    `${CONSTS.API}/api/config/${user.apiKey}/htmlhintrules/${slug(url)}`)
-  const result = await res.json()
-
+  
+  const result = await getHTMLHintRules(tokenApi, startUrl)
+      
   const previousConfig = result.selectedRules.split(",")
-
+      
   const htmlRulesConfig = Object.keys(htmlHintConfig)
 
+  // Turn off all the rules
+  for (var i in htmlHintConfig) {
+    htmlHintConfig[i] = false;
+  }
+      
+  // Add only selected rules to htmlHintConfig
   htmlRulesConfig.forEach(x => {      
     previousConfig.forEach (c => {
       if (x === c) {
@@ -299,7 +305,7 @@ exports.readArtilleryReport = (folder, writeLog) => {
  * @param {array} scannedUrls - list of all scanned URLs
  * @param {func} writeLog - write log function
  */
-exports.runHtmlHint = async (startUrl, scannedUrls, writeLog) => {
+exports.runHtmlHint = async (startUrl, scannedUrls, writeLog, tokenApi) => {
   const __getGoodUrls = (allUrls) => {
     const all = allUrls
       .filter(
@@ -313,7 +319,7 @@ exports.runHtmlHint = async (startUrl, scannedUrls, writeLog) => {
   const allgoodLinks = __getGoodUrls(scannedUrls);
   writeLog(`running htmlhint on ${allgoodLinks.length} URLs`);
 
-  const result = await Promise.all(allgoodLinks.map((x) => runHtmlHint(x)));
+  const result = await Promise.all(allgoodLinks.map((x) => runHtmlHint(x, startUrl, tokenApi)));
 
   const [summary, details] = getHtmlHintDetails(result);
   writeLog("summary of html issues found", summary);

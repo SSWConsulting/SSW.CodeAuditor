@@ -261,7 +261,8 @@ const processAndUpload = async (
 		[htmlIssuesSummary, htmlIssues] = await runHtmlHint(
 			args.url,
 			results,
-			writeLog
+			writeLog,
+			args.token
 		);
 	}
 

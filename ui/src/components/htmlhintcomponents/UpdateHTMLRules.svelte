@@ -4,7 +4,6 @@
   import Modal from "../misccomponents//Modal.svelte";
   import LoadingFlat from "../misccomponents/LoadingFlat.svelte";
   import slug from "slug";
-import { keys, last } from "ramda";
   
   export let url;
   export let show;
@@ -13,6 +12,7 @@ import { keys, last } from "ramda";
 
   let saving;
   let addedSuccess;
+  let addedFail;
 
 	let selection = [];
 
@@ -42,7 +42,8 @@ import { keys, last } from "ramda";
         throw new Error("Failed to load");
       }
     } else {
-        alert('select something')
+      addedFail = true;
+      saving = false
     }
   };
   
@@ -68,6 +69,8 @@ import { keys, last } from "ramda";
      { rule: "href-abs-or-rel" },
      { rule: "attr-unsafe-chars" },
      { rule: "head-script-disabled" },
+     { rule: "head-script-disabled" },
+     { rule: "language-code-block-require" },
   ];
 </script>
 
@@ -98,6 +101,13 @@ import { keys, last } from "ramda";
 
 <Toastr bind:show={addedSuccess}>
   <p class="font-bold">HTML Rules updated for</p>
+  <span class="inline-block align-baseline font-bold text-sm link">
+    <a href={url} target="_blank">{url}</a>
+  </span>
+</Toastr>
+
+<Toastr bind:show={addedFail}>
+  <p class="font-bold">Please select at least one rule to check</p>
   <span class="inline-block align-baseline font-bold text-sm link">
     <a href={url} target="_blank">{url}</a>
   </span>
