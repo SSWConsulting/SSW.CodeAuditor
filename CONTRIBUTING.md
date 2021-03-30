@@ -113,7 +113,7 @@ E.g:
 E.g: 
 ```javascript
  export const customHtmlHintRules = [
-	{ rule: "your-custom-rule-id" },	
+   { rule: "your-custom-rule-id" },	
 ];
 ```
 6. Make a Pull Request and have it checked by CodeAuditor Team
