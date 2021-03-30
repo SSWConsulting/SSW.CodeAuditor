@@ -118,6 +118,22 @@ exports.runCodeAuditor = (ignorefile, rulesfolder) => {
  */
 const runHtmlHint = async (url) => {
   const HTMLHint = require("htmlhint").default;
+  const res = await fetch(
+    `${CONSTS.API}/api/config/${user.apiKey}/htmlhintrules/${slug(url)}`)
+  const result = await res.json()
+
+  const previousConfig = result.selectedRules.split(",")
+
+  const htmlRulesConfig = Object.keys(htmlHintConfig)
+
+  htmlRulesConfig.forEach(x => {      
+    previousConfig.forEach (c => {
+      if (x === c) {
+        htmlHintConfig[x] = true
+      }
+    })
+  })    
+  
   try {
     const html = await fetchHtml(url);
     return R.pipe(

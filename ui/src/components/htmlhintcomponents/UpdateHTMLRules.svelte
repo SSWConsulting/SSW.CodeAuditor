@@ -4,6 +4,7 @@
   import Modal from "../misccomponents//Modal.svelte";
   import LoadingFlat from "../misccomponents/LoadingFlat.svelte";
   import slug from "slug";
+import { keys, last } from "ramda";
   
   export let url;
   export let show;
@@ -17,16 +18,8 @@
 
   const dismiss = () => (show = false);
 
-  const getSelectedRules = async() => {
-    await fetch(
-        `${CONSTS.API}/api/config/${user.apiKey}/htmlhintrules/${slug(url)}`).then(
-          res => res.json()
-        ).then(
-          data => console.log(data.selection)
-        )
-  }
-
   const updateIgnore = async () => {
+    const selectedRules = selection.toString()
     saving = true;
     if (selection.length > 0) {
       const res = await fetch(
@@ -35,7 +28,7 @@
           method: "PUT",
           body: JSON.stringify({
             url,
-            selection,
+            selectedRules,
           }),
           headers: { "Content-Type": "application/json" },
         }
@@ -48,34 +41,10 @@
       } else {
         throw new Error("Failed to load");
       }
+    } else {
+        alert('select something')
     }
-    alert('select something')
   };
-
-  const htmlHintConfig = {
-    "language-code-block-require": false,
-    "tagname-lowercase": false,
-    "attr-lowercase": false,
-    "attr-value-double-quotes": false,
-    "attr-value-not-empty": false,
-    "attr-no-duplication": false,
-    "doctype-first": false,
-    "tag-pair": false,
-    "empty-tag-not-self-closed": false,
-    "spec-char-escape": false,
-    "id-unique": false,
-    "src-not-empty": false,
-    "title-require": false,
-    "alt-require": false,
-    "doctype-html5": false,
-    "style-disabled": false,
-    "inline-style-disabled": false,
-    "inline-script-disabled": false,
-    "id-class-ad-disabled": false,
-    "href-abs-or-rel": false,
-    "attr-unsafe-chars": false,
-    "head-script-disabled": false
-};
   
   const htmlHintRules = [
      { rule: "tagname-lowercase" },
@@ -124,15 +93,6 @@
           </a>
       </label>
     {/each}
-    <br />
-    <h3 class="font-bold">Custom Rules: </h3>
-    <label><input type="checkbox" bind:group={selection} value={1} /> language-code-block</label>
-    <br/>
-    <a 
-      class="underline text-blue-700" 
-      href="https://github.com/SSWConsulting/SSW.CodeAuditor/blob/main/CONTRIBUTING.md">
-      How to add your own Custom Rule
-    </a>
   {/if}
 </Modal>
 
