@@ -60,7 +60,7 @@ exports.getLoadThreshold = (api, url) => {
 };
 
 exports.htmlHintConfig = {
-  "language-code-block-require": true,
+  "Code block - missing language": true,
   "tagname-lowercase": false,
   "attr-lowercase": false,
   "attr-value-double-quotes": false,
