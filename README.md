@@ -16,10 +16,6 @@ SSW CodeAuditor is a code and link analysis tool that allows users to identify b
   - Ignore broken links - Ignored URLs will not cause build to fail
   - View code errors - View HTML code errors and code errors within CodeAuditor
 
-## Architecture Diagram
-![CodeauditorDiagram-2](https://user-images.githubusercontent.com/67776356/111734262-e2392080-88cd-11eb-8f17-8df240fbafbe.png)
-
-
 ## Usage
 
 1. Sign up for free at https://codeauditor.com and get your token
