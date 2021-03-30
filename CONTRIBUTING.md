@@ -101,7 +101,7 @@ In order to test your code changes in the API
         },
       })
 ```
-4. Go to ```docker/api.js```: On the last export function named ```htmlHintConfig```, add your new custom rule id to the top of the list
+4. Go to ```docker/api.js```: On the last export named ```htmlHintConfig```, add your new custom rule id to the list using the following format:
 E.g: 
 ```javascript
  exports.htmlHintConfig = {
@@ -109,4 +109,11 @@ E.g:
    ...
  }
 ```
-5. Make a Pull Request and have it checked by CodeAuditor Team
+5. Go to ```ui/src/utils/utils.js```: On the last export named ```customHtmlHintRules```, add your new custom rule id to the list using the following format:
+E.g: 
+```javascript
+ export const customHtmlHintRules = [
+	{ rule: "your-custom-rule-id" },	
+];
+```
+6. Make a Pull Request and have it checked by CodeAuditor Team
