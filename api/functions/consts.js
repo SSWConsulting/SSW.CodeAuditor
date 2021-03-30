@@ -11,6 +11,7 @@ exports.TABLE = {
 	LoadThreshold: 'LoadThreshold',
 	Subscriptions: 'Subscriptions',
 	ScanResults: 'ScanResults',
+	htmlhintrules: 'htmlhintrules',
 };
 
 // blob storage names cannot have uppercase or numbers

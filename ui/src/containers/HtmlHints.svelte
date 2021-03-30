@@ -10,13 +10,15 @@
   import HtmlErrorsTable from "../components/htmlhintcomponents/HtmlErrorsTable.svelte";
   import Breadcrumbs from "../components/misccomponents/Breadcrumbs.svelte";
   import Toastr from "../components/misccomponents/Toastr.svelte";
-  import BuildDetailsCard from "../components/detailcardcomponents/BuildDetailsCard.svelte";
   import { CONSTS, HTMLERRORS } from "../utils/utils.js";
   import { ExportToCsv } from "export-to-csv";
   import { Navigate } from "svelte-router-spa";
   import LoadingFlat from "../components/misccomponents/LoadingFlat.svelte";
   import UpdateIgnoreUrl from "../components/misccomponents/UpdateIgnoreUrl.svelte";
   import CardSummary from "../components/summaryitemcomponents/CardSummary.svelte";
+  import UpdateHtmlRules from "../components/htmlhintcomponents/UpdateHTMLRules.svelte"
+  import HtmlHintDetailsCard from "../components/htmlhintcomponents/HTMLHintDetailsCard.svelte"
+  import slug from "slug";
 
   export let currentRoute;
 
@@ -48,6 +50,8 @@
   let lastBuild;
   let loadingPerfSettings;
   let threshold = {};
+  let htmlHintRulesShown;
+  let loadingHtmlHintSettings;
 
   const blank = {
     performanceScore: 0,
@@ -90,6 +94,29 @@
       getIgnoreList(x);
     }
   });
+
+  const showHtmlHintThreshold = async (summary, user) => {
+    if (!user) {
+      userNotLoginToast = true;
+      return;
+    }
+    scanUrl = summary.url;
+    lastBuild = summary;
+    htmlHintRulesShown = true;
+    loadingHtmlHintSettings = true;
+    try {
+      const res = await fetch(
+        `${CONSTS.API}/api/config/${user.apiKey}/htmlhintrules/${slug(scanUrl)}`
+      );
+      const result = await res.json();
+      threshold = result || blank;
+    } catch (error) {
+      console.error("error getting threshold", error);
+      threshold = blank;
+    } finally {
+      loadingHtmlHintSettings = false;
+    }
+  };
 </script>
 
 <div class="container mx-auto">
@@ -107,7 +134,8 @@
     
       <CardSummary value={data.summary} />
     
-      <BuildDetailsCard build={data ? data.summary : {}} />
+      <HtmlHintDetailsCard build={data ? data.summary : {}} 
+      on:htmlHintThreshold={() => showHtmlHintThreshold(data.summary, $userSession$)} />
 
       <Tabs build={data ? data.summary : {}} displayMode="code" />
 
@@ -132,6 +160,14 @@
     </span>
   </p>
 </Toastr>
+
+<UpdateHtmlRules url={scanUrl}
+loading={loadingHtmlHintSettings}
+bind:show={htmlHintRulesShown}
+{lastBuild}
+{threshold}
+user={$userSession$}
+/>
 
 <UpdateIgnoreUrl
   url={urlToIgnore}
