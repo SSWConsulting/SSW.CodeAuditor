@@ -20,87 +20,92 @@
 <body class="flex flex-col min-h-screen ">
 <main class="flex-grow container mx-auto">
   <nav class="flex items-center justify-between p-6 mt-4 nav">
-    <div class="flex items-center flex-wrap text-white mr-6">
-      <a href="/" class="sm:w-4/4 lg:w-1/3 ml-2">
-        <img
-          class="h-7 object-cover"
-          src="https://i.ibb.co/QYTq9D3/Code-Auditor-logo.png"
-          alt="CodeAuditor"
-        />
-      </a>
-      <span class="underline text-white text-lg lg:text-xl pt-4 lg:pt-0 lg:mx-4">
-        <span class="hover:text-red-600">
-          <Navigate to="/explore">Explore</Navigate> 
+    <div class="flex flex-wrap">
+      <div class="w-full overflow-hidden">
+        <span class="text-white text-lg pt-4 lg:pt-0 lg:mx-4">
+          <span class="hover:text-red-600">
+            <Navigate to="/explore">Explore</Navigate> 
+          </span>
         </span>
-      </span>
-      <span class="underline text-white text-lg lg:text-xl pt-4 lg:pt-0 lg:mx-4">
-        <span class="hover:text-red-600">        
-          <Navigate to="/howitworks">How It Works</Navigate>
+        <span class="text-white text-lg pt-4 lg:pt-0 lg:mx-4">
+          <span class="hover:text-red-600">        
+            <Navigate to="/howitworks">How It Works</Navigate>
+          </span>
         </span>
-      </span>
-      <span class="underline text-white text-lg lg:text-xl pt-4 lg:pt-0 lg:mx-4">
-        <span class="hover:text-red-600">        
-          <Navigate to="/rules">CodeAuditor Rules</Navigate>
+        <span class="text-white text-lg pt-4 lg:pt-0 lg:mx-4">
+          <span class="hover:text-red-600">        
+            <Navigate to="/rules">CodeAuditor Rules</Navigate>
+          </span>
         </span>
-      </span>
-    </div>
-
-    <div class="w-full block flex-grow lg:flex lg:items-center">
-      <div class="text-sm lg:flex-grow" />
-      {#if $isLoggedIn}
-        <div>
-          <span class="text-white">
-            <div class="relative">
-              <button
-                on:click={showMenu}
-                class="inline-block text-l px-4 py-2 leading-none border rounded
-            text-white border-white hover:border-transparent hover:text-teal-500
-            hover:bg-white mt-4 lg:mt-0"
-                >{$userName}
-              </button>
-              {#if menu}
-                <span
-                  in:scale={{ duration: 100, start: 0.95 }}
-                  out:scale={{ duration: 75, start: 0.95 }}
-                  class="origin-top-right absolute right-0 w-48 py-2 mt-10 bg-gray-800
-                rounded shadow-md"
-                >
-                  <span
-                    class="block px-4 py-2 hover:bg-green-500 hover:text-green-100"
-                  >
-                    <Navigate to="/home">Your Scans</Navigate>
-                  </span>
-                  <span
-                    class="block px-4 py-2 hover:bg-green-500 hover:text-green-100"
-                  >
-                    <Navigate to="/home/settings">Ignored URLs</Navigate>
-                  </span>
-                  <span
-                    on:click={signOut}
-                    class="block px-4 py-2 hover:bg-green-500 hover:text-green-100"
-                    >Logout</span
-                  >
-                </span>
-              {/if}
+        <hr class="mt-4 bg-white">
+      </div>
+    
+      <div class="w-full mt-4">
+        <div class="w-full block flex-grow lg:flex lg:items-center">
+          <a href="/" class="sm:w-4/4 lg:w-1/3 ml-2">
+            <img
+              class="h-7 object-cover"
+              src="https://i.ibb.co/QYTq9D3/Code-Auditor-logo.png"
+              alt="CodeAuditor"
+            />
+          </a> 
+          <div class="text-sm lg:flex-grow" />
+          {#if $isLoggedIn}
+            <div>
+              <span class="text-white">
+                <div class="relative">
+                  <button
+                    on:click={showMenu}
+                    class="inline-block text-l px-4 py-2 leading-none border rounded
+                text-white border-white hover:border-transparent hover:text-red-600
+                hover:bg-white mt-4 lg:mt-0"
+                    >{$userName}
+                  </button>
+                  {#if menu}
+                    <span
+                      in:scale={{ duration: 100, start: 0.95 }}
+                      out:scale={{ duration: 75, start: 0.95 }}
+                      class="origin-top-right absolute right-0 w-48 py-2 mt-10 bg-gray-800
+                    rounded shadow-md"
+                    >
+                      <span
+                        class="block px-4 py-2 hover:bg-red-600 hover:text-white"
+                      >
+                        <Navigate to="/home">Your Scans</Navigate>
+                      </span>
+                      <span
+                        class="block px-4 py-2 hover:bg-red-600 hover:text-white"
+                      >
+                        <Navigate to="/home/settings">Ignored URLs</Navigate>
+                      </span>
+                      <span
+                        on:click={signOut}
+                        class="block px-4 py-2 hover:bg-red-600 hover:text-white"
+                        >Logout</span
+                      >
+                    </span>
+                  {/if}
+                </div>
+              </span>
             </div>
-          </span>
+          {:else}
+            <div>
+              <span class="text-white mx-2">
+                <Navigate to="/login">Log In</Navigate>
+              </span>
+              <button
+                on:click={() => navigateTo("/signup")}
+                type="button"
+                class="inline-block text-sm px-4 py-2 leading-none border rounded
+                text-white border-white hover:border-transparent hover:text-red-600
+                hover:bg-white mt-4 lg:mt-0"
+              >
+                Sign Up
+              </button>
+            </div>
+          {/if}
         </div>
-      {:else}
-        <div>
-          <span class="text-white mx-2">
-            <Navigate to="/login">Log In</Navigate>
-          </span>
-          <button
-            on:click={() => navigateTo("/signup")}
-            type="button"
-            class="inline-block text-sm px-4 py-2 leading-none border rounded
-            text-white border-white hover:border-transparent hover:text-teal-500
-            hover:bg-white mt-4 lg:mt-0"
-          >
-            Sign Up
-          </button>
-        </div>
-      {/if}
+      </div>
     </div>
   </nav>
   <Route {currentRoute} {params} />
@@ -170,7 +175,7 @@
   }
   .nav,
   footer {
-    background-color: #414141;
+    background-color: #333;
   }
   img {
     max-width: 100%;
