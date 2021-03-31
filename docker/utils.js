@@ -121,24 +121,26 @@ const runHtmlHint = async (url, startUrl, tokenApi) => {
   const HTMLHint = require("htmlhint").default;
   
   const result = await getHTMLHintRules(tokenApi, startUrl)
-      
-  const previousConfig = result.selectedRules.split(",")
-      
-  const htmlRulesConfig = Object.keys(htmlHintConfig)
-
-  // Turn off all the rules
-  for (var i in htmlHintConfig) {
-    htmlHintConfig[i] = false;
+  
+  if (result) {
+    const selectedHtmlConfig = result.selectedRules.split(",");
+        
+    const htmlRulesConfig = Object.keys(htmlHintConfig)
+  
+    // Turn off all the rules
+    for (var i in htmlHintConfig) {
+      htmlHintConfig[i] = false;
+    }
+        
+    // Add only selected rules to htmlHintConfig
+    htmlRulesConfig.forEach(x => {      
+      selectedHtmlConfig.forEach (c => {
+        if (x === c) {
+          htmlHintConfig[x] = true
+        }
+      })
+    })    
   }
-      
-  // Add only selected rules to htmlHintConfig
-  htmlRulesConfig.forEach(x => {      
-    previousConfig.forEach (c => {
-      if (x === c) {
-        htmlHintConfig[x] = true
-      }
-    })
-  })    
   
   try {
     const html = await fetchHtml(url);
