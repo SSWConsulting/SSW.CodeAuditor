@@ -30,5 +30,36 @@ exports.addCustomHtmlRule = () => {
         },
       });
 
+      HTMLHint.addRule({
+        id: "Common Agile Scrum Terms people get wrong",
+        description: "Checks case of common Agile Scrum terms that people get wrong.",
+        init: function (parser, reporter) {
+          var self = this;
+  
+          parser.addListener("text", function (event) {
+            var scrumTerms = ["scrum", "sprint", "product owner", "scrum master", "product backlog", "sprint review", "sprint planning", "sprint retrospective"];
+  
+            if(event.raw) {
+              let pageContent = event.raw;
+  
+              scrumTerms.forEach(i => {
+                var contentIndex = pageContent.indexOf(i);
+
+                if(contentIndex >= 0) {
+                  var col = event.col + contentIndex - 1;  
+
+                  reporter.warn(
+                    "Incorrect Scrum term: '" + i + "'.",
+                    event.line,
+                    col,
+                    self,
+                    event.raw
+                  );
+                }
+              });
+            }
+          });
+        },
+      });
     // Add new custom rule below 
 }
