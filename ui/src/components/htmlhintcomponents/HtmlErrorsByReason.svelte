@@ -7,7 +7,8 @@
     getCodeErrorRules,
     getHtmlHintIssues,
     getCodeErrorsByRule,
-    HTMLERRORS
+    HTMLERRORS,
+    getRuleLink,    
   } from "../../utils/utils.js";
   import { fade, fly } from "svelte/transition";
   import { ignoredUrls$ } from "../../stores.js";
@@ -86,7 +87,7 @@
     <a
       class="inline align-baseline text-blue-600 hover:text-blue-800"
       target="_blank"
-      href={htmlHintIssues.indexOf(error.error) >= 0 ? `https://htmlhint.com/docs/user-guide/rules/${error.error}` : `https://sswcodingstandards.web.app//rules/${error.error}`}>
+      href={getRuleLink(error.error)}>
       {error.error}
     </a>
   </div>
