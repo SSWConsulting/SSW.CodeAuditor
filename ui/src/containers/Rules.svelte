@@ -19,13 +19,13 @@
             <th>Description</th>
           </tr>
           <tr>
-            <td>language-code-block-require</td>
+            <td>Code block - missing language</td>
             <td><a href="https://www.ssw.com.au/rules/set-language-on-code-blocks">Markdown – Do you set rules on code blocks</a></td>
             <td>Code blocks must contain a language specifier.</td>
           </tr>
           <tr>
-            <td>TODO: incorrect-agile-scrum-terms</td>
-            <td></td>
+            <td>Common Agile Scrum Terms people get wrong</td>
+            <td><a href="https://www.ssw.com.au/rules/scrum-should-be-capitalized">Scrum should be capitalized</a></td>
             <td>Pages that reference Agile Scrum must have correct case for Scrum terminology.</td>
           </tr>
         </table>

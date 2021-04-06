@@ -336,5 +336,6 @@ export const htmlHintRules = [
 
  export const customHtmlHintRules = [
 	{ rule: "Code block - missing language" },
+  { rule: "Common Agile Scrum Terms people get wrong" },
 	// Add new rule id below
  ];
