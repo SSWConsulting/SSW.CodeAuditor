@@ -8,7 +8,7 @@
     getHtmlHintIssues,
     getCodeErrorsByRule,
     HTMLERRORS,
-    getRuleLink,    
+    getRuleLink,
   } from "../../utils/utils.js";
   import { fade, fly } from "svelte/transition";
   import { ignoredUrls$ } from "../../stores.js";
