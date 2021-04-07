@@ -66,7 +66,7 @@
           <a 
           class="text-blue-700" 
           href="https://htmlhint.com/docs/user-guide/rules/{rule.rule}">
-            {rule.rule}
+            {rule.displayName}
           </a>
       </label>
     {/each}
@@ -76,8 +76,9 @@
       <label>
         <input type="checkbox" bind:group={selection} value={rule.rule} /> 
           <a 
-          class="text-black-700" >
-            {rule.rule}
+          class="text-black-700" 
+          href={rule.ruleLink}>
+            {rule.displayName}
           </a>
       </label>
     {/each}
