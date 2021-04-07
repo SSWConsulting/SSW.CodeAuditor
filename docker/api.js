@@ -72,8 +72,8 @@ exports.getHTMLHintRules = (api, url) => {
 };
 
 exports.htmlHintConfig = {
-  "Common Agile Scrum Terms people get wrong": true,
-  "Code block - missing language": true,
+  "grammar-scrum-terms": true,
+  "code-block-missing-language": true,
   "tagname-lowercase": true,
   "attr-lowercase": true,
   "attr-value-double-quotes": true,

@@ -322,7 +322,7 @@ export const getRuleLink = (errorKey) => {
 export const getDisplayText = (errorKey) => {
   if (customHtmlHintRules.some(item => item.rule === errorKey)) {
     var customRule = customHtmlHintRules.find(item => item.rule == errorKey);
-    return customRule.displayName != "" ? htmlHint.displayName : htmlHint.rule;
+    return customRule.displayName != "" ? customRule.displayName : customRule.rule;
   }
   else if (htmlHintRules.some(item => item.rule == errorKey)){
     var htmlHint = htmlHintRules.find(item => item.rule == errorKey);
