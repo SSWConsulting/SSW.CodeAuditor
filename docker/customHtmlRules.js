@@ -3,7 +3,7 @@ const HTMLHint = require("htmlhint").default;
 exports.addCustomHtmlRule = () => {
     // Custom rule to find code block with no language specifier
     HTMLHint.addRule({
-        id: "Code block - missing language",
+        id: "code-block-missing-language",
         description: "Code blocks must contain a language specifier.",
         init: function (parser, reporter) {
           var self = this;
@@ -31,7 +31,7 @@ exports.addCustomHtmlRule = () => {
       });
 
       HTMLHint.addRule({
-        id: "Common Agile Scrum Terms people get wrong",
+        id: "grammar-scrum-terms",
         description: "Checks case of common Agile Scrum terms that people get wrong.",
         init: function (parser, reporter) {
           var self = this;

@@ -320,13 +320,17 @@ export const getRuleLink = (errorKey) => {
 };
 
 export const getDisplayText = (errorKey) => {
-  if (customHtmlHintRules.some(rule => rule.rule === errorKey)) {
-    return errorKey;
+  if (customHtmlHintRules.some(item => item.rule === errorKey)) {
+    var customRule = customHtmlHintRules.find(item => item.rule == errorKey);
+    return customRule.displayName != "" ? htmlHint.displayName : htmlHint.rule;
   }
-  else {
+  else if (htmlHintRules.some(item => item.rule == errorKey)){
     var htmlHint = htmlHintRules.find(item => item.rule == errorKey);
     return htmlHint.displayName != "" ? htmlHint.displayName : htmlHint.rule;
-  } 
+  }
+  else {
+    return errorKey;
+  }
 };
 
 export const htmlHintRules = [
@@ -354,7 +358,7 @@ export const htmlHintRules = [
  ];
 
  export const customHtmlHintRules = [
-	{ rule: "Code block - missing language", ruleLink: "https://www.ssw.com.au/rules/set-language-on-code-blocks" },
-  { rule: "Grammar mistake - common Scrum terms", ruleLink: "https://www.ssw.com.au/rules/scrum-should-be-capitalized" },
+	{ rule: "code-block-missing-language", displayName: "Code block - missing language", ruleLink: "https://www.ssw.com.au/rules/set-language-on-code-blocks" },
+  { rule: "grammar-scrum-terms", displayName: "Grammar mistake - common Scrum terms", ruleLink: "https://www.ssw.com.au/rules/scrum-should-be-capitalized" },
 	// Add new rule id below
  ];
