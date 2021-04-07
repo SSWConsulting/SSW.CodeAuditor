@@ -345,7 +345,7 @@ export const htmlHintRules = [
 	{ rule: "spec-char-escape", displayName: "HTML - special characters must be escaped" },
 	{ rule: "id-unique", displayName: "HTML Tags - id attribute must be unique" },
 	{ rule: "src-not-empty", displayName: "Images - the src attribute must have a value" },
-	{ rule: "title-require", displayName: "HTML - missing title tag" },
+	{ rule: "title-require", displayName: "HTML Tags - missing title tag" },
 	{ rule: "alt-require", displayName: "Images - missing alt attribute" },
 	{ rule: "doctype-html5", displayName: "HTML - DOCTYPE must be HTML5" },
 	{ rule: "style-disabled", displayName: "HTML / CSS - style tags should not be used" },
