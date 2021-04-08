@@ -309,6 +309,16 @@ export const getHtmlHintIssues = pipe(
 	uniq
 );
 
+export const getRuleLink = (errorKey) => {
+  if (customHtmlHintRules.some(rule => rule.rule === errorKey)) {
+    var custom = customHtmlHintRules.find(item => item.rule == errorKey);
+    return custom.ruleLink;
+  }
+  else {
+    return `https://htmlhint.com/docs/user-guide/rules/${errorKey}`;
+  }
+};
+
 export const htmlHintRules = [
 	{ rule: "tagname-lowercase" },
 	{ rule: "attr-lowercase" }, 
@@ -335,7 +345,7 @@ export const htmlHintRules = [
  ];
 
  export const customHtmlHintRules = [
-	{ rule: "Code block - missing language" },
-  { rule: "Common Agile Scrum Terms people get wrong" },
+	{ rule: "Code block - missing language", ruleLink: "https://www.ssw.com.au/rules/set-language-on-code-blocks" },
+  { rule: "Common Agile Scrum Terms people get wrong", ruleLink: "https://www.ssw.com.au/rules/scrum-should-be-capitalized" },
 	// Add new rule id below
  ];

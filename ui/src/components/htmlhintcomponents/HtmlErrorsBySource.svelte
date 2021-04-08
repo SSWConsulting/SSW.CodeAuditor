@@ -5,7 +5,8 @@
     HTMLERRORS,
     getHtmlHintIssues,
     getCodeErrorRules,
-    getCodeErrorsByFile
+    getCodeErrorsByFile,
+    getRuleLink,
   } from "../../utils/utils.js";
   import { fade } from "svelte/transition";
   import { createEventDispatcher } from "svelte";
@@ -101,7 +102,7 @@
               <a
                 class="inline-block align-baseline link"
                 target="_blank"
-                href={htmlHintIssues.indexOf(key) >= 0 ? `https://htmlhint.com/docs/user-guide/rules/${key}` : `https://sswcodingstandards.web.app//rules/${key}`}>
+                href={getRuleLink(key)}>
                 {key}
               </a>
 
