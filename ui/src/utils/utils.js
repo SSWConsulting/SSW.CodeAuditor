@@ -319,33 +319,46 @@ export const getRuleLink = (errorKey) => {
   }
 };
 
+export const getDisplayText = (errorKey) => {
+  if (customHtmlHintRules.some(item => item.rule === errorKey)) {
+    var customRule = customHtmlHintRules.find(item => item.rule == errorKey);
+    return customRule.displayName != "" ? customRule.displayName : customRule.rule;
+  }
+  else if (htmlHintRules.some(item => item.rule == errorKey)){
+    var htmlHint = htmlHintRules.find(item => item.rule == errorKey);
+    return htmlHint.displayName != "" ? htmlHint.displayName : htmlHint.rule;
+  }
+  else {
+    return errorKey;
+  }
+};
+
 export const htmlHintRules = [
-	{ rule: "tagname-lowercase" },
-	{ rule: "attr-lowercase" }, 
-	{ rule: "attr-value-double-quotes" },
-	{ rule: "attr-value-not-empty" },
-	{ rule: "attr-no-duplication" },
-	{ rule: "doctype-first" },
-	{ rule: "tag-pair" },
-	{ rule: "empty-tag-not-self-closed" },
-	{ rule: "spec-char-escape" },
-	{ rule: "id-unique" },
-	{ rule: "src-not-empty" },
-	{ rule: "title-require" },
-	{ rule: "alt-require" },
-	{ rule: "doctype-html5" },
-	{ rule: "style-disabled" },
-	{ rule: "inline-style-disabled" },
-	{ rule: "inline-script-disabled" },
-	{ rule: "id-class-ad-disabled" },
-	{ rule: "href-abs-or-rel" },
-	{ rule: "attr-unsafe-chars" },
-	{ rule: "head-script-disabled" },
-	{ rule: "head-script-disabled" },
+	{ rule: "tagname-lowercase", displayName: "HTML Tags - tag names must be lowercase" },
+	{ rule: "attr-lowercase", displayName: "Attributes - attribute names must be lowercase" }, 
+	{ rule: "attr-value-double-quotes", displayName: "Attributes - attribute values must be in double quotes" },
+	{ rule: "attr-value-not-empty", displayName: "Attributes - all attributes must have values" },
+	{ rule: "attr-no-duplication", displayName: "Attributes - element cannot contain duplicate attributes" },
+	{ rule: "doctype-first", displayName: "HTML - DOCTYPE must be declared first" },
+	{ rule: "tag-pair", displayName: "HTML Tags - tags must be paired" },
+	{ rule: "empty-tag-not-self-closed", displayName: "HTML Tags - an empty tag should not be closed by itself" },
+	{ rule: "spec-char-escape", displayName: "HTML - special characters must be escaped" },
+	{ rule: "id-unique", displayName: "HTML Tags - id attribute must be unique" },
+	{ rule: "src-not-empty", displayName: "Images - the src attribute must have a value" },
+	{ rule: "title-require", displayName: "HTML Tags - missing title tag" },
+	{ rule: "alt-require", displayName: "Images - missing alt attribute" },
+	{ rule: "doctype-html5", displayName: "HTML - DOCTYPE must be HTML5" },
+	{ rule: "style-disabled", displayName: "HTML / CSS - style tags should not be used" },
+	{ rule: "inline-style-disabled", displayName: "HTML - inline styling should not be used" },
+	{ rule: "inline-script-disabled", displayName: "HTML - inline script should not be used" },
+	{ rule: "id-class-ad-disabled", displayName: "HTML Tags - id and class cannot use the ad keyword" },
+	{ rule: "href-abs-or-rel", displayName: "Links - href attribute must be either absolute or relative" },
+	{ rule: "attr-unsafe-chars", displayName: "Attributes - attributes cannot contain unsafe characters" },
+	{ rule: "head-script-disabled", displayName: "HTML - the script tag cannot be used in another tag" },
  ];
 
  export const customHtmlHintRules = [
-	{ rule: "Code block - missing language", ruleLink: "https://www.ssw.com.au/rules/set-language-on-code-blocks" },
-  { rule: "Common Agile Scrum Terms people get wrong", ruleLink: "https://www.ssw.com.au/rules/scrum-should-be-capitalized" },
+	{ rule: "code-block-missing-language", displayName: "Code block - missing language", ruleLink: "https://www.ssw.com.au/rules/set-language-on-code-blocks" },
+  { rule: "grammar-scrum-terms", displayName: "Grammar mistake - common Scrum terms", ruleLink: "https://www.ssw.com.au/rules/scrum-should-be-capitalized" },
 	// Add new rule id below
  ];

@@ -9,6 +9,7 @@
     getCodeErrorsByRule,
     HTMLERRORS,
     getRuleLink,
+    getDisplayText,
   } from "../../utils/utils.js";
   import { fade, fly } from "svelte/transition";
   import { ignoredUrls$ } from "../../stores.js";
@@ -88,7 +89,7 @@
       class="inline align-baseline text-blue-600 hover:text-blue-800"
       target="_blank"
       href={getRuleLink(error.error)}>
-      {error.error}
+      {getDisplayText(error.error)}
     </a>
   </div>
   {#if showHide && !hiddenRows[error.error]}

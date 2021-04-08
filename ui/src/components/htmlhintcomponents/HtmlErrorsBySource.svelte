@@ -7,6 +7,7 @@
     getCodeErrorRules,
     getCodeErrorsByFile,
     getRuleLink,
+    getDisplayText,
   } from "../../utils/utils.js";
   import { fade } from "svelte/transition";
   import { createEventDispatcher } from "svelte";
@@ -103,7 +104,7 @@
                 class="inline-block align-baseline link"
                 target="_blank"
                 href={getRuleLink(key)}>
-                {key}
+                {getDisplayText(key)}
               </a>
 
             </td>

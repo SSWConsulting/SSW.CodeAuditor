@@ -24,9 +24,9 @@
             <td>Code blocks must contain a language specifier.</td>
           </tr>
           <tr>
-            <td>Common Agile Scrum Terms people get wrong</td>
-            <td><a href="https://www.ssw.com.au/rules/scrum-should-be-capitalized">Scrum should be capitalized</a></td>
-            <td>Pages that reference Agile Scrum must have correct case for Scrum terminology.</td>
+            <td>Grammar mistake - common Scrum terms</td>
+            <td><a href="https://www.ssw.com.au/rules/scrum-should-be-capitalized">Grammar - Do you know "Scrum" should be capitalized</a></td>
+            <td>References to "Agile Scrum" must be capitalized as "Scrum".</td>
           </tr>
         </table>
       </div>
