@@ -75,7 +75,7 @@
     {/if}
   </div>
 
-  <div class="bg-white shadow-lg rounded px-8 pt-6 mb-6 flex flex-col">
+  <div class="bg-white rounded px-4 pt-2 mb-12 flex flex-col">
     {#if allScan === true}
       {#await promiseAllScan}
         <LoadingFlat />
