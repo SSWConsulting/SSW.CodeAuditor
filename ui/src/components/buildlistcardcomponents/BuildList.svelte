@@ -79,39 +79,39 @@
   {#each groupUrlKey as url, i}
     <div class="grid grid-rows-2 gap-y-1">
       <div class="row-span-2">
-        <div class="container flex-wrap mb-4 overflow-hidden shadow-lg">
+        <div class="container flex-wrap mb-4 overflow-hidden border">
           <div
             class="sm:flex-1 md:flex-1 lg:flex xl:flex content-center mb-4 px-6
             py-4">
-            <div class="xl:w-5/6 lg:w-5/6 h-12">
+            <div class="xl:w-5/6 lg:w-5/6">
               <UrlSummaryCard value={groupUrl[url]} {url} />
             </div>
 
             <div
-              class="xl:w-1/6 lg:w-1/6 h-12 hidden sm:hidden md:hidden lg:block
+              class="xl:w-1/4 lg:w-1/4 h-20 hidden sm:hidden md:hidden lg:block
               xl:block">
               <HistoryChart value={groupUrl[url]} />
             </div>
 
             <div
-              class="xl:w-1/6 lg:w-1/6 h-12 sm:text-xs md:text-xs lg:text-base
+              class="xl:w-1/4 lg:w-1/4 sm:text-xs md:text-xs lg:text-base
               xl:text-base text-gray-700">
               <LinkSummaryCard value={groupUrl[url]} />
             </div>
 
             <div
-              class="xl:w-1/6 lg:w-1/6 h-12 sm:text-xs md:text-xs lg:text-base
+              class="xl:w-1/4 lg:w-1/4 sm:text-xs md:text-xs lg:text-base
               xl:text-base text-gray-700">
               <CodeSummaryCard value={groupUrl[url]} />
             </div>
 
             <div
-              class="xl:w-1/6 lg:w-1/6 h-12 sm:text-xs md:text-xs lg:text-base
+              class="xl:w-1/4 lg:w-1/4 sm:text-xs md:text-xs lg:text-base
               xl:text-base text-gray-700">
               <LightHouseAverageCard value={groupUrl[url]} />
             </div>
 
-            <div class="xl:w-0.9/6 lg:w-0.9/6 text-center h-12">
+            <div class="xl:w-0.9/6 lg:w-0.9/6 text-center">
               <span
                 type="button"
                 class="hover:bg-gray-300 border-0 rounded-md px-3 py-1"

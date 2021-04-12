@@ -81,7 +81,7 @@
 </script>
 
 <div class="text-center">
-  <span class="inline-block font-sans">HISTORY</span>
+  <span class="inline-block font-sans sm:text-sm">HISTORY</span>
   <svg
     class="inline-block w-6 h-6"
     fill="none"

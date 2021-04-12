@@ -9,7 +9,7 @@
   
   {#if perf.performanceScore}
   <div class="text-center" on:click={() => navigateTo(`/build/${value[0].runId}`)}>
-      <span class="font-sans">AVERAGE</span>
+      <span class="font-sans sm:text-sm">AVERAGE</span>
       <br>
         <span
           class="font-sans font-bold block lg:inline-block m-2 text-green-500"

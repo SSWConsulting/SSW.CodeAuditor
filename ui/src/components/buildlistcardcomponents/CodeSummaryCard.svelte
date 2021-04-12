@@ -10,7 +10,7 @@
 
   {#if codeSummary.html || codeSummary.code}
     <div class="text-center" on:click={() => navigateTo(`/build/${value[0].runId}`)}>
-      <span class="font-sans">CODE ERRORS</span>
+      <span class="font-sans sm:text-sm">CODE ERRORS</span>
       <br>
       <span
         class="font-sans font-bold block lg:inline-block m-2"
