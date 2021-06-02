@@ -33,7 +33,7 @@
 
   {#if codeSummary.html || codeSummary.code}
   <div class="col-span-1 text-start">
-    <span class="block whitespace-no-wrap font-sans">BAD CODES</span>
+    <span class="block whitespace-no-wrap font-sans">BAD CODE</span>
     <span
       class="font-sans font-bold block lg:inline-block"
       title={(codeSummary.codeIssueList || '') + '\n\n\n' + (codeSummary.htmlIssueList || '')}>

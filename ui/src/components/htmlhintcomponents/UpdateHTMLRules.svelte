@@ -7,7 +7,6 @@
   export let url;
   export let show;
   export let loading;
-  export let user;
 
   let saving;
   let addedSuccess;
@@ -64,7 +63,7 @@
       <label>
         <input type="checkbox" bind:group={selection} value={rule.rule} /> 
           <a 
-          class="text-blue-700" 
+          class="inline-block align-baseline link" 
           href="https://htmlhint.com/docs/user-guide/rules/{rule.rule}">
             {rule.displayName}
           </a>
@@ -76,7 +75,7 @@
       <label>
         <input type="checkbox" bind:group={selection} value={rule.rule} /> 
           <a 
-          class="text-black-700" 
+          class="inline-block align-baseline link" 
           href={rule.ruleLink}>
             {rule.displayName}
           </a>
