@@ -70,7 +70,7 @@
             on:click={artilleryThreshold}
             class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
             border hover:border-transparent rounded">
-            <span class="ml-2">Set Load Test Threshold</span>
+            <span class="ml-2">Set Load Test Threshold For Next Scan</span>
           </button>
         {/if}
       </div>

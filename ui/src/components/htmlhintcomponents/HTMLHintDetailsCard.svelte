@@ -70,7 +70,7 @@
             on:click={htmlHintThreshold}
             class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
             border hover:border-transparent rounded">
-            <span class="ml-2">Set HTML Rules</span>
+            <span class="ml-2">Set HTML Rules For Next Scan</span>
           </button>
         {/if}
       </div>

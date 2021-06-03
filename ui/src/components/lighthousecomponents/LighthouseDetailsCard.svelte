@@ -64,7 +64,7 @@
             on:click={perfThreshold}
             class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
               border hover:border-transparent rounded">
-            <span class="ml-2">Set Performance Threshold</span>
+            <span class="ml-2">Set Performance Threshold For Next Scan</span>
           </button>
         {/if}
       </div>
