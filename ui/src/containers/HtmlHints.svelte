@@ -19,6 +19,7 @@
   import UpdateHtmlRules from "../components/htmlhintcomponents/UpdateHTMLRules.svelte"
   import HtmlHintDetailsCard from "../components/htmlhintcomponents/HTMLHintDetailsCard.svelte"
   import slug from "slug";
+  import { onMount } from "svelte";
 
   export let currentRoute;
 
@@ -89,12 +90,6 @@
     csvExporter.generateCsv(exportToflat(data.htmlHint));
   };
 
-  userSession$.subscribe(async x => {
-    if (x) {
-      getIgnoreList(x);
-    }
-  });
-
   const showHtmlHintThreshold = async (summary, user) => {
     if (!user) {
       userNotLoginToast = true;
@@ -117,6 +112,19 @@
       loadingHtmlHintSettings = false;
     }
   };
+
+  let htmlRules;
+  onMount(async () => {
+    await promise.then((data) => {
+      userSession$.subscribe(async x => {
+        if (x) {
+          getIgnoreList(x);
+          const res = await fetch(`${CONSTS.API}/api/config/${x.apiKey}/htmlhintrules/${slug(data.summary.url)}`);
+          htmlRules = await res.json()
+        }
+      });
+	  });
+  })
 </script>
 
 <div class="container mx-auto">
@@ -134,7 +142,7 @@
     
       <CardSummary value={data.summary} />
     
-      <HtmlHintDetailsCard build={data ? data.summary : {}} 
+      <HtmlHintDetailsCard {htmlRules} build={data ? data.summary : {}} 
       on:htmlHintThreshold={() => showHtmlHintThreshold(data.summary, $userSession$)} />
 
       <Tabs build={data ? data.summary : {}} displayMode="code" />

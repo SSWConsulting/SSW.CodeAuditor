@@ -9,10 +9,16 @@
   import ArtillerySummary from "../summaryitemcomponents/ArtillerySummary.svelte";
 
   export let build = {};
+  export let htmlRules;
   let val = build;
 
   const dispatch = createEventDispatcher();
   const htmlHintThreshold = () => dispatch("htmlHintThreshold");
+
+  let isCollapsedRules = false
+  function handleClick() {
+    isCollapsedRules = !isCollapsedRules
+	}
 </script>
 
 <style>
@@ -62,6 +68,29 @@
           Scanned:
           {val.totalScanned}
           items
+        </span>
+        <br />
+        <span class="font-sans text-base pt-2">
+          {#if htmlRules}
+            <p class="inline">HTML Rules Scanned: {htmlRules.selectedRules.split(/[,]+/).length}</p>
+            <span type="button" class="inline cursor-pointer" on:click={handleClick}>
+              <svg
+              class="w-5 h-5"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"><path
+                fill-rule="evenodd"
+                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                clip-rule="evenodd" /></svg>
+            </span>
+              {#if isCollapsedRules}
+                {#each htmlRules.selectedRules.split(/[,]+/) as rule}
+                  <div class="ml-3 underline">
+                    <a href="https://htmlhint.com/docs/user-guide/rules/{rule}">{rule}</a>
+                  </div>
+                {/each}
+              {/if}
+          {/if}
         </span>
         <br />
         <br />
