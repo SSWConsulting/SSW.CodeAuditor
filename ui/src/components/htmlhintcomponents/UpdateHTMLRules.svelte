@@ -7,6 +7,7 @@
   export let url;
   export let show;
   export let loading;
+  export let user;
 
   let saving;
   let addedSuccess;
