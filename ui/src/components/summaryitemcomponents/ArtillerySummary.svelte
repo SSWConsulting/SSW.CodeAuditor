@@ -10,19 +10,19 @@
   <div class="col-span-1 text-start">
     <span class="block font-sans">Latency P95</span>
     <span
-      class="font-sans font-bold block lg:inline-block">{numberWithCommas(value.latencyP95 === undefined ? '0' : value.latencyP95)}
+      class="font-sans font-bold block lg:inline-block">{numberWithCommas(value.latencyP95 === undefined ? '0' : value.latencyP95)}ms
     </span>
   </div>
   <div class="col-span-1 text-start">
     <span class="block whitespace-no-wrap font-sans">Requests</span>
     <span class="font-sans font-bold block lg:inline-block">
-      {numberWithCommas(value.requestsCompleted)}
+      {numberWithCommas(value.requestsCompleted)}ms
     </span>
   </div>
   <div class="col-span-1 text-start">
     <span class="block whitespace-no-wrap font-sans">Errors</span>
     <span class="font-sans font-bold block lg:inline-block">
-      {numberWithCommas(value.errors)}
+      {numberWithCommas(value.errors)} 
     </span>
   </div>
 </div>

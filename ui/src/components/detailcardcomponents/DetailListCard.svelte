@@ -3,14 +3,10 @@
   import LinkSummary from "../summaryitemcomponents/LinkSummary.svelte";
   import LighthouseSummary from "../summaryitemcomponents/LighthouseSummary.svelte";
   import ArtillerySummary from "../summaryitemcomponents/ArtillerySummary.svelte";
-  import formatDistanceToNow from "date-fns/formatDistanceToNow";
-  import { format } from "date-fns";
-  import { printTimeDiff } from "../../utils/utils";
   import { navigateTo } from "svelte-router-spa";
+  import ScanSummary from "../summaryitemcomponents/ScanSummary.svelte";
   export let value = {};
-  function numberWithCommas(x) {
-    return x.toLocaleString()
-  }
+
 </script>
 
 <style>
@@ -52,25 +48,7 @@
         class="grid grid-rows-2 sm:gap-auto lg:grid-flow-col sm:grid-cols-3 ml-4"
         on:click={() => navigateTo(`/build/${val.runId}`)}>
         <div class="row-span-1 lg:row-span-4 col-span-4">
-          <span class="font-sans text-lg font-bold text-gray-800">
-            {format(new Date(val.buildDate), 'hh:mm a')}
-          </span>
-          <br />
-          <span class="font-sans text-lg font-bold text-gray-800">
-            {format(new Date(val.buildDate), 'dd MMMM yyyy')}
-          </span>
-          <br />
-          <span class="font-sans text-base pt-2">
-            Last scanned: {formatDistanceToNow(new Date(val.buildDate), { addSuffix: true })}
-          </span>
-          <br />
-          <span class="font-sans text-base pt-2">
-            Duration: {printTimeDiff(+val.scanDuration)}
-          </span>
-          <br />
-          <span class="font-sans text-base pt-2">
-            Scanned: {numberWithCommas(val.totalScanned)} items
-          </span>
+          <ScanSummary {val} />
         </div>
 
         <div
