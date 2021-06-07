@@ -11,10 +11,10 @@
   $: codeSummary = getCodeSummary(value);
 </script>
 
-<div class="grid grid-cols-2 lg:grid-cols-4">
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-x-5">
   {#if codeSummary.cloc}
     <div class="col-span-1 text-start">
-      <span class="block whitespace-no-wrap font-sans">TOTAL FILES</span>
+      <span class="block whitespace-no-wrap font-sans">Total Files</span>
       <span
         class="font-sans font-bold block lg:inline-block"
         title="Number of files">
@@ -22,7 +22,7 @@
       </span>
     </div>
     <div class="col-span-1 text-start">
-      <span class="block whitespace-no-wrap font-sans">TOTAL LINES</span>
+      <span class="block whitespace-no-wrap font-sans">Total Lines</span>
       <span
         class="font-sans font-bold block lg:inline-block"
         title="Number of lines of codes">
@@ -33,7 +33,7 @@
 
   {#if codeSummary.html || codeSummary.code}
   <div class="col-span-1 text-start">
-    <span class="block whitespace-no-wrap font-sans">BAD CODE</span>
+    <span class="block whitespace-no-wrap font-sans">Errors</span>
     <span
       class="font-sans font-bold block lg:inline-block"
       title={(codeSummary.codeIssueList || '') + '\n\n\n' + (codeSummary.htmlIssueList || '')}>
@@ -41,7 +41,7 @@
     </span>
   </div>
     <div class="col-span-1 text-start">
-      <span class="block whitespace-no-wrap font-sans">CODE WARNINGS</span>
+      <span class="block whitespace-no-wrap font-sans">Warnings</span>
       <span
         class="font-sans font-bold block lg:inline-block"
         title={(codeSummary.codeIssueList || '') + '\n\n\n' + (codeSummary.htmlIssueList || '')}>
