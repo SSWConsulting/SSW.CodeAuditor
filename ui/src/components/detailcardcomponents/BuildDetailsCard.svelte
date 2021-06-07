@@ -11,6 +11,10 @@
   export let build = {};
   let val = build;
   $: codeSummary = getCodeSummary(build);
+
+  function numberWithCommas(x) {
+    return x.toLocaleString()
+  }
 </script>
 
 <style>
@@ -55,7 +59,7 @@
         </span>
         <br />
         <span class="font-sans text-base pt-2">Scanned:
-          {val.totalScanned}
+          {numberWithCommas(val.totalScanned)}
           items</span>
       </div>
 

@@ -19,6 +19,10 @@
   function handleClick() {
     isCollapsedRules = !isCollapsedRules
 	}
+
+  function numberWithCommas(x) {
+    return x.toLocaleString()
+  }
 </script>
 
 <style>
@@ -66,7 +70,7 @@
         <br />
         <span class="font-sans text-base pt-2">
           Scanned:
-          {val.totalScanned}
+          {numberWithCommas(val.totalScanned)}
           items
         </span>
         <br />

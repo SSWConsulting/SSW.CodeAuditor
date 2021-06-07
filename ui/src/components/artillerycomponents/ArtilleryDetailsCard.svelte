@@ -13,6 +13,10 @@
 
   const dispatch = createEventDispatcher();
   const artilleryThreshold = () => dispatch("artilleryThreshold");
+
+  function numberWithCommas(x) {
+    return x.toLocaleString()
+  }
 </script>
 
 <style>
@@ -60,7 +64,7 @@
         <br />
         <span class="font-sans text-base pt-2">
           Scanned:
-          {val.totalScanned}
+          {numberWithCommas(val.totalScanned)}
           items
         </span>
         <br />
