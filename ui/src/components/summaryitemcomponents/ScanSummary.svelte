@@ -1,7 +1,7 @@
 <script>
     import { format } from "date-fns";
     import formatDistanceToNow from "date-fns/formatDistanceToNow";
-    import { printTimeDiff, CONSTS } from "../../utils/utils";
+    import { printTimeDiff } from "../../utils/utils";
 
     export let val
 
