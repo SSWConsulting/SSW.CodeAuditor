@@ -1,12 +1,11 @@
 <script>
-  import formatDistanceToNow from "date-fns/formatDistanceToNow";
-  import { printTimeDiff, getCodeSummary } from "../../utils/utils";
+  import { getCodeSummary } from "../../utils/utils";
   import { navigateTo } from "svelte-router-spa";
   import LighthouseSummary from "../summaryitemcomponents/LighthouseSummary.svelte";
   import CodeSummary from "../summaryitemcomponents/CodeSummary.svelte";
   import LinkSummary from "../summaryitemcomponents/LinkSummary.svelte";
   import ArtillerySummary from "../summaryitemcomponents/ArtillerySummary.svelte";
-  import { format } from "date-fns";
+  import ScanSummary from "../summaryitemcomponents/ScanSummary.svelte";
 
   export let build = {};
   let val = build;
@@ -42,21 +41,7 @@
       class="grid grid-rows-2 grid-flow-col"
       on:click={() => navigateTo(`/build/${val.runId}`)}>
       <div class="row-span-4 col-span-2">
-        <span
-          class="font-sans text-base font-bold text-gray-800 underline">{format(new Date(val.buildDate), 'dd.MM.yyyy')}</span>
-        <br />
-        <span class="font-sans text-base pt-2">Last scanned:
-          {formatDistanceToNow(new Date(val.buildDate), { addSuffix: true })}
-          at
-          {format(new Date(val.buildDate), 'hh:mma')}</span>
-        <br />
-        <span class="font-sans text-base pt-2">Duration:
-          {printTimeDiff(+val.scanDuration)}
-        </span>
-        <br />
-        <span class="font-sans text-base pt-2">Scanned:
-          {val.totalScanned}
-          items</span>
+        <ScanSummary {val} />
       </div>
 
       <div

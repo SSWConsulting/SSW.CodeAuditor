@@ -7,9 +7,9 @@
 {#if perf.performanceScore}
   <!-- content here -->
   <div>
-    <div class="grid grid-cols-2 lg:grid-cols-4">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-x-5">
       <div class="col-span-1 text-start whitespace-no-wrap">
-        <span class="block font-sans">AVERAGE</span>
+        <span class="block font-sans">Average</span>
         <span
           class="font-bold block lg:inline-block textgrey"
           title="Average"
@@ -18,7 +18,7 @@
         </span>
       </div>
       <div class="col-span-1 text-start">
-        <span class="block font-sans">PERFORMANCE</span>
+        <span class="block font-sans">Performance</span>
         <span
           title="Performance"
           class="font-bold block lg:inline-block textgrey"
@@ -27,7 +27,7 @@
         </span>
       </div>
       <div class="col-span-1 text-start">
-        <span class="block font-sans">ACCESSIBILITY</span>
+        <span class="block font-sans">Accessibility</span>
         <span
           class="font-bold block lg:inline-block textgrey"
           title="Accessibility"
@@ -55,7 +55,7 @@
         </span>
       </div>
       <div class="text-start">
-        <span class="block font-sans">BEST PRACTICE</span>
+        <span class="block font-sans">Best Practice</span>
         <span
           class="font-bold block lg:inline-block textgrey"
           title="Best Practice"

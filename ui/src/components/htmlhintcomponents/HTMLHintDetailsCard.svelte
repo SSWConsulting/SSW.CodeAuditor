@@ -1,12 +1,10 @@
 <script>
-  import formatDistanceToNow from "date-fns/formatDistanceToNow";
-  import { printTimeDiff } from "../../utils/utils";
   import { createEventDispatcher } from "svelte";
-  import { format } from "date-fns";
   import LighthouseSummary from "../summaryitemcomponents/LighthouseSummary.svelte";
   import CodeSummary from "../summaryitemcomponents/CodeSummary.svelte";
   import LinkSummary from "../summaryitemcomponents/LinkSummary.svelte";
   import ArtillerySummary from "../summaryitemcomponents/ArtillerySummary.svelte";
+  import ScanSummary from "../summaryitemcomponents/ScanSummary.svelte";
 
   export let build = {};
   export let htmlRules;
@@ -48,27 +46,7 @@
   <div class="px-6 py-2">
     <div class="grid grid-rows-2 grid-flow-col">
       <div class="row-span-4 col-span-2">
-        <span class="font-sans text-base font-bold text-gray-800 underline">
-          {format(new Date(val.buildDate), 'dd.MM.yyyy')}
-        </span>
-        <br />
-        <span class="font-sans text-base pt-2">
-          Last scanned:
-          {formatDistanceToNow(new Date(val.buildDate), { addSuffix: true })}
-          at
-          {format(new Date(val.buildDate), 'hh:mma')}
-        </span>
-        <br />
-        <span class="font-sans text-base pt-2">
-          Duration:
-          {printTimeDiff(+val.scanDuration)}
-        </span>
-        <br />
-        <span class="font-sans text-base pt-2">
-          Scanned:
-          {val.totalScanned}
-          items
-        </span>
+        <ScanSummary {val} />
         <br />
         <span class="font-sans text-base pt-2">
           {#if htmlRules}

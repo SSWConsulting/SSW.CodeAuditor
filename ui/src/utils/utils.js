@@ -63,11 +63,11 @@ export const CONSTS = {
 export const printTimeDiff = (took) =>
 	Math.floor((took || 0) / 60)
 	.toString()
-	.padStart(2, '0') +
-	':' +
+	.padStart(0, '0') +
+	'm ' +
 	Math.floor((took || 0) % 60)
 	.toString()
-	.padStart(2, '0');
+	.padStart(2, '0') + 's';
 
 export const updateQuery = (q) => {
 	if (history.pushState) {
