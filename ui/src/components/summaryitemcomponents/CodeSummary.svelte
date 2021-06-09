@@ -31,22 +31,41 @@
     </div>
   {/if}
 
-  {#if codeSummary.html || codeSummary.code}
+  {#if codeSummary.htmlWarnings || codeSummary.htmlErrors}
   <div class="col-span-1 text-start">
-    <span class="block whitespace-no-wrap font-sans">Errors</span>
+    <span class="block whitespace-no-wrap font-sans">Warnings</span>
     <span
       class="font-sans font-bold block lg:inline-block"
+      class:text-red-600={codeSummary.htmlWarnings > 0}
+      class:text-green-600={codeSummary.htmlWarnings == 0}
       title={(codeSummary.codeIssueList || '') + '\n\n\n' + (codeSummary.htmlIssueList || '')}>
       {numberWithCommas((codeSummary.htmlWarnings || 0) + (codeSummary.codeWarnings || 0))}
     </span>
   </div>
     <div class="col-span-1 text-start">
-      <span class="block whitespace-no-wrap font-sans">Warnings</span>
+      <span class="block whitespace-no-wrap font-sans">Errors</span>
       <span
         class="font-sans font-bold block lg:inline-block"
+        class:text-red-600={codeSummary.htmlErrors > 0}
+        class:text-green-600={codeSummary.htmlErrors === 0}
         title={(codeSummary.codeIssueList || '') + '\n\n\n' + (codeSummary.htmlIssueList || '')}>
         {numberWithCommas((codeSummary.htmlErrors || 0) + (codeSummary.codeErrors || 0))}
       </span>
     </div>
+    {:else}
+    <div class="col-span-1 text-start">
+      <span class="block whitespace-no-wrap font-sans">Errors</span>
+      <span
+        class="font-sans font-bold block lg:inline-block">
+        N/A
+      </span>
+    </div>
+      <div class="col-span-1 text-start">
+        <span class="block whitespace-no-wrap font-sans">Warnings</span>
+        <span
+          class="font-sans font-bold block lg:inline-block">
+          N/A
+        </span>
+      </div>
   {/if}
 </div>

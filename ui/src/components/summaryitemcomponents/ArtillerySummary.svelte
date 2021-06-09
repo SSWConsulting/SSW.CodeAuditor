@@ -21,7 +21,11 @@
   </div>
   <div class="col-span-1 text-start">
     <span class="block whitespace-no-wrap font-sans">Errors</span>
-    <span class="font-sans font-bold block lg:inline-block">
+    <span 
+      class="font-sans font-bold block lg:inline-block"
+      class:text-red-600={value.errors > 0}
+      class:text-green-600={value.errors == 0}
+    >
       {numberWithCommas(value.errors)} 
     </span>
   </div>
