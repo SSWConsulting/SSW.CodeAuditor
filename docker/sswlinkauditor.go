@@ -193,9 +193,9 @@ func writeResultFile(allUrls map[string]LinkStatus) {
 		return
 	}
 
-	f.WriteString("Source,Destination,Status,Status Code,Anchor\n")
+	f.WriteString("Source" + "\t" + "Destination" + "\t" + "Status" + "\t" + "Status Code" + "\t" + "Anchor" + "\n")
 	for _, v := range allUrls {
-		f.WriteString(v.srcUrl + "," + v.url + "," + v.status + "," + strconv.Itoa(v.statusCode) + ",\"" + v.anchor + "\"\n")
+		f.WriteString(v.srcUrl + "\t" + v.url + "\t" + v.status + "\t" + strconv.Itoa(v.statusCode) + "\t" + strings.ReplaceAll(v.anchor,"\"","") + "\n")
 	}
 
 	f.Close()
