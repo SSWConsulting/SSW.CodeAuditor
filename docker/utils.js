@@ -40,7 +40,7 @@ exports.readCsv = (file) => {
   return new Promise((resolve) => {
     const results = [];
     fs.createReadStream(file)
-      .pipe(csv())
+      .pipe(csv({separator: '\t'}))
       .on("data", (row) => {
         results.push(row);
       })
