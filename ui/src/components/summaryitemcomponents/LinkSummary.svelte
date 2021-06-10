@@ -17,7 +17,7 @@
     <span
       class="font-sans font-bold block lg:inline-block"
       class:text-red-600={value.totalBrokenLinks > 0}
-      class:text-green-600={value.totalBrokenLinks === 0}>
+      class:text-black={value.totalBrokenLinks === 0}>
       {value.uniqueBrokenLinks} / {value.totalBrokenLinks}
     </span>
   </div>
@@ -26,7 +26,7 @@
     <span
       class="font-sans font-bold block lg:inline-block"
       class:text-red-600={value.totalUnique404 > 0}
-      class:text-green-600={value.totalUnique404 === 0}>
+      class:text-black={value.totalUnique404 === 0}>
       {value.totalUnique404}
     </span>
   </div>

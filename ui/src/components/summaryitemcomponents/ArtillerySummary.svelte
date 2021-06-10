@@ -24,7 +24,7 @@
     <span 
       class="font-sans font-bold block lg:inline-block"
       class:text-red-600={value.errors > 0}
-      class:text-green-600={value.errors == 0}
+      class:text-black={value.errors == 0}
     >
       {numberWithCommas(value.errors)} 
     </span>

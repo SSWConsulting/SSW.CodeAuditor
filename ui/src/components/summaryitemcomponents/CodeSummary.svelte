@@ -37,7 +37,7 @@
     <span
       class="font-sans font-bold block lg:inline-block"
       class:text-red-600={codeSummary.htmlWarnings > 0}
-      class:text-green-600={codeSummary.htmlWarnings == 0}
+      class:text-black={codeSummary.htmlWarnings == 0}
       title={(codeSummary.codeIssueList || '') + '\n\n\n' + (codeSummary.htmlIssueList || '')}>
       {numberWithCommas((codeSummary.htmlWarnings || 0) + (codeSummary.codeWarnings || 0))}
     </span>
@@ -47,7 +47,7 @@
       <span
         class="font-sans font-bold block lg:inline-block"
         class:text-red-600={codeSummary.htmlErrors > 0}
-        class:text-green-600={codeSummary.htmlErrors === 0}
+        class:text-black={codeSummary.htmlErrors === 0}
         title={(codeSummary.codeIssueList || '') + '\n\n\n' + (codeSummary.htmlIssueList || '')}>
         {numberWithCommas((codeSummary.htmlErrors || 0) + (codeSummary.codeErrors || 0))}
       </span>
