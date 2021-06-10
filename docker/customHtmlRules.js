@@ -76,11 +76,10 @@ exports.addCustomHtmlRule = () => {
                 !(event.tagName === "p" || event.tagName === "figcaption"
                 || event.tagName === "a" || event.tagName === "div") 
                 ) {
-                  var col = event.col + event.tagName.toLowerCase().length + 1;
                   reporter.warn(
                     "Incorrect Figure Format.",
                     event.line,
-                    col,
+                    event.col,
                     self,
                     event.raw
                   );
