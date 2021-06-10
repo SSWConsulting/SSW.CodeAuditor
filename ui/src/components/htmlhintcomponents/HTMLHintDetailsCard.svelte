@@ -5,6 +5,7 @@
   import LinkSummary from "../summaryitemcomponents/LinkSummary.svelte";
   import ArtillerySummary from "../summaryitemcomponents/ArtillerySummary.svelte";
   import ScanSummary from "../summaryitemcomponents/ScanSummary.svelte";
+  import { htmlHintRules } from "../../utils/utils";
 
   export let build = {};
   export let htmlRules;
@@ -57,7 +58,7 @@
               {#if isCollapsedRules}
                 {#each htmlRules.selectedRules.split(/[,]+/) as rule}
                   <div class="ml-3 underline">
-                    <a href="https://htmlhint.com/docs/user-guide/rules/{rule}">{rule}</a>
+                    <a href="{(htmlHintRules.find(x => x.rule === rule)).ruleLink}">{(htmlHintRules.find(x => x.rule === rule)).displayName}</a>
                   </div>
                 {/each}
               {/if}
