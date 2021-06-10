@@ -94,5 +94,6 @@ exports.htmlHintConfig = {
   "id-class-ad-disabled": true,
   "href-abs-or-rel": true,
   "attr-unsafe-chars": true,
-  "head-script-disabled": true
+  "head-script-disabled": true,
+  "figure-format": true
 };
