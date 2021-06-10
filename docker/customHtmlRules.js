@@ -12,10 +12,12 @@ exports.addCustomHtmlRule = () => {
             var tagName = event.tagName.toLowerCase(),
               mapAttrs = parser.getMapAttrs(event.attrs),
               col = event.col + tagName.length + 1;
-            if (tagName === "pre" || tagName === "code") {
+            if (tagName === "pre") {
               if (
-                !("class" in mapAttrs) ||
-                !mapAttrs["class"].includes("language")
+                (!("class" in mapAttrs) ||
+                !mapAttrs["class"].includes("language"))  &&
+                (!("data-language" in mapAttrs) ||
+                (mapAttrs["data-language"] === ""))
               ) {
                 reporter.warn(
                   "Code blocks must contain a language specifier.",
