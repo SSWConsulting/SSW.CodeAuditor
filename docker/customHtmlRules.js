@@ -77,7 +77,6 @@ exports.addCustomHtmlRule = () => {
                 || event.tagName === "a" || event.tagName === "div") 
                 ) {
                   var col = event.col + event.tagName.toLowerCase().length + 1;
-                  console.log('wrong figure format')
                   reporter.warn(
                     "Incorrect Figure Format.",
                     event.line,
