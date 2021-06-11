@@ -63,5 +63,34 @@ exports.addCustomHtmlRule = () => {
           });
         },
       });
+
+    HTMLHint.addRule({
+      id: "figure-format",
+      description: "Checks if Figure statement is in correct format.",
+      init: function (parser, reporter) {
+        var self = this;
+
+        parser.addListener("all", function (event) {
+          if (event.tagName) {
+            if (event.lastEvent.raw.startsWith('Figure:')) {
+              console.log(event)
+              if (
+                !(event.tagName === "p" || event.tagName === "figcaption"
+                || event.tagName === "a" || event.tagName === "div") 
+                ) {
+                  reporter.warn(
+                    "Incorrect Figure Format.",
+                    event.line,
+                    event.col,
+                    self,
+                    event.raw
+                  );
+              } 
+            }
+          }
+        });
+      },
+    });
     // Add new custom rule below 
+
 }
