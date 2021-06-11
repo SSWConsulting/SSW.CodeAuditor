@@ -73,7 +73,6 @@ exports.addCustomHtmlRule = () => {
         parser.addListener("all", function (event) {
           if (event.tagName) {
             if (event.lastEvent.raw.startsWith('Figure:')) {
-              console.log(event)
               if (
                 !(event.tagName === "p" || event.tagName === "figcaption"
                 || event.tagName === "a" || event.tagName === "div") 
