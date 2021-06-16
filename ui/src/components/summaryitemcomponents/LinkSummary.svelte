@@ -22,7 +22,11 @@
       class="font-sans font-bold block lg:inline-block"
       class:text-red-600={value.totalBrokenLinks > 0}
       class:text-gray-600={value.totalBrokenLinks === 0}>
-      {value.uniqueBrokenLinks} / {value.totalBrokenLinks}
+      {#if value.uniqueBrokenLinks === value.totalBrokenLinks}
+        {value.uniqueBrokenLinks}
+      {:else}
+        {value.uniqueBrokenLinks} / {value.totalBrokenLinks}
+      {/if}
       {#if value.totalBrokenLinks === 0}
         <i class="fas fa-check"></i>
       {/if}
