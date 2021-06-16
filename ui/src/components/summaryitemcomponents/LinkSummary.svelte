@@ -1,6 +1,8 @@
 <script>
   export let value = {};
 
+  import { tooltip } from '../misccomponents/tooltip';
+
   function numberWithCommas(x) {
     return x.toLocaleString()
   }
@@ -13,7 +15,9 @@
       class="font-sans font-bold block lg:inline-block">{numberWithCommas(value.totalScanned)}</span>
   </div>
   <div class="col-span-1 text-start">
-    <span class="block whitespace-no-wrap font-sans">Bad Links</span>
+    <span class="block whitespace-no-wrap font-sans">Bad Links
+      <i class="fas fa-info-circle" title="Unique Links / Total Links" use:tooltip></i>
+    </span>
     <span
       class="font-sans font-bold block lg:inline-block"
       class:text-red-600={value.totalBrokenLinks > 0}
