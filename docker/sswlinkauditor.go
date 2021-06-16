@@ -129,10 +129,6 @@ func parseUrl(startUrl string, url string) string {
 		url = strings.Split(url, "#")[0]
 	}
 
-	if strings.Index(url, "?") > 0 {
-		url = strings.Split(url, "?")[0]
-	}
-
 	if strings.HasPrefix(url, "http") {
 		return url
 	}
