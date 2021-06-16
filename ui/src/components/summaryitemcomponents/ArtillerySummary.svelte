@@ -27,6 +27,9 @@
       class:text-gray-600={value.errors == 0}
     >
       {numberWithCommas(value.errors)} 
+      {#if value.errors === 0}
+        <i class="fas fa-check"></i>
+      {/if}
     </span>
   </div>
 </div>

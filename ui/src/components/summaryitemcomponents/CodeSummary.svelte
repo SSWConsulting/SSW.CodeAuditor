@@ -43,6 +43,9 @@
       class:text-gray-600={codeSummary.htmlWarnings == 0}
       title={(codeSummary.codeIssueList || '') + '\n\n\n' + (codeSummary.htmlIssueList || '')}>
       {numberWithCommas((codeSummary.htmlWarnings || 0) + (codeSummary.codeWarnings || 0))}
+      {#if codeSummary.htmlWarnings == 0}
+        <i class="fas fa-check"></i>
+      {/if}
     </span>
   </div>
     <div class="col-span-1 text-start">
@@ -55,6 +58,9 @@
         class:text-gray-600={codeSummary.htmlErrors === 0}
         title={(codeSummary.codeIssueList || '') + '\n\n\n' + (codeSummary.htmlIssueList || '')}>
         {numberWithCommas((codeSummary.htmlErrors || 0) + (codeSummary.codeErrors || 0))}
+        {#if codeSummary.htmlErrors == 0}
+          <i class="fas fa-check"></i>
+        {/if}
       </span>
     </div>
     {:else}

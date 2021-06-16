@@ -23,6 +23,9 @@
       class:text-red-600={value.totalBrokenLinks > 0}
       class:text-gray-600={value.totalBrokenLinks === 0}>
       {value.uniqueBrokenLinks} / {value.totalBrokenLinks}
+      {#if value.totalBrokenLinks === 0}
+        <i class="fas fa-check"></i>
+      {/if}
     </span>
   </div>
   <div class="col-span-1 text-start">
@@ -32,6 +35,9 @@
       class:text-red-600={value.totalUnique404 > 0}
       class:text-gray-600={value.totalUnique404 === 0}>
       {value.totalUnique404}
+      {#if value.totalUnique404 === 0}
+        <i class="fas fa-check"></i>
+      {/if}
     </span>
   </div>
 </div>
