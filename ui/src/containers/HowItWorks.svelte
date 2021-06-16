@@ -23,7 +23,7 @@
   });
 
   const systemRequirements = `
-  ## System Requirements
+  ## System requirements
   Make sure your system meets the following requirements:
   \`\`\` bash
   - Have Docker Desktop running in the background 
@@ -47,7 +47,7 @@
   `;
 
   const instructionSteps = `
-  ## Instruction to scan an URL 
+  ## Instructions to scan an URL 
   ### On Windows 
   \`\`\` bash
   1. Download Docker for Windows at https://docs.docker.com/docker-for-windows/install/

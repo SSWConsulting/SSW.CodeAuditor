@@ -24,6 +24,11 @@
       <div class="w-full overflow-hidden">
         <span class="text-white text-lg pt-4 lg:pt-0 lg:mx-4">
           <span class="hover:text-red-600">
+            <Navigate to="/home">Home</Navigate> 
+          </span>
+        </span>
+        <span class="text-white text-lg pt-4 lg:pt-0 lg:mx-4">
+          <span class="hover:text-red-600">
             <Navigate to="/explore">Explore</Navigate> 
           </span>
         </span>

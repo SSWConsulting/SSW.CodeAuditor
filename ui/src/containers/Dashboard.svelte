@@ -60,7 +60,7 @@
   }
 
   const systemRequirements = `
-  ## System Requirements
+  ## System requirements
   Make sure your system meets the following requirements:
   \`\`\` bash
   - Have Docker Desktop in the background 
@@ -123,7 +123,7 @@
   \`\`\`
   `;
   const instructionSteps = `
-  ## Instruction to scan an URL 
+  ## Instructions to scan an URL 
   ### On Windows 
   \`\`\` bash
   1. Download Docker for Windows at https://docs.docker.com/docker-for-windows/install/
@@ -164,22 +164,26 @@
         <article class="markdown-body">
           {@html marked(instructions)}
         </article>
-        <a
-          class="text-left mt-3 text-sm font-bold text-blue hover:text-blue-darker"
-          on:click={showFullInstruction}
-          href="javascript:void(0)">
-          Collapse
-        </a>
+        <div class="mt-2 flex-none">
+          <button
+            class="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            on:click={showFullInstruction}>
+            Less Options
+            <i class="fas fa-minus-square"></i>
+          </button>
+        </div>
       {:else}
         <article class="markdown-body">
           {@html marked(summarizedInstructions)}
         </article>
-        <a
-          class="text-left mt-3 text-sm font-bold text-blue hover:text-blue-darker"
-          on:click={showFullInstruction}
-          href="javascript:void(0)">
-          More Options
-        </a>
+        <div class="mt-2 flex-none">
+          <button
+            class="flex-none bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            on:click={showFullInstruction}>
+            More Options
+            <i class="fas fa-plus-square"></i>
+          </button>
+        </div>
       {/if}
       <article class="markdown-body mt-5">
         {@html marked(systemRequirements)}
