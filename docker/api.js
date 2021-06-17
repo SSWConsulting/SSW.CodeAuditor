@@ -95,5 +95,4 @@ exports.htmlHintConfig = {
   "href-abs-or-rel": true,
   "attr-unsafe-chars": true,
   "head-script-disabled": true,
-  "figure-format": true
 };
