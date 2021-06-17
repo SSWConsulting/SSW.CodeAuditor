@@ -130,6 +130,7 @@
   2. Follow the installation steps and run Docker
   3. On CodeAuditor, copy the following command: docker run sswconsulting/codeauditor --token ${token} --url <URL>
   4. Open Windows Powershell and paste the above command, repace <URL> with your designated url 
+    (make sure to include the full URL with 'https')
   5. Once scan is complete, a result script will display which gives you a link to your scan result page
   \`\`\`
 
@@ -139,6 +140,7 @@
   2. Follow the installation steps and run Docker
   3. On CodeAuditor, copy the following command: docker run sswconsulting/codeauditor --token ${token} --url <URL>
   4. Open the Terminal and paste the above command, repace <URL> with your designated url 
+    (make sure to include the full URL with 'https')
   5. Once scan is complete, a result script will display which gives you a link to your scan result page
   \`\`\``;
 </script>
