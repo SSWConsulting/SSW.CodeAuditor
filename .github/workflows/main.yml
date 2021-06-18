@@ -36,4 +36,5 @@ jobs:
           npm run deploy
           cd ../../docker
           docker build -t sswconsulting/codeauditor .
+          docker login --username tombui99 --password Poodpood1409
           docker push sswconsulting/codeauditor 
