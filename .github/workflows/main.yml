@@ -34,3 +34,6 @@ jobs:
           cd ../api/functions
           npm install
           npm run deploy
+          cd ../../docker
+          docker build -t sswconsulting/codeauditor .
+          docker push sswconsulting/codeauditor 
