@@ -29,7 +29,9 @@
   \`\`\``;
 
   const instruction = `
-  ## SSW CodeAuditor
+  ## About SSW CodeAuditor
+  SSW CodeAuditor was launched in 2008. It was built and is lovingly maintained by SSW.
+  ## Get Started
   Scan any website for broken links, [HTML Issues](https://htmlhint.com), [Google Lighthouse Audit](https://developers.google.com/web/tools/lighthouse) and [Artillery Load Test](https://artillery.io/) by running the following command:
   \`\`\` bash
   $ docker container run --cap-add=SYS_ADMIN sswconsulting/codeauditor --lighthouse --url <URL>
