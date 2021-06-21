@@ -113,110 +113,108 @@ const main = async () => {
 	let _codeAuditor = [];
 	let _superlinter = [];
 
-	if (options.url.startsWith('https://')) {
-		// Static Code Analysis and CLOC
-		if (fs.readdirSync('./src').length > 0) {
-			writeLog(chalk.yellowBright(`Counting lines of codes`));
-			const [result, error] = countLineOfCodes(writeLog);
-			if (!error) {
-				_cloc = result;
-			}
-
-			const [resultCode, errorCode] = runCodeAuditor(
-				options.ignorefile,
-				options.rules
-			);
-			if (errorCode) {
-				writeLog(`Error running SSWCodeAuditor command: ${error}`);
-			}
-			writeLog(resultCode);
-
-			_codeAuditor = resultCode;
-			let codeSummary = '';
-			if (_codeAuditor) {
-				const errors = _codeAuditor.filter((x) => !!x.error);
-				const warns = _codeAuditor.filter((x) => !x.error);
-				codeSummary = ` Errors=${errors.length} Warnings=${warns.length}`;
-			}
-
-			// output the result
-			consoleBox(
-				`Codes: Files=${result.header.n_files} Lines=${result.header.n_lines}${codeSummary}`,
-				'green'
-			);
-		}
-
-		// Github Superlinter
-		if (fs.existsSync('./src/superlinter.log')) {
-			writeLog(
-				`We have github SuperLinter output file at ./src/superlinter.log`
-			);
-			_superlinter = readGithubSuperLinter('./src/superlinter.log');
-			writeLog(`total number of issues found`, _superlinter.length);
-		}
-
-		// Lighthouse
-		if (
-			options.lighthouse &&
-			fs.existsSync('/etc/apt/sources.list.d/google.list')
-		) {
-			writeLog(`start lighthouse`);
-			try {
-				const rs = execSync(
-					`./node_modules/.bin/lhci collect --url="${options.url}" -n 1`
-				).toString();
-				writeLog(`lighthouse check finished`, rs);
-			} catch (e) {
-				writeLog(`lighthouse check failed`, e);
-			}
-		}
-
-		// Artillery 
-		if (
-			options.artillery) {
-			writeLog(`start artillery`);
-			try {
-				const rs = execSync(
-					`./node_modules/.bin/artillery quick -d 20 -r 10 -k -o artilleryOut.json "${options.url}"`
-				).toString();
-				writeLog(`artillery check finished`, rs);
-			} catch (e) {
-				writeLog(`artillery check failed`, e);
-			}
-		}
-
-		writeLog(
-			chalk.yellowBright(
-				`Scanning ${chalk.green(options.url)} ${
-					options.maxthread
-						? ` with max thread of ${options.maxthread}`
-						: ''
-				}`
-			)
-		);
-		
-		// Linkauditor 
-		const [result, error] = runBrokenLinkCheck(options.url, options.maxthread);
-		writeLog(`scan finished`, result);
-		if (error) {
-			writeLog(`Error running command: ${error}`);
-			process.exit(1);
-		}
-
-		// Process written files and upload via Firebase Function
-		processAndUpload(
-			options,
-			startTime,
-			'./all_links.csv',
-			_cloc,
-			_codeAuditor,
-			_superlinter
-		);
-	} else if (!options.url) {
-		console.log('Please provide a valid URL')
-	} else {
-		console.log(`Please provide a valid URL starts with 'https'`)
+	if (!options.url.startsWith('https://')) {
+		options.url = "https://" + options.url
 	}
+
+	// Static Code Analysis and CLOC
+	if (fs.readdirSync('./src').length > 0) {
+		writeLog(chalk.yellowBright(`Counting lines of codes`));
+		const [result, error] = countLineOfCodes(writeLog);
+		if (!error) {
+			_cloc = result;
+		}
+
+		const [resultCode, errorCode] = runCodeAuditor(
+			options.ignorefile,
+			options.rules
+		);
+		if (errorCode) {
+			writeLog(`Error running SSWCodeAuditor command: ${error}`);
+		}
+		writeLog(resultCode);
+
+		_codeAuditor = resultCode;
+		let codeSummary = '';
+		if (_codeAuditor) {
+			const errors = _codeAuditor.filter((x) => !!x.error);
+			const warns = _codeAuditor.filter((x) => !x.error);
+			codeSummary = ` Errors=${errors.length} Warnings=${warns.length}`;
+		}
+
+		// output the result
+		consoleBox(
+			`Codes: Files=${result.header.n_files} Lines=${result.header.n_lines}${codeSummary}`,
+			'green'
+		);
+	}
+
+	// Github Superlinter
+	if (fs.existsSync('./src/superlinter.log')) {
+		writeLog(
+			`We have github SuperLinter output file at ./src/superlinter.log`
+		);
+		_superlinter = readGithubSuperLinter('./src/superlinter.log');
+		writeLog(`total number of issues found`, _superlinter.length);
+	}
+
+	// Lighthouse
+	if (
+		options.lighthouse &&
+		fs.existsSync('/etc/apt/sources.list.d/google.list')
+	) {
+		writeLog(`start lighthouse`);
+		try {
+			const rs = execSync(
+				`./node_modules/.bin/lhci collect --url="${options.url}" -n 1`
+			).toString();
+			writeLog(`lighthouse check finished`, rs);
+		} catch (e) {
+			writeLog(`lighthouse check failed`, e);
+		}
+	}
+
+	// Artillery 
+	if (
+		options.artillery) {
+		writeLog(`start artillery`);
+		try {
+			const rs = execSync(
+				`./node_modules/.bin/artillery quick -d 20 -r 10 -k -o artilleryOut.json "${options.url}"`
+			).toString();
+			writeLog(`artillery check finished`, rs);
+		} catch (e) {
+			writeLog(`artillery check failed`, e);
+		}
+	}
+
+	writeLog(
+		chalk.yellowBright(
+			`Scanning ${chalk.green(options.url)} ${
+				options.maxthread
+					? ` with max thread of ${options.maxthread}`
+					: ''
+			}`
+		)
+	);
+	
+	// Linkauditor 
+	const [result, error] = runBrokenLinkCheck(options.url, options.maxthread);
+	writeLog(`scan finished`, result);
+	if (error) {
+		writeLog(`Error running command: ${error}`);
+		process.exit(1);
+	}
+
+	// Process written files and upload via Firebase Function
+	processAndUpload(
+		options,
+		startTime,
+		'./all_links.csv',
+		_cloc,
+		_codeAuditor,
+		_superlinter
+	);
 };
 
 /**
