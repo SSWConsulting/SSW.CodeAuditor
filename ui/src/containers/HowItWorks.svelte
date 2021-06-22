@@ -83,6 +83,10 @@
         }
       })
   \`\`\`
+  **IMPORTANT:** <br />
+  Use \`\`\` reporter.warn \`\`\` if you want to report your custom rule violation as a **warning** <br />
+  Use \`\`\` reporter.error \`\`\` if you want to report your custom rule violation as a **error**
+
   #### 5. Go to \`\`\`docker/api.js\`\`\`: On the last export named \`\`\`htmlHintConfig\`\`\`, add your new custom rule id to the list using the following format:
   \`\`\` js
   exports.htmlHintConfig = {
