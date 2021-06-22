@@ -80,7 +80,7 @@
             class="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             on:click={showFullInstruction}>
             Less Options
-            <i class="fas fa-minus-square"></i>
+            <i class="fas fa-angle-up"></i>
           </button>
         </div>
       {:else}
@@ -92,7 +92,7 @@
             class="flex-none bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             on:click={showFullInstruction}>
             More Options
-            <i class="fas fa-plus-square"></i>
+            <i class="fas fa-angle-down"></i>
           </button>
         </div>
       {/if}

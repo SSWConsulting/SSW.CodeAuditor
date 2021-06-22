@@ -35,7 +35,7 @@
   {#if codeSummary.htmlWarnings || codeSummary.htmlErrors}
   <div class="col-span-1 text-start">
     <span class="block whitespace-no-wrap font-sans">Warnings
-      <i class="fas fa-info-circle" title="HTML issues against the standard but that are less likely to be problematic" use:tooltip></i>
+      <i class="fas fa-info-circle" title="😵" use:tooltip></i>
     </span>
     <span
       class="font-sans font-bold block lg:inline-block"
@@ -50,7 +50,7 @@
   </div>
     <div class="col-span-1 text-start">
       <span class="block whitespace-no-wrap font-sans">Errors
-        <i class="fas fa-info-circle" title="HTML issues that are flagrantly against the standards" use:tooltip></i>
+        <i class="fas fa-info-circle" title="😡" use:tooltip></i>
       </span>
       <span
         class="font-sans font-bold block lg:inline-block"
@@ -66,7 +66,7 @@
     {:else}
     <div class="col-span-1 text-start">
       <span class="block whitespace-no-wrap font-sans">Warnings
-        <i class="fas fa-info-circle" title="HTML issues against the standard but that are less likely to be problematic" use:tooltip></i>
+        <i class="fas fa-info-circle" title="😵" use:tooltip></i>
       </span>
       <span
         class="font-sans font-bold block lg:inline-block">
@@ -75,7 +75,7 @@
     </div>
     <div class="col-span-1 text-start">
       <span class="block whitespace-no-wrap font-sans">Errors
-        <i class="fas fa-info-circle" title="HTML issues that are flagrantly against the standards" use:tooltip></i>
+        <i class="fas fa-info-circle" title="😡" use:tooltip></i>
       </span>
       <span
         class="font-sans font-bold block lg:inline-block">
