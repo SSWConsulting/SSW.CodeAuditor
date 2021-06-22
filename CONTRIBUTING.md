@@ -101,6 +101,9 @@ In order to test your code changes in the API
         },
       })
 ```
+**Important:** 
+- Use ``` reporter.warn ``` if you want to report your custom rule violation as **warning**
+- Use ``` reporter.error ``` if you want to report your custom rule violation as **error**
 4. Go to ```docker/api.js```: On the last export named ```htmlHintConfig```, add your new custom rule id to the list using the following format:
 E.g: 
 ```javascript
