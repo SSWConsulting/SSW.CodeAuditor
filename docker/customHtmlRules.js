@@ -76,7 +76,7 @@ exports.addCustomHtmlRule = () => {
           col = event.col + tagName.length + 1;
           if (tagName === "meta") {
             if (
-              (("http-equiv" in mapAttrs) ||
+              (("http-equiv" in mapAttrs) &&
               mapAttrs["http-equiv"].includes("refresh")) 
             ) {
               reporter.warn(
