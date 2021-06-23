@@ -64,7 +64,7 @@
           <p
             class="cursor-pointer underline text-gray-700 font-sans font-bold hover:text-red-600"
             on:click={showAllScan}>
-            Showing all
+            Showing top
             {data.length}
             Public Scans
           </p>

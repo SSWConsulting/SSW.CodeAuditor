@@ -30,7 +30,7 @@
 
   const instruction = `
   ## About SSW CodeAuditor
-  SSW CodeAuditor was launched in 2008. It was built and is lovingly maintained by SSW.
+  SSW CodeAuditor was launched in 2008. It was built and is lovingly maintained by [SSW](https://www.ssw.com.au/ssw/).
   ## Get Started
   Scan any website for broken links, [HTML Issues](https://htmlhint.com), [Google Lighthouse Audit](https://developers.google.com/web/tools/lighthouse) and [Artillery Load Test](https://artillery.io/) by running the following command:
   \`\`\` bash
@@ -77,10 +77,10 @@
         </article>
         <div class="mt-2 flex-none">
           <button
-            class="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
             on:click={showFullInstruction}>
             Less Options
-            <i class="fas fa-minus-square"></i>
+            <i class="fas fa-angle-up"></i>
           </button>
         </div>
       {:else}
@@ -89,10 +89,10 @@
         </article>
         <div class="mt-2 flex-none">
           <button
-            class="flex-none bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            class="flex-none bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
             on:click={showFullInstruction}>
             More Options
-            <i class="fas fa-plus-square"></i>
+            <i class="fas fa-angle-down"></i>
           </button>
         </div>
       {/if}
