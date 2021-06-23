@@ -64,5 +64,31 @@ exports.addCustomHtmlRule = () => {
         },
       });
     // Add new custom rule below 
+    HTMLHint.addRule({
+      id: "meta-tag-redirect",
+      description: "Checks Meta tags to not be used to refresh or redirect.",
+      init: function (parser, reporter) {
+        var self = this;
 
+        parser.addListener("all", function (event) {
+          var tagName = event.tagName.toLowerCase(),
+          mapAttrs = parser.getMapAttrs(event.attrs),
+          col = event.col + tagName.length + 1;
+          if (tagName === "meta") {
+            if (
+              (("http-equiv" in mapAttrs) ||
+              mapAttrs["http-equiv"].includes("refresh")) 
+            ) {
+              reporter.warn(
+                "Meta tags should not be used to refresh or redirect",
+                event.line,
+                col,
+                self,
+                event.raw
+              );
+            }
+          }
+        });
+      }
+    });
 }
