@@ -32,7 +32,7 @@ exports.addCustomHtmlRule = () => {
         },
       });
 
-      HTMLHint.addRule({
+    HTMLHint.addRule({
         id: "grammar-scrum-terms",
         description: "Checks case of common Agile Scrum terms that people get wrong.",
         init: function (parser, reporter) {
@@ -59,6 +59,34 @@ exports.addCustomHtmlRule = () => {
                   );
                 }
               });
+            }
+          });
+        },
+      });
+
+    HTMLHint.addRule({
+        id: "back-link-instead-of-previous",
+        description: "Checks using 'Back' instead of 'Previous' for backward iteration. ",
+        init: function (parser, reporter) {
+          var self = this;
+  
+          parser.addListener('all', function (event) {
+            if (event.tagName === 'a') {
+              if (event.lastEvent.raw === " &lt;Back " ||
+                  event.lastEvent.raw === " &lt;&lt;Back" ||
+                  event.lastEvent.raw === " &lt;&lt; Back" ||
+                  event.lastEvent.raw === " &lt;Previous " ||
+                  event.lastEvent.raw === " &lt;&lt;Previous " ||
+                  event.lastEvent.raw === " &lt; Previous " 
+              ) {
+                reporter.warn(
+                  "Use Previous instead of Back",
+                  event.line,
+                  event.col,
+                  self,
+                  event.raw
+                );
+              }
             }
           });
         },

@@ -357,10 +357,12 @@ export const htmlHintRules = [
 	{ rule: "head-script-disabled", displayName: "HTML - the script tag cannot be used in another tag", ruleLink: "https://htmlhint.com/docs/user-guide/rules/head-script-disabled" },
 	{ rule: "code-block-missing-language", displayName: "Code block - missing language", ruleLink: "https://www.ssw.com.au/rules/set-language-on-code-blocks" },
 	{ rule: "grammar-scrum-terms", displayName: "Grammar mistake - common Scrum terms", ruleLink: "https://www.ssw.com.au/rules/scrum-should-be-capitalized" },
+	{ rule: "back-link-instead-of-previous", displayName: "Do you use 'Back' instead of 'Previous' (or other variations)?", ruleLink: "https://www.ssw.com.au/rules/do-you-use-back-instead-of-previous-or-other-variations" },
  ];
 
  export const customHtmlHintRules = [
 	{ rule: "code-block-missing-language", displayName: "Code block - missing language", ruleLink: "https://www.ssw.com.au/rules/set-language-on-code-blocks" },
 	{ rule: "grammar-scrum-terms", displayName: "Grammar mistake - common Scrum terms", ruleLink: "https://www.ssw.com.au/rules/scrum-should-be-capitalized" },
+	{ rule: "back-link-instead-of-previous", displayName: "Do you use 'Back' instead of 'Previous' (or other variations)?", ruleLink: "https://www.ssw.com.au/rules/do-you-use-back-instead-of-previous-or-other-variations" },
 	// Add new rule id below
  ];

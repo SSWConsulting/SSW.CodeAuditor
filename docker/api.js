@@ -95,4 +95,5 @@ exports.htmlHintConfig = {
   "href-abs-or-rel": true,
   "attr-unsafe-chars": true,
   "head-script-disabled": true,
+  "back-link-instead-of-previous": true
 };
