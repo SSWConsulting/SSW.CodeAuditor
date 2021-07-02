@@ -362,6 +362,7 @@ export const htmlHintRules = [
 	{ rule: "font-tag-must-not-be-used", displayName: "Font Tags - must not be used", ruleLink: "https://www.ssw.com.au/rules/do-you-know-font-tags-are-no-longer-used" },
 	{ rule: "meta-tag-must-contain-description", displayName: "Meta Tags - must contain description", ruleLink: "https://www.ssw.com.au/rules/use-meta-keywords-and-description-tags" },
 	{ rule: "url-must-not-have-space", displayName: "URLs - must not have space", ruleLink: "https://www.ssw.com.au/rules/use-dashes-in-urls" },
+	{ rule: "url-must-not-have-click-here", displayName: "URLs - must not use word click here", ruleLink: "https://www.ssw.com.au/rules/relevant-words-on-links" },
  ];
 
  export const customHtmlHintRules = [
@@ -372,5 +373,6 @@ export const htmlHintRules = [
 	{ rule: "font-tag-must-not-be-used", displayName: "Font Tags - must not be used", ruleLink: "https://www.ssw.com.au/rules/do-you-know-font-tags-are-no-longer-used" },
 	{ rule: "meta-tag-must-contain-description", displayName: "Meta Tags - must contain description", ruleLink: "https://www.ssw.com.au/rules/use-meta-keywords-and-description-tags" },
 	{ rule: "url-must-not-have-space", displayName: "URLs - must not have space", ruleLink: "https://www.ssw.com.au/rules/use-dashes-in-urls" },
+	{ rule: "url-must-not-have-click-here", displayName: "URLs - must not use word click here", ruleLink: "https://www.ssw.com.au/rules/relevant-words-on-links" },
 	// Add new rule id below
  ];

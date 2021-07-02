@@ -193,5 +193,29 @@ exports.addCustomHtmlRule = () => {
           });
         },
       });
+
+    HTMLHint.addRule({
+        id: "url-must-not-have-click-here",
+        description: "URLs must not use word click here.",
+        init: function (parser, reporter) {
+          var self = this;
+
+          parser.addListener("all", function (event) {
+            if (event.tagName === "a") {
+              if (event.lastEvent.raw) {
+                if (event.lastEvent.raw.toLowerCase() === "click here") {
+                  reporter.warn(
+                    "URLs must not use word click here.",
+                    event.line,
+                    event.col,
+                    self,
+                    event.raw
+                  );
+                }
+              }
+            }
+          });
+        },
+      });
     // Add new custom rule below 
 }

@@ -100,4 +100,5 @@ exports.htmlHintConfig = {
   "font-tag-must-not-be-used": true,
   "meta-tag-must-contain-description": true,
   "url-must-not-have-space": true,
+  "url-must-not-have-click-here": true,
 };
