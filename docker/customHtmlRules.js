@@ -284,12 +284,34 @@ exports.addCustomHtmlRule = () => {
                   reporter.warn(
                     "Page must specify rel icon.",
                     event.line,
-                    event.col,
+                    col,
                     self,
                     event.raw
                   );
                 }
               }
+            }
+          });
+        },
+      });
+
+    HTMLHint.addRule({
+        id: "page-must-have-doctype",
+        description: "HTML pages must have DocType.",
+        init: function (parser, reporter) {
+          var self = this;
+
+          parser.addListener("tagstart", function (event) {
+            var tagName = event.tagName.toLowerCase(),
+              col = event.col + tagName.length + 1;
+            if (tagName === '!DOCTYPE') {
+              reporter.warn(
+                "HTML pages must have DocType.",
+                event.line,
+                col,
+                self,
+                event.raw
+              );
             }
           });
         },

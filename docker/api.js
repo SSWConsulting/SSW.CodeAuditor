@@ -104,4 +104,5 @@ exports.htmlHintConfig = {
   "page-must-not-show-email-addresses": true,
   "link-must-not-show-unc": true,
   "must-specify-rel-icon": true,
+  "page-must-have-doctype": true,
 };

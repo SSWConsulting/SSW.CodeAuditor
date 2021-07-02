@@ -363,9 +363,10 @@ export const htmlHintRules = [
 	{ rule: "meta-tag-must-contain-description", displayName: "Meta Tags - must contain description", ruleLink: "https://www.ssw.com.au/rules/use-meta-keywords-and-description-tags" },
 	{ rule: "url-must-not-have-space", displayName: "URLs - must not have space", ruleLink: "https://www.ssw.com.au/rules/use-dashes-in-urls" },
 	{ rule: "url-must-not-have-click-here", displayName: "URLs - must not use word click here", ruleLink: "https://www.ssw.com.au/rules/relevant-words-on-links" },
+	{ rule: "must-specify-rel-icon", displayName: "HTML -  Specify rel icon at the site level", ruleLink: "https://www.ssw.com.au/rules/do-you-have-a-favicon-in-your-webpage" },
 	{ rule: "page-must-not-show-email-addresses", displayName: "Emails - page must not display any email addresses", ruleLink: "" },
 	{ rule: "link-must-not-show-unc", displayName: "HTML - link must not show UNC", ruleLink: "" },
-	{ rule: "must-specify-rel-icon", displayName: "HTML -  Specify rel icon at the site level", ruleLink: "https://www.ssw.com.au/rules/do-you-have-a-favicon-in-your-webpage" },
+	{ rule: "page-must-have-doctype", displayName: "HTML -  Page must have DocType", ruleLink: "" },
  ];
 
  export const customHtmlHintRules = [
@@ -377,8 +378,9 @@ export const htmlHintRules = [
 	{ rule: "meta-tag-must-contain-description", displayName: "Meta Tags - must contain description", ruleLink: "https://www.ssw.com.au/rules/use-meta-keywords-and-description-tags" },
 	{ rule: "url-must-not-have-space", displayName: "URLs - must not have space", ruleLink: "https://www.ssw.com.au/rules/use-dashes-in-urls" },
 	{ rule: "url-must-not-have-click-here", displayName: "URLs - must not use word click here", ruleLink: "https://www.ssw.com.au/rules/relevant-words-on-links" },
+	{ rule: "must-specify-rel-icon", displayName: "HTML -  Specify rel icon at the site level", ruleLink: "https://www.ssw.com.au/rules/do-you-have-a-favicon-in-your-webpage" },
 	{ rule: "page-must-not-show-email-addresses", displayName: "Emails - page must not display any email addresses", ruleLink: "" },
 	{ rule: "link-must-not-show-unc", displayName: "HTML - link must not show UNC", ruleLink: "" },
-	{ rule: "must-specify-rel-icon", displayName: "HTML -  Specify rel icon at the site level", ruleLink: "https://www.ssw.com.au/rules/do-you-have-a-favicon-in-your-webpage" },
+	{ rule: "page-must-have-doctype", displayName: "HTML -  Page must have DocType", ruleLink: "" },
 	// Add new rule id below
  ];
