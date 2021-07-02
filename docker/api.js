@@ -97,4 +97,5 @@ exports.htmlHintConfig = {
   "head-script-disabled": true,
   "anchor-names-must-be-valid": true,
   "meta-tag-must-not-redirect": true,
+  "font-tag-must-not-be-used": true,
 };

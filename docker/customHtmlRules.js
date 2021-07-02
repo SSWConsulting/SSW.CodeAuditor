@@ -93,11 +93,11 @@ exports.addCustomHtmlRule = () => {
       
     HTMLHint.addRule({
         id: "meta-tag-must-not-redirect",
-        description: "Checks Meta tags must not refresh or redirect.",
+        description: "Checks Meta tags to not be used to refresh or redirect.",
         init: function (parser, reporter) {
           var self = this;
-  
-          parser.addListener("all", function (event) {
+ 
+          parser.addListener("tagstart", function (event) {
             var tagName = event.tagName.toLowerCase(),
             mapAttrs = parser.getMapAttrs(event.attrs),
             col = event.col + tagName.length + 1;
@@ -117,6 +117,28 @@ exports.addCustomHtmlRule = () => {
             }
           });
         }
+      });
+
+    HTMLHint.addRule({
+        id: "font-tag-must-not-be-used",
+        description: "Font tags must not be used.",
+        init: function (parser, reporter) {
+          var self = this;
+
+          parser.addListener("tagstart", function (event) {
+            var tagName = event.tagName.toLowerCase(),
+            col = event.col + tagName.length + 1;
+            if (tagName === "font") {
+              reporter.warn(
+                "Font tag must not be used.",
+                event.line,
+                col,
+                self,
+                event.raw
+              );
+            }
+          });
+        },
       });
     // Add new custom rule below 
 

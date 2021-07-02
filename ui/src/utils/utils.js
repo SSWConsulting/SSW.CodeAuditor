@@ -359,6 +359,7 @@ export const htmlHintRules = [
 	{ rule: "grammar-scrum-terms", displayName: "Grammar mistake - common Scrum terms", ruleLink: "https://www.ssw.com.au/rules/scrum-should-be-capitalized" },
 	{ rule: "anchor-names-must-be-valid", displayName: "Anchor Names - must be valid", ruleLink: "https://www.ssw.com.au/rules/chose-efficient-anchor-names" },
 	{ rule: "meta-tag-must-not-redirect", displayName: "Meta Tags - must not refresh or redirect", ruleLink: "https://rules.sonarsource.com/html/RSPEC-1094" },
+	{ rule: "font-tag-must-not-be-used", displayName: "Font Tags - must not be used", ruleLink: "https://www.ssw.com.au/rules/do-you-know-font-tags-are-no-longer-used" },
  ];
 
  export const customHtmlHintRules = [
@@ -366,5 +367,6 @@ export const htmlHintRules = [
 	{ rule: "grammar-scrum-terms", displayName: "Grammar mistake - common Scrum terms", ruleLink: "https://www.ssw.com.au/rules/scrum-should-be-capitalized" },
 	{ rule: "anchor-names-must-be-valid", displayName: "Anchor Names - must be valid", ruleLink: "https://www.ssw.com.au/rules/chose-efficient-anchor-names" },
 	{ rule: "meta-tag-must-not-redirect", displayName: "Meta Tags - must not refresh or redirect", ruleLink: "https://rules.sonarsource.com/html/RSPEC-1094" },
+	{ rule: "font-tag-must-not-be-used", displayName: "Font Tags - must not be used", ruleLink: "https://www.ssw.com.au/rules/do-you-know-font-tags-are-no-longer-used" },
 	// Add new rule id below
  ];
