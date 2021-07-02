@@ -73,9 +73,10 @@ exports.addCustomHtmlRule = () => {
             var tagName = event.tagName.toLowerCase(),
               mapAttrs = parser.getMapAttrs(event.attrs),
               col = event.col + tagName.length + 1;
+            const re = /^[a-zA-Z]/; // start with a letter
             if (tagName === "a") {
               if (mapAttrs["name"]) {
-                if (mapAttrs["name"].startsWith('#') || (mapAttrs["name"].indexOf(' ') >= 0)) {
+                if (!(re.test(mapAttrs["name"])) || mapAttrs["name"].startsWith('#') || (mapAttrs["name"].indexOf(' ') >= 0)) {
                   reporter.warn(
                     "Anchor names must be valid.",
                     event.line,
