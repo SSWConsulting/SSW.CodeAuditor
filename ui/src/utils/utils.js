@@ -365,6 +365,7 @@ export const htmlHintRules = [
 	{ rule: "url-must-not-have-click-here", displayName: "URLs - must not use word click here", ruleLink: "https://www.ssw.com.au/rules/relevant-words-on-links" },
 	{ rule: "page-must-not-show-email-addresses", displayName: "Emails - page must not display any email addresses", ruleLink: "" },
 	{ rule: "link-must-not-show-unc", displayName: "HTML - link must not show UNC", ruleLink: "" },
+	{ rule: "must-specify-rel-icon", displayName: "HTML -  Specify rel icon at the site level", ruleLink: "https://www.ssw.com.au/rules/do-you-have-a-favicon-in-your-webpage" },
  ];
 
  export const customHtmlHintRules = [
@@ -378,5 +379,6 @@ export const htmlHintRules = [
 	{ rule: "url-must-not-have-click-here", displayName: "URLs - must not use word click here", ruleLink: "https://www.ssw.com.au/rules/relevant-words-on-links" },
 	{ rule: "page-must-not-show-email-addresses", displayName: "Emails - page must not display any email addresses", ruleLink: "" },
 	{ rule: "link-must-not-show-unc", displayName: "HTML - link must not show UNC", ruleLink: "" },
+	{ rule: "must-specify-rel-icon", displayName: "HTML -  Specify rel icon at the site level", ruleLink: "https://www.ssw.com.au/rules/do-you-have-a-favicon-in-your-webpage" },
 	// Add new rule id below
  ];

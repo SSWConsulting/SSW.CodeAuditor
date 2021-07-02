@@ -267,5 +267,32 @@ exports.addCustomHtmlRule = () => {
           });
         },
       });
+
+    HTMLHint.addRule({
+        id: "must-specify-rel-icon",
+        description: "Page must specify rel icon.",
+        init: function (parser, reporter) {
+          var self = this;
+
+          parser.addListener("tagstart", function (event) {
+            var tagName = event.tagName.toLowerCase(),
+              mapAttrs = parser.getMapAttrs(event.attrs),
+              col = event.col + tagName.length + 1;
+            if (tagName === 'link') {
+              if (mapAttrs['rel']) {
+                if (!mapAttrs['rel'].includes('icon')) {
+                  reporter.warn(
+                    "Page must specify rel icon.",
+                    event.line,
+                    event.col,
+                    self,
+                    event.raw
+                  );
+                }
+              }
+            }
+          });
+        },
+      });
     // Add new custom rule below 
 }
