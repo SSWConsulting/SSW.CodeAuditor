@@ -1,7 +1,6 @@
 const HTMLHint = require("htmlhint").default;
 
 exports.addCustomHtmlRule = () => {
-    // Custom rule to find code block with no language specifier
     HTMLHint.addRule({
         id: "code-block-missing-language",
         description: "Code blocks must contain a language specifier.",
@@ -75,16 +74,16 @@ exports.addCustomHtmlRule = () => {
               mapAttrs = parser.getMapAttrs(event.attrs),
               col = event.col + tagName.length + 1;
             if (tagName === "a") {
-              if (
-                (mapAttrs["name"].startsWith('#') || (mapAttrs["name"].indexOf(' ') >= 0))
-              ) {
-                reporter.warn(
-                  "Anchor names must be valid.",
-                  event.line,
-                  col,
-                  self,
-                  event.raw
-                );
+              if (mapAttrs["name"]) {
+                if (mapAttrs["name"].startsWith('#') || (mapAttrs["name"].indexOf(' ') >= 0)) {
+                  reporter.warn(
+                    "Anchor names must be valid.",
+                    event.line,
+                    col,
+                    self,
+                    event.raw
+                  );
+                }
               }
             }
           });
@@ -179,16 +178,16 @@ exports.addCustomHtmlRule = () => {
               mapAttrs = parser.getMapAttrs(event.attrs),
               col = event.col + tagName.length + 1;
             if (tagName === "a") {
-              if (
-                mapAttrs["href"].indexOf(' ') >= 0
-              ) {
-                reporter.warn(
-                  "URLs must not have space.",
-                  event.line,
-                  col,
-                  self,
-                  event.raw
-                );
+              if (mapAttrs["href"]) {
+                if (mapAttrs["href"].indexOf(' ') >= 0) {
+                  reporter.warn(
+                    "URLs must not have space.",
+                    event.line,
+                    col,
+                    self,
+                    event.raw
+                  );
+                }
               }
             }
           });
