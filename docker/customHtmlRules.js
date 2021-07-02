@@ -32,7 +32,7 @@ exports.addCustomHtmlRule = () => {
         },
       });
 
-      HTMLHint.addRule({
+    HTMLHint.addRule({
         id: "grammar-scrum-terms",
         description: "Checks case of common Agile Scrum terms that people get wrong.",
         init: function (parser, reporter) {
@@ -59,6 +59,33 @@ exports.addCustomHtmlRule = () => {
                   );
                 }
               });
+            }
+          });
+        },
+      });
+
+    HTMLHint.addRule({
+        id: "anchor-names-must-be-valid",
+        description: "Anchor names must start with a letter, contain no space and must not start with #.",
+        init: function (parser, reporter) {
+          var self = this;
+
+          parser.addListener("tagstart", function (event) {
+            var tagName = event.tagName.toLowerCase(),
+              mapAttrs = parser.getMapAttrs(event.attrs),
+              col = event.col + tagName.length + 1;
+            if (tagName === "a") {
+              if (
+                (mapAttrs["name"].startsWith('#') || (mapAttrs["name"].indexOf(' ') >= 0))
+              ) {
+                reporter.warn(
+                  "Code blocks must contain a language specifier.",
+                  event.line,
+                  col,
+                  self,
+                  event.raw
+                );
+              }
             }
           });
         },

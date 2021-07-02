@@ -357,10 +357,12 @@ export const htmlHintRules = [
 	{ rule: "head-script-disabled", displayName: "HTML - the script tag cannot be used in another tag", ruleLink: "https://htmlhint.com/docs/user-guide/rules/head-script-disabled" },
 	{ rule: "code-block-missing-language", displayName: "Code block - missing language", ruleLink: "https://www.ssw.com.au/rules/set-language-on-code-blocks" },
 	{ rule: "grammar-scrum-terms", displayName: "Grammar mistake - common Scrum terms", ruleLink: "https://www.ssw.com.au/rules/scrum-should-be-capitalized" },
+	{ rule: "anchor-names-must-be-valid", displayName: "Anchor Names - must be valid", ruleLink: "https://www.ssw.com.au/rules/chose-efficient-anchor-names" },
  ];
 
  export const customHtmlHintRules = [
 	{ rule: "code-block-missing-language", displayName: "Code block - missing language", ruleLink: "https://www.ssw.com.au/rules/set-language-on-code-blocks" },
 	{ rule: "grammar-scrum-terms", displayName: "Grammar mistake - common Scrum terms", ruleLink: "https://www.ssw.com.au/rules/scrum-should-be-capitalized" },
+	{ rule: "anchor-names-must-be-valid", displayName: "Anchor Names - must be valid", ruleLink: "https://www.ssw.com.au/rules/chose-efficient-anchor-names" },
 	// Add new rule id below
  ];
