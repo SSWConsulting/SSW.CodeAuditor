@@ -229,12 +229,39 @@ exports.addCustomHtmlRule = () => {
             if (event.raw) {
               if (re.test(event.raw.toLowerCase())) {
                 reporter.warn(
-                  "URLs must not use word click here.",
+                  "Page must not show email addresses.",
                   event.line,
                   event.col,
                   self,
                   event.raw
                 );
+              }
+            }
+          });
+        },
+      });
+
+    HTMLHint.addRule({
+        id: "link-must-not-show-unc",
+        description: "Link must not show UNC.",
+        init: function (parser, reporter) {
+          var self = this;
+
+          parser.addListener("tagstart", function (event) {
+            var tagName = event.tagName.toLowerCase(),
+              mapAttrs = parser.getMapAttrs(event.attrs),
+              col = event.col + tagName.length + 1;
+            if (tagName === 'a') {
+              if (mapAttrs['href']) {
+                if (mapAttrs['href'].startsWith('\\')) {
+                  reporter.warn(
+                    "URLs must not use word click here.",
+                    event.line,
+                    event.col,
+                    self,
+                    event.raw
+                  );
+                }
               }
             }
           });

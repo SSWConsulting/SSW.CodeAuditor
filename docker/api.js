@@ -102,4 +102,5 @@ exports.htmlHintConfig = {
   "url-must-not-have-space": true,
   "url-must-not-have-click-here": true,
   "page-must-not-show-email-addresses": true,
+  "link-must-not-show-unc": true,
 };
