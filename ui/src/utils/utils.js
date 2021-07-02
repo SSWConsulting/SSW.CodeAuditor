@@ -363,6 +363,7 @@ export const htmlHintRules = [
 	{ rule: "meta-tag-must-contain-description", displayName: "Meta Tags - must contain description", ruleLink: "https://www.ssw.com.au/rules/use-meta-keywords-and-description-tags" },
 	{ rule: "url-must-not-have-space", displayName: "URLs - must not have space", ruleLink: "https://www.ssw.com.au/rules/use-dashes-in-urls" },
 	{ rule: "url-must-not-have-click-here", displayName: "URLs - must not use word click here", ruleLink: "https://www.ssw.com.au/rules/relevant-words-on-links" },
+	{ rule: "page-must-not-show-email-addresses", displayName: "Emails - page must not display any email addresses", ruleLink: "" },
  ];
 
  export const customHtmlHintRules = [
@@ -374,5 +375,6 @@ export const htmlHintRules = [
 	{ rule: "meta-tag-must-contain-description", displayName: "Meta Tags - must contain description", ruleLink: "https://www.ssw.com.au/rules/use-meta-keywords-and-description-tags" },
 	{ rule: "url-must-not-have-space", displayName: "URLs - must not have space", ruleLink: "https://www.ssw.com.au/rules/use-dashes-in-urls" },
 	{ rule: "url-must-not-have-click-here", displayName: "URLs - must not use word click here", ruleLink: "https://www.ssw.com.au/rules/relevant-words-on-links" },
+	{ rule: "page-must-not-show-email-addresses", displayName: "Emails - page must not display any email addresses", ruleLink: "" },
 	// Add new rule id below
  ];

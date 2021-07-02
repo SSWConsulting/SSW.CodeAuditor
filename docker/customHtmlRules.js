@@ -217,5 +217,28 @@ exports.addCustomHtmlRule = () => {
           });
         },
       });
+
+    HTMLHint.addRule({
+        id: "page-must-not-show-email-addresses",
+        description: "Page must not show email addresses.",
+        init: function (parser, reporter) {
+          var self = this;
+
+          parser.addListener("text", function (event) {
+            const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            if (event.raw) {
+              if (re.test(event.raw.toLowerCase())) {
+                reporter.warn(
+                  "URLs must not use word click here.",
+                  event.line,
+                  event.col,
+                  self,
+                  event.raw
+                );
+              }
+            }
+          });
+        },
+      });
     // Add new custom rule below 
 }

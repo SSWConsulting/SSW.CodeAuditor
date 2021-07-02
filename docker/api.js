@@ -101,4 +101,5 @@ exports.htmlHintConfig = {
   "meta-tag-must-contain-description": true,
   "url-must-not-have-space": true,
   "url-must-not-have-click-here": true,
+  "page-must-not-show-email-addresses": true,
 };
