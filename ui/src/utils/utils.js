@@ -360,6 +360,7 @@ export const htmlHintRules = [
 	{ rule: "anchor-names-must-be-valid", displayName: "Anchor Names - must be valid", ruleLink: "https://www.ssw.com.au/rules/chose-efficient-anchor-names" },
 	{ rule: "meta-tag-must-not-redirect", displayName: "Meta Tags - must not refresh or redirect", ruleLink: "https://rules.sonarsource.com/html/RSPEC-1094" },
 	{ rule: "font-tag-must-not-be-used", displayName: "Font Tags - must not be used", ruleLink: "https://www.ssw.com.au/rules/do-you-know-font-tags-are-no-longer-used" },
+	{ rule: "meta-tag-must-contain-description", displayName: "Meta Tags - must contain description", ruleLink: "https://www.ssw.com.au/rules/use-meta-keywords-and-description-tags" },
  ];
 
  export const customHtmlHintRules = [
@@ -368,5 +369,6 @@ export const htmlHintRules = [
 	{ rule: "anchor-names-must-be-valid", displayName: "Anchor Names - must be valid", ruleLink: "https://www.ssw.com.au/rules/chose-efficient-anchor-names" },
 	{ rule: "meta-tag-must-not-redirect", displayName: "Meta Tags - must not refresh or redirect", ruleLink: "https://rules.sonarsource.com/html/RSPEC-1094" },
 	{ rule: "font-tag-must-not-be-used", displayName: "Font Tags - must not be used", ruleLink: "https://www.ssw.com.au/rules/do-you-know-font-tags-are-no-longer-used" },
+	{ rule: "meta-tag-must-contain-description", displayName: "Meta Tags - must contain description", ruleLink: "https://www.ssw.com.au/rules/use-meta-keywords-and-description-tags" },
 	// Add new rule id below
  ];

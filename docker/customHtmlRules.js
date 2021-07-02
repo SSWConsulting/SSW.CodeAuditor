@@ -140,6 +140,32 @@ exports.addCustomHtmlRule = () => {
           });
         },
       });
-    // Add new custom rule below 
 
+    HTMLHint.addRule({
+        id: "meta-tag-must-contain-description",
+        description: "Pages must contain META description.",
+        init: function (parser, reporter) {
+          var self = this;
+ 
+          parser.addListener("tagstart", function (event) {
+            var tagName = event.tagName.toLowerCase(),
+            mapAttrs = parser.getMapAttrs(event.attrs),
+            col = event.col + tagName.length + 1;
+            if (tagName === "meta") {
+              if (mapAttrs["name"]) {
+                if (mapAttrs["name"].toLowerCase() === "viewport") {
+                  reporter.warn(
+                    "Pages must contain META description.",
+                    event.line,
+                    col,
+                    self,
+                    event.raw
+                  );
+                }
+              }
+            }
+          });
+        }
+      });
+    // Add new custom rule below 
 }
