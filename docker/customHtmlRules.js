@@ -167,5 +167,32 @@ exports.addCustomHtmlRule = () => {
           });
         }
       });
+
+    HTMLHint.addRule({
+        id: "url-must-not-have-space",
+        description: "URLs must not have space.",
+        init: function (parser, reporter) {
+          var self = this;
+
+          parser.addListener("tagstart", function (event) {
+            var tagName = event.tagName.toLowerCase(),
+              mapAttrs = parser.getMapAttrs(event.attrs),
+              col = event.col + tagName.length + 1;
+            if (tagName === "a") {
+              if (
+                mapAttrs["href"].indexOf(' ') >= 0
+              ) {
+                reporter.warn(
+                  "URLs must not have space.",
+                  event.line,
+                  col,
+                  self,
+                  event.raw
+                );
+              }
+            }
+          });
+        },
+      });
     // Add new custom rule below 
 }

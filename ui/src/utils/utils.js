@@ -361,6 +361,7 @@ export const htmlHintRules = [
 	{ rule: "meta-tag-must-not-redirect", displayName: "Meta Tags - must not refresh or redirect", ruleLink: "https://rules.sonarsource.com/html/RSPEC-1094" },
 	{ rule: "font-tag-must-not-be-used", displayName: "Font Tags - must not be used", ruleLink: "https://www.ssw.com.au/rules/do-you-know-font-tags-are-no-longer-used" },
 	{ rule: "meta-tag-must-contain-description", displayName: "Meta Tags - must contain description", ruleLink: "https://www.ssw.com.au/rules/use-meta-keywords-and-description-tags" },
+	{ rule: "url-must-not-have-space", displayName: "URLs - must not have space", ruleLink: "https://www.ssw.com.au/rules/use-dashes-in-urls" },
  ];
 
  export const customHtmlHintRules = [
@@ -370,5 +371,6 @@ export const htmlHintRules = [
 	{ rule: "meta-tag-must-not-redirect", displayName: "Meta Tags - must not refresh or redirect", ruleLink: "https://rules.sonarsource.com/html/RSPEC-1094" },
 	{ rule: "font-tag-must-not-be-used", displayName: "Font Tags - must not be used", ruleLink: "https://www.ssw.com.au/rules/do-you-know-font-tags-are-no-longer-used" },
 	{ rule: "meta-tag-must-contain-description", displayName: "Meta Tags - must contain description", ruleLink: "https://www.ssw.com.au/rules/use-meta-keywords-and-description-tags" },
+	{ rule: "url-must-not-have-space", displayName: "URLs - must not have space", ruleLink: "https://www.ssw.com.au/rules/use-dashes-in-urls" },
 	// Add new rule id below
  ];
