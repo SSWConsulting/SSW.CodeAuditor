@@ -79,7 +79,7 @@ exports.addCustomHtmlRule = () => {
                 (mapAttrs["name"].startsWith('#') || (mapAttrs["name"].indexOf(' ') >= 0))
               ) {
                 reporter.warn(
-                  "Code blocks must contain a language specifier.",
+                  "Anchor names must be valid.",
                   event.line,
                   col,
                   self,
@@ -89,6 +89,34 @@ exports.addCustomHtmlRule = () => {
             }
           });
         },
+      });
+      
+    HTMLHint.addRule({
+        id: "meta-tag-must-not-redirect",
+        description: "Checks Meta tags must not refresh or redirect.",
+        init: function (parser, reporter) {
+          var self = this;
+  
+          parser.addListener("all", function (event) {
+            var tagName = event.tagName.toLowerCase(),
+            mapAttrs = parser.getMapAttrs(event.attrs),
+            col = event.col + tagName.length + 1;
+            if (tagName === "meta") {
+              if (
+                (("http-equiv" in mapAttrs) &&
+                mapAttrs["http-equiv"].includes("refresh")) 
+              ) {
+                reporter.warn(
+                  "Meta tags should not be used to refresh or redirect.",
+                  event.line,
+                  col,
+                  self,
+                  event.raw
+                );
+              }
+            }
+          });
+        }
       });
     // Add new custom rule below 
 

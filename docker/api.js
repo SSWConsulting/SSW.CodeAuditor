@@ -95,5 +95,6 @@ exports.htmlHintConfig = {
   "href-abs-or-rel": true,
   "attr-unsafe-chars": true,
   "head-script-disabled": true,
-  "anchor-names-must-be-valid": true
+  "anchor-names-must-be-valid": true,
+  "meta-tag-must-not-redirect": true,
 };
