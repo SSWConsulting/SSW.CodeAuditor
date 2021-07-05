@@ -153,7 +153,7 @@ exports.addCustomHtmlRule = () => {
             col = event.col + tagName.length + 1;
             if (tagName === "meta") {
               if (mapAttrs["name"]) {
-                if (!mapAttrs["name"].toLowerCase() === "description") {
+                if (mapAttrs["name"].toLowerCase() !== "description") {
                   reporter.warn(
                     "Pages must contain META description.",
                     event.line,
