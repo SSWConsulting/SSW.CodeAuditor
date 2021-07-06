@@ -224,9 +224,9 @@ exports.addCustomHtmlRule = () => {
         description: "Page must not show email addresses.",
         init: function (parser, reporter) {
           var self = this;
+          const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
           parser.addListener("text", function (event) {
-            const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             if (event.raw) {
               if (re.test(event.raw.toLowerCase())) {
                 reporter.warn(
@@ -236,6 +236,25 @@ exports.addCustomHtmlRule = () => {
                   self,
                   event.raw
                 );
+              }
+            }
+          });
+
+          parser.addListener("tagstart", function (event) {
+            var tagName = event.tagName.toLowerCase(),
+              mapAttrs = parser.getMapAttrs(event.attrs),
+              col = event.col + tagName.length + 1;
+            if (tagName === "a") {
+              if (mapAttrs["href"]) {
+                if (re.test(mapAttrs["href"].toLowerCase())) {
+                  reporter.warn(
+                    "Page must not show email addresses.",
+                    event.line,
+                    col,
+                    self,
+                    event.raw
+                  );
+                }
               }
             }
           });

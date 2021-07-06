@@ -22,4 +22,10 @@ describe(`Rules: ${ruldId}`, () => {
     const messages = HTMLHint.verify(code, ruleOptions)
     expect(messages.length).to.be(1)
   })
+
+  it('href that shows email address should result in an error', () => {
+    const code = '<a href="tomisawesome@gmail.com">some email</a>'
+    const messages = HTMLHint.verify(code, ruleOptions)
+    expect(messages.length).to.be(1)
+  })
 })
