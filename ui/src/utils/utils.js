@@ -357,10 +357,28 @@ export const htmlHintRules = [
 	{ rule: "head-script-disabled", displayName: "HTML - the script tag cannot be used in another tag", ruleLink: "https://htmlhint.com/docs/user-guide/rules/head-script-disabled" },
 	{ rule: "code-block-missing-language", displayName: "Code block - missing language", ruleLink: "https://www.ssw.com.au/rules/set-language-on-code-blocks" },
 	{ rule: "grammar-scrum-terms", displayName: "Grammar mistake - common Scrum terms", ruleLink: "https://www.ssw.com.au/rules/scrum-should-be-capitalized" },
+	{ rule: "anchor-names-must-be-valid", displayName: "Anchor Names - must be valid", ruleLink: "https://www.ssw.com.au/rules/chose-efficient-anchor-names" },
+	{ rule: "meta-tag-must-not-redirect", displayName: "Meta Tags - must not refresh or redirect", ruleLink: "https://rules.sonarsource.com/html/RSPEC-1094" },
+	{ rule: "font-tag-must-not-be-used", displayName: "Font Tags - must not be used", ruleLink: "https://www.ssw.com.au/rules/do-you-know-font-tags-are-no-longer-used" },
+	{ rule: "meta-tag-must-contain-description", displayName: "Meta Tags - must contain description", ruleLink: "https://www.ssw.com.au/rules/use-meta-keywords-and-description-tags" },
+	{ rule: "url-must-not-have-space", displayName: "URLs - must not have space", ruleLink: "https://www.ssw.com.au/rules/use-dashes-in-urls" },
+	{ rule: "url-must-not-have-click-here", displayName: "URLs - must not use word click here", ruleLink: "https://www.ssw.com.au/rules/relevant-words-on-links" },
+	{ rule: "must-specify-rel-icon", displayName: "HTML -  Specify rel icon at the site level", ruleLink: "https://www.ssw.com.au/rules/do-you-have-a-favicon-in-your-webpage" },
+	{ rule: "page-must-not-show-email-addresses", displayName: "Emails - page must not display any email addresses", ruleLink: "" },
+	{ rule: "link-must-not-show-unc", displayName: "HTML - link must not show UNC", ruleLink: "" },
  ];
 
  export const customHtmlHintRules = [
 	{ rule: "code-block-missing-language", displayName: "Code block - missing language", ruleLink: "https://www.ssw.com.au/rules/set-language-on-code-blocks" },
 	{ rule: "grammar-scrum-terms", displayName: "Grammar mistake - common Scrum terms", ruleLink: "https://www.ssw.com.au/rules/scrum-should-be-capitalized" },
+	{ rule: "anchor-names-must-be-valid", displayName: "Anchor Names - must be valid", ruleLink: "https://www.ssw.com.au/rules/chose-efficient-anchor-names" },
+	{ rule: "meta-tag-must-not-redirect", displayName: "Meta Tags - must not refresh or redirect", ruleLink: "https://rules.sonarsource.com/html/RSPEC-1094" },
+	{ rule: "font-tag-must-not-be-used", displayName: "Font Tags - must not be used", ruleLink: "https://www.ssw.com.au/rules/do-you-know-font-tags-are-no-longer-used" },
+	{ rule: "meta-tag-must-contain-description", displayName: "Meta Tags - must contain description", ruleLink: "https://www.ssw.com.au/rules/use-meta-keywords-and-description-tags" },
+	{ rule: "url-must-not-have-space", displayName: "URLs - must not have space", ruleLink: "https://www.ssw.com.au/rules/use-dashes-in-urls" },
+	{ rule: "url-must-not-have-click-here", displayName: "URLs - must not use word click here", ruleLink: "https://www.ssw.com.au/rules/relevant-words-on-links" },
+	{ rule: "must-specify-rel-icon", displayName: "HTML -  Specify rel icon at the site level", ruleLink: "https://www.ssw.com.au/rules/do-you-have-a-favicon-in-your-webpage" },
+	{ rule: "page-must-not-show-email-addresses", displayName: "Emails - page must not display any email addresses", ruleLink: "" },
+	{ rule: "link-must-not-show-unc", displayName: "HTML - link must not show UNC", ruleLink: "" },
 	// Add new rule id below
  ];

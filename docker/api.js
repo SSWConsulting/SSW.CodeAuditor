@@ -95,4 +95,13 @@ exports.htmlHintConfig = {
   "href-abs-or-rel": true,
   "attr-unsafe-chars": true,
   "head-script-disabled": true,
+  "anchor-names-must-be-valid": true,
+  "meta-tag-must-not-redirect": true,
+  "font-tag-must-not-be-used": true,
+  "meta-tag-must-contain-description": true,
+  "url-must-not-have-space": true,
+  "url-must-not-have-click-here": true,
+  "page-must-not-show-email-addresses": true,
+  "link-must-not-show-unc": true,
+  "must-specify-rel-icon": true,
 };
