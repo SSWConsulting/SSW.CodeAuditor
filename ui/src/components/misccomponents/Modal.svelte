@@ -26,6 +26,9 @@
   .fullheight {
     height: 90vh;
   }
+  .modal-body {
+    height: 72vh;
+  }
 </style>
 
 <!--Modal-->
@@ -69,7 +72,7 @@
       </div>
 
       <!--Body-->
-      <div class="py-5">
+      <div class="modal-body py-5 overflow-y-auto">
         <slot />
       </div>
 
