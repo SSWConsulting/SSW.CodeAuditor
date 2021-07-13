@@ -354,7 +354,7 @@ export const htmlHintRules = [
 	{ rule: "id-class-ad-disabled", displayName: "HTML Tags - id and class cannot use the ad keyword", ruleLink: "https://htmlhint.com/docs/user-guide/rules/id-class-ad-disabled" },
 	{ rule: "href-abs-or-rel", displayName: "Links - href attribute must be either absolute or relative", ruleLink: "https://htmlhint.com/docs/user-guide/rules/href-abs-or-rel" },
 	{ rule: "attr-unsafe-chars", displayName: "Attributes - attributes cannot contain unsafe characters", ruleLink: "https://htmlhint.com/docs/user-guide/rules/attr-unsafe-chars" },
-	{ rule: "head-script-disabled", displayName: "HTML - the script tag cannot be used in another tag", ruleLink: "https://htmlhint.com/docs/user-guide/rules/head-script-disabled" },
+	{ rule: "head-script-disabled", displayName: "HTML/JS - the script tag cannot be used in another tag", ruleLink: "https://htmlhint.com/docs/user-guide/rules/head-script-disabled" },
  ];
 
  export const customHtmlHintRules = [
