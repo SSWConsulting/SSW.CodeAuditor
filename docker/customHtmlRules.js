@@ -142,33 +142,6 @@ exports.addCustomHtmlRule = () => {
       });
 
     HTMLHint.addRule({
-        id: "meta-tag-must-contain-description",
-        description: "Pages must contain META description.",
-        init: function (parser, reporter) {
-          var self = this;
- 
-          parser.addListener("tagstart", function (event) {
-            var tagName = event.tagName.toLowerCase(),
-            mapAttrs = parser.getMapAttrs(event.attrs),
-            col = event.col + tagName.length + 1;
-            if (tagName === "meta") {
-              if (mapAttrs["name"]) {
-                if (mapAttrs["name"].toLowerCase() !== "description") {
-                  reporter.warn(
-                    "Pages must contain META description.",
-                    event.line,
-                    col,
-                    self,
-                    event.raw
-                  );
-                }
-              }
-            }
-          });
-        }
-      });
-
-    HTMLHint.addRule({
         id: "url-must-not-have-space",
         description: "URLs must not have space.",
         init: function (parser, reporter) {
@@ -278,33 +251,6 @@ exports.addCustomHtmlRule = () => {
                     "URLs must not use word click here.",
                     event.line,
                     event.col,
-                    self,
-                    event.raw
-                  );
-                }
-              }
-            }
-          });
-        },
-      });
-
-    HTMLHint.addRule({
-        id: "must-specify-rel-icon",
-        description: "Page must specify rel icon.",
-        init: function (parser, reporter) {
-          var self = this;
-
-          parser.addListener("tagstart", function (event) {
-            var tagName = event.tagName.toLowerCase(),
-              mapAttrs = parser.getMapAttrs(event.attrs),
-              col = event.col + tagName.length + 1;
-            if (tagName === 'link') {
-              if (mapAttrs['rel']) {
-                if (!mapAttrs['rel'].includes('icon')) {
-                  reporter.warn(
-                    "Page must specify rel icon.",
-                    event.line,
-                    col,
                     self,
                     event.raw
                   );
