@@ -115,7 +115,7 @@
   </nav>
   <Route {currentRoute} {params} />
   </main>
-  <footer class="footer py-6 text-white md:py-4 lg:py-2">
+  <footer class="footer py-6 text-white text-sm md:py-4 lg:py-2">
     <section class="main-container">
       <div class="xl:mx-6">
         <div class="mx-6 flex flex-col-reverse md:flex-row justify-between">
