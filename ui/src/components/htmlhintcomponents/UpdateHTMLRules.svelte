@@ -51,7 +51,7 @@
 <Modal
   bind:show
   bind:loading={saving}
-  header="Select HTML Rules:"
+  header="Enabled Rules:"
   mainAction="Save"
   on:action={updateIgnore}
   on:dismiss={dismiss}>
@@ -76,7 +76,7 @@
       <label>
         <input type="checkbox" bind:group={selection} value={rule.rule} /> 
           <a 
-          class="inline-block align-baseline link" 
+          class="{rule.ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline" 
           href={rule.ruleLink}>
             {rule.displayName}
           </a>
