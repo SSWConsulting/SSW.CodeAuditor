@@ -8,7 +8,7 @@ const { htmlHintConfig, fetchHtml, getHTMLHintRules } = require("./api");
 const R = require("ramda");
 const { execSync } = require("child_process");
 const boxConsole = require("box-console");
-const slug = require('slug');
+const slug = require("slug");
 
 const consoleBox = (text, color) =>
   console.log(
@@ -40,7 +40,7 @@ exports.readCsv = (file) => {
   return new Promise((resolve) => {
     const results = [];
     fs.createReadStream(file)
-      .pipe(csv({separator: '\t'}))
+      .pipe(csv({ separator: "\t" }))
       .on("data", (row) => {
         results.push(row);
       })
@@ -119,29 +119,29 @@ exports.runCodeAuditor = (ignorefile, rulesfolder) => {
  */
 const runHtmlHint = async (url, startUrl, tokenApi) => {
   const HTMLHint = require("htmlhint").default;
-  
-  const result = await getHTMLHintRules(tokenApi, startUrl)
-  
+
+  const result = await getHTMLHintRules(tokenApi, startUrl);
+
   if (result) {
     const selectedHtmlConfig = result.selectedRules.split(",");
-        
-    const htmlRulesConfig = Object.keys(htmlHintConfig)
-  
+
+    const htmlRulesConfig = Object.keys(htmlHintConfig);
+
     // Turn off all the rules
     for (var i in htmlHintConfig) {
       htmlHintConfig[i] = false;
     }
-        
+
     // Add only selected rules to htmlHintConfig
-    htmlRulesConfig.forEach(x => {      
-      selectedHtmlConfig.forEach (c => {
+    htmlRulesConfig.forEach((x) => {
+      selectedHtmlConfig.forEach((c) => {
         if (x === c) {
-          htmlHintConfig[x] = true
+          htmlHintConfig[x] = true;
         }
-      })
-    })    
+      });
+    });
   }
-  
+
   try {
     const html = await fetchHtml(url);
     return R.pipe(
@@ -321,7 +321,9 @@ exports.runHtmlHint = async (startUrl, scannedUrls, writeLog, tokenApi) => {
   const allgoodLinks = __getGoodUrls(scannedUrls);
   writeLog(`running htmlhint on ${allgoodLinks.length} URLs`);
 
-  const result = await Promise.all(allgoodLinks.map((x) => runHtmlHint(x, startUrl, tokenApi)));
+  const result = await Promise.all(
+    allgoodLinks.map((x) => runHtmlHint(x, startUrl, tokenApi))
+  );
 
   const [summary, details] = getHtmlHintDetails(result);
   writeLog("summary of html issues found", summary);
@@ -553,9 +555,9 @@ exports.printResultsToConsole = (
       `${strAvg.padEnd(10)} ${lhScaled.average.toString().padStart(10)} / 100`
     );
     let performance = chalk(
-      `${strPerformance.padEnd(
-        10
-      )} ${lhScaled.performanceScore.toString().padStart(7)} / 100`
+      `${strPerformance.padEnd(10)} ${lhScaled.performanceScore
+        .toString()
+        .padStart(7)} / 100`
     );
     let seo = chalk(
       `${strSeo.padEnd(10)} ${lhScaled.seoScore.toString().padStart(10)} / 100`
@@ -786,11 +788,11 @@ exports.getFinalEval = (
     : [];
 
   if (
-    badLinks.length == 0 &&
-    failedThreshold == true &&
-    failedLoadThres == true &&
-    codeAuditorIssues.filter((x) => !!x.error).length == 0 &&
-    htmlErrors.length == 0
+    badLinks.length === 0 &&
+    failedThreshold === true &&
+    failedLoadThres === true &&
+    codeAuditorIssues.filter((x) => !!x.error).length === 0 &&
+    htmlErrors.length === 0
   ) {
     consoleBox(`Build Pass`, "green");
     return "PASS";

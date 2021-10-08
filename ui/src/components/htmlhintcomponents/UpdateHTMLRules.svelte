@@ -17,6 +17,7 @@
 	let selection = [];
   let selectedHTMLRules = htmlRules.selectedRules.split(/[,]+/)
   
+  // Check all selected htmlhint rules
   const htmlHintSelectedRules = htmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}))
   const customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}))
   
