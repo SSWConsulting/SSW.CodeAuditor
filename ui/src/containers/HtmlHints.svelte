@@ -177,6 +177,14 @@
   {threshold}
   user={$userSession$}
   {htmlRules} />
+{:else}
+<UpdateHtmlRules url={scanUrl}
+  loading={loadingHtmlHintSettings}
+  bind:show={htmlHintRulesShown}
+  {lastBuild}
+  {threshold}
+  user={$userSession$}
+  htmlRules={null} />
 {/if}
 
 <UpdateIgnoreUrl

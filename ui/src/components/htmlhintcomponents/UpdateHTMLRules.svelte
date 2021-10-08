@@ -15,11 +15,19 @@
   let addedFail;
 
 	let selection = [];
-  let selectedHTMLRules = htmlRules.selectedRules.split(/[,]+/)
   
   // Check all selected htmlhint rules
-  const htmlHintSelectedRules = htmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}))
-  const customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}))
+  let htmlHintSelectedRules = []
+  let customHtmlHintSelectedRules = []
+  
+  if (htmlRules) {
+    let selectedHTMLRules = htmlRules.selectedRules.split(/[,]+/)
+    htmlHintSelectedRules = htmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}))
+    customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}))
+  } else {
+    htmlHintSelectedRules = htmlHintRules.map(htmlRule => ({...htmlRule, isChecked: true}))
+    customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => ({...htmlRule, isChecked: true}))
+  }
   
   const dismiss = () => (show = false);
 
