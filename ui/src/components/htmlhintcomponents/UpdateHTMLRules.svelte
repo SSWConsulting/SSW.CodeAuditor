@@ -1,4 +1,4 @@
-<script>
+<script async>
   import Toastr from "../misccomponents/Toastr.svelte";
   import { CONSTS, htmlHintRules, customHtmlHintRules } from "../../utils/utils";
   import Modal from "../misccomponents//Modal.svelte";
@@ -8,13 +8,18 @@
   export let show;
   export let loading;
   export let user;
+  export let htmlRules;
 
   let saving;
   let addedSuccess;
   let addedFail;
 
 	let selection = [];
-
+  let selectedHTMLRules = htmlRules.selectedRules.split(/[,]+/)
+  
+  const htmlHintSelectedRules = htmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}))
+  const customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}))
+  
   const dismiss = () => (show = false);
 
   const updateIgnore = async () => {
@@ -60,9 +65,9 @@
   {:else}
     <!-- else content here -->
     <h3 class="font-bold">HTML Hint Rules: </h3>
-    {#each htmlHintRules as rule}
+    {#each htmlHintSelectedRules as rule}
       <label>
-        <input type="checkbox" bind:group={selection} value={rule.rule} /> 
+        <input type="checkbox" bind:group={selection} bind:checked={rule.isChecked} value={rule.rule} /> 
           <a 
           class="inline-block align-baseline link" 
           href="https://htmlhint.com/docs/user-guide/rules/{rule.rule}">
@@ -72,9 +77,9 @@
     {/each}
     <br />
     <h3 class="font-bold">Custom HTML Rules: </h3>
-    {#each customHtmlHintRules as rule}
+    {#each customHtmlHintSelectedRules as rule}
       <label>
-        <input type="checkbox" bind:group={selection} value={rule.rule} /> 
+        <input type="checkbox" bind:group={selection} bind:checked={rule.isChecked} value={rule.rule} /> 
           <a 
           class="{rule.ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline" 
           href={rule.ruleLink}>

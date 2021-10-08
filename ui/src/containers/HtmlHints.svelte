@@ -169,13 +169,15 @@
   </p>
 </Toastr>
 
+{#if htmlRules}
 <UpdateHtmlRules url={scanUrl}
-loading={loadingHtmlHintSettings}
-bind:show={htmlHintRulesShown}
-{lastBuild}
-{threshold}
-user={$userSession$}
-/>
+  loading={loadingHtmlHintSettings}
+  bind:show={htmlHintRulesShown}
+  {lastBuild}
+  {threshold}
+  user={$userSession$}
+  {htmlRules} />
+{/if}
 
 <UpdateIgnoreUrl
   url={urlToIgnore}
