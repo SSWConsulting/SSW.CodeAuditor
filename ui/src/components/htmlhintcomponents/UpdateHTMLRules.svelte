@@ -1,4 +1,4 @@
-<script async>
+<script>
   import Toastr from "../misccomponents/Toastr.svelte";
   import { CONSTS, htmlHintRules, customHtmlHintRules } from "../../utils/utils";
   import Modal from "../misccomponents//Modal.svelte";
