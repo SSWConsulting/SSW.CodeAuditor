@@ -4,7 +4,7 @@
   export let value;
 </script>
 
-<div class="grid grid-rows-2">
+<div class="hidden md:block grid grid-rows-2">
   <div class="text-center">
     <a
       href={value.url}

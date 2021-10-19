@@ -54,15 +54,15 @@
   </div>
   {#if !hiddenRows[url]}
     <table
-      class="table-auto mb-8"
+      class="table-fixed w-full md:table-auto mb-8"
       in:fade={{ y: 100, duration: 400 }}
       out:fade={{ y: -100, duration: 200 }}>
       <thead>
         <tr>
           <th class="w-6/12 px-4 py-2">Broken Link ({sources[url].length})</th>
-          <th class="w-3/12 px-4 py-2">Anchor Text</th>
+          <th class="hidden md:table-cell w-3/12 px-4 py-2">Anchor Text</th>
           <th class="w-1/12 px-4 py-2 text-right">Status</th>
-          <th class="w-2/12 px-4 py-2 text-right">Message</th>
+          <th class="hidden md:table-cell w-2/12 px-4 py-2 text-right">Message</th>
         </tr>
       </thead>
       <tbody>
@@ -93,18 +93,18 @@
                 </button>
               {/if}
               <a
-                class="inline-block align-baseline link truncate"
+                class="inline-block align-baseline link md:truncate"
                 target="_blank"
                 href={val.dst}>
                 {val.dst}
               </a>
 
             </td>
-            <td class="w-3/12 border px-4 py-2 break-all">{val.link || ''}</td>
+            <td class="hidden md:table-cell w-3/12 border px-4 py-2 break-all">{val.link || ''}</td>
             <td class="w-1/12 border px-4 py-2 text-right">
               {val.statuscode || '0'}
             </td>
-            <td class="w-2/12 border px-4 py-2 text-right">
+            <td class="hidden md:table-cell w-2/12 border px-4 py-2 text-right">
               {val.statusmsg || ''}
             </td>
           </tr>

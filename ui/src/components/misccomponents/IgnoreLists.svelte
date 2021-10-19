@@ -28,7 +28,7 @@
 {#if numberOfIgnored === 0}
   <div class="md:flex md:items-center mb-6">You have 0 ignored URLs!</div>
 {:else}
-  <table class="table-auto mb-6">
+  <table class="table-fixed w-full md:table-auto mb-6">
     <thead>
       <tr>
         <th class="px-4 py-2">Ignored Url</th>

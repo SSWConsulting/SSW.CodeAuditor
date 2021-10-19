@@ -13,7 +13,7 @@
 </style>
 
 <div
-  class="grid gap-x-20 gap-y-4 grid-flow-row grid-cols-6 my-5 font-sans text-gray-700">
+  class="grid gap-x-12 md:gap-x-20 gap-y-4 grid-flow-row grid-cols-6 my-5 font-sans text-gray-700">
   <div class="col-span-7 font-bold">
     Report completed:
     {formatDistanceToNow(new Date(details.buildDate), { addSuffix: true })}
