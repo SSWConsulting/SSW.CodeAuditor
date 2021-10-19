@@ -38,21 +38,21 @@
 
   <div class="px-6 py-2">
     <div
-      class="grid grid-rows-2 grid-flow-col"
+      class="grid grid-rows-4 md:grid-rows-2 md:grid-flow-col"
       on:click={() => navigateTo(`/build/${val.runId}`)}>
-      <div class="row-span-4 col-span-2">
+      <div class="md:row-span-4 md:col-span-2">
         <ScanSummary {val} />
       </div>
 
       <div
-        class="row-span-1 text-sm my-2"
+        class="md:row-span-1 text-sm my-2"
         on:click={() => navigateTo(`/build/${val.runId}`)}>
         <h2><span class="font-bold font-sans text-gray-600">LINKS</span></h2>
         <LinkSummary value={val} />
       </div>
 
       <div
-        class="row-span-1 text-sm my-2"
+        class="md:row-span-1 text-sm my-2"
         on:click={() => navigateTo(`/build/${val.runId}`)}>
         <h2><span class="font-bold font-sans text-gray-600">CODE</span></h2>
         <CodeSummary value={val} />
@@ -60,7 +60,7 @@
 
       {#if val.performanceScore}
         <div
-          class="row-span-1 text-sm my-2"
+          class="md:row-span-1 text-sm my-2"
           on:click={() => navigateTo(`/build/${val.runId}`)}>
           <h2>
             <span class="font-bold font-sans text-gray-600">LIGHTHOUSE</span>
@@ -70,7 +70,7 @@
       {/if}
 
       <div
-        class="row-span-1 text-sm my-2"
+        class="md:row-span-1 text-sm my-2"
         on:click={() => navigateTo(`/build/${val.runId}`)}>
         <h2>
           <span class="font-bold font-sans text-gray-600">LOAD TEST</span>

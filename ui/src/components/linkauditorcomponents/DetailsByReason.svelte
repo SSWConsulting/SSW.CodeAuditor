@@ -43,7 +43,7 @@
 
   {#if !hiddenRows[reason]}
     <table
-      class="table-auto mb-8"
+      class="table-fixed w-full md:table-auto mb-8"
       in:fade={{ y: 100, duration: 400 }}
       out:fade={{ y: -100, duration: 200 }}>
       <thead>

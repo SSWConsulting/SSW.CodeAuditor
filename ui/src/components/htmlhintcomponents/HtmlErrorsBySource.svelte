@@ -74,7 +74,7 @@
   </div>
   {#if !hiddenRows[url.url]}
     <table
-      class="table-auto mb-8"
+      class="table-fixed w-full md:table-auto mb-8"
       in:fade={{ y: 100, duration: 400 }}
       out:fade={{ y: -100, duration: 200 }}>
       <thead>
@@ -101,7 +101,7 @@
                 {/if}
               </Icon>
               <a
-                class="inline-block align-baseline link"
+                class="hidden md:inline-block align-baseline link"
                 target="_blank"
                 href={getRuleLink(key)}>
                 {getDisplayText(key)}
