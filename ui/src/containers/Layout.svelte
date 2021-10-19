@@ -21,7 +21,7 @@
 <main class="flex-grow container mx-auto">
   <nav class="flex items-center justify-between p-6 mt-4 nav">
     <div class="flex flex-wrap">
-      <div class="w-full overflow-hidden">
+      <div class="grid grid-cols-1 md:grid-cols-4 overflow-hidden">
         <span class="text-white text-lg pt-4 lg:pt-0 lg:mx-4">
           <span class="hover:text-red-600">
             <Navigate to="/home">Home</Navigate> 
@@ -42,7 +42,7 @@
             <Navigate to="/rules">CodeAuditor Rules</Navigate>
           </span>
         </span>
-        <hr class="mt-4 bg-white">
+        <hr class="mt-4 bg-white w-screen">
       </div>
     
       <div class="w-full mt-4">
