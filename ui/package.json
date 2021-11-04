@@ -8,7 +8,7 @@
     "deploy": "firebase deploy --token $FIREBASETOKEN --only hosting",
     "login:ci": "firebase login:ci",
     "count": "npx cloc --force-lang=\"HTML\",svelte src",
-    "start": "sirv public --single"
+    "start": "sirv public --single -p 4200"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.0",
