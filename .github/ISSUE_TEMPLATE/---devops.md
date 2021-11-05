@@ -1,7 +1,7 @@
 ---
-name: "\U0001F4DD Documentation"
-about: Updating documentation (e.g. README, Wiki, Guides etc.) as per https://www.ssw.com.au/rules/awesome-documentation/
-title: "\U0001F4DD"
+name: "\U0001F477 DevOps"
+about: Updating the CI/CD piplines
+title: "\U0001F477"
 labels: ''
 assignees: ''
 
@@ -13,12 +13,12 @@ assignees: ''
 Cc:
 <!-- add intended user next to **Hi** -->
 Hi 
-
+  
 ### Pain
 <!-- Explain the pain you are experiencing -->
 
-### Suggested Documentation
-<!-- Short summary of the documentation that should be added -->
+### Suggested Solution
+<!-- Describe the solution you'd like -->
 
 ### Tasks
 <!--Add GitHub tasks-->
@@ -26,7 +26,7 @@ Hi
 - [ ] ...
 
 ### More Information
-<!-- Add any other context here -->
+<!-- Add any other context here. -->
 
 ### Screenshots
 <!-- If applicable, add screenshots to help explain your problem. -->

@@ -1,7 +1,7 @@
 ---
-name: "\U0001F4DD Documentation"
-about: Updating documentation (e.g. README, Wiki, Guides etc.) as per https://www.ssw.com.au/rules/awesome-documentation/
-title: "\U0001F4DD"
+name: "♻️ Refactor"
+about: Something that needs improving while not changing functionality as per https://www.ssw.com.au/rules/technical-debt/
+title: "♻️"
 labels: ''
 assignees: ''
 
@@ -17,8 +17,8 @@ Hi
 ### Pain
 <!-- Explain the pain you are experiencing -->
 
-### Suggested Documentation
-<!-- Short summary of the documentation that should be added -->
+### What code could be improved?
+<!-- Add a link to the area/file that needs refactoring -->
 
 ### Tasks
 <!--Add GitHub tasks-->
@@ -26,7 +26,7 @@ Hi
 - [ ] ...
 
 ### More Information
-<!-- Add any other context here -->
+<!-- Add any other context here. -->
 
 ### Screenshots
 <!-- If applicable, add screenshots to help explain your problem. -->
