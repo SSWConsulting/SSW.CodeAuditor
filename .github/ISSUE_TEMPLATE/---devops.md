@@ -2,7 +2,7 @@
 name: "\U0001F477 DevOps"
 about: Updating the CI/CD piplines
 title: "\U0001F477"
-labels: ''
+labels: 'type: DevOps'
 assignees: ''
 
 ---

@@ -2,7 +2,7 @@
 name: "♻️ Refactor"
 about: Something that needs improving while not changing functionality as per https://www.ssw.com.au/rules/technical-debt/
 title: "♻️"
-labels: ''
+labels: 'type: refactor'
 assignees: ''
 
 ---

@@ -2,7 +2,7 @@
 name: "\U0001F4DD Documentation"
 about: Updating documentation (e.g. README, Wiki, Guides etc.) as per https://www.ssw.com.au/rules/awesome-documentation/
 title: "\U0001F4DD"
-labels: ''
+labels: 'type: Documentation'
 assignees: ''
 
 ---
