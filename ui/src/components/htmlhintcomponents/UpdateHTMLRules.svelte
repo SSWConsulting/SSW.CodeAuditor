@@ -3,6 +3,7 @@
   import { CONSTS, htmlHintRules, customHtmlHintRules } from "../../utils/utils";
   import Modal from "../misccomponents//Modal.svelte";
   import LoadingFlat from "../misccomponents/LoadingFlat.svelte";
+  import { onMount, createEventDispatcher } from "svelte";
   
   export let url;
   export let show;
@@ -15,23 +16,51 @@
   let addedFail;
 
 	let selection = [];
+
+  let selectOption = []
+
+  $: selectOption, selectOption[0] === true ? selectAllRules() : deselectAllRules()
   
   // Check all selected htmlhint rules
   let htmlHintSelectedRules = []
   let customHtmlHintSelectedRules = []
+
+  const dispatch = createEventDispatcher();
+  const updateHtmlRules = () => dispatch("updateHtmlRules");
   
-  if (htmlRules) {
-    let selectedHTMLRules = htmlRules.selectedRules.split(/[,]+/)
-    htmlHintSelectedRules = htmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}))
-    customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}))
-  } else {
-    htmlHintSelectedRules = htmlHintRules.map(htmlRule => ({...htmlRule, isChecked: true}))
-    customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => ({...htmlRule, isChecked: true}))
+  onMount(() => {
+    if (htmlRules) {
+      let selectedHTMLRules = htmlRules.selectedRules.split(/[,]+/)
+      htmlHintSelectedRules = htmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}))
+      customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}))
+    } else {
+      htmlHintSelectedRules = htmlHintRules.map(htmlRule => ({...htmlRule, isChecked: true}))
+      customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => ({...htmlRule, isChecked: true}))
+    }
+  })
+
+  const selectAllRules = () => {
+    htmlHintSelectedRules = htmlHintSelectedRules.map(rule => ({...rule, isChecked: true}))
+    customHtmlHintSelectedRules = customHtmlHintSelectedRules.map(rule => ({...rule, isChecked: true}))
+
+    htmlHintSelectedRules.forEach(htmlRule => {
+      selection.push(htmlRule.rule)
+    })
+
+    customHtmlHintSelectedRules.forEach(customRule => {
+      selection.push(customRule.rule)
+    })
+  }
+
+  const deselectAllRules = () => {
+    htmlHintSelectedRules = htmlHintSelectedRules.map(rule => ({...rule, isChecked: false}))
+    customHtmlHintSelectedRules = customHtmlHintSelectedRules.map(rule => ({...rule, isChecked: false}))
+    selection = []
   }
   
   const dismiss = () => (show = false);
 
-  const updateIgnore = async () => {
+  const updateCustomHtmlRules = async () => {
     const selectedRules = selection.toString()
     saving = true;
     if (selection.length > 0) {
@@ -51,6 +80,7 @@
         saving = false;
         show = false;
         addedSuccess = true;
+        updateHtmlRules()
       } else {
         throw new Error("Failed to load");
       }
@@ -67,12 +97,16 @@
   bind:loading={saving}
   header="Enabled Rules:"
   mainAction="Save"
-  on:action={updateIgnore}
+  on:action={updateCustomHtmlRules}
   on:dismiss={dismiss}>
   {#if loading}
     <LoadingFlat />
   {:else}
     <!-- else content here -->
+    <label>
+      <input type="checkbox" bind:group={selectOption} value={true}/>
+      <p class="inline-block align-baseline">Select All</p>
+    </label>
     <h3 class="font-bold">HTML Hint Rules: </h3>
     {#each htmlHintSelectedRules as rule}
       <label>

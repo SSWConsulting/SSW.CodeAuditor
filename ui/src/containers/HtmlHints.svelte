@@ -114,7 +114,7 @@
   };
 
   let htmlRules;
-  onMount(async () => {
+  const getSelectedHtmlRules = async () => {
     await promise.then((data) => {
       userSession$.subscribe(async x => {
         if (x) {
@@ -124,6 +124,10 @@
         }
       });
 	  });
+  }
+
+  onMount(() => {
+    getSelectedHtmlRules()
   })
 </script>
 
@@ -177,7 +181,9 @@
   {lastBuild}
   {threshold}
   user={$userSession$}
-  {htmlRules} />
+  {htmlRules} 
+  on:updateHtmlRules={() => getSelectedHtmlRules()}
+  />
 {:else}
 <UpdateHtmlRules url={scanUrl}
   loading={loadingHtmlHintSettings}
@@ -185,7 +191,9 @@
   {lastBuild}
   {threshold}
   user={$userSession$}
-  htmlRules={null} />
+  htmlRules={null}
+  on:updateHtmlRules={() => getSelectedHtmlRules()}
+  />
 {/if}
 
 <UpdateIgnoreUrl
