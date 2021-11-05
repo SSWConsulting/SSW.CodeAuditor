@@ -140,10 +140,11 @@
     displayMode="Code Issues" />
     <br>
     
-      <CardSummary value={data.summary} />
+      <CardSummary value={data.summary} isHtmlHintComp={true}
+      on:htmlHintThreshold={() => showHtmlHintThreshold(data.summary, $userSession$)}
+      />
     
-      <HtmlHintDetailsCard {htmlRules} build={data ? data.summary : {}} 
-      on:htmlHintThreshold={() => showHtmlHintThreshold(data.summary, $userSession$)} />
+      <HtmlHintDetailsCard {htmlRules} build={data ? data.summary : {}} />
 
       <Tabs build={data ? data.summary : {}} displayMode="code" />
 

@@ -1,5 +1,4 @@
 <script>
-  import { createEventDispatcher } from "svelte";
   import LighthouseSummary from "../summaryitemcomponents/LighthouseSummary.svelte";
   import CodeSummary from "../summaryitemcomponents/CodeSummary.svelte";
   import LinkSummary from "../summaryitemcomponents/LinkSummary.svelte";
@@ -10,9 +9,6 @@
   export let build = {};
   export let htmlRules;
   let val = build;
-
-  const dispatch = createEventDispatcher();
-  const htmlHintThreshold = () => dispatch("htmlHintThreshold");
 
   let isCollapsedRules = false
   function handleClick() {
@@ -68,16 +64,6 @@
               {/if}
           {/if}
         </span>
-        <br />
-        <br />
-        {#if val.buildDate}
-          <button
-            on:click={htmlHintThreshold}
-            class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
-            border hover:border-transparent rounded">
-            <span class="ml-2">Enabled Rules</span>
-          </button>
-        {/if}
       </div>
 
       <div class="md:row-span-1 text-sm my-2">
