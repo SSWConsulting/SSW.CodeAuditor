@@ -496,7 +496,7 @@ export const customHtmlHintRules = [
   },
   {
     rule: "url-must-be-formatted-correctly",
-    displayName: "URLs - must not include full stop or " / " at the end",
+    displayName: "URLs - must not include full stop or slash at the end",
     ruleLink: "",
   },
   {
