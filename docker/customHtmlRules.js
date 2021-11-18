@@ -257,13 +257,67 @@ exports.addCustomHtmlRule = () => {
 
       parser.addListener("tagstart", (event) => {
         var tagName = event.tagName.toLowerCase(),
-          mapAttrs = parser.getMapAttrs(event.attrs),
-          col = event.col + tagName.length + 1;
+          mapAttrs = parser.getMapAttrs(event.attrs);
         if (tagName === "a") {
           if (mapAttrs["href"]) {
             if (mapAttrs["href"].startsWith("\\")) {
               reporter.warn(
                 "URLs must not use word click here.",
+                event.line,
+                event.col,
+                self,
+                event.raw
+              );
+            }
+          }
+        }
+      });
+    },
+  });
+
+  HTMLHint.addRule({
+    id: "url-must-be-formatted-correctly",
+    description: "URLs must be formatted correctly.",
+    init: function (parser, reporter) {
+      var self = this;
+
+      parser.addListener("tagstart", (event) => {
+        var tagName = event.tagName.toLowerCase(),
+          mapAttrs = parser.getMapAttrs(event.attrs);
+        if (tagName === "a") {
+          if (mapAttrs["href"]) {
+            if (
+              mapAttrs["href"].substr(mapAttrs["href"].length - 1) === "/" ||
+              mapAttrs["href"].substr(mapAttrs["href"].length - 1) === "."
+            ) {
+              reporter.warn(
+                "URLs must be formatted correctly.",
+                event.line,
+                event.col,
+                self,
+                event.raw
+              );
+            }
+          }
+        }
+      });
+    },
+  });
+
+  HTMLHint.addRule({
+    id: "youtube-url-must-be-used-correctly",
+    description: "Youtube video url should be used correctly.",
+    init: function (parser, reporter) {
+      var self = this;
+
+      parser.addListener("tagstart", (event) => {
+        var tagName = event.tagName.toLowerCase(),
+          mapAttrs = parser.getMapAttrs(event.attrs);
+        if (tagName === "a") {
+          if (mapAttrs["href"]) {
+            if (mapAttrs["href"].includes("/embed/")) {
+              reporter.warn(
+                "Youtube url must be used correctly.",
                 event.line,
                 event.col,
                 self,

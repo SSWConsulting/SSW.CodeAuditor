@@ -102,4 +102,6 @@ exports.htmlHintConfig = {
   "url-must-not-have-click-here": true,
   "page-must-not-show-email-addresses": true,
   "link-must-not-show-unc": true,
+  "url-must-be-formatted-correctly": true,
+  "youtube-url-must-be-used-correctly": true,
 };
