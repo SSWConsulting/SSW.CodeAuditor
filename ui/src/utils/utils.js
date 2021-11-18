@@ -494,5 +494,15 @@ export const customHtmlHintRules = [
     displayName: "HTML - link must not show UNC",
     ruleLink: "",
   },
+  {
+    rule: "url-must-be-formatted-correctly",
+    displayName: "URLs - must not include full stop or " / " at the end",
+    ruleLink: "",
+  },
+  {
+    rule: "youtube-url-must-be-used-correctly",
+    displayName: "URLs - Youtube video must not be under an embed url",
+    ruleLink: "",
+  },
   // Add new rule id below
 ];
