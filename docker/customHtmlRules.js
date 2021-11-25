@@ -329,5 +329,30 @@ exports.addCustomHtmlRule = () => {
       });
     },
   });
+
+  HTMLHint.addRule({
+    id: "figure-must-use-the-right-code",
+    description:
+      "Figures - Do you use the right HTML/CSS code to add images and captions.",
+    init: function (parser, reporter) {
+      var self = this;
+
+      parser.addListener("all", (event) => {
+        if (event) {
+          if (event.raw && event.raw.includes("Figure:")) {
+            if (event.lastEvent && event.lastEvent.tagName !== "figcaption") {
+              reporter.warn(
+                "Figures must use the right code.",
+                event.line,
+                event.col,
+                self,
+                event.raw
+              );
+            }
+          }
+        }
+      });
+    },
+  });
   // Add new custom rule below
 };

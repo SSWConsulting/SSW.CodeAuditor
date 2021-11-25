@@ -504,5 +504,11 @@ export const customHtmlHintRules = [
     displayName: "URLs - Youtube video must not be under an embed url",
     ruleLink: "",
   },
+  {
+    rule: "figure-must-use-the-right-code",
+    displayName:
+      "Figures - Do you use the right HTML/CSS code to add images and captions?",
+    ruleLink: "https://www.ssw.com.au/rules/use-the-right-html-figure-caption",
+  },
   // Add new rule id below
 ];

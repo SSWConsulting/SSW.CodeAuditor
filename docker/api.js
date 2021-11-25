@@ -104,4 +104,5 @@ exports.htmlHintConfig = {
   "link-must-not-show-unc": true,
   "url-must-be-formatted-correctly": true,
   "youtube-url-must-be-used-correctly": true,
+  "figure-must-use-the-right-code": true,
 };
