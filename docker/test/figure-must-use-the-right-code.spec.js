@@ -12,7 +12,13 @@ ruleOptions[ruldId] = true;
 describe(`Rules: ${ruldId}`, () => {
   addCustomHtmlRule();
   it("Figures not wrapped in figcaption must result in an error", () => {
-    const code = " <p>Figure: Caption</p>";
+    const code = "<p>Figure: Caption</p>";
+    const messages = HTMLHint.verify(code, ruleOptions);
+    expect(messages.length).to.be(1);
+  });
+
+  it("Figures not wrapped in figcaption must result in an error", () => {
+    const code = "<dd>Figure: Caption</dd> ";
     const messages = HTMLHint.verify(code, ruleOptions);
     expect(messages.length).to.be(1);
   });
