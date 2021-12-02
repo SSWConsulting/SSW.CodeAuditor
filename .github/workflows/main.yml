@@ -29,10 +29,10 @@ jobs:
           FIREBASETOKEN: ${{ secrets.FIREBASETOKEN }}
         run: |
           cd ui
-          npm install
+          npm install npm@7.19.1
           npm run deploy
           cd ../api/functions
-          npm install
+          npm install npm@7.19.1
           npm run deploy
           cd ../../docker
           docker build -t sswconsulting/codeauditor .
