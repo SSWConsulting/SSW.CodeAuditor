@@ -147,12 +147,18 @@
         {@html marked(instructionSteps)}
       </article>
       <article class="markdown-body mt-5">
+        <h3>Video - How to use Code Auditor:</h3>
+        <div>
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/DCDAtmvaPUY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </article>
+      <article class="markdown-body mt-5">
         {@html marked(addingCustomRule)}
       </article>
       <article class="markdown-body mt-5">
-        <h3>Video</h3>
+        <h3>Video - How To Add, Test and Deploy Custom HTML Rules:</h3>
         <div>
-          <iframe width="560" height="315" src="https://www.youtube.com/embed/DCDAtmvaPUY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/iduwnyzdcFo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
       </article>
   </div>
