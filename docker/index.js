@@ -27,6 +27,9 @@ const { readGithubSuperLinter } = require("./parseSuperLinter");
 
 const LIGHTHOUSEFOLDER = "./.lighthouseci/";
 const ARTILLERYFOLDER = "./artilleryOut.json";
+
+const PACKAGE_CONFIG = require('./package-lock.json');
+
 let _args = {};
 
 const _getAgrs = () => {
@@ -337,6 +340,7 @@ const processAndUpload = async (
         htmlIssues,
         isPrivate: args.private,
         finalEval,
+        buildVersion: PACKAGE_CONFIG.version
       });
     } catch (error) {
       console.error(
