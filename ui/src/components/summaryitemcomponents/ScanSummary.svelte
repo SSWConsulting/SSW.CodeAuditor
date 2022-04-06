@@ -31,3 +31,7 @@
     {numberWithCommas(val.totalScanned)}
     items
   </span>
+  <br />
+  <span class="font-sans text-base pt-2">
+    Build Version: <strong>{val.buildVersion}</strong>
+  </span>
