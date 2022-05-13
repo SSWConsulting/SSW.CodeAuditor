@@ -55,11 +55,27 @@
       ? (getCodeErrorRules(codeIssues) || []).concat(HTMLERRORS)
       : HTMLERRORS;
 
-  let hiddenRows = {};
-  let showHide = false;
+  let hiddenRows = {
+    "attr-lowercase": true,
+    "style-disabled": true,
+    "figure-must-use-the-right-code": true,
+    "href-abs-or-rel": true,
+    "head-script-disabled": true,
+    "inline-style-disabled": true,
+    "id-unique": true,
+    "url-must-be-formatted-correctly": true,
+    "grammar-scrum-terms": true,
+    "alt-require": true,
+    "page-must-not-show-email-addresses": true,
+    "code-block-missing-language": true,
+    "spec-char-escape": true,
+    "font-tag-must-not-be-used": true,
+    "id-class-ad-disabled": true,
+    "attr-value-not-empty": true,
+    "tag-pair": true
+  };
   const hideShow = (key) => {
-    showHide = true;
-    (hiddenRows[key] = key in hiddenRows ? !hiddenRows[key] : true);
+    return hiddenRows[key] = key in hiddenRows ? !hiddenRows[key] : true;
   }
 </script>
 
@@ -92,7 +108,7 @@
       {getDisplayText(error.error)}
     </a>
   </div>
-  {#if showHide && !hiddenRows[error.error]}
+  {#if !hiddenRows[error.error]}
     <table
       class="table-fixed w-full md:table-auto mb-8"
       in:fade={{ y: 100, duration: 400 }}
