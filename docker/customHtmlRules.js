@@ -48,6 +48,8 @@ exports.addCustomHtmlRule = () => {
           "sprint planning",
           "sprint retrospective",
           "sprint retro",
+          "specification review",
+          "spec review"
         ];
 
         if (event.raw) {
