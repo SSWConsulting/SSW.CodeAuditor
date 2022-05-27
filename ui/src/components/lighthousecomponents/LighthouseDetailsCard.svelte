@@ -4,7 +4,6 @@
   import CodeSummary from "../summaryitemcomponents/CodeSummary.svelte";
   import LinkSummary from "../summaryitemcomponents/LinkSummary.svelte";
   import ArtillerySummary from "../summaryitemcomponents/ArtillerySummary.svelte";
-  import ScanSummary from "../summaryitemcomponents/ScanSummary.svelte";
 
   export let build = {};
   let val = build;
@@ -40,7 +39,6 @@
   <div class="px-6 py-2">
     <div class="grid grid-rows-2 grid-flow-col">
       <div class="row-span-4 col-span-2">
-        <ScanSummary {val} />
         <br />
         <br />
         {#if val.buildDate}
@@ -79,5 +77,12 @@
         <ArtillerySummary value={val} />
       </div>
     </div>
+
+    <div class="text-left">
+      <span class="font-sans text-base pt-2">
+        Build Version: <strong>{val.buildVersion}</strong>
+      </span>
+    </div>
+    
   </div>
 </div>
