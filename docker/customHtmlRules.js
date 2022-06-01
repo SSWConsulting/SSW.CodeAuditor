@@ -49,7 +49,8 @@ exports.addCustomHtmlRule = () => {
           "sprint retrospective",
           "sprint retro",
           "specification review",
-          "spec review"
+          "spec review",
+          "user name"
         ];
 
         if (event.raw) {
