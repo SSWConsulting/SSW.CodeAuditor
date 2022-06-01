@@ -77,6 +77,13 @@
   \`\`\``;
 
   const instructions = `
+  ## About SSW CodeAuditor
+  SSW CodeAuditor was launched in 2008. It was built and is lovingly maintained by [SSW](https://www.ssw.com.au/ssw/).
+  ## Get Started
+  Scan any website for broken links and [HTML Issues](https://htmlhint.com) by running the following command:
+  \`\`\` bash
+  $ docker run sswconsulting/codeauditor --token ${token} --url <URL> 
+  \`\`\`
   ## SSW CodeAuditor
   Scan any website for broken links and [HTML Issues](https://htmlhint.com) by running the following command:
   \`\`\` bash

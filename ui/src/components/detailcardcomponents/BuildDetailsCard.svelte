@@ -79,8 +79,8 @@
     </div>
 
     <div class="text-left">
-      <span class="font-sans text-base pt-2">
-        Build Version: <strong>{val.buildVersion}</strong>
+      <span class="font-sans text-lg pt-2">
+        Build Version: {val.buildVersion}
       </span>
     </div>
   </div>

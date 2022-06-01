@@ -14,7 +14,6 @@
 
   const showMenu = () => (menu = !menu);
 
-  const buildTimeStamp = __myapp.env.TIME
 </script>
 
 <body class="flex flex-col min-h-screen ">
@@ -156,7 +155,6 @@
             >
               CONSTANT CONTINUOUS DEPLOYMENT.
             </a>
-            Last deployed {buildTimeStamp}
           </div>
           <div class="md:text-right py-2">
             Powered by{" "}

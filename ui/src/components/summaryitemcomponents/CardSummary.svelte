@@ -22,12 +22,16 @@
         class="underline text-xl font-sans font-bold text-gray-800 hover:text-red-600">{value.url}</a>
     </div>
     <div class="text-center">
-      <span class="text-lg font-sans block lg:inline-block text-gray-600">Last
+      <span class="text-xl font-sans block lg:inline-block text-gray-600">Last
         scanned:
         {formatDistanceToNow(new Date(value.buildDate), { addSuffix: true })}
         at
-        {format(new Date(value.buildDate), 'hh:mma')} 
-        for {printTimeDiff(+value.scanDuration)}
+        {format(new Date(value.buildDate), 'hh:mmaaaa')}
+      </span>
+    </div>
+    <div class="text-center">
+      <span class="text-xl font-sans block lg:inline-block text-gray-600">
+        Duration: {printTimeDiff(+value.scanDuration)}
       </span>
     </div>
     <div class="text-center">

@@ -4,7 +4,15 @@
   import LighthouseSummary from "../summaryitemcomponents/LighthouseSummary.svelte";
   import ArtillerySummary from "../summaryitemcomponents/ArtillerySummary.svelte";
   import { navigateTo } from "svelte-router-spa";
+  import { format } from "date-fns";
+  import formatDistanceToNow from "date-fns/formatDistanceToNow";
+  import { printTimeDiff } from "../../utils/utils";
+
   export let value = {};
+
+  function numberWithCommas(x) {
+    return x.toLocaleString()
+  }
 
 </script>
 
@@ -43,54 +51,75 @@
     {/if}
 
     <div class="px-6 py-2">
-      <div class="grid grid-cols-6">
-        <div></div>
-        <div class="grid grid-rows-3 col-span-4"
-          on:click={() => navigateTo(`/build/${val.runId}`)}>
-          <div
-            class="row-span-1 col-span-4 text-sm my-2"
-            on:click={() => navigateTo(`/build/${val.runId}`)}>
-            <h2>
-              <span class="font-bold font-sans text-gray-600">LINKS</span>
-            </h2>
-            <LinkSummary value={val} />
-          </div>
-  
-          <div
-            class="row-span-1 col-span-4 text-sm my-2"
-            on:click={() => navigateTo(`/build/${val.runId}`)}>
-            <h2>
-              <span class="font-bold font-sans text-gray-600">CODE</span>
-            </h2>
-            <CodeSummary value={val} />
-          </div>
-  
-          <div
-            class="row-span-1 col-span-4 text-sm my-2"
-            on:click={() => navigateTo(`/build/${val.runId}`)}>
-            <h2>
-              <span class="font-bold font-sans text-gray-600">LOAD TEST</span>
-            </h2>
-            <ArtillerySummary value={val} />
-          </div>
-  
-          {#if val.performanceScore}
-            <div
-              class="row-span-1 col-span-4 text-sm my-2"
-              on:click={() => navigateTo(`/build/${val.runId}`)}>
-              <h2>
-                <span class="font-bold font-sans text-gray-600">LIGHTHOUSE</span>
-              </h2>
-              <LighthouseSummary value={val} />
-            </div>
-          {/if}
+      <div
+        class="grid grid-rows-2 sm:gap-auto lg:grid-flow-col sm:grid-cols-3 ml-4"
+        on:click={() => navigateTo(`/build/${val.runId}`)}>
+        <div class="row-span-1 lg:row-span-4 col-span-4">
+          <span class="font-sans text-base font-bold text-gray-800 underline text-lg">
+            {format(new Date(val.buildDate), 'dd MMM yyyy')}
+          </span>
+          <br />
+          <span class="font-sans text-base pt-2 text-lg">
+            Last scanned:
+            {formatDistanceToNow(new Date(val.buildDate), { addSuffix: true })}
+            at
+            {format(new Date(val.buildDate), 'hh:mm aaaa')}
+          </span>
+          <br />
+          <span class="font-sans text-base pt-2 text-lg">
+            Duration:
+            {printTimeDiff(+val.scanDuration)}
+          </span>
+          <br />
+          <span class="font-sans text-base pt-2 text-lg">
+            Scanned:
+            {numberWithCommas(val.totalScanned)}
+            items
+          </span>
         </div>
-        <div></div>
+
+        <div
+          class="row-span-1 col-span-4 text-sm my-2"
+          on:click={() => navigateTo(`/build/${val.runId}`)}>
+          <h2>
+            <span class="font-bold font-sans text-gray-600">LINKS</span>
+          </h2>
+          <LinkSummary value={val} />
+        </div>
+
+        <div
+          class="row-span-1 col-span-4 text-sm my-2"
+          on:click={() => navigateTo(`/build/${val.runId}`)}>
+          <h2>
+            <span class="font-bold font-sans text-gray-600">CODE</span>
+          </h2>
+          <CodeSummary value={val} />
+        </div>
+
+        <div
+          class="row-span-1 col-span-4 text-sm my-2"
+          on:click={() => navigateTo(`/build/${val.runId}`)}>
+          <h2>
+            <span class="font-bold font-sans text-gray-600">LOAD TEST</span>
+          </h2>
+          <ArtillerySummary value={val} />
+        </div>
+
+        {#if val.performanceScore}
+          <div
+            class="row-span-1 col-span-4 text-sm my-2"
+            on:click={() => navigateTo(`/build/${val.runId}`)}>
+            <h2>
+              <span class="font-bold font-sans text-gray-600">LIGHTHOUSE</span>
+            </h2>
+            <LighthouseSummary value={val} />
+          </div>
+        {/if}
       </div>
 
       <div class="text-left">
-        <span class="font-sans text-base pt-2">
-          Build Version: <strong>{val.buildVersion}</strong>
+        <span class="font-sans text-lg pt-2">
+          Build Version: {val.buildVersion}
         </span>
       </div>
       

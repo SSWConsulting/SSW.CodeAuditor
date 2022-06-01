@@ -8,7 +8,7 @@
   }
 </script>
 
-<div class="grid grid-cols-2 lg:grid-cols-3 gap-x-5 text-center">
+<div class="grid grid-cols-2 lg:grid-cols-3 gap-x-5 text-center text-lg">
   <div class="col-span-1 text-start">
     <span class="block font-sans">Scanned</span>
     <span
