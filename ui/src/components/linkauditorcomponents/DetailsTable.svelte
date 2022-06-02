@@ -25,6 +25,15 @@
     if (currentRoute && currentRoute.queryParams.displayMode) {
       changeMode(+currentRoute.queryParams.displayMode);
     }
+
+    // Filtering false positive sites
+    builds = builds.filter(x => 
+      !x.dst.startsWith("https://twitter.com") && 
+      !x.dst.startsWith("https://marketplace") &&
+      !x.dst.startsWith("https://www.nuget.org") &&
+      !x.dst.startsWith("https://t.co")
+    )
+
   });
 </script>
 
