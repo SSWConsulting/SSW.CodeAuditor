@@ -31,7 +31,8 @@
       !x.dst.startsWith("https://twitter.com") && 
       !x.dst.startsWith("https://marketplace") &&
       !x.dst.startsWith("https://www.nuget.org") &&
-      !x.dst.startsWith("https://t.co")
+      !x.dst.startsWith("https://t.co") &&
+      !x.dst.startsWith("https://support.google.com")
     )
 
   });
