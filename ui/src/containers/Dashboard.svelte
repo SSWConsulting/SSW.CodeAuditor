@@ -84,11 +84,6 @@
   \`\`\` bash
   $ docker run sswconsulting/codeauditor --token ${token} --url <URL> 
   \`\`\`
-  ## SSW CodeAuditor
-  Scan any website for broken links and [HTML Issues](https://htmlhint.com) by running the following command:
-  \`\`\` bash
-  $ docker run sswconsulting/codeauditor --token ${token} --url <URL> 
-  \`\`\`
 
   If you don't you your scan to be uploaded publicly, following command will upload your scan to your private profile:
   \`\`\` bash

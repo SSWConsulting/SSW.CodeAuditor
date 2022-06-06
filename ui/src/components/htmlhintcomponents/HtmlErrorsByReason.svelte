@@ -72,7 +72,8 @@
     "font-tag-must-not-be-used": true,
     "id-class-ad-disabled": true,
     "attr-value-not-empty": true,
-    "tag-pair": true
+    "tag-pair": true,
+    "youtube-url-must-be-used-correctly": true
   };
   const hideShow = (key) => {
     return hiddenRows[key] = key in hiddenRows ? !hiddenRows[key] : true;
@@ -102,7 +103,7 @@
       {/if}
     </Icon>
     <a
-      class="inline align-baseline text-blue-600 hover:text-blue-800"
+      class="inline align-baseline underline"
       target="_blank"
       href={getRuleLink(error.error)}>
       {getDisplayText(error.error)}

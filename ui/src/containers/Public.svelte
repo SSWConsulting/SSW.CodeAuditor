@@ -34,13 +34,6 @@
   \`\`\` bash
   $ docker container run --cap-add=SYS_ADMIN sswconsulting/codeauditor --lighthouse --url <URL>
   \`\`\`
-  ## About SSW CodeAuditor
-  SSW CodeAuditor was launched in 2008. It was built and is lovingly maintained by [SSW](https://www.ssw.com.au/ssw/).
-  ## Get Started
-  Scan any website for broken links, [HTML Issues](https://htmlhint.com), [Google Lighthouse Audit](https://developers.google.com/web/tools/lighthouse) and [Artillery Load Test](https://artillery.io/) by running the following command:
-  \`\`\` bash
-  $ docker container run --cap-add=SYS_ADMIN sswconsulting/codeauditor --lighthouse --url <URL>
-  \`\`\`
   Include [Static Code Analysis](https://sswcodingstandards.web.app/):
   \`\`\` bash
   $ docker container run --cap-add=SYS_ADMIN -v "<YOUR_SOURCE_CODE>:/home/lhci/app/src" sswconsulting/codeauditor --lighthouse --url <URL>
