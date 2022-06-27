@@ -190,7 +190,7 @@ func writeResultFile(allUrls map[string]LinkStatus) {
 		return
 	}
 
-	f.WriteString("Source" + "\t" + "Destination" + "\t" + "Status" + "\t" + "Status Code" + "\t" + "Anchor" + "\n")
+	f.WriteString("Source" + "\t" + "Destination" + "\t" + "Status" + "\t" + "StatusCode" + "\t" + "Anchor" + "\n")
 	for _, v := range allUrls {
 		if (!strings.HasPrefix(v.url, "https://twitter.com") &&
 			!strings.HasPrefix(v.url, "https://marketplace") &&

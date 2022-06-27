@@ -310,9 +310,10 @@ exports.readArtilleryReport = (folder, writeLog) => {
 exports.runHtmlHint = async (startUrl, scannedUrls, writeLog, tokenApi) => {
   const __getGoodUrls = (allUrls) => {
     const all = allUrls
-      .filter(
-        (url) =>
-          (url.Source || "").toLowerCase().indexOf(startUrl.toLowerCase()) >= 0
+    .filter(
+      (url) =>
+      (url.Source || "").toLowerCase().indexOf(startUrl.toLowerCase()) >= 0 &&
+      url.StatusCode === '200'
       )
       .map((x) => x.Source);
     return [...new Set(all)];
@@ -348,12 +349,12 @@ exports.processBrokenLinks = (
 ) => {
   const __getBadResults = (allUrls) =>
     allUrls
-      .filter((url) => url["Status Code"] === "404")
+      .filter((url) => url["StatusCode"] === "404")
       .map((x) => ({
         src: x.Source || "",
         dst: x.Destination || "",
         link: x.Anchor || "",
-        statuscode: x["Status Code"] || "",
+        statuscode: x["StatusCode"] || "",
         statusmsg: x.Status || "",
       }));
 
@@ -446,7 +447,7 @@ const outputBadDataCsv = (records) => {
       },
       {
         id: "statuscode",
-        title: "Status Code",
+        title: "StatusCode",
       },
       {
         id: "statusmsg",
@@ -454,7 +455,7 @@ const outputBadDataCsv = (records) => {
       },
     ],
   });
-  console.log(`"Source","Destination","Anchor","Status Code","Status"`);
+  console.log(`"Source","Destination","Anchor","StatusCode","Status"`);
   console.log(csvStringifier.stringifyRecords(records));
 };
 
