@@ -337,7 +337,7 @@ export const getDisplayText = (errorKey) => {
 export const htmlHintRules = [
   {
     rule: "tagname-lowercase",
-    displayName: "HTML Tags - tag names must be lowercase",
+    displayName: "Tags - tag names must be lowercase",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/tagname-lowercase",
   },
   {
@@ -363,38 +363,38 @@ export const htmlHintRules = [
   },
   {
     rule: "doctype-first",
-    displayName: "HTML - DOCTYPE must be declared first",
+    displayName: "Header - DOCTYPE must be declared first",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/doctype-first",
   },
   {
     rule: "tag-pair",
-    displayName: "HTML Tags - tags must be paired",
+    displayName: "Tags - tags must be paired",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/tag-pair",
   },
   {
     rule: "empty-tag-not-self-closed",
-    displayName: "HTML Tags - an empty tag should not be closed by itself",
+    displayName: "Tags - an empty tag should not be closed by itself",
     ruleLink:
       "https://htmlhint.com/docs/user-guide/rules/empty-tag-not-self-closed",
   },
   {
     rule: "spec-char-escape",
-    displayName: "HTML - special characters must be escaped",
+    displayName: "Content - special characters must be escaped",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/spec-char-escape",
   },
   {
     rule: "id-unique",
-    displayName: "HTML Tags - id attribute must be unique",
+    displayName: "Tags - id attribute must be unique",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/id-unique",
   },
   {
     rule: "src-not-empty",
-    displayName: "Images - the src attribute must have a value",
+    displayName: "Content - the image src attribute must have a value",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/src-not-empty",
   },
   {
     rule: "title-require",
-    displayName: "HTML Tags - missing title tag",
+    displayName: "Header - missing title tag",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/title-require",
   },
   {
@@ -404,29 +404,29 @@ export const htmlHintRules = [
   },
   {
     rule: "doctype-html5",
-    displayName: "HTML - DOCTYPE must be HTML5",
+    displayName: "Header - DOCTYPE must be HTML5",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/doctype-html5",
   },
   {
     rule: "style-disabled",
-    displayName: "HTML / CSS - style tags should not be used",
+    displayName: "Content - style tags should not be used",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/style-disabled",
   },
   {
     rule: "inline-style-disabled",
-    displayName: "HTML / CSS - inline styling should not be used",
+    displayName: "Content - inline styling should not be used",
     ruleLink:
       "https://htmlhint.com/docs/user-guide/rules/inline-style-disabled",
   },
   {
     rule: "inline-script-disabled",
-    displayName: "HTML / JS - inline script should not be used",
+    displayName: "Content - inline script should not be used",
     ruleLink:
       "https://htmlhint.com/docs/user-guide/rules/inline-script-disabled",
   },
   {
     rule: "id-class-ad-disabled",
-    displayName: "HTML Tags - id and class cannot use the ad keyword",
+    displayName: "Tags - id and class cannot use the ad keyword",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/id-class-ad-disabled",
   },
   {
@@ -441,7 +441,7 @@ export const htmlHintRules = [
   },
   {
     rule: "head-script-disabled",
-    displayName: "HTML/JS - the script tag cannot be used in another tag",
+    displayName: "JavaScript - script tag cannot be used inside another tag",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/head-script-disabled",
   },
 ];
@@ -449,27 +449,27 @@ export const htmlHintRules = [
 export const customHtmlHintRules = [
   {
     rule: "code-block-missing-language",
-    displayName: "Code block - missing language",
+    displayName: "Content - missing code block language",
     ruleLink: "https://www.ssw.com.au/rules/set-language-on-code-blocks",
   },
   {
     rule: "grammar-scrum-terms",
-    displayName: "Grammar mistake - common Scrum terms",
+    displayName: "Content – use the correct Scrum terms",
     ruleLink: "https://www.ssw.com.au/rules/scrum-should-be-capitalized",
   },
   {
     rule: "anchor-names-must-be-valid",
-    displayName: "Anchor Names - must be valid",
+    displayName: "Links - anchor names must be valid",
     ruleLink: "https://www.ssw.com.au/rules/chose-efficient-anchor-names",
   },
   {
     rule: "meta-tag-must-not-redirect",
-    displayName: "Meta Tags - must not refresh or redirect",
+    displayName: "Header - must not refresh or redirect",
     ruleLink: "https://rules.sonarsource.com/html/RSPEC-1094",
   },
   {
     rule: "font-tag-must-not-be-used",
-    displayName: "Font Tags - must not be used",
+    displayName: "Tags - font tags must not be used",
     ruleLink:
       "https://www.ssw.com.au/rules/do-you-know-font-tags-are-no-longer-used",
   },
@@ -480,12 +480,12 @@ export const customHtmlHintRules = [
   },
   {
     rule: "url-must-not-have-click-here",
-    displayName: "URLs - must not use word click here",
+    displayName: "Content - do not use the words ‘click here’",
     ruleLink: "https://www.ssw.com.au/rules/relevant-words-on-links",
   },
   {
     rule: "page-must-not-show-email-addresses",
-    displayName: "Emails - page must not display any email addresses",
+    displayName: "Content - page must not display any email addresses",
     ruleLink:
       "https://www.ssw.com.au/rules/avoid-clear-text-email-addresses-in-web-pages",
   },
@@ -501,12 +501,12 @@ export const customHtmlHintRules = [
   },
   {
     rule: "youtube-url-must-be-used-correctly",
-    displayName: "URLs - Youtube video must not be under an embed url",
+    displayName: "Content - YouTube videos must not be under an embed URL",
     ruleLink: "",
   },
   {
     rule: "figure-must-use-the-right-code",
-    displayName: "Figures - Do you use the right HTML/CSS code",
+    displayName: "Content - use the right HTML/CSS figure markup",
     ruleLink: "https://www.ssw.com.au/rules/use-the-right-html-figure-caption",
   },
   // Add new rule id below
