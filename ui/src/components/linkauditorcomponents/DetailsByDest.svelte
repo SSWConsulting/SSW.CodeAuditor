@@ -1,4 +1,4 @@
-w<script>
+<script>
   import { fade, fly } from "svelte/transition";
   import Icon from "../misccomponents/Icon.svelte";
   import { groupBy, props } from "ramda";
