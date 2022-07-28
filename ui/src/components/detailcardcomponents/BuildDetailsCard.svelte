@@ -7,7 +7,8 @@
   import ArtillerySummary from "../summaryitemcomponents/ArtillerySummary.svelte";
 
   export let build = {};
-  let val = build;
+  let val = build.summary;
+  let brokenLinks = build.brokenLinks;
   $: codeSummary = getCodeSummary(build);
 </script>
 
@@ -45,7 +46,7 @@
           class="md:row-span-1 text-sm my-2"
           on:click={() => navigateTo(`/build/${val.runId}`)}>
           <h2><span class="font-bold font-sans text-gray-600">LINKS</span></h2>
-          <LinkSummary value={val} />
+          <LinkSummary value={val} brokenLinks={brokenLinks.length} />
         </div>
   
         <div

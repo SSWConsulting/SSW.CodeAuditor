@@ -93,10 +93,10 @@
         <CardSummary value={data.summary} />
 
         <ArtilleryDetailsCard
-          build={data ? data.summary : {}}
+          build={data ? data : {}}
           on:artilleryThreshold={() => showArtilleryThreshold(data.summary, $userSession$)} />
 
-        <Tabs build={data ? data.summary : {}} displayMode="artillery" />
+        <Tabs build={data ? data : {}} displayMode="artillery" />
 
         {#if data.summary.latencyP95 !== undefined}
           <div class="my-4">

@@ -7,7 +7,8 @@
 
   export let build = {};
   export let htmlRules;
-  let val = build;
+  let val = build.summary;
+  let brokenLinks = build.brokenLinks;
 
   let isCollapsedRules = false
   function handleClick() {
@@ -45,7 +46,7 @@
       <div class="grid grid-rows-3 col-span-4">
         <div class="md:row-span-1 text-sm my-2">
           <h2><span class="font-bold font-sans text-gray-600">LINKS</span></h2>
-          <LinkSummary value={val} />
+          <LinkSummary value={val} brokenLinks={brokenLinks.length}/>
         </div>
   
         <div class="md:row-span-1 text-sm my-2">

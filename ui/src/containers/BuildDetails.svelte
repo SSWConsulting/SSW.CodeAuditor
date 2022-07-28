@@ -74,9 +74,9 @@
       
       <CardSummary value={data.summary} />
 
-      <BuildDetailsCard build={data ? data.summary : {}} />
+      <BuildDetailsCard build={data ? data : {}} />
       
-      <Tabs build={data ? data.summary : {}} displayMode="url" />
+      <Tabs build={data ? data : {}} displayMode="url" />
 
       <DetailsTable
         on:download={() => onDownload(data)}

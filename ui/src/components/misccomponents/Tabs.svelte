@@ -6,7 +6,7 @@
 
   let baseClass = "bg-white inline-block py-2 px-4 text-gray-600 font-semibold";
   let active = " textgrey border-l border-t border-r rounded-t";
-  $: codeSummary = getCodeSummary(build);
+  $: codeSummary = getCodeSummary(build.summary);
 
   $: totalHtmlIssues =
     (codeSummary.htmlErrors || 0) +
@@ -17,7 +17,7 @@
   let lhWarning = 0;
   $: {
     if (build) {
-      const perf = getPerfScore(build);
+      const perf = getPerfScore(build.summary);
       lhWarning = [
         "performanceScore",
         "accessibilityScore",
@@ -31,7 +31,7 @@
   let artilleryLoadTest = 0;
   $: {
     if (build) {
-      const art = getArtilleryResult(build);
+      const art = getArtilleryResult(build.summary);
       artilleryLoadTest = [
         "timestamp",
         "scenariosCreated",
@@ -47,29 +47,29 @@
 <ul class="flex border-b">
   <li class="mr-1" class:-mb-px={displayMode === 'url'}>
     <span class={baseClass + (displayMode === 'url' ? active : '')}>
-      <Navigate to={'/build/' + build.runId}>
-        Links{build.uniqueBrokenLinks ? ` (${build.uniqueBrokenLinks})` : ''}
+      <Navigate to={'/build/' + build.summary.runId}>
+        Links{build.brokenLinks ? ` (${build.brokenLinks.length})` : ''}
       </Navigate>
     </span>
   </li>
   <li class="mr-1" class:-mb-px={displayMode === 'code'}>
     <span class={baseClass + (displayMode === 'code' ? active : '')}>
-      <Navigate to={'/htmlhint/' + build.runId}>
+      <Navigate to={'/htmlhint/' + build.summary.runId}>
         Code{totalHtmlIssues ? ` (${totalHtmlIssues})` : ''}
       </Navigate>
     </span>
   </li>
   <li class="mr-1" class:-mb-px={displayMode === 'artillery'}>
     <span class={baseClass + (displayMode === 'artillery' ? active : '')}>
-      <Navigate to={'/artillery/' + build.runId}>
+      <Navigate to={'/artillery/' + build.summary.runId}>
         Artillery Load Test{artilleryLoadTest.length ? ` (${artilleryLoadTest.length})` : ''}
       </Navigate>
     </span>
   </li>
-  {#if build.performanceScore}
+  {#if build.summary.performanceScore}
     <li class="mr-1" class:-mb-px={displayMode === 'lighthouse'}>
       <span class={baseClass + (displayMode === 'lighthouse' ? active : '')}>
-        <Navigate to={'/lighthouse/' + build.runId}>
+        <Navigate to={'/lighthouse/' + build.summary.runId}>
           Lighthouse Audit{lhWarning.length ? ` (${lhWarning.length})` : ''}
         </Navigate>
       </span>

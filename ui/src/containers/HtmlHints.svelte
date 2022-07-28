@@ -40,7 +40,7 @@
       );
       codeIssues = await c.json();
     }
-    return { htmlHint, summary: summary.summary, codeIssues };
+    return { htmlHint, summary: summary.summary, codeIssues, brokenLinks: summary.brokenLinks };
   }
 
   let userNotLoginToast;
@@ -148,9 +148,9 @@
       on:htmlHintThreshold={() => showHtmlHintThreshold(data.summary, $userSession$)}
       />
     
-      <HtmlHintDetailsCard {htmlRules} build={data ? data.summary : {}} />
+      <HtmlHintDetailsCard {htmlRules} build={data ? data : {}} />
 
-      <Tabs build={data ? data.summary : {}} displayMode="code" />
+      <Tabs build={data ? data : {}} displayMode="code" />
 
       <HtmlErrorsTable
         on:download={() => onDownload(data)}

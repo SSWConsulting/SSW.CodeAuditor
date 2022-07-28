@@ -90,10 +90,10 @@
         <CardSummary value={data.summary} />
 
         <LighthouseDetailsCard
-          build={data ? data.summary : {}}
+          build={data ? data : {}}
           on:perfThreshold={() => showPerfThreshold(data.summary, $userSession$)} />
 
-        <Tabs build={data ? data.summary : {}} displayMode="lighthouse" />
+        <Tabs build={data ? data : {}} displayMode="lighthouse" />
       {:catch error}
         <p class="text-red-600 mx-auto text-2xl py-8">{error.message}</p>
       {/await}
