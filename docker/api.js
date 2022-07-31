@@ -71,6 +71,24 @@ exports.getHTMLHintRules = (api, url) => {
   );
 };
 
+exports.addHTMLHintRulesForScan = (api, url, runId, selectedRules) => {
+  return fetch(`${endpoint}/api/config/${api}/addhtmlhintruleseachrun}`, {
+    method: "PUT",
+    body: JSON.stringify({
+      url,
+      runId,
+      selectedRules
+    }),
+    headers: { "Content-Type": "application/json" },
+  }).then((res) => {
+    if (res.ok) {
+      return res.text();
+    } else {
+      throw Error("Failed to upload custom htmlhint rules");
+    }
+  });
+};
+
 exports.htmlHintConfig = {
   "grammar-scrum-terms": true,
   "code-block-missing-language": true,

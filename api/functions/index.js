@@ -19,6 +19,7 @@ const {
 	addLoadThreshold,
 	addHTMLHintRules,
 	uploadCodeAuditorReport,
+	addHTMLHintRulesForEachRun,
 } = require('./commands');
 const {
 	getSummary,
@@ -31,6 +32,7 @@ const {
 	getHTMLHintRules,
 	getScanDetails,
 	getIgnoredUrls,
+	getHTMLHintRulesByRunId,
 } = require('./queries');
 const {
 	newGuid,
@@ -81,8 +83,14 @@ app.get('/config/:api/loadthreshold/:url', async (req, res) =>
 app.put('/config/:api/htmlhintrules', async (req, res) =>
 	res.json(await addHTMLHintRules(req.params.api, req.body)));
 
+app.put('/config/:api/addhtmlhintruleseachrun', async (req, res) =>
+	res.json(await addHTMLHintRulesForEachRun(req.params.api, req.body)));
+
 app.get('/config/:api/htmlhintrules/:url', async (req, res) =>
 	res.json(await getHTMLHintRules(req.params.api, req.params.url)));
+
+app.get('/config/:api/htmlhintrulesbyrunid/:runId', async (req, res) =>
+	res.json(await getHTMLHintRulesByRunId(req.params.api, req.params.runId)));
 
 app.post('/config/:api/ignore', async (req, res) => {
 	const {

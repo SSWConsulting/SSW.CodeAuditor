@@ -7,6 +7,8 @@ const {
   getPerfThreshold,
   postData,
   getLoadThreshold,
+  addHTMLHintRulesForScan,
+  getHTMLHintRules,
 } = require("./api");
 const {
   printTimeDiff,
@@ -346,6 +348,22 @@ const processAndUpload = async (
       console.error(
         `Error: Unabled to push data to dashboard service => ${error.message}`
       );
+    }
+  }
+
+  // Upload selected HTMLHint Rules to the scan
+  if (args.htmlhint && runId) {
+    const result = await getHTMLHintRules(args.token, args.url);
+
+    if (result) {
+      const selectedRules = result.selectedRules;
+      const res = await addHTMLHintRulesForScan(args.token, args.url, runId, selectedRules)
+  
+      if (res.ok) {
+        console.log('Upload selected HTMLHint Rules successfully')
+      } else {
+        throw new Error("Failed to load");
+      }
     }
   }
 
