@@ -65,14 +65,14 @@ exports.getHTMLHintRules = (api, url) => {
       if (res.ok) {
         return res.json();
       } else {
-        throw Error("Failed to load artillery threshold config");
+        throw Error("Failed to load html hint rules config");
       }
     }
   );
 };
 
 exports.addHTMLHintRulesForScan = (api, url, runId, selectedRules) => {
-  return fetch(`${endpoint}/api/config/${api}/addhtmlhintruleseachrun}`, {
+  return fetch(`${endpoint}/api/config/${api}/addhtmlhintruleseachrun`, {
     method: "PUT",
     body: JSON.stringify({
       url,
