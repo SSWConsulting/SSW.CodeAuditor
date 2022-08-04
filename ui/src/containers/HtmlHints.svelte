@@ -119,7 +119,7 @@
       userSession$.subscribe(async x => {
         if (x) {
           getIgnoreList(x);
-          const res = await fetch(`${CONSTS.API}/api/config/${x.apiKey}/htmlhintrules/${slug(data.summary.url)}`);
+          const res = await fetch(`${CONSTS.API}/api/config/${x.apiKey}/htmlhintrulesbyrunid/${runId}`);
           htmlRules = await res.json()
         }
       });
