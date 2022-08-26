@@ -174,22 +174,18 @@
   </p>
 </Toastr>
 
-{#if htmlRules}
+{#if !(Object.keys(threshold).length === 0)}
 <UpdateHtmlRules url={scanUrl}
   loading={loadingHtmlHintSettings}
   bind:show={htmlHintRulesShown}
-  {lastBuild}
-  {threshold}
   user={$userSession$}
-  {htmlRules} 
+  htmlRules={threshold}
   on:updateHtmlRules={() => getSelectedHtmlRules()}
   />
 {:else}
 <UpdateHtmlRules url={scanUrl}
   loading={loadingHtmlHintSettings}
   bind:show={htmlHintRulesShown}
-  {lastBuild}
-  {threshold}
   user={$userSession$}
   htmlRules={null}
   on:updateHtmlRules={() => getSelectedHtmlRules()}
