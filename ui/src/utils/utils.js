@@ -373,18 +373,18 @@ export const htmlHintRules = [
   },
   {
     rule: "empty-tag-not-self-closed",
-    displayName: "Tags - an empty tag should not be closed by itself",
+    displayName: "Tags - empty tags should not be closed by itself",
     ruleLink:
       "https://htmlhint.com/docs/user-guide/rules/empty-tag-not-self-closed",
   },
   {
     rule: "spec-char-escape",
-    displayName: "Content - special characters must be escaped",
+    displayName: "Syntax - special characters must be escaped",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/spec-char-escape",
   },
   {
     rule: "id-unique",
-    displayName: "Tags - id attribute must be unique",
+    displayName: "Tags - id attributes must be unique",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/id-unique",
   },
   {
@@ -409,24 +409,24 @@ export const htmlHintRules = [
   },
   {
     rule: "style-disabled",
-    displayName: "Content - style tags should not be used",
+    displayName: "Syntax - style tags should not be used outside of header",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/style-disabled",
   },
   {
     rule: "inline-style-disabled",
-    displayName: "Content - inline styling should not be used",
+    displayName: "Syntax - inline styling should not be used",
     ruleLink:
       "https://htmlhint.com/docs/user-guide/rules/inline-style-disabled",
   },
   {
     rule: "inline-script-disabled",
-    displayName: "Content - inline script should not be used",
+    displayName: "Syntax - inline scripts should not be used",
     ruleLink:
       "https://htmlhint.com/docs/user-guide/rules/inline-script-disabled",
   },
   {
     rule: "id-class-ad-disabled",
-    displayName: "Tags - id and class cannot use the ad keyword",
+    displayName: "Tags - id and class must not use the 'ad' keyword",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/id-class-ad-disabled",
   },
   {
@@ -441,7 +441,7 @@ export const htmlHintRules = [
   },
   {
     rule: "head-script-disabled",
-    displayName: "JavaScript - script tag cannot be used inside another tag",
+    displayName: "Syntax - script tags cannot be used inside another tag",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/head-script-disabled",
   },
 ];
@@ -449,17 +449,17 @@ export const htmlHintRules = [
 export const customHtmlHintRules = [
   {
     rule: "code-block-missing-language",
-    displayName: "Content - missing code block language",
+    displayName: "Syntax - code blocks must have a language",
     ruleLink: "https://www.ssw.com.au/rules/set-language-on-code-blocks",
   },
   {
     rule: "grammar-scrum-terms",
-    displayName: "Content – use the correct Scrum terms",
+    displayName: "Content - use the correct Scrum terms",
     ruleLink: "https://www.ssw.com.au/rules/scrum-should-be-capitalized",
   },
   {
     rule: "anchor-names-must-be-valid",
-    displayName: "Links - anchor names must be valid",
+    displayName: "Tags - link anchor names must be valid",
     ruleLink: "https://www.ssw.com.au/rules/chose-efficient-anchor-names",
   },
   {
@@ -485,7 +485,7 @@ export const customHtmlHintRules = [
   },
   {
     rule: "page-must-not-show-email-addresses",
-    displayName: "Content - page must not display any email addresses",
+    displayName: "Content - text must not display any email addresses",
     ruleLink:
       "https://www.ssw.com.au/rules/avoid-clear-text-email-addresses-in-web-pages",
   },
@@ -501,12 +501,12 @@ export const customHtmlHintRules = [
   },
   {
     rule: "youtube-url-must-be-used-correctly",
-    displayName: "Content - YouTube videos must not be under an embed URL",
+    displayName: "Syntax - YouTube videos must not be under an embed URL",
     ruleLink: "",
   },
   {
     rule: "figure-must-use-the-right-code",
-    displayName: "Content - use the right HTML/CSS figure markup",
+    displayName: "Syntax - use the right HTML/CSS figure markup",
     ruleLink: "https://www.ssw.com.au/rules/use-the-right-html-figure-caption",
   },
   // Add new rule id below
