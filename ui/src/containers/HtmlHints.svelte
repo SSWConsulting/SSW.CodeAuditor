@@ -117,11 +117,8 @@
   const getSelectedHtmlRules = async () => {
     await promise.then((data) => {
       userSession$.subscribe(async x => {
-        if (x) {
-          getIgnoreList(x);
-          const res = await fetch(`${CONSTS.API}/api/config/${x.apiKey}/htmlhintrulesbyrunid/${runId}`);
-          htmlRules = await res.json()
-        }
+        const res = await fetch(`${CONSTS.API}/api/config/htmlhintrulesbyrunid/${runId}`);
+        htmlRules = await res.json()
       });
 	  });
   }

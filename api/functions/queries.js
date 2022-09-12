@@ -82,12 +82,11 @@ exports.getHTMLHintRules = async (api, url) => {
 	return null;
 };
 
-exports.getHTMLHintRulesByRunId = async (api, runId) => {
+exports.getHTMLHintRulesByRunId = async (runId) => {
 	const val = await getTableRows(
 		TABLE.htmlhintrules,
 		new azure.TableQuery()
-		.where('PartitionKey eq ?', api)
-		.and('RowKey eq ?', runId)
+		.where('RowKey eq ?', runId)
 	);
 
 	if (val && val.length > 0) {
