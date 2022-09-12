@@ -200,7 +200,8 @@ func writeResultFile(allUrls map[string]LinkStatus) {
 			!strings.HasPrefix(v.url, "https://support.google.com") &&
 			!strings.HasPrefix(v.url, "https://playwright.dev") &&
 			!strings.HasPrefix(v.url, "https://www.theurlist.com/xamarinstreamers") &&
-			!strings.HasPrefix(v.url, "https://dev.botframework.com")) {
+			!strings.HasPrefix(v.url, "https://dev.botframework.com")) &&
+			!strings.HasPrefix(v.url, "https://www.ssw.com.au/rules/rules-to-better-research-and-development") {
 			f.WriteString(v.srcUrl + "\t" + v.url + "\t" + v.status + "\t" + strconv.Itoa(v.statusCode) + "\t" + strings.ReplaceAll(v.anchor,"\"","") + "\n")
 		}
 	}
