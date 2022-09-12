@@ -179,7 +179,8 @@
   loading={loadingHtmlHintSettings}
   bind:show={htmlHintRulesShown}
   user={$userSession$}
-  htmlRules={threshold}
+  {htmlRules}
+  {threshold}
   on:updateHtmlRules={() => getSelectedHtmlRules()}
   />
 {:else}
