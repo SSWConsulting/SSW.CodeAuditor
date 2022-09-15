@@ -1,5 +1,6 @@
 import Login from './containers/Login.svelte';
 import Signup from './containers/Signup.svelte';
+import ForgetPassword from './containers/ForgetPassword.svelte';
 import Dashboard from './containers/Dashboard.svelte';
 import Settings from './containers/Settings.svelte';
 import HtmlHints from './containers/HtmlHints.svelte';
@@ -34,6 +35,10 @@ const routes = [
 	{
 		name: '/signup',
 		component: Signup,
+	},
+	{
+		name: '/forgetPassword',
+		component: ForgetPassword,
 	},
 	{
 		name: '/howitworks',

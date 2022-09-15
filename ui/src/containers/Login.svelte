@@ -80,5 +80,13 @@
         Sign Up
       </a>
     </div>
+    <div>
+      <a
+        class="inline-block align-baseline font-bold text-sm text-blue
+        hover:text-blue-darker"
+        href="/forgetPassword">
+        Forget Password?
+      </a>
+    </div>
   </div>
 </form>
