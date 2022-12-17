@@ -509,5 +509,9 @@ export const customHtmlHintRules = [
     displayName: "Syntax - use the right HTML/CSS figure markup",
     ruleLink: "https://www.ssw.com.au/rules/use-the-right-html-figure-caption",
   },
+  {
+    rule: "detect-absolute-references-url-path-correctly",
+    displayName: "URLs - Detect absolute references path correctly",
+  }
   // Add new rule id below
 ];

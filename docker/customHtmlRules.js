@@ -358,5 +358,32 @@ exports.addCustomHtmlRule = () => {
       });
     },
   });
+
+  HTMLHint.addRule({
+    id: "detect-absolute-references-url-path-correctly",
+    description:
+      "Detect absolute references URL path correctly.",
+    init: function (parser, reporter) {
+      var self = this;
+
+      parser.addListener("tagstart", (event) => {
+        var tagName = event.tagName.toLowerCase(),
+        mapAttrs = parser.getMapAttrs(event.attrs);
+        if (tagName === "a") {
+          if (mapAttrs["href"]) {
+            if (mapAttrs["href"].startsWith("https://ssw.com.au/")) {
+              reporter.warn(
+                "URLs must be formatted to direct to a url path correctly.",
+                event.line,
+                event.col,
+                self,
+                event.raw
+              );  
+            }
+          }
+        }
+      });
+    },
+  });
   // Add new custom rule below
 };
