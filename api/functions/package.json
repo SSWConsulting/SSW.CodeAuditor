@@ -20,7 +20,7 @@
 		"better-queue": "^3.8.10",
 		"cors": "^2.8.5",
 		"dotenv": "^8.2.0",
-		"express": "^4.17.1",
+		"express": "^4.17.3",
 		"firebase-admin": "^9.2.0",
 		"firebase-functions": "^3.3.0",
 		"node-fetch": "^2.6.1",
