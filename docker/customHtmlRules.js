@@ -371,7 +371,8 @@ exports.addCustomHtmlRule = () => {
         mapAttrs = parser.getMapAttrs(event.attrs);
         if (tagName === "a") {
           if (mapAttrs["href"]) {
-            if (!mapAttrs["href"].startsWith("/")) {
+            if (mapAttrs["href"].startsWith("https://ssw.com.au/rules")) {
+              if (!mapAttrs["href"].startsWith("/")) {
               reporter.warn(
                 "URLs must be formatted to direct to a url path correctly.",
                 event.line,
@@ -379,6 +380,7 @@ exports.addCustomHtmlRule = () => {
                 self,
                 event.raw
               );  
+              }
             }
           }
         }
