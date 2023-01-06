@@ -42,5 +42,5 @@ jobs:
           docker build -t sswconsulting/codeauditor .
           docker login --username tombui99 --password ${{ secrets.DOCKER_PASSWORD }}
           docker push sswconsulting/codeauditor
-          docker run sswconsulting/codeauditor --token 3c34a549-dfb3-442c-b0e3-45942104a8bf --url https://www.ssw.com.au/rules/ --maxthread 200
+          docker run sswconsulting/codeauditor --token 3c34a549-dfb3-442c-b0e3-45942104a8bf --url https://www.ssw.com.au/rules/ --maxthread 200 --debug
           
