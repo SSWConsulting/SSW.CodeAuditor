@@ -73,7 +73,9 @@
     "id-class-ad-disabled": true,
     "attr-value-not-empty": true,
     "tag-pair": true,
-    "youtube-url-must-be-used-correctly": true
+    "youtube-url-must-be-used-correctly": true,
+    "detect-absolute-references-url-path-correctly": true,
+    "use-unicode-hex-code-for-special-html-characters": true
   };
   const hideShow = (key) => {
     return hiddenRows[key] = key in hiddenRows ? !hiddenRows[key] : true;
@@ -103,7 +105,7 @@
       {/if}
     </Icon>
     <a
-      class="inline align-baseline underline"
+      class="{getRuleLink(error.error) ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline" 
       target="_blank"
       href={getRuleLink(error.error)}>
       {getDisplayText(error.error)}

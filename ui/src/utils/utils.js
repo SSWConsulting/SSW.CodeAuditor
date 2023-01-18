@@ -486,8 +486,7 @@ export const customHtmlHintRules = [
   {
     rule: "page-must-not-show-email-addresses",
     displayName: "Content - text must not display any email addresses",
-    ruleLink:
-      "https://www.ssw.com.au/rules/avoid-clear-text-email-addresses-in-web-pages",
+    ruleLink:"https://www.ssw.com.au/rules/avoid-clear-text-email-addresses-in-web-pages",
   },
   {
     rule: "link-must-not-show-unc",
@@ -502,7 +501,7 @@ export const customHtmlHintRules = [
   {
     rule: "youtube-url-must-be-used-correctly",
     displayName: "Syntax - YouTube videos must not be under an embed URL",
-    ruleLink: "",
+    ruleLink: "https://ssw.com.au/rules/optimize-videos-for-youtube/",
   },
   {
     rule: "figure-must-use-the-right-code",

@@ -319,7 +319,7 @@ exports.addCustomHtmlRule = () => {
           mapAttrs = parser.getMapAttrs(event.attrs);
         if (tagName === "a") {
           if (mapAttrs["href"]) {
-            if (mapAttrs["href"].includes("/embed/")) {
+            if (mapAttrs["href"].includes("youtube.com/embed/")) {
               reporter.warn(
                 "Youtube url must be used correctly.",
                 event.line,

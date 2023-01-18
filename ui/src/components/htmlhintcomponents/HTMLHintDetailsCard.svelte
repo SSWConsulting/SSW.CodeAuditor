@@ -81,11 +81,21 @@
         </span>
           {#if isCollapsedRules}
             {#each htmlRules.selectedRules.split(/[,]+/) as rule}
-              <div class="ml-3 underline">
+              <div class="ml-3">
                 {#if customHtmlHintRules.some(x => x.rule === rule)}
-                  <a href="{(customHtmlHintRules.find(x => x.rule === rule)).ruleLink}">{customHtmlHintRules.find(x => x.rule === rule).displayName}</a>
+                  <a
+                    class="{(customHtmlHintRules.find(x => x.rule === rule)).ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline"  
+                    href="{(customHtmlHintRules.find(x => x.rule === rule)).ruleLink}"
+                  >
+                    {customHtmlHintRules.find(x => x.rule === rule).displayName}
+                  </a>
                 {:else if htmlHintRules.some(x => x.rule === rule)}
-                  <a href="{(htmlHintRules.find(x => x.rule === rule)).ruleLink}">{htmlHintRules.find(x => x.rule === rule).displayName}</a>
+                  <a 
+                    class="{(htmlHintRules.find(x => x.rule === rule)).ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline"  
+                    href="{(htmlHintRules.find(x => x.rule === rule)).ruleLink}"
+                  >
+                    {htmlHintRules.find(x => x.rule === rule).displayName}
+                  </a>
                 {/if}
               </div>
             {/each}
