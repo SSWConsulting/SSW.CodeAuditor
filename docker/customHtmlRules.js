@@ -387,5 +387,31 @@ exports.addCustomHtmlRule = () => {
       });
     },
   });
+
+  HTMLHint.addRule({
+    id: "use-unicode-hex-code-for-special-html-characters",
+    description:
+      "Content - Use Unicode Hex code for special HTML characters.",
+    init: function (parser, reporter) {
+      parser.addListener('text', (event) => {
+        const raw = event.raw
+        const reSpecChar = /([<>])|( \& )/g
+        let match
+
+        if (!(event.lastEvent.type === 'tagstart' && event.lastEvent.tagName === 'code')) {
+          while ((match = reSpecChar.exec(raw))) {
+            const fixedPos = parser.fixPos(event, match.index)
+            reporter.error(
+              `Special characters must be escaped : [ ${match[0]} ].`,
+              fixedPos.line,
+              fixedPos.col,
+              this,
+              event.raw
+            )
+          }
+        }
+      })
+    },
+  });
   // Add new custom rule below
 };

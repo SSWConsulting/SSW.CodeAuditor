@@ -512,6 +512,10 @@ export const customHtmlHintRules = [
   {
     rule: "detect-absolute-references-url-path-correctly",
     displayName: "URLs - Detect absolute references path correctly",
+  },
+  {
+    rule: "use-unicode-hex-code-for-special-html-characters",
+    displayName: "Content - Use Unicode Hex code for special HTML characters."
   }
   // Add new rule id below
 ];
