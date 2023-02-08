@@ -35,11 +35,11 @@
   {#if codeSummary.htmlWarnings || codeSummary.htmlErrors}
   <div class="col-span-1 text-start">
     <span class="block whitespace-no-wrap font-sans">Warnings
-      <i class="fas fa-info-circle" title="😵" use:tooltip></i>
+      <i class="fas fa-exclamation-triangle" style="color: #d69e2e"></i>
     </span>
     <span
       class="font-sans font-bold block lg:inline-block"
-      class:text-red-600={codeSummary.htmlWarnings > 0}
+      class:text-yellow-600={codeSummary.htmlWarnings > 0}
       class:text-gray-600={codeSummary.htmlWarnings == 0}
       title={(codeSummary.codeIssueList || '') + '\n\n\n' + (codeSummary.htmlIssueList || '')}>
       {numberWithCommas((codeSummary.htmlWarnings || 0) + (codeSummary.codeWarnings || 0))}
@@ -50,7 +50,7 @@
   </div>
     <div class="col-span-1 text-start">
       <span class="block whitespace-no-wrap font-sans">Errors
-        <i class="fas fa-info-circle" title="😡" use:tooltip></i>
+        <i class="fas fa-exclamation-triangle" style="color: red"></i>
       </span>
       <span
         class="font-sans font-bold block lg:inline-block"
