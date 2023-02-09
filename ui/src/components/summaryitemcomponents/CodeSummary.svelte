@@ -50,7 +50,7 @@
   </div>
     <div class="col-span-1 text-start">
       <span class="block whitespace-no-wrap font-sans">Errors
-        <i class="fas fa-exclamation-triangle" style="color: red"></i>
+        <i class="fas fa-exclamation-circle" style="color: red"></i>
       </span>
       <span
         class="font-sans font-bold block lg:inline-block"
