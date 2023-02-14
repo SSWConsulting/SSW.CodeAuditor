@@ -1,0 +1,29 @@
+name: ssw-rules-scan
+
+# Schedule Scan on SSW Rules at 01:00 on the 1st and 14th of every month
+on:
+  push:
+    branches: [main]
+
+# A workflow run is made up of one or more jobsjj that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: sswrules-scan-config
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+      - name: Run a multi-line script
+        env:
+          FIREBASETOKEN: ${{ secrets.FIREBASETOKEN }}
+        run: |
+          cd docker
+          node index.js --url https://ssw.com.au/rules/ --debug --token 3c34a549-dfb3-442c-b0e3-45942104a8bf
