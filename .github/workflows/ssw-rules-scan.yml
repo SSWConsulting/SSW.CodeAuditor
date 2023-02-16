@@ -14,17 +14,7 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: sswrules-scan-config
-      - name: Use Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: '14.x'
-      - name: Run a multi-line script
-        env:
-          FIREBASETOKEN: ${{ secrets.FIREBASETOKEN }}
+      - name: Scan SSW Rules
         run: |
           cd docker
-          npm i 
-          node index.js --url https://ssw.com.au/rules/ --debug --token 3c34a549-dfb3-442c-b0e3-45942104a8bf
+          docker run sswconsulting/codeauditor --token 3c34a549-dfb3-442c-b0e3-45942104a8bf --url https://www.ssw.com.au/rules/ --maxthread 200 --debug
