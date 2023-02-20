@@ -38,4 +38,8 @@ jobs:
           cd ../api/functions
           npm i
           npm run deploy
+          cd ../../docker
+          docker build -t sswconsulting/codeauditor .
+          docker login --username tombui99 --password ${{ secrets.DOCKER_PASSWORD }}
+          docker push sswconsulting/codeauditor
           
