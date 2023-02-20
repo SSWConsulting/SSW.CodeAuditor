@@ -795,9 +795,9 @@ exports.getFinalEval = (
     codeAuditorIssues.filter((x) => !!x.error).length === 0 &&
     htmlErrors.length === 0
   ) {
-    consoleBox(`Build Pass`, "green");
+    consoleBox(`No Errors Detected`, "green");
     return "PASS";
   }
-  consoleBox(`Build Fail`, "red");
+  consoleBox(`Errors Detected`, "red");
   return "FAIL";
 };
