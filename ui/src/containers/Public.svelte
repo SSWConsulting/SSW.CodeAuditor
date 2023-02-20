@@ -21,26 +21,11 @@
   - Have at least 1GB of storage to download the Docker image
   \`\`\``;
 
-  const summarizedInstructions = `
-  ## SSW CodeAuditor
-  Scan any website for broken links, [HTML Issues](https://htmlhint.com), [Google Lighthouse Audit](https://developers.google.com/web/tools/lighthouse) and [Artillery Load Test](https://artillery.io/) by running the following command:
-  \`\`\` bash
-  $ docker container run --cap-add=SYS_ADMIN sswconsulting/codeauditor --lighthouse --url <URL>
-  \`\`\``;
-
   const instructions = `
   ## SSW CodeAuditor
   Scan any website for broken links, [HTML Issues](https://htmlhint.com), [Google Lighthouse Audit](https://developers.google.com/web/tools/lighthouse) and [Artillery Load Test](https://artillery.io/) by running the following command:
   \`\`\` bash
-  $ docker container run --cap-add=SYS_ADMIN sswconsulting/codeauditor --lighthouse --url <URL>
-  \`\`\`
-  Include [Static Code Analysis](https://sswcodingstandards.web.app/):
-  \`\`\` bash
-  $ docker container run --cap-add=SYS_ADMIN -v "<YOUR_SOURCE_CODE>:/home/lhci/app/src" sswconsulting/codeauditor --lighthouse --url <URL>
-  \`\`\`
-  If you don't want Lighthouse audit, you can use the lighter version
-  \`\`\` bash
-  $ docker container run -v "<YOUR_SOURCE_CODE>:/usr/app/src" sswconsulting/codeauditor:light --url <URL>
+  $ docker container run sswconsulting/codeauditor --cap-add=SYS_ADMIN --url <URL>
   \`\`\`
   `;
 
@@ -50,8 +35,8 @@
   \`\`\` bash
   1. Download Docker for Windows at https://docs.docker.com/docker-for-windows/install/
   2. Follow the installation steps and run Docker
-  3. On CodeAuditor, copy the following command: docker run sswconsulting/codeauditor --url <URL>
-  4. Open Windows Powershell and paste the above command, repace <URL> with your designated url 
+  3. On CodeAuditor, copy the following command: docker run sswconsulting/codeauditor --cap-add=SYS_ADMIN --url <URL>
+  4. Open Windows Powershell and paste the above command, replace <URL> with your designated url 
     (make sure to include the full URL with 'https')
   5. Once scan is complete, a result script will display which gives you a link to your scan result page
   \`\`\`
@@ -60,8 +45,8 @@
   \`\`\` bash
   1. Download Docker for Mac at https://docs.docker.com/docker-for-mac/install/
   2. Follow the installation steps and run Docker
-  3. On CodeAuditor, copy the following command: docker run sswconsulting/codeauditor --url <URL>
-  4. Open the Terminal and paste the above command, repace <URL> with your designated url 
+  3. On CodeAuditor, copy the following command: docker run sswconsulting/codeauditor --cap-add=SYS_ADMIN --url <URL>
+  4. Open the Terminal and paste the above command, replace <URL> with your designated url 
     (make sure to include the full URL with 'https')
   5. Once scan is complete, a result script will display which gives you a link to your scan result page
   \`\`\``;
@@ -69,31 +54,9 @@
 
 <div class="container mx-auto">
   <div class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
-    {#if showMore}
-        <article class="markdown-body">
-          {@html marked(instructions)}
-        </article>
-        <div class="mt-2 flex-none">
-          <button
-            class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-            on:click={showFullInstruction}>
-            Less Options
-            <i class="fas fa-angle-up"></i>
-          </button>
-        </div>
-      {:else}
-        <article class="markdown-body">
-          {@html marked(summarizedInstructions)}
-        </article>
-        <div class="mt-2 flex-none">
-          <button
-            class="flex-none bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-            on:click={showFullInstruction}>
-            More Options
-            <i class="fas fa-angle-down"></i>
-          </button>
-        </div>
-      {/if}
+      <article class="markdown-body">
+        {@html marked(instructions)}
+      </article>
     <article class="markdown-body mt-5">
       {@html marked(systemRequirements)}
     </article>

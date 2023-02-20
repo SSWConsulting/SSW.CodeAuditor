@@ -90,41 +90,7 @@
   $ docker run sswconsulting/codeauditor --token ${token} --url <URL> --private
   \`\`\`
 
-  Include [Lighthouse](https://developers.google.com/web/tools/lighthouse) Audit:
-  \`\`\` bash
-  $ docker container run --cap-add=SYS_ADMIN \\\ 
-          sswconsulting/codeauditor --lighthouse \\\ 
-          --token ${token} --url <URL>
-  \`\`\`
-
-  Include [Static Code Analysis](https://sswcodingstandards.web.app/):
-  \`\`\` bash
-  $ docker container run --cap-add=SYS_ADMIN \\\ 
-          -v "<YOUR_SOURCE_CODE>:/home/lhci/app/src" \\\ 
-          sswconsulting/codeauditor --lighthouse \\\ 
-          --token ${token} --url <URL> 
-  \`\`\`
-
   Where: **${token}** is a unique token assigned to your account and **BUILDID** (optional) is your CI build number
-
-  If you don't want Lighthouse audit, you can use the lighter version
-  \`\`\` bash
-  $ docker container run \\\ 
-          -v "<YOUR_SOURCE_CODE>:/usr/app/src" \\\ 
-          sswconsulting/codeauditor:light \\\ 
-          --token ${token} --url <URL> 
-  \`\`\`
-
-  With **sswconsulting/codeauditor:light**, you can also run Lighthouse audit first and push the result here:
-  \`\`\` bash
-  $ npm install -g @lhci/cli
-  $ lhci collect --url=<URL>
-  $ docker container run \\\ 
-          -v "<YOUR_SOURCE_CODE>:/usr/app/src" \\\ 
-          -v "<.LIGHTHOUSE>:/usr/app/.lighthouseci" \\\ 
-          sswconsulting/codeauditor:light --lighthouse \\\ 
-          --token ${token} --url <URL> 
-  \`\`\`
   `;
   const instructionSteps = `
   ## Instructions to scan an URL 
@@ -133,7 +99,7 @@
   1. Download Docker for Windows at https://docs.docker.com/docker-for-windows/install/
   2. Follow the installation steps and run Docker
   3. On CodeAuditor, copy the following command: docker run sswconsulting/codeauditor --token ${token} --url <URL>
-  4. Open Windows Powershell and paste the above command, repace <URL> with your designated url 
+  4. Open Windows Powershell and paste the above command, replace <URL> with your designated url 
     (make sure to include the full URL with 'https')
   5. Once scan is complete, a result script will display which gives you a link to your scan result page
   \`\`\`
@@ -143,7 +109,7 @@
   1. Download Docker for Mac at https://docs.docker.com/docker-for-mac/install/
   2. Follow the installation steps and run Docker
   3. On CodeAuditor, copy the following command: docker run sswconsulting/codeauditor --token ${token} --url <URL>
-  4. Open the Terminal and paste the above command, repace <URL> with your designated url 
+  4. Open the Terminal and paste the above command, replace <URL> with your designated url 
     (make sure to include the full URL with 'https')
   5. Once scan is complete, a result script will display which gives you a link to your scan result page
   \`\`\``;
