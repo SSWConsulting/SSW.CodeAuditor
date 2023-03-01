@@ -2,8 +2,8 @@ name: SSW Rules Scan
 
 # Schedule Scan on SSW Rules at 01:00 on the 1st and 14th of every month
 on: 
-  push:
-    branches: [main]
+  schedule:
+  - cron: "30 1 1,14 * *"
 
 jobs:
   job1:
@@ -29,7 +29,11 @@ jobs:
     - name: Install Go dependencies
       run: |
         go version
+        go clean
         go get -u golang.org/x/lint/golint
+        go get golang.org/x/net/html
+        go mod init golang.org/x/net/html
+        go mod tidy
     - name: Run a multi-line script
       run: |
         cd docker
