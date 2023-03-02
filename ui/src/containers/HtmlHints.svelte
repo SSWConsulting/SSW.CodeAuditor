@@ -129,7 +129,7 @@
 </script>
 
 <div class="container mx-auto">
-  <div class="bg-white shadow-lg rounded px-8 pt-6 mb-6 flex flex-col">
+  <div class="bg-white shadow-lg rounded px-8 pt-6 mb-6 flex flex-col pb-6">
 
     {#await promise}
       <LoadingFlat />

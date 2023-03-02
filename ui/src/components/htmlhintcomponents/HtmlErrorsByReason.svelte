@@ -44,11 +44,20 @@
     }
   };
 
+  const getTotalHtmlErrorsOccurence = (pages) => {
+    var sum = 0;
+    for (let i = 0; i < pages.length; i++) {
+      sum += pages[i].locations.length
+    }
+    return sum
+  }
+
   $: reasons = getHtmlErrorsByReason(errors);
   $: allErrors = reasons.concat(getCodeErrorsByRule(codeIssues));
   $: htmlHintIssues = getHtmlHintIssues(errors);
   $: {
     console.log(ERRORS);
+    console.log(allErrors);
   }
   $: ERRORS =
     codeIssues && codeIssues.length > 0
@@ -95,20 +104,16 @@
         {/if}
       </Icon>
     </span>
-    <Icon
-      title={ERRORS.indexOf(error.error) >= 0 ? 'Error' : 'Warning'}
-      cssClass={`inline-block cursor-pointer ${ERRORS.indexOf(error.error) >= 0 ? 'text-red-600' : 'text-orange-600'}`}>
-      {#if ERRORS.indexOf(error.error) >= 0}
-        <path d="M6 18L18 6M6 6l12 12" />
-      {:else}
-        <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      {/if}
-    </Icon>
+    {#if ERRORS.indexOf(error.error) >= 0}
+      <i class="fas fa-exclamation-circle fa-lg" style="color: red"></i> <span class="font-bold">({getTotalHtmlErrorsOccurence(error.pages)})</span>
+    {:else}
+      <i class="fas fa-exclamation-triangle fa-lg" style="color: #d69e2e"></i> <span class="font-bold">({getTotalHtmlErrorsOccurence(error.pages)})</span>
+    {/if}
     <a
       class="{getRuleLink(error.error) ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline" 
       target="_blank"
       href={getRuleLink(error.error)}>
-      {getDisplayText(error.error)}
+      {getDisplayText(error.error)} 
     </a>
   </div>
   {#if !hiddenRows[error.error]}
