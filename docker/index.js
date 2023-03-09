@@ -351,6 +351,17 @@ const processAndUpload = async (
     }
   }
 
+    printResultsToConsole(
+    results,
+    lhrSummary,
+    runId,
+    badUrls,
+    whiteListed,
+    htmlIssuesSummary,
+    took,
+    atrSummary
+  );
+
   // Upload selected HTMLHint Rules to the scan
   if (args.htmlhint && runId) {
     const result = await getHTMLHintRules(args.token, args.url);
@@ -366,17 +377,6 @@ const processAndUpload = async (
       }
     }
   }
-
-  printResultsToConsole(
-    results,
-    lhrSummary,
-    runId,
-    badUrls,
-    whiteListed,
-    htmlIssuesSummary,
-    took,
-    atrSummary
-  );
 };
 
 const writeLog = (...msg) => _args.debug && console.log(...msg);
