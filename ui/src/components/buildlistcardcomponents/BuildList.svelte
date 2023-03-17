@@ -123,7 +123,7 @@
                 {/if}
               </span>
               <p class="truncate font-sans font-bold text-xs">
-                Total build:
+                Scan History:
                 {groupUrl[url].length}
               </p>
             </div>

@@ -32,6 +32,7 @@
       {
         data: scanDur,
         backgroundColor: barColor,
+        maxBarThickness: 5
       },
     ],
   };
@@ -42,7 +43,6 @@
     scales: {
       xAxes: [
         {
-          maxBarThickness: 5,
           ticks: {
             display: false,
             beginAtZero: true,
@@ -68,6 +68,19 @@
     },
     legend: {
       display: false,
+    },
+    tooltips: {
+      callbacks: {
+        //returns a empty string if the label is "No Data"
+        label: function(items, data){
+          return `${items.value}s`
+        },
+
+        //only returns something when at least one dataset yLabel is a valid number.
+        title: function(t, e) {
+          return 'Duration'
+        }
+      }
     },
   };
 

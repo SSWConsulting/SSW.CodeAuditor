@@ -41,7 +41,7 @@
 
   const notLoggedIn = `
   ## Explore SSW CodeAuditor
-  Showing last 100 public scans - [See all](https://codeauditor.com/login)
+  Showing all Public Scans - [See all](https://codeauditor.com/login)
   `;
 
   const isLoggedInMsg = `
@@ -64,9 +64,7 @@
           <p
             class="cursor-pointer underline text-gray-700 font-sans font-bold hover:text-red-600"
             on:click={showAllScan}>
-            Showing top
-            {data.length}
-            Public Scans
+            Showing all Public Scans
           </p>
         {:catch error}
           <p style="color: red">{error.message}</p>

@@ -114,10 +114,16 @@ const main = async () => {
   let _codeAuditor = [];
   let _superlinter = [];
 
+  // Standardize url string
   if (!options.url.startsWith("https://")) {
     options.url = "https://" + options.url;
+  }  
+  if (!options.url.includes("www.")) {
+    options.url = options.url.replace('https://', 'https://www.');
+  } 
+  if (!options.url.endsWith("/")) {
+    options.url = options.url + '/';
   }
-
   // Static Code Analysis and CLOC - Not use (remove once approved from Anthony)
   // if (fs.readdirSync('./src').length > 0) {
   // 	writeLog(chalk.yellowBright(`Counting lines of codes`));
