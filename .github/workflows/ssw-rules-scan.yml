@@ -39,5 +39,5 @@ jobs:
         cd docker
         go run sswlinkauditor.go https://ssw.com.au/rules/
         npm i
-        node index.js --url https://ssw.com.au/rules/ --debug --token 3c34a549-dfb3-442c-b0e3-45942104a8bf
+        node index.js --url https://www.ssw.com.au/rules/ --debug --token 3c34a549-dfb3-442c-b0e3-45942104a8bf
         
