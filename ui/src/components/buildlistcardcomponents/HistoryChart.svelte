@@ -3,18 +3,18 @@
 
   export let value = [];
 
-  let allScanDur = value.map((i) => i.scanDuration);
+  let allBrokenLinks = value.map((i) => i.totalBrokenLinks);
 
-  let scanDur = allScanDur.slice(0, 10);
+  let brokenLink = allBrokenLinks.slice(0, 10);
 
   let maxBarHeight = [];
-  maxBarHeight = scanDur.reduce(function (a, b) {
+  maxBarHeight = brokenLink.reduce(function (a, b) {
     return Math.max(a, b);
   });
 
   for (let i = 0; i < 10; i++) {
-    if (scanDur.length < 10) {
-      scanDur.push(maxBarHeight / 10);
+    if (brokenLink.length < 10) {
+      brokenLink.push(maxBarHeight / 10);
     }
   }
 
@@ -27,10 +27,10 @@
   });
 
   export let data = {
-    labels: scanDur,
+    labels: brokenLink,
     datasets: [
       {
-        data: scanDur,
+        data: brokenLink,
         backgroundColor: barColor,
         maxBarThickness: 5
       },
@@ -73,12 +73,12 @@
       callbacks: {
         //returns a empty string if the label is "No Data"
         label: function(items, data){
-          return `${items.value}s`
+          return `${items.value}`
         },
 
         //only returns something when at least one dataset yLabel is a valid number.
         title: function(t, e) {
-          return 'Duration'
+          return 'Bad links'
         }
       }
     },
