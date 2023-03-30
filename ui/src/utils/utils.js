@@ -510,7 +510,7 @@ export const customHtmlHintRules = [
   },
   {
     rule: "detect-absolute-references-url-path-correctly",
-    displayName: "URLs - Detect absolute references path correctly",
+    displayName: "URLs - Detect absolute internal links",
   },
   {
     rule: "use-unicode-hex-code-for-special-html-characters",
