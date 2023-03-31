@@ -94,6 +94,21 @@
   ];
   \`\`\`
   #### 7. Make a Pull Request and have it checked by CodeAuditor Team`;
+
+  const customRuleConfig = `
+  ## How to Use Custom HTML Rules Configuration
+  #### 1. Click on "Enabled Rules" 
+  ![image](https://user-images.githubusercontent.com/67776356/229018349-ab11cb85-1650-41c5-b3e5-af3e81a53bc0.png)
+  **Figure: Enabled Rules button**
+
+  #### 2. Select which custom rules you want for your next scan  
+  ![image](https://user-images.githubusercontent.com/67776356/229018454-bbf0272d-df50-4999-863e-e14dfe25a4ab.png)
+  **Figure: Custom rule selection modal**
+
+  #### 3. After you run your next scan, you should only be able to see the scan results for your selected html rules
+  ![image](https://user-images.githubusercontent.com/67776356/229019594-39b9e95e-c91b-41f8-b3a4-e33d370bad0c.png)
+  **Figure: Custom rule selection modal**
+  `
 </script>
 
 <div class="container mx-auto">
@@ -145,10 +160,13 @@
         </div>
       </article>
       <article class="markdown-body mt-5">
+        {@html marked(customRuleConfig)}
+      </article>
+      <article class="markdown-body mt-5">
         {@html marked(addingCustomRule)}
       </article>
       <article class="markdown-body mt-5">
-        <h3>Video - How To Add, Test and Deploy Custom HTML Rules:</h3>
+        <h3>Video - How To Add, Test and Deploy Custom HTML Rules (For Devs):</h3>
         <div>
           <iframe width="560" height="315" src="https://www.youtube.com/embed/iduwnyzdcFo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
