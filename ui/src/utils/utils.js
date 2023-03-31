@@ -341,6 +341,27 @@ export const htmlHintRules = [
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/tagname-lowercase",
   },
   {
+    rule: "tag-pair",
+    displayName: "Tags - tags must be paired",
+    ruleLink: "https://htmlhint.com/docs/user-guide/rules/tag-pair",
+  },
+  {
+    rule: "empty-tag-not-self-closed",
+    displayName: "Tags - empty tags should not be closed by itself",
+    ruleLink:
+      "https://htmlhint.com/docs/user-guide/rules/empty-tag-not-self-closed",
+  },
+  {
+    rule: "id-class-ad-disabled",
+    displayName: "Tags - id and class must not use the 'ad' keyword",
+    ruleLink: "https://htmlhint.com/docs/user-guide/rules/id-class-ad-disabled",
+  },
+  {
+    rule: "id-unique",
+    displayName: "Tags - id attributes must be unique",
+    ruleLink: "https://htmlhint.com/docs/user-guide/rules/id-unique",
+  },
+  {
     rule: "attr-lowercase",
     displayName: "Attributes - attribute names must be lowercase",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/attr-lowercase",
@@ -362,35 +383,14 @@ export const htmlHintRules = [
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/attr-no-duplication",
   },
   {
+    rule: "attr-unsafe-chars",
+    displayName: "Attributes - attributes cannot contain unsafe characters",
+    ruleLink: "https://htmlhint.com/docs/user-guide/rules/attr-unsafe-chars",
+  },
+  {
     rule: "doctype-first",
     displayName: "Header - DOCTYPE must be declared first",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/doctype-first",
-  },
-  {
-    rule: "tag-pair",
-    displayName: "Tags - tags must be paired",
-    ruleLink: "https://htmlhint.com/docs/user-guide/rules/tag-pair",
-  },
-  {
-    rule: "empty-tag-not-self-closed",
-    displayName: "Tags - empty tags should not be closed by itself",
-    ruleLink:
-      "https://htmlhint.com/docs/user-guide/rules/empty-tag-not-self-closed",
-  },
-  {
-    rule: "spec-char-escape",
-    displayName: "Syntax - special characters must be escaped",
-    ruleLink: "https://htmlhint.com/docs/user-guide/rules/spec-char-escape",
-  },
-  {
-    rule: "id-unique",
-    displayName: "Tags - id attributes must be unique",
-    ruleLink: "https://htmlhint.com/docs/user-guide/rules/id-unique",
-  },
-  {
-    rule: "src-not-empty",
-    displayName: "Content - the image src attribute must have a value",
-    ruleLink: "https://htmlhint.com/docs/user-guide/rules/src-not-empty",
   },
   {
     rule: "title-require",
@@ -398,14 +398,19 @@ export const htmlHintRules = [
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/title-require",
   },
   {
-    rule: "alt-require",
-    displayName: "Images - missing alt attribute",
-    ruleLink: "https://htmlhint.com/docs/user-guide/rules/alt-require",
-  },
-  {
     rule: "doctype-html5",
     displayName: "Header - DOCTYPE must be HTML5",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/doctype-html5",
+  },
+  {
+    rule: "head-script-disabled",
+    displayName: "Syntax - script tags cannot be used inside another tag",
+    ruleLink: "https://htmlhint.com/docs/user-guide/rules/head-script-disabled",
+  },
+  {
+    rule: "spec-char-escape",
+    displayName: "Syntax - special characters must be escaped",
+    ruleLink: "https://htmlhint.com/docs/user-guide/rules/spec-char-escape",
   },
   {
     rule: "style-disabled",
@@ -425,9 +430,9 @@ export const htmlHintRules = [
       "https://htmlhint.com/docs/user-guide/rules/inline-script-disabled",
   },
   {
-    rule: "id-class-ad-disabled",
-    displayName: "Tags - id and class must not use the 'ad' keyword",
-    ruleLink: "https://htmlhint.com/docs/user-guide/rules/id-class-ad-disabled",
+    rule: "alt-require",
+    displayName: "Images - missing alt attribute",
+    ruleLink: "https://htmlhint.com/docs/user-guide/rules/alt-require",
   },
   {
     rule: "href-abs-or-rel",
@@ -435,14 +440,9 @@ export const htmlHintRules = [
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/href-abs-or-rel",
   },
   {
-    rule: "attr-unsafe-chars",
-    displayName: "Attributes - attributes cannot contain unsafe characters",
-    ruleLink: "https://htmlhint.com/docs/user-guide/rules/attr-unsafe-chars",
-  },
-  {
-    rule: "head-script-disabled",
-    displayName: "Syntax - script tags cannot be used inside another tag",
-    ruleLink: "https://htmlhint.com/docs/user-guide/rules/head-script-disabled",
+    rule: "src-not-empty",
+    displayName: "Content - the image src attribute must have a value",
+    ruleLink: "https://htmlhint.com/docs/user-guide/rules/src-not-empty",
   },
 ];
 
@@ -451,52 +451,6 @@ export const customHtmlHintRules = [
     rule: "code-block-missing-language",
     displayName: "Syntax - code blocks must have a language",
     ruleLink: "https://www.ssw.com.au/rules/set-language-on-code-blocks",
-  },
-  {
-    rule: "grammar-scrum-terms",
-    displayName: "Content - use the correct Scrum terms",
-    ruleLink: "https://www.ssw.com.au/rules/scrum-should-be-capitalized",
-  },
-  {
-    rule: "anchor-names-must-be-valid",
-    displayName: "Tags - link anchor names must be valid",
-    ruleLink: "https://www.ssw.com.au/rules/chose-efficient-anchor-names",
-  },
-  {
-    rule: "meta-tag-must-not-redirect",
-    displayName: "Header - must not refresh or redirect",
-    ruleLink: "https://rules.sonarsource.com/html/RSPEC-1094",
-  },
-  {
-    rule: "font-tag-must-not-be-used",
-    displayName: "Tags - font tags must not be used",
-    ruleLink:
-      "https://www.ssw.com.au/rules/do-you-know-font-tags-are-no-longer-used",
-  },
-  {
-    rule: "url-must-not-have-space",
-    displayName: "URLs - must not have space",
-    ruleLink: "https://www.ssw.com.au/rules/use-dashes-in-urls",
-  },
-  {
-    rule: "url-must-not-have-click-here",
-    displayName: "Content - do not use the words ‘click here’",
-    ruleLink: "https://www.ssw.com.au/rules/relevant-words-on-links",
-  },
-  {
-    rule: "page-must-not-show-email-addresses",
-    displayName: "Content - text must not display any email addresses",
-    ruleLink:"https://www.ssw.com.au/rules/avoid-clear-text-email-addresses-in-web-pages",
-  },
-  {
-    rule: "link-must-not-show-unc",
-    displayName: "HTML - link must not show UNC",
-    ruleLink: "",
-  },
-  {
-    rule: "url-must-be-formatted-correctly",
-    displayName: "URLs - must not include full stop or slash at the end",
-    ruleLink: "",
   },
   {
     rule: "youtube-url-must-be-used-correctly",
@@ -509,12 +463,58 @@ export const customHtmlHintRules = [
     ruleLink: "https://www.ssw.com.au/rules/use-the-right-html-figure-caption",
   },
   {
-    rule: "detect-absolute-references-url-path-correctly",
-    displayName: "URLs - Detect absolute internal links",
+    rule: "anchor-names-must-be-valid",
+    displayName: "Tags - link anchor names must be valid",
+    ruleLink: "https://www.ssw.com.au/rules/chose-efficient-anchor-names",
+  },
+  {
+    rule: "font-tag-must-not-be-used",
+    displayName: "Tags - font tags must not be used",
+    ruleLink:
+      "https://www.ssw.com.au/rules/do-you-know-font-tags-are-no-longer-used",
+  },
+  {
+    rule: "url-must-not-have-click-here",
+    displayName: "Content - do not use the words ‘click here’",
+    ruleLink: "https://www.ssw.com.au/rules/relevant-words-on-links",
+  },
+  {
+    rule: "grammar-scrum-terms",
+    displayName: "Content - use the correct Scrum terms",
+    ruleLink: "https://www.ssw.com.au/rules/scrum-should-be-capitalized",
+  },
+  {
+    rule: "page-must-not-show-email-addresses",
+    displayName: "Content - text must not display any email addresses",
+    ruleLink:"https://www.ssw.com.au/rules/avoid-clear-text-email-addresses-in-web-pages",
   },
   {
     rule: "use-unicode-hex-code-for-special-html-characters",
     displayName: "Content - Use Unicode Hex code for special HTML characters."
-  }
+  },
+  {
+    rule: "url-must-be-formatted-correctly",
+    displayName: "URLs - must not include full stop or slash at the end",
+    ruleLink: "",
+  },
+  {
+    rule: "detect-absolute-references-url-path-correctly",
+    displayName: "URLs - Detect absolute internal links",
+  },
+  {
+    rule: "url-must-not-have-space",
+    displayName: "URLs - must not have space",
+    ruleLink: "https://www.ssw.com.au/rules/use-dashes-in-urls",
+  },
+  {
+    rule: "link-must-not-show-unc",
+    displayName: "HTML - link must not show UNC",
+    ruleLink: "",
+  },
+  {
+    rule: "meta-tag-must-not-redirect",
+    displayName: "Header - must not refresh or redirect",
+    ruleLink: "https://rules.sonarsource.com/html/RSPEC-1094",
+  },
   // Add new rule id below
 ];

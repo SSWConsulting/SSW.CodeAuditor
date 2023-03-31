@@ -64,6 +64,8 @@
       ? (getCodeErrorRules(codeIssues) || []).concat(HTMLERRORS)
       : HTMLERRORS;
 
+
+  // TODO: loop the object keys from custom rules array
   let hiddenRows = {
     "attr-lowercase": true,
     "style-disabled": true,

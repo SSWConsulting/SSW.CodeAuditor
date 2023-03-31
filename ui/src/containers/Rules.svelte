@@ -1,35 +1,24 @@
 <script>
+  import { customHtmlHintRules, htmlHintRules } from "../utils/utils";
 </script>
 <div class="container mx-auto">
   <div class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
     <article class="markdown-body">
       <h1>CodeAuditor Rules</h1>
       <h2>HtmlHint Rules</h2>
-      <div>
-        <p>SSW CodeAuditor checks the list rules specified by <a href="https://htmlhint.com/docs/user-guide/list-rules">HtmlHint</a></p>
-      </div>
+        {#each htmlHintRules as rule}
+        <div>
+          <a class="inline-block align-baseline link" href="https://htmlhint.com/docs/user-guide/rules/{rule.rule}">{rule.displayName}</a>
+        </div>
+        {/each}
     </article>
-    <article class="markdown-body">
+    <article class="markdown-body mt-3">
       <h2>SSW Rules</h2>
+      {#each customHtmlHintRules as rule}
       <div>
-        <table class="table-auto">
-          <tr>
-            <th>Issue</th>
-            <th>SSW Rule</th>
-            <th>Description</th>
-          </tr>
-          <tr>
-            <td>Code block - missing language</td>
-            <td><a href="https://www.ssw.com.au/rules/set-language-on-code-blocks">Markdown – Do you set rules on code blocks</a></td>
-            <td>Code blocks must contain a language specifier.</td>
-          </tr>
-          <tr>
-            <td>Grammar mistake - common Scrum terms</td>
-            <td><a href="https://www.ssw.com.au/rules/scrum-should-be-capitalized">Grammar - Do you know "Scrum" should be capitalized</a></td>
-            <td>References to "Agile Scrum" must be capitalized as "Scrum".</td>
-          </tr>
-        </table>
+        <a class="{rule.ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline" href={rule.ruleLink}>{rule.displayName}</a>
       </div>
+    {/each}
     </article>
   </div>
 </div>
