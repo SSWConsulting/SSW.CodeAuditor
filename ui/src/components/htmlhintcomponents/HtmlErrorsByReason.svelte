@@ -1,7 +1,6 @@
 <script>
-  import { slice, groupBy, props } from "ramda";
+  import { slice } from "ramda";
   import {
-    isInIgnored,
     getHtmlErrorsByReason,
     truncate,
     getCodeErrorRules,
@@ -11,10 +10,10 @@
     getRuleLink,
     getDisplayText,
   } from "../../utils/utils.js";
-  import { fade, fly } from "svelte/transition";
-  import { ignoredUrls$ } from "../../stores.js";
+  import { fade } from "svelte/transition";
   import { createEventDispatcher } from "svelte";
   import Icon from "../misccomponents/Icon.svelte";
+  import { htmlHintRules, customHtmlHintRules } from "../../utils/utils.js";
 
   export let errors = [];
   export let codeIssues = [];
@@ -55,39 +54,18 @@
   $: reasons = getHtmlErrorsByReason(errors);
   $: allErrors = reasons.concat(getCodeErrorsByRule(codeIssues));
   $: htmlHintIssues = getHtmlHintIssues(errors);
-  $: {
-    console.log(ERRORS);
-    console.log(allErrors);
-  }
   $: ERRORS =
     codeIssues && codeIssues.length > 0
       ? (getCodeErrorRules(codeIssues) || []).concat(HTMLERRORS)
       : HTMLERRORS;
 
+  // Assigning key values to each rules to collapse reason line by default
+  var arr = htmlHintRules.map(x => ({[x.rule]: true})).concat(customHtmlHintRules.map(x => ({[x.rule]: true})))
+  let hiddenRows = {}  
+  arr.forEach((x, i) => {
+    Object.assign(hiddenRows, arr[i]);
+  })
 
-  // TODO: loop the object keys from custom rules array
-  let hiddenRows = {
-    "attr-lowercase": true,
-    "style-disabled": true,
-    "figure-must-use-the-right-code": true,
-    "href-abs-or-rel": true,
-    "head-script-disabled": true,
-    "inline-style-disabled": true,
-    "id-unique": true,
-    "url-must-be-formatted-correctly": true,
-    "grammar-scrum-terms": true,
-    "alt-require": true,
-    "page-must-not-show-email-addresses": true,
-    "code-block-missing-language": true,
-    "spec-char-escape": true,
-    "font-tag-must-not-be-used": true,
-    "id-class-ad-disabled": true,
-    "attr-value-not-empty": true,
-    "tag-pair": true,
-    "youtube-url-must-be-used-correctly": true,
-    "detect-absolute-references-url-path-correctly": true,
-    "use-unicode-hex-code-for-special-html-characters": true
-  };
   const hideShow = (key) => {
     return hiddenRows[key] = key in hiddenRows ? !hiddenRows[key] : true;
   }
