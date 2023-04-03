@@ -3,14 +3,6 @@
   import { Navigate, navigateTo } from "svelte-router-spa";
   import { userSession, userName, isLoggedIn } from "../stores.js";
   import { scale } from "svelte/transition";
-  import {
-  faFacebook,
-  faInstagram,
-  faLinkedin,
-  faTwitter,
-  faYoutube,
-} from '@fortawesome/free-brands-svg-icons';
-import { FontAwesomeIcon } from 'fontawesome-svelte';
 
   export let currentRoute;
 
@@ -144,56 +136,12 @@ import { FontAwesomeIcon } from 'fontawesome-svelte';
               TERMS AND CONDITIONS
             </a>
             <span class="px-2">|</span>
-          <a
-            className="unstyled social-media-icon"
-            id="twitter-icon"
-            title="SSW on Twitter"
-            href="https://twitter.com/SSW_TV"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <FontAwesomeIcon icon={faTwitter} size="lg" />
-          </a>
-          <a
-            className="unstyled social-media-icon"
-            id="instagram-icon"
-            title="SSW on Instagram"
-            href="https://www.instagram.com/ssw_tv"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <FontAwesomeIcon icon={faInstagram} size="lg" />
-          </a>
-          <a
-            className="unstyled social-media-icon"
-            id="facebook-icon"
-            title="SSW on Facebook"
-            href="https://www.facebook.com/SSW.page"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <FontAwesomeIcon icon={faFacebook} size="lg" />
-          </a>
-          <a
-            className="unstyled social-media-icon"
-            id="linkedin-icon"
-            title="SSW on LinkedIn"
-            href="https://www.linkedin.com/company/ssw"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <FontAwesomeIcon icon={faLinkedin} size="lg" />
-          </a>
-          <a
-            className="unstyled social-media-icon"
-            id="youtube-icon"
-            title="SSW on YouTube"
-            href="https://www.youtube.com/user/sswtechtalks"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <FontAwesomeIcon icon={faYoutube} size="lg" />
-          </a>
+            <a
+              class="footer-link footer-facebook"
+              href="https://www.facebook.com/SSW.page"
+            >
+              FIND US ON FACEBOOK
+            </a>
           </div>
         </div>
         <hr class="border-gray-800 my-2" />
