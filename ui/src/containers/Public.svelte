@@ -27,6 +27,7 @@
   \`\`\` bash
   $ docker container run sswconsulting/codeauditor --cap-add=SYS_ADMIN --url <URL>
   \`\`\`
+  Sign in to view prior scans and unlock more features 
   `;
 
   const instructionSteps = `
@@ -138,14 +139,6 @@
   <section class="text-gray-700 body-font">
     <div
       class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
-      <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
-        <a href="/images/exportcsv.png" target="_blank">
-          <img
-            class="object-cover object-center rounded"
-            alt="hero"
-            src="/images/exportcsv.png" />
-        </a>
-      </div>
       <div
         class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col
         md:items-start md:text-left items-center text-center">
@@ -156,6 +149,14 @@
         <p class="mb-8 leading-relaxed">
           Export scan result to CSV to perform further analysis (e.g on PowerBI)
         </p>
+      </div>
+      <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
+        <a href="/images/exportcsv.png" target="_blank">
+          <img
+            class="object-cover object-center rounded"
+            alt="hero"
+            src="/images/exportcsv.png" />
+        </a>
       </div>
     </div>
   </section>
@@ -188,14 +189,6 @@
   <section class="text-gray-700 body-font">
     <div
       class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
-      <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
-        <a href="/images/threshold.png" target="_blank">
-          <img
-            class="object-cover object-center rounded"
-            alt="hero"
-            src="/images/threshold.png" />
-        </a>
-      </div>
       <div
         class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col
         md:items-start md:text-left items-center text-center">
@@ -207,6 +200,14 @@
           If Performance is less than 80 and SEO score is less than 100, fail
           the build
         </p>
+      </div>
+      <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
+        <a href="/images/threshold.png" target="_blank">
+          <img
+            class="object-cover object-center rounded"
+            alt="hero"
+            src="/images/threshold.png" />
+        </a>
       </div>
     </div>
   </section>
@@ -239,14 +240,6 @@
   <section class="text-gray-700 body-font">
     <div
       class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
-      <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
-        <a href="/images/codeissues.png" target="_blank">
-          <img
-            class="object-cover object-center rounded"
-            alt="hero"
-            src="/images/codeissues.png" />
-        </a>
-      </div>
       <div
         class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col
         md:items-start md:text-left items-center text-center">
@@ -257,6 +250,14 @@
         <p class="mb-8 leading-relaxed">
           View HTML code errors and Code errors without leaving the app
         </p>
+      </div>
+      <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
+        <a href="/images/codeissues.png" target="_blank">
+          <img
+            class="object-cover object-center rounded"
+            alt="hero"
+            src="/images/codeissues.png" />
+        </a>
       </div>
     </div>
   </section>

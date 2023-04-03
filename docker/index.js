@@ -46,7 +46,7 @@ const _getAgrs = () => {
       alias: "t",
       describe: "Dashboard token (sign up at https://codeauditor.com/)",
       type: "string",
-      demandOption: false,
+      demandOption: true,
     })
     .option("buildId", {
       describe: "Build/Run number, e.g. CI Build number",
@@ -91,7 +91,7 @@ const _getAgrs = () => {
     .option("lighthouse", {
       describe: "Include Lighthouse audit",
       type: "boolean",
-      default: false,
+      default: true,
     })
     .option("artillery", {
       describe: "Include Artillery test",

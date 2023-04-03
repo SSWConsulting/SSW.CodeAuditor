@@ -221,14 +221,6 @@
 <section class="text-gray-700 body-font">
     <div
     class="container mx-auto flex px-5 py-19 md:flex-row flex-col items-center">
-    <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
-        <a href="/images/dashboard.png" target="_blank">
-        <img
-            class="object-cover object-center rounded"
-            alt="hero"
-            src="/images/dashboard.png" />
-        </a>
-    </div>
     <div
         class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col
         md:items-start md:text-left items-center text-center">
@@ -240,6 +232,14 @@
         Keep your last 100 scan results for FREE
         </p>
     </div>
+    <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
+      <a href="/images/dashboard.png" target="_blank">
+      <img
+          class="object-cover object-center rounded"
+          alt="hero"
+          src="/images/dashboard.png" />
+      </a>
+  </div>
     </div>
 </section>
 
@@ -271,14 +271,6 @@
 <section class="text-gray-700 body-font">
     <div
     class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
-    <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
-        <a href="/images/lighthouse2.png" target="_blank">
-        <img
-            class="object-cover object-center rounded"
-            alt="hero"
-            src="/images/lighthouse2.png" />
-        </a>
-    </div>
     <div
         class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col
         md:items-start md:text-left items-center text-center">
@@ -289,6 +281,14 @@
         <p class="mb-8 leading-relaxed">
         View Lighthouse Report without leaving the app
         </p>
+    </div>
+    <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
+      <a href="/images/lighthouse2.png" target="_blank">
+      <img
+          class="object-cover object-center rounded"
+          alt="hero"
+          src="/images/lighthouse2.png" />
+      </a>
     </div>
     </div>
 </section>
@@ -322,14 +322,6 @@
 <section class="text-gray-700 body-font">
     <div
     class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
-    <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
-        <a href="/images/ignore.png" target="_blank">
-        <img
-            class="object-cover object-center rounded"
-            alt="hero"
-            src="/images/ignore.png" />
-        </a>
-    </div>
     <div
         class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col
         md:items-start md:text-left items-center text-center">
@@ -340,6 +332,14 @@
         <p class="mb-8 leading-relaxed">
         Ignored URLs will not cause build to fail
         </p>
+    </div>
+    <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
+      <a href="/images/ignore.png" target="_blank">
+      <img
+          class="object-cover object-center rounded"
+          alt="hero"
+          src="/images/ignore.png" />
+      </a>
     </div>
     </div>
 </section>
@@ -372,14 +372,6 @@
 <section class="text-gray-700 body-font">
     <div
     class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
-    <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
-        <a href="/images/artillery.png" target="_blank">
-        <img
-            class="object-cover object-center rounded"
-            alt="hero"
-            src="/images/artillery.png" />
-        </a>
-    </div>
     <div
         class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col
         md:items-start md:text-left items-center text-center">
@@ -390,6 +382,14 @@
         <p class="mb-8 leading-relaxed">
         View Load Test results ran by Artillery without leaving the app
         </p>
+    </div>
+    <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
+      <a href="/images/artillery.png" target="_blank">
+      <img
+          class="object-cover object-center rounded"
+          alt="hero"
+          src="/images/artillery.png" />
+      </a>
     </div>
     </div>
 </section>

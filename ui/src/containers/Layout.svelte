@@ -3,6 +3,14 @@
   import { Navigate, navigateTo } from "svelte-router-spa";
   import { userSession, userName, isLoggedIn } from "../stores.js";
   import { scale } from "svelte/transition";
+  import {
+  faFacebook,
+  faInstagram,
+  faLinkedin,
+  faTwitter,
+  faYoutube,
+} from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from 'fontawesome-svelte';
 
   export let currentRoute;
 
@@ -20,31 +28,7 @@
 <main class="flex-grow container mx-auto">
   <nav class="flex items-center justify-between p-6 mt-4 nav">
     <div class="flex flex-wrap">
-      <div class="grid grid-cols-1 md:grid-cols-4 overflow-hidden">
-        <span class="text-white text-lg pt-4 lg:pt-0 lg:mx-4">
-          <span class="hover:text-red-600">
-            <Navigate to="/home">Home</Navigate> 
-          </span>
-        </span>
-        <span class="text-white text-lg pt-4 lg:pt-0 lg:mx-4">
-          <span class="hover:text-red-600">
-            <Navigate to="/explore">Explore</Navigate> 
-          </span>
-        </span>
-        <span class="text-white text-lg pt-4 lg:pt-0 lg:mx-4">
-          <span class="hover:text-red-600">        
-            <Navigate to="/howitworks">How It Works</Navigate>
-          </span>
-        </span>
-        <span class="text-white text-lg pt-4 lg:pt-0 lg:mx-4">
-          <span class="hover:text-red-600">        
-            <Navigate to="/rules">CodeAuditor Rules</Navigate>
-          </span>
-        </span>
-        <hr class="mt-4 bg-white w-screen">
-      </div>
-    
-      <div class="w-full mt-4">
+      <div class="w-full">
         <div class="w-full block flex-grow lg:flex lg:items-center">
           <a href="/" class="sm:w-4/4 lg:w-1/3 ml-2">
             <img
@@ -110,6 +94,29 @@
           {/if}
         </div>
       </div>
+      <hr class="mt-4 bg-white w-full">
+      <div class="w-full grid grid-cols-1 md:grid-cols-4 overflow-hidden text-center mt-4">
+        <span class="text-white text-lg pt-4 lg:pt-0 lg:mx-4">
+          <span class="hover:text-red-600">
+            <Navigate to="/home">Home</Navigate> 
+          </span>
+        </span>
+        <span class="text-white text-lg pt-4 lg:pt-0 lg:mx-4">
+          <span class="hover:text-red-600">
+            <Navigate to="/explore">Explore</Navigate> 
+          </span>
+        </span>
+        <span class="text-white text-lg pt-4 lg:pt-0 lg:mx-4">
+          <span class="hover:text-red-600">        
+            <Navigate to="/howitworks">How It Works</Navigate>
+          </span>
+        </span>
+        <span class="text-white text-lg pt-4 lg:pt-0 lg:mx-4">
+          <span class="hover:text-red-600">        
+            <Navigate to="/rules">CodeAuditor Rules</Navigate>
+          </span>
+        </span>
+      </div>
     </div>
   </nav>
   <Route {currentRoute} {params} />
@@ -137,12 +144,56 @@
               TERMS AND CONDITIONS
             </a>
             <span class="px-2">|</span>
-            <a
-              class="footer-link footer-facebook"
-              href="https://www.facebook.com/SSW.page"
-            >
-              FIND US ON FACEBOOK
-            </a>
+          <a
+            className="unstyled social-media-icon"
+            id="twitter-icon"
+            title="SSW on Twitter"
+            href="https://twitter.com/SSW_TV"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <FontAwesomeIcon icon={faTwitter} size="lg" />
+          </a>
+          <a
+            className="unstyled social-media-icon"
+            id="instagram-icon"
+            title="SSW on Instagram"
+            href="https://www.instagram.com/ssw_tv"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <FontAwesomeIcon icon={faInstagram} size="lg" />
+          </a>
+          <a
+            className="unstyled social-media-icon"
+            id="facebook-icon"
+            title="SSW on Facebook"
+            href="https://www.facebook.com/SSW.page"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <FontAwesomeIcon icon={faFacebook} size="lg" />
+          </a>
+          <a
+            className="unstyled social-media-icon"
+            id="linkedin-icon"
+            title="SSW on LinkedIn"
+            href="https://www.linkedin.com/company/ssw"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <FontAwesomeIcon icon={faLinkedin} size="lg" />
+          </a>
+          <a
+            className="unstyled social-media-icon"
+            id="youtube-icon"
+            title="SSW on YouTube"
+            href="https://www.youtube.com/user/sswtechtalks"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <FontAwesomeIcon icon={faYoutube} size="lg" />
+          </a>
           </div>
         </div>
         <hr class="border-gray-800 my-2" />

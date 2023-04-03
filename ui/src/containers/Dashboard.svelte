@@ -54,26 +54,12 @@
     }
   });
 
-  let showMore = false;
-  function showFullInstruction() {
-    showMore = !showMore;
-  }
-
   const systemRequirements = `
   ## System requirements
   Make sure your system meets the following requirements:
   \`\`\` bash
   - Have Docker Desktop in the background 
   - Have at least 1GB of storage to download the Docker image
-  \`\`\``;
-
-  const summarizedInstructions = `
-  ## About SSW CodeAuditor
-  SSW CodeAuditor was launched in 2008. It was built and is lovingly maintained by [SSW](https://www.ssw.com.au/ssw/).
-  ## Get Started
-  Scan any website for broken links and [HTML Issues](https://htmlhint.com) by running the following command:
-  \`\`\` bash
-  $ docker run sswconsulting/codeauditor --token ${token} --url <URL> 
   \`\`\``;
 
   const instructions = `
@@ -132,31 +118,9 @@
           </Icon>
         </a>
       {/if}
-      {#if showMore}
-        <article class="markdown-body">
-          {@html marked(instructions)}
-        </article>
-        <div class="mt-2 flex-none">
-          <button
-            class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-            on:click={showFullInstruction}>
-            Less Options
-            <i class="fas fa-angle-up"></i>
-          </button>
-        </div>
-      {:else}
-        <article class="markdown-body">
-          {@html marked(summarizedInstructions)}
-        </article>
-        <div class="mt-2 flex-none">
-          <button
-            class="flex-none bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-            on:click={showFullInstruction}>
-            More Options
-            <i class="fas fa-angle-down"></i>
-          </button>
-        </div>
-      {/if}
+      <article class="markdown-body">
+        {@html marked(instructions)}
+      </article>
       <article class="markdown-body mt-5">
         {@html marked(systemRequirements)}
       </article>
