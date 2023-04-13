@@ -10,6 +10,8 @@ const {
 	TABLE
 } = require('./consts');
 const azure = require('azure-storage');
+const { TableClient, AzureNamedKeyCredential, odata } = require('@azure/data-tables');
+const functions = require('firebase-functions');
 
 exports.getConfig = (api) =>
 	new Promise((resolve, reject) => {
@@ -24,15 +26,24 @@ exports.getConfig = (api) =>
 		);
 	});
 
-exports.getScanDetails = (runId) =>
-	getRun(runId).then((doc) =>
-		getTableRows(
-			TABLE.ScanResults,
-			new azure.TableQuery()
-			.where('PartitionKey eq ?', doc.apikey)
-			.and('runId eq ?', doc.runId)
-		)
-	);
+// TODO: Tech debt - Replace all exisiting deprecated azure-storage library with new one using similar template as below
+const account = functions.config().azurestorage.account;
+const accountKey = functions.config().azurestorage.key;
+const credential = new AzureNamedKeyCredential(account, accountKey);
+const azureUrl = `https://${account}.table.core.windows.net`;
+
+exports.getScanDetails = (runId) => 
+getRun(runId).then((doc) =>
+		new Promise(async (resolve, reject) => {
+			const entity = new TableClient(azureUrl, TABLE.ScanResults, credential).listEntities({
+				queryOptions: { filter: odata`runId eq ${doc.runId}` }
+			});
+			let result = []
+			for await (const item of entity) {
+				result.push(item);
+			}
+			resolve(result)
+		}));
 
 exports.getIgnoredUrls = (api) =>
 	getTableRows(
