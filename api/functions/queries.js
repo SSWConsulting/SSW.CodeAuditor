@@ -34,7 +34,7 @@ const azureUrl = `https://${account}.table.core.windows.net`;
 
 exports.getScanDetails = (runId) => 
 getRun(runId).then((doc) =>
-		new Promise(async (resolve, reject) => {
+		new Promise(async (resolve) => {
 			const entity = new TableClient(azureUrl, TABLE.ScanResults, credential).listEntities({
 				queryOptions: { filter: odata`runId eq ${doc.runId}` }
 			});
