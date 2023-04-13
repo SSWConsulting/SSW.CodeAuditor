@@ -1,4 +1,4 @@
-name: SSW Rules Scan
+name: Scheduled SSW Rules Scan
 
 # Schedule Scan on SSW Rules at 01:00 on the 1st and 14th of every month
 on: 
