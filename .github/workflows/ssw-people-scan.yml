@@ -1,9 +1,9 @@
 name: Scheduled SSW People Scan
 
-# Schedule Scan on SSW People at 1pm every Monday
+# Schedule Scan on SSW People at 1pm every Wednesday
 on: 
   schedule:
-  - cron: "0 13 * * 1"
+  - cron: "0 13 * * 3"
 
 jobs:
   job1:
