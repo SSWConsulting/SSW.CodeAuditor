@@ -6,19 +6,24 @@
 </script>
 
 <p class="hidden md:block text-sm text-gray-800 pb-3 pt-4">
+  <a
+    class="inline-block align-baseline text-blue hover:text-blue-darker"
+    href="/">
+    Home
+  </a>
   <Icon cssClass="inline-block" height="20" width="20">
     <path d="M9 5l7 7-7 7" />
   </Icon>
   <a
     class="inline-block align-baseline text-blue hover:text-blue-darker"
-    href="/">
-    Builds
+    href="/explore">
+    Scans
   </a>
   <Icon cssClass="inline-block" height="20" width="20">
     <path d="M9 5l7 7-7 7" />
   </Icon>
   <span class="inline-block align-baseline text-blue hover:text-blue-darker">
-    {build.buildId !== '-' ? build.buildId : runId}
+    Scan Results
   </span>
   <Icon cssClass="inline-block" height="20" width="20">
     <path d="M9 5l7 7-7 7" />

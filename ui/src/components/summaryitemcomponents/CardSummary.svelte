@@ -12,7 +12,7 @@
 
 </script>
 
-<div class="hidden md:grid grid-cols-3">
+<div class="hidden md:grid grid-cols">
   <div></div>
   <div>
     <div class="text-center">
@@ -23,20 +23,15 @@
     </div>
     <div class="text-center">
       <span class="text-xl font-sans block lg:inline-block text-gray-600">Last
-        scanned:
-        {formatDistanceToNow(new Date(value.buildDate), { addSuffix: true })}
-        at
-        {format(new Date(value.buildDate), 'hh:mmaaaa')}
+        scanned: 
+        <strong>{format(new Date(value.buildDate), 'dd MMM yyyy')}</strong>
+        ({formatDistanceToNow(new Date(value.buildDate), { addSuffix: true })} at {format(new Date(value.buildDate), 'hh:mmaaa')})
       </span>
     </div>
     <div class="text-center">
       <span class="text-xl font-sans block lg:inline-block text-gray-600">
         Duration: {printTimeDiff(+value.scanDuration)}
       </span>
-    </div>
-    <div class="text-center">
-      <span
-        class="text-2xl font-sans font-bold text-gray-800">{format(new Date(value.buildDate), 'dd MMM yyyy')}</span>
     </div>
   </div>
   <div class="text-right">
