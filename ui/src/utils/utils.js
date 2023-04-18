@@ -337,54 +337,54 @@ export const getDisplayText = (errorKey) => {
 export const htmlHintRules = [
   {
     rule: "tagname-lowercase",
-    displayName: "Tags - tag names must be lowercase",
+    displayName: "Tags - Tag names must be lowercase",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/tagname-lowercase",
   },
   {
     rule: "tag-pair",
-    displayName: "Tags - tags must be paired",
+    displayName: "Tags - Tags must be paired",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/tag-pair",
   },
   {
     rule: "empty-tag-not-self-closed",
-    displayName: "Tags - empty tags should not be closed by itself",
+    displayName: "Tags - Empty tags should not be closed by itself",
     ruleLink:
       "https://htmlhint.com/docs/user-guide/rules/empty-tag-not-self-closed",
   },
   {
     rule: "id-class-ad-disabled",
-    displayName: "Tags - id and class must not use the 'ad' keyword",
+    displayName: "Tags - Id and class must not use the 'ad' keyword",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/id-class-ad-disabled",
   },
   {
     rule: "id-unique",
-    displayName: "Tags - id attributes must be unique",
+    displayName: "Tags - Id attributes must be unique",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/id-unique",
   },
   {
     rule: "attr-lowercase",
-    displayName: "Attributes - attribute names must be lowercase",
+    displayName: "Attributes - Attribute names must be lowercase",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/attr-lowercase",
   },
   {
     rule: "attr-value-double-quotes",
-    displayName: "Attributes - attribute values must be in double quotes",
+    displayName: "Attributes - Attribute values must be in double quotes",
     ruleLink:
       "https://htmlhint.com/docs/user-guide/rules/attr-value-double-quotes",
   },
   {
     rule: "attr-value-not-empty",
-    displayName: "Attributes - all attributes must have values",
+    displayName: "Attributes - All attributes must have values",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/attr-value-not-empty",
   },
   {
     rule: "attr-no-duplication",
-    displayName: "Attributes - element cannot contain duplicate attributes",
+    displayName: "Attributes - Element cannot contain duplicate attributes",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/attr-no-duplication",
   },
   {
     rule: "attr-unsafe-chars",
-    displayName: "Attributes - attributes cannot contain unsafe characters",
+    displayName: "Attributes - Attributes cannot contain unsafe characters",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/attr-unsafe-chars",
   },
   {
@@ -394,7 +394,7 @@ export const htmlHintRules = [
   },
   {
     rule: "title-require",
-    displayName: "Header - missing title tag",
+    displayName: "Header - Missing title tag",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/title-require",
   },
   {
@@ -404,44 +404,44 @@ export const htmlHintRules = [
   },
   {
     rule: "head-script-disabled",
-    displayName: "Syntax - script tags cannot be used inside another tag",
+    displayName: "Syntax - Script tags cannot be used inside another tag",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/head-script-disabled",
   },
   {
     rule: "spec-char-escape",
-    displayName: "Syntax - special characters must be escaped",
+    displayName: "Syntax - Special characters must be escaped",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/spec-char-escape",
   },
   {
     rule: "style-disabled",
-    displayName: "Syntax - style tags should not be used outside of header",
+    displayName: "Syntax - Style tags should not be used outside of header",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/style-disabled",
   },
   {
     rule: "inline-style-disabled",
-    displayName: "Syntax - inline styling should not be used",
+    displayName: "Syntax - Inline styling should not be used",
     ruleLink:
       "https://htmlhint.com/docs/user-guide/rules/inline-style-disabled",
   },
   {
     rule: "inline-script-disabled",
-    displayName: "Syntax - inline scripts should not be used",
+    displayName: "Syntax - Inline scripts should not be used",
     ruleLink:
       "https://htmlhint.com/docs/user-guide/rules/inline-script-disabled",
   },
   {
     rule: "alt-require",
-    displayName: "Images - missing alt attribute",
+    displayName: "Images - Missing alt attribute",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/alt-require",
   },
   {
     rule: "href-abs-or-rel",
-    displayName: "Links - href attribute must be either absolute or relative",
+    displayName: "Links - Href attribute must be either absolute or relative",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/href-abs-or-rel",
   },
   {
     rule: "src-not-empty",
-    displayName: "Content - the image src attribute must have a value",
+    displayName: "Content - The image src attribute must have a value",
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/src-not-empty",
   },
 ];
@@ -449,7 +449,7 @@ export const htmlHintRules = [
 export const customHtmlHintRules = [
   {
     rule: "code-block-missing-language",
-    displayName: "Syntax - code blocks must have a language",
+    displayName: "Syntax - Code blocks must have a language",
     ruleLink: "https://www.ssw.com.au/rules/set-language-on-code-blocks",
   },
   {
@@ -459,61 +459,63 @@ export const customHtmlHintRules = [
   },
   {
     rule: "figure-must-use-the-right-code",
-    displayName: "Syntax - use the right HTML/CSS figure markup",
+    displayName: "Syntax - Use the right HTML/CSS figure markup",
     ruleLink: "https://www.ssw.com.au/rules/use-the-right-html-figure-caption",
   },
   {
-    rule: "anchor-names-must-be-valid",
-    displayName: "Tags - link anchor names must be valid",
-    ruleLink: "https://www.ssw.com.au/rules/chose-efficient-anchor-names",
-  },
-  {
     rule: "font-tag-must-not-be-used",
-    displayName: "Tags - font tags must not be used",
+    displayName: "Tags - Font tags must not be used",
     ruleLink:
       "https://www.ssw.com.au/rules/do-you-know-font-tags-are-no-longer-used",
   },
   {
     rule: "url-must-not-have-click-here",
-    displayName: "Content - do not use the words ‘click here’",
+    displayName: "Content - Do not use the words ‘click here’",
     ruleLink: "https://www.ssw.com.au/rules/relevant-words-on-links",
   },
   {
     rule: "grammar-scrum-terms",
-    displayName: "Content - use the correct Scrum terms",
+    displayName: "Content - Use the correct Scrum terms",
     ruleLink: "https://www.ssw.com.au/rules/scrum-should-be-capitalized",
   },
   {
     rule: "page-must-not-show-email-addresses",
-    displayName: "Content - text must not display any email addresses",
+    displayName: "Content - Text must not display any email addresses",
     ruleLink:"https://www.ssw.com.au/rules/avoid-clear-text-email-addresses-in-web-pages",
   },
   {
     rule: "use-unicode-hex-code-for-special-html-characters",
-    displayName: "Content - Use Unicode Hex code for special HTML characters."
+    displayName: "Content - Use Unicode Hex code for special HTML characters",
+    ruleLink: "",
+  },
+  {
+    rule: "anchor-names-must-be-valid",
+    displayName: "Links - Anchor links’ names must be valid",
+    ruleLink: "https://www.ssw.com.au/rules/chose-efficient-anchor-names",
   },
   {
     rule: "url-must-be-formatted-correctly",
-    displayName: "URLs - must not include full stop or slash at the end",
+    displayName: "Links - URLs must not include full stop or slash at the end",
     ruleLink: "",
   },
   {
     rule: "detect-absolute-references-url-path-correctly",
-    displayName: "URLs - Detect absolute internal links",
+    displayName: "Links - Detect absolute internal URLs",
+    ruleLink: "",
   },
   {
     rule: "url-must-not-have-space",
-    displayName: "URLs - must not have space",
+    displayName: "Links - URLs must not have space",
     ruleLink: "https://www.ssw.com.au/rules/use-dashes-in-urls",
   },
   {
     rule: "link-must-not-show-unc",
-    displayName: "HTML - link must not show UNC",
+    displayName: "Links - URLs must not have UNC paths",
     ruleLink: "",
   },
   {
     rule: "meta-tag-must-not-redirect",
-    displayName: "Header - must not refresh or redirect",
+    displayName: "Header - Must not refresh or redirect",
     ruleLink: "https://rules.sonarsource.com/html/RSPEC-1094",
   },
   // Add new rule id below
