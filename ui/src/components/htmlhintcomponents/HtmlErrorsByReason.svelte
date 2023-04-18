@@ -21,8 +21,6 @@
   const dispatch = createEventDispatcher();
 
   const viewSource = (url, location, key) => {
-    console.log(url, location, key);
-
     if (htmlHintIssues.indexOf(key) >= 0) {
       dispatch("viewSource", {
         url,
@@ -84,17 +82,14 @@
         {/if}
       </Icon>
     </span>
-    {#if ERRORS.indexOf(error.error) >= 0}
-      <i class="fas fa-exclamation-circle fa-lg" style="color: red"></i> <span class="font-bold">({getTotalHtmlErrorsOccurence(error.pages)})</span>
-    {:else}
-      <i class="fas fa-exclamation-triangle fa-lg" style="color: #d69e2e"></i> <span class="font-bold">({getTotalHtmlErrorsOccurence(error.pages)})</span>
-    {/if}
+    <i class="{ERRORS.indexOf(error.error) >= 0 ? 'fas fa-exclamation-circle fa-lg' : 'fas fa-exclamation-triangle fa-lg'}" style="{ERRORS.indexOf(error.error) >= 0 ? 'color: red' : 'color: #d69e2e'}"></i> 
     <a
       class="{getRuleLink(error.error) ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline" 
       target="_blank"
       href={getRuleLink(error.error)}>
       {getDisplayText(error.error)} 
     </a>
+    <span class="font-bold">({getTotalHtmlErrorsOccurence(error.pages)})</span>
   </div>
   {#if !hiddenRows[error.error]}
     <table
