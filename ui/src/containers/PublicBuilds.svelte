@@ -11,18 +11,6 @@
   let lastBuild;
 
   async function getLastBuilds() {
-    const res = await fetch(`${CONSTS.API}/api/scans`);
-    const result = await res.json();
-    if (res.ok) {
-      return sort(descend(prop("buildDate")), result);
-    } else {
-      throw new Error("Failed to load");
-    }
-  }
-
-  let promise = getLastBuilds();
-
-  async function getAllBuilds() {
     const res = await fetch(`${CONSTS.API}/api/allscans`);
     const result = await res.json();
     if (res.ok) {
@@ -32,12 +20,7 @@
     }
   }
 
-  let promiseAllScan = getAllBuilds();
-
-  let allScan = false;
-  function showAllScan() {
-    allScan = true;
-  }
+  let promise = getLastBuilds();
 
   const notLoggedIn = `
   ## Explore SSW CodeAuditor
@@ -58,42 +41,19 @@
     {:else}
       <article class="markdown-body">
         {@html marked(isLoggedInMsg)}
-        {#await promiseAllScan}
-          <LoadingFlat />
-        {:then data}
-          <p
-            class="cursor-pointer underline text-gray-700 font-sans font-bold hover:text-red-600"
-            on:click={showAllScan}>
-            Showing all Public Scans
-          </p>
-        {:catch error}
-          <p style="color: red">{error.message}</p>
-        {/await}
       </article>
     {/if}
   </div>
 
   <div class="bg-white rounded px-4 pt-2 mb-12 flex flex-col">
-    {#if allScan === true}
-      {#await promiseAllScan}
-        <LoadingFlat />
-      {:then data}
-        {#if data}
-          <BuildList builds={data} {lastBuild} />
-        {/if}
-      {:catch error}
-        <p style="color: red">{error.message}</p>
-      {/await}
-    {:else}
-      {#await promise}
-        <LoadingFlat />
-      {:then data}
-        {#if data}
-          <BuildList builds={data} {lastBuild} />
-        {/if}
-      {:catch error}
-        <p style="color: red">{error.message}</p>
-      {/await}
-    {/if}
+    {#await promise}
+      <LoadingFlat />
+    {:then data}
+      {#if data}
+        <BuildList builds={data} {lastBuild} />
+      {/if}
+    {:catch error}
+      <p style="color: red">{error.message}</p>
+    {/await}
   </div>
 </div>

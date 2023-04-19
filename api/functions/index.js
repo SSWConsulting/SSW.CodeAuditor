@@ -113,10 +113,6 @@ app.get('/scanresult/:api', async (req, res) => {
 	res.json(await getSummary(req.params.api));
 });
 
-app.get('/scans', async (req, res) => {
-	res.json(await getPublicSummary());
-});
-
 app.get('/allscans', async (req, res) => {
 	res.json(await getAllPublicSummary());
 });

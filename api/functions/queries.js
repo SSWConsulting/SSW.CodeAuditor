@@ -33,7 +33,7 @@ const credential = new AzureNamedKeyCredential(account, accountKey);
 const azureUrl = `https://${account}.table.core.windows.net`;
 
 exports.getScanDetails = (runId) => 
-getRun(runId).then((doc) =>
+	getRun(runId).then((doc) =>
 		new Promise(async (resolve) => {
 			const entity = new TableClient(azureUrl, TABLE.ScanResults, credential).listEntities({
 				queryOptions: { filter: odata`runId eq ${doc.runId}` }
@@ -112,17 +112,17 @@ exports.getSummary = (api) =>
 		new azure.TableQuery().where('PartitionKey eq ?', api).top(100)
 	);
 
-exports.getPublicSummary = () =>
-	getTableRows(
-		TABLE.Scans,
-		new azure.TableQuery().where('isPrivate eq ?', false).top(100)
-	);
-
 exports.getAllPublicSummary = () =>
-	getTableRows(
-		TABLE.Scans,
-		new azure.TableQuery().where('isPrivate eq ?', false)
-	);
+	new Promise(async (resolve) => {
+		const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
+			queryOptions: { filter: odata`isPrivate eq ${false}` }
+		});
+		let result = []
+		for await (const item of entity) {
+			result.push(item);
+		}
+		resolve(result)
+	});
 
 exports.getSummaryById = async (runId) => {
 	const val = await getRun(runId).then((doc) =>
