@@ -70,7 +70,7 @@
                 class="inline-block align-baseline"
                 target="_blank"
                 href={val.dst}>
-                {val.dst}
+                {val.dst.length < 70 ? val.dst : val.dst.substring(0, 70) + '...'}
               </a>
               {#if isInIgnored(val.dst, ignoredPatterns)}
                 <span
