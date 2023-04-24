@@ -28,4 +28,10 @@ describe(`Rules: ${ruldId}`, () => {
     const messages = HTMLHint.verify(code, ruleOptions);
     expect(messages.length).to.be(0);
   });
+
+  it("Figures wrapped in style tag should be ignored and must not result in an error", () => {
+    const code = "<style>Figure: Caption</style>";
+    const messages = HTMLHint.verify(code, ruleOptions);
+    expect(messages.length).to.be(0);
+  });
 });

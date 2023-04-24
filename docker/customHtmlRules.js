@@ -37,7 +37,7 @@ exports.addCustomHtmlRule = () => {
     init: function (parser, reporter) {
       var self = this;
 
-      parser.addListener("text", (event) => {
+      parser.addListener("all", (event) => {
         var scrumTerms = [
           "scrum",
           "sprint",
@@ -52,24 +52,27 @@ exports.addCustomHtmlRule = () => {
           "spec review"
         ];
 
-        if (event.raw) {
-          let pageContent = event.raw;
-
-          scrumTerms.forEach((i) => {
-            var contentIndex = pageContent.indexOf(i);
-
-            if (contentIndex >= 0) {
-              var col = event.col + contentIndex - 1;
-
-              reporter.warn(
-                "Incorrect Scrum term: '" + i + "'.",
-                event.line,
-                col,
-                self,
-                event.raw
-              );
-            }
-          });
+        if (event.tagName) {
+          if (event.tagName !== "a") { 
+            if (event.lastEvent) {
+              let pageContent = event.lastEvent.raw;
+              if (pageContent) {
+                scrumTerms.forEach((i) => {
+                  var contentIndex = pageContent.indexOf(i);
+                  
+                  if (contentIndex >= 0) {
+                    reporter.warn(
+                      "Incorrect Scrum term: '" + i + "'.",
+                      event.line,
+                      event.col,
+                      self,
+                      event.raw
+                    );
+                  }
+                });
+              }
+            }    
+          }
         }
       });
     },
@@ -343,7 +346,7 @@ exports.addCustomHtmlRule = () => {
       parser.addListener("all", (event) => {
         if (event) {
           if (event.raw && event.raw.includes("Figure:")) {
-            if (event.lastEvent && event.lastEvent.tagName !== "figcaption") {
+            if (event.lastEvent && event.lastEvent.tagName !== 'style' && event.lastEvent.tagName !== "figcaption") {
               reporter.warn(
                 "Figures must use the right code.",
                 event.line,
