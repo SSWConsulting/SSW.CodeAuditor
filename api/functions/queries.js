@@ -107,10 +107,16 @@ exports.getHTMLHintRulesByRunId = async (runId) => {
 };
 
 exports.getSummary = (api) =>
-	getTableRows(
-		TABLE.Scans,
-		new azure.TableQuery().where('PartitionKey eq ?', api).top(100)
-	);
+	new Promise(async (resolve) => {
+		const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
+			queryOptions: { filter: odata`PartitionKey eq ${api}` }
+		});
+		let result = []
+		for await (const item of entity) {
+			result.push(item);
+		}
+		resolve(result)
+	});
 
 exports.getAllPublicSummary = () =>
 	new Promise(async (resolve) => {
