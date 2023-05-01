@@ -334,6 +334,14 @@ export const getDisplayText = (errorKey) => {
   }
 };
 
+export const unscannableLinks = [
+  {url: "https://learn.microsoft.com/en-us/"},
+  {url: "https://support.google.com/"},
+  {url: "https://twitter.com/"},
+  {url: "https://marketplace.visualstudio.com/"},
+  {url: "https://www.nuget.org/"},
+]
+
 export const htmlHintRules = [
   {
     rule: "tagname-lowercase",

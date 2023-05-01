@@ -14,6 +14,7 @@
   import LoadingFlat from "../components/misccomponents/LoadingFlat.svelte";
   import UpdateIgnoreUrl from "../components/misccomponents/UpdateIgnoreUrl.svelte";
   import CardSummary from "../components/summaryitemcomponents/CardSummary.svelte";
+  import { unscannableLinks } from "../utils/utils";
 
   export let currentRoute;
 
@@ -82,7 +83,8 @@
         on:download={() => onDownload(data)}
         on:ignore={url => showIgnore(data.summary.url, url, $userSession$)}
         builds={data ? data.brokenLinks : []}
-        {currentRoute} />
+        {currentRoute}
+        {unscannableLinks} />
     {:catch error}
       <p class="text-red-600 mx-auto text-2xl py-8">{error.message}</p>
     {/await}

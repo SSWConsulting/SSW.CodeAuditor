@@ -7,9 +7,17 @@
   import DetailsByReason from "./DetailsByReason.svelte";
   import { onMount } from "svelte";
   import { createEventDispatcher } from "svelte";
+  import { fade } from "svelte/transition";
 
   export let builds = [];
   export let currentRoute;
+  export let unscannableLinks;
+  
+  let foundUnscannableLinks = [];
+  foundUnscannableLinks = builds.filter(build => unscannableLinks.some(link => build.dst.includes(link.url)));
+  
+  // Filter out unscannable links
+  builds = builds.filter(build => !unscannableLinks.some(link => build.dst.includes(link.url)));
 
   let displayMode = 0;
 
@@ -26,6 +34,11 @@
       changeMode(+currentRoute.queryParams.displayMode);
     }
   });
+
+  let hiddenRows = false;
+  const hideShow = () => {
+    hiddenRows = !hiddenRows
+  }
 </script>
 
 <style>
@@ -95,6 +108,61 @@
       </button>
     </div>
   </div>
+  {#if foundUnscannableLinks.length > 0}
+    <span class="font-bold mb-3">
+      <Icon
+          on:click={() => hideShow()}
+          cssClass="inline-block cursor-pointer">
+          {#if !hiddenRows}
+            <path d="M19 9l-7 7-7-7" />
+          {:else}
+            <path d="M9 5l7 7-7 7" />
+          {/if}
+        </Icon>
+      Found Unscannable Links:
+    </span>
+    {#if !hiddenRows}
+      <span class="font-bold mb-3">
+        See our <a class="link hover:text-red-600" href="https://github.com/SSWConsulting/SSW.CodeAuditor/wiki/SSW-CodeAuditor-Knowledge-Base-(KB)#known-websites-that-has-anti-web-scraping-measures">Knowledge Base (KB)</a> to learn more about 
+        why some working websites are reported as broken in CodeAuditor?
+      </span>
+      <table
+      class="table-fixed w-full md:table-auto mb-8"
+      in:fade={{ y: 100, duration: 400 }}
+      out:fade={{ y: -100, duration: 200 }}>
+      <thead>
+        <tr>
+          <th class="w-3/12 px-4 py-2">Unscannable Link</th>
+          <th class="w-3/12 px-4 py-2">Source</th>
+          <th class="hidden md:table-cell w-3/12 px-4 py-2">Anchor Text</th>
+        </tr>
+      </thead>
+      <tbody>
+        {#each foundUnscannableLinks as url}
+          <tr>
+            <td class="w-3/12 border px-4 py-2 break-all">
+              <a
+                class="inline-block align-baseline link md:truncate"
+                target="_blank"
+                href={url.dst}>
+                {url.dst.length < 70 ? url.dst : url.dst.substring(0, 70) + '...'}
+              </a>
+            </td>
+            <td class="w-3/12 border px-4 py-2 break-all">
+              <a
+                class="inline-block align-baseline link md:truncate"
+                target="_blank"
+                href={url.src}>
+                {url.src.length < 70 ? url.src : url.src.substring(0, 70) + '...'}
+              </a>
+            </td>
+            <td class="hidden md:table-cell w-3/12 border px-4 py-2 break-all">{url.link || ''}</td>
+          </tr>
+          {/each}
+        </tbody>
+      </table>
+    {/if}
+  {/if}
 
   {#if displayMode === 0}
     <DetailsBySource {builds} on:ignore />
