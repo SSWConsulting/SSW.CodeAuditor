@@ -7,7 +7,7 @@
   import { CONSTS } from "../../utils/utils";
   import Modal from "./Modal.svelte";
 
-  export let url;
+  export let url = 'https://';
   export let scanUrl;
   export let show;
   export let user;
@@ -82,8 +82,8 @@
   <div class="ml-5">
     <TextField bind:value={url} placeholder="" label="URL" type="text" />
     <div class="text-sm text-grey-400 py-3">
-      You can use glob matching, e.g. http://twitter.com/** will match with
-      http://twitter.com/users/john or http://twitter.com/login
+      You can use glob matching, e.g. https://twitter.com/** will match with
+      https://twitter.com/users/john or https://twitter.com/login
     </div>
     <label class="block uppercase text-xs mb-2 py-2">For</label>
     <ul>
@@ -104,22 +104,24 @@
           </label>
         </div>
       </li>
-      <li>
-        <div class="flex items-center mr-4 mb-4">
-          <input
-            type="radio"
-            class="hidden"
-            id="radio2"
-            bind:group={ignoreOn}
-            value={url} />
-          <label for="radio2" class="flex items-center cursor-pointer">
-            <span
-              class="w-5 h-5 inline-block mr-2 rounded-full border-black
-              border-solid border flex-no-shrink" />
-            Only when {scanUrl} is scanned
-          </label>
-        </div>
-      </li>
+      {#if scanUrl}
+        <li>
+          <div class="flex items-center mr-4 mb-4">
+            <input
+              type="radio"
+              class="hidden"
+              id="radio2"
+              bind:group={ignoreOn}
+              value={url} />
+            <label for="radio2" class="flex items-center cursor-pointer">
+              <span
+                class="w-5 h-5 inline-block mr-2 rounded-full border-black
+                border-solid border flex-no-shrink" />
+              Only when {scanUrl} is scanned
+            </label>
+          </div>
+        </li>
+      {/if}
     </ul>
     <SelectField
       bind:value={ignoreDuration}
