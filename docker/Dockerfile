@@ -17,10 +17,10 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /go/bin/sswlinkau
 ############################
 # Build the nodejs app
 ############################
-FROM node:12 AS nodeBuilder
+FROM node:18 AS nodeBuilder
 WORKDIR /usr/src/app
 COPY package*.json ./
-RUN npm install
+RUN npm install --legacy-peer-deps
 RUN node -v
 COPY *.js ./
 
@@ -28,7 +28,7 @@ COPY *.js ./
 # Build smallest image from node
 ############################
 # FROM astefanutti/scratch-node
-FROM node:12
+FROM node:18
 
 # install perl for cloc
 # RUN apk update && apk add perl
