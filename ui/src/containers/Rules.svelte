@@ -1,5 +1,5 @@
 <script>
-  import { customHtmlHintRules, htmlHintRules } from "../utils/utils";
+  import { customHtmlHintRules, htmlHintRules, RuleType } from "../utils/utils";
 </script>
 <style>
   .link, .text {
@@ -14,7 +14,11 @@
       {#each customHtmlHintRules as rule, i}
       <ol>
         <li>
-          <a class="{rule.ruleLink ? 'link hover:text-red-600' : 'text cursor-text'} inline-block align-baseline" href={rule.ruleLink}>{i + 1}. {rule.displayName}</a>
+          <a class="{rule.ruleLink ? 'link hover:text-red-600' : 'text cursor-text'} inline-block align-baseline" href={rule.ruleLink}>
+            {i + 1}. 
+            <i class="{rule.type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}" style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"></i> 
+            {rule.displayName}
+          </a>
         </li>
       </ol>
     {/each}
@@ -24,7 +28,11 @@
         {#each htmlHintRules as rule, i}
         <ol>
           <li>
-            <a class="inline-block align-baseline link hover:text-red-600" href="https://htmlhint.com/docs/user-guide/rules/{rule.rule}">{i + 1}. {rule.displayName}</a>
+            <a class="inline-block align-baseline link hover:text-red-600" href="https://htmlhint.com/docs/user-guide/rules/{rule.rule}">
+              {i + 1}. 
+              <i class="{rule.type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}" style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"></i> 
+              {rule.displayName}
+            </a>
           </li>
         </ol>
         {/each}

@@ -1,10 +1,10 @@
 <script>
   import Toastr from "../misccomponents/Toastr.svelte";
-  import { CONSTS, htmlHintRules, customHtmlHintRules } from "../../utils/utils";
+  import { CONSTS, htmlHintRules, customHtmlHintRules, RuleType } from "../../utils/utils";
   import Modal from "../misccomponents//Modal.svelte";
   import LoadingFlat from "../misccomponents/LoadingFlat.svelte";
   import { onMount, createEventDispatcher } from "svelte";
-  
+
   export let url;
   export let show;
   export let loading;
@@ -118,6 +118,7 @@
           <a 
           class="inline-block align-baseline link" 
           href="https://htmlhint.com/docs/user-guide/rules/{rule.rule}">
+            <i class="{rule.type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}" style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"></i> 
             {rule.displayName}
           </a>
       </label>
@@ -130,6 +131,7 @@
           <a 
           class="{rule.ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline" 
           href={rule.ruleLink}>
+            <i class="{rule.type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}" style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"></i> 
             {rule.displayName}
           </a>
       </label>

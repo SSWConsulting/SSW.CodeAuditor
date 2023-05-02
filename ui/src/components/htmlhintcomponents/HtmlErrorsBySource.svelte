@@ -91,15 +91,7 @@
             <td
               class="whitespace-no-wrap break-all w-2/12 border px-4 py-2
               break-all">
-              <Icon
-                title={ERRORS.indexOf(key) >= 0 ? 'Error' : 'Warning'}
-                cssClass={`inline-block cursor-pointer ${ERRORS.indexOf(key) >= 0 ? 'text-red-600' : 'text-orange-600'}`}>
-                {#if ERRORS.indexOf(key) >= 0}
-                  <path d="M6 18L18 6M6 6l12 12" />
-                {:else}
-                  <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                {/if}
-              </Icon>
+              <i class="{ERRORS.indexOf(key) >= 0 ? 'fas fa-exclamation-circle fa-lg' : 'fas fa-exclamation-triangle fa-lg'}" style="{ERRORS.indexOf(key) >= 0 ? 'color: red' : 'color: #d69e2e'}"></i> 
               <a
                 class="hidden md:inline-block align-baseline link"
                 target="_blank"
