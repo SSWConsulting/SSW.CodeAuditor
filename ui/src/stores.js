@@ -1,10 +1,11 @@
 import { writable, derived } from 'svelte/store';
 import { navigateTo } from 'svelte-router-spa';
 import slug from 'slug';
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
 import { CONSTS, newGuid } from './utils/utils';
+import { getFirestore, collection, getDoc, doc } from "firebase/firestore";
 
 const createUserSession = () => {
 	const { subscribe, set } = writable(null);
@@ -44,8 +45,9 @@ export const ignoredUrlsList$ = derived(ignoredUrls$, (list) => {
 	return list ? list.map((x) => x.urlToIgnore) : [];
 });
 
-export const userName = derived(userSession$, (session) =>
-	session ? session.displayName || session.email : ''
+export const userName = derived(userSession$, (session) => {
+	return session ? session._delegate.displayName || session._delegate.email : ''
+}
 );
 
 export const userApi = derived(userSession$, (session) =>
@@ -58,14 +60,13 @@ export const loginCompleted = async (user) => {
 			userSession.login(null);
 			return;
 		}
-		const doc = await firebase
-			.firestore()
-			.collection(CONSTS.USERS)
-			.doc(user.uid)
-			.get();
+		
+		const docSnap = await getDoc(
+			doc(collection(getFirestore(), CONSTS.USERS), user.uid)
+		)
 
-		if (doc.exists) {
-			userSession.login({ ...user, ...doc.data() });
+		if (docSnap.exists()) {
+			userSession.login({ ...user, ...docSnap.data() });
 		} else {
 			// create
 			const apiKey = newGuid();

@@ -1,11 +1,13 @@
 <script>
-  import firebase from "firebase/app";
-  import "firebase/auth";
+  import firebase from "firebase/compat/app";
+  import "firebase/compat/auth";
+  import "firebase/compat/performance";
   import LoadingCirle from "../components/misccomponents/LoadingCircle.svelte";
   import { navigateTo } from "svelte-router-spa";
   import TextField from "../components/misccomponents/TextField.svelte";
   import SocialLogin from "../components/misccomponents/SocialLogin.svelte";
   import { oauthLoginError } from "../stores.js";
+  import { onDestroy, onMount } from "svelte";
 
   let loading;
   const loginEmailPassword = () => {
@@ -22,6 +24,18 @@
   let username = "";
   let password = "";
   $: valid = !!username && !!password;
+
+  const perf = firebase.performance();
+  let screenTrace
+
+  onMount(() => {
+    screenTrace = perf.trace('loginScreen')
+    screenTrace.start();
+  })
+
+  onDestroy(() => {
+    screenTrace.stop();
+  })
 </script>
 
 <form class="container mx-auto max-w-sm py-12">

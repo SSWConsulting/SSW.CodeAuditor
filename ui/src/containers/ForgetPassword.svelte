@@ -1,5 +1,5 @@
 <script>
-  import firebase from "firebase/app";
+  import firebase from "firebase/compat/app";
   import { navigateTo } from "svelte-router-spa";
   import TextField from "../components/misccomponents/TextField.svelte";
   import { isValidEmail } from "../utils/utils.js";

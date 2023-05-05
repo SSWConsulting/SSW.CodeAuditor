@@ -3,7 +3,7 @@
   import marked from "marked";
   import { navigateTo } from "svelte-router-spa";
   import { onDestroy, onMount } from "svelte";
-  import firebase from "firebase/app";
+  import firebase from "firebase/compat/app";
   import { CONSTS } from "../utils/utils.js";
   
   let unsubscription;

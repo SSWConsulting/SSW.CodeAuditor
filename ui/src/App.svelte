@@ -1,6 +1,6 @@
 <script>
-  import firebase from "firebase/app";
-  import "firebase/auth";
+  import firebase from "firebase/compat/app";
+  import "firebase/compat/performance";
   import Spinner from "./components/misccomponents/Spinner.svelte";
   import { Router } from "svelte-router-spa";
   import { routes } from "./routes";
@@ -21,6 +21,9 @@
     appId: "1:258817453920:web:9779e0dfae77ff2c4c3805",
     measurementId: "G-2EFQW0NCSJ",
   });
+
+  // Initialize Firebase performance monitoring
+  const perf = firebase.performance();
 
   firebase.auth().onAuthStateChanged((user) => loginCompleted(user));
   // handle error from OAUTH redirect

@@ -54,15 +54,6 @@
   let htmlHintRulesShown;
   let loadingHtmlHintSettings;
 
-  const blank = {
-    performanceScore: 0,
-    pwaScore: 0,
-    seoScore: 0,
-    accessibilityScore: 0,
-    bestPracticesScore: 0,
-    average: 0
-  };
-
   const onDownload = data => {
     const csvExporter = new ExportToCsv({
       useKeysAsHeaders: true
@@ -104,10 +95,10 @@
         `${CONSTS.API}/api/config/${user.apiKey}/htmlhintrules/${slug(scanUrl)}`
       );
       const result = await res.json();
-      threshold = result || blank;
+      threshold = result || {};
     } catch (error) {
       console.error("error getting threshold", error);
-      threshold = blank;
+      threshold = {};
     } finally {
       loadingHtmlHintSettings = false;
     }

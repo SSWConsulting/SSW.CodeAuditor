@@ -3,9 +3,11 @@
   import { onDestroy } from "svelte";
   import marked from "marked";
   import Icon from "../components/misccomponents/Icon.svelte";
-  import firebase from "firebase/app";
+  import firebase from "firebase/compat/app";
   import BuildList from "../components/buildlistcardcomponents/BuildList.svelte";
   import LoadingFlat from "../components/misccomponents/LoadingFlat.svelte";
+  import { getFirestore, collection, getDoc, doc } from "firebase/firestore";
+
 
   import { fade, fly } from "svelte/transition";
   import { sort, descend, prop } from "ramda";
@@ -33,17 +35,12 @@
   let token;
   userSession$.subscribe((x) => {
     if (x) {
-      unsubscription = firebase
-        .firestore()
-        .collection(CONSTS.USERS)
-        .doc(x.uid)
-        .onSnapshot((usr) => {
-          const userD = usr.data();
-          if (userD.lastBuild) {
-            lastBuild = userD.lastBuild.toDate();
-          }
-          promise = getLastBuilds(x.apiKey);
-        });
+      getDoc(
+			  doc(collection(getFirestore(), CONSTS.USERS), x._delegate.uid)
+		  ).then(doc => {
+        lastBuild = doc.data().lastBuild.toDate();
+        promise = getLastBuilds(x.apiKey);
+      })
       token = x.apiKey;
     }
   });
