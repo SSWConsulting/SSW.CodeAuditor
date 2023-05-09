@@ -1,13 +1,11 @@
 <script>
   import formatDistanceToNow from "date-fns/formatDistanceToNow";
   import addDays from "date-fns/addDays";
-  import LightHouseAverageCard from "./LightHouseAverageCard.svelte";
-  import LinkSummaryCard from "./LinkSummaryCard.svelte";
-  import CodeSummaryCard from "./CodeSummaryCard.svelte";
   import DetailListCard from "../detailcardcomponents/DetailListCard.svelte";
   import HistoryChart from "./HistoryChart.svelte";
   import UrlSummaryCard from "./UrlSummaryCard.svelte";
   import { groupBy, props } from "ramda";
+  import { historyChartType } from "../../utils/utils";
 
   export let builds = [];
   export let lastBuild;
@@ -83,35 +81,29 @@
           <div
             class="sm:flex-1 md:flex-1 lg:flex xl:flex content-center mb-4 px-6
             py-4">
-            <div class="xl:w-5/6 lg:w-5/6">
+            <div class="xl:w-4/6 lg:w-5/6">
               <UrlSummaryCard value={groupUrl[url]} {url} />
             </div>
 
             <div
               class="xl:w-1/4 lg:w-1/4 h-20 hidden sm:hidden md:hidden lg:block
               xl:block">
-              <HistoryChart value={groupUrl[url]} />
+              <HistoryChart value={groupUrl[url]} dataType={historyChartType.BadLinks} />
             </div>
 
             <div
-              class="xl:w-1/4 lg:w-1/4 sm:text-xs md:text-xs lg:text-base
-              xl:text-base text-gray-700">
-              <LinkSummaryCard value={groupUrl[url]} />
+              class="xl:w-1/4 lg:w-1/4 h-20 hidden sm:hidden md:hidden lg:block
+              xl:block ml-5">
+              <HistoryChart value={groupUrl[url]} dataType={historyChartType.WarningCode} />
             </div>
 
             <div
-              class="xl:w-1/4 lg:w-1/4 sm:text-xs md:text-xs lg:text-base
-              xl:text-base text-gray-700">
-              <CodeSummaryCard value={groupUrl[url]} />
+              class="xl:w-1/4 lg:w-1/4 h-20 hidden sm:hidden md:hidden lg:block
+              xl:block ml-5 mr-5">
+              <HistoryChart value={groupUrl[url]} dataType={historyChartType.ErrorCode} />
             </div>
 
-            <div
-              class="xl:w-1/4 lg:w-1/4 sm:text-xs md:text-xs lg:text-base
-              xl:text-base text-gray-700">
-              <LightHouseAverageCard value={groupUrl[url]} />
-            </div>
-
-            <div class="xl:w-0.9/6 lg:w-0.9/6 text-center">
+            <div class="xl:w-1/6 lg:w-1/6 text-center">
               <span
                 type="button"
                 class="hover:bg-gray-300 border-0 rounded-md px-3 py-1"

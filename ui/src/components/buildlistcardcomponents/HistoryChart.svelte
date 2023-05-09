@@ -1,36 +1,46 @@
 <script>
   import { onMount } from "svelte";
+  import { historyChartType } from "../../utils/utils";
 
   export let value = [];
+  export let dataType;
 
-  let allBrokenLinks = value.map((i) => i.totalBrokenLinks);
+  let allDataToDisplay = [];
+  let chartTitle;
+  let barColor;
 
-  let brokenLink = allBrokenLinks.slice(0, 10);
+  if (dataType === historyChartType.BadLinks) {
+    chartTitle = historyChartType.BadLinks;
+    allDataToDisplay = value.map((i) => i.totalBrokenLinks);
+    barColor = 'red'
+  } else if (dataType === historyChartType.WarningCode) {
+    chartTitle = historyChartType.WarningCode;
+    allDataToDisplay = value.map((i) => i.htmlWarnings);
+    barColor = 'orange'
+  } else {
+    chartTitle = historyChartType.ErrorCode;
+    allDataToDisplay = value.map((i) => i.htmlErrors);
+    barColor = 'red'
+  }
+
+  let dataToDisplay = allDataToDisplay.slice(0, 10);
 
   let maxBarHeight = [];
-  maxBarHeight = brokenLink.reduce(function (a, b) {
+  maxBarHeight = dataToDisplay.reduce(function (a, b) {
     return Math.max(a, b);
   });
 
   for (let i = 0; i < 10; i++) {
-    if (brokenLink.length < 10) {
-      brokenLink.push(maxBarHeight / 10);
+    if (dataToDisplay.length < 10) {
+      dataToDisplay.push(maxBarHeight / 10);
     }
   }
 
-  let score = value.map((i) => i.finalEval);
-
-  let barColor = score.map((i) => {
-    if (i === "FAIL") return "red";
-    if (i === "PASS") return "green";
-    return "orange";
-  });
-
   export let data = {
-    labels: brokenLink,
+    labels: dataToDisplay,
     datasets: [
       {
-        data: brokenLink,
+        data: dataToDisplay,
         backgroundColor: barColor,
         maxBarThickness: 5
       },
@@ -94,7 +104,7 @@
 </script>
 
 <div class="text-center">
-  <span class="inline-block font-sans sm:text-sm">HISTORY</span>
+  <span class="inline-block font-sans sm:text-sm">{chartTitle}</span>
   <svg
     class="inline-block w-6 h-6"
     fill="none"

@@ -339,6 +339,12 @@ export const RuleType = {
   Error: "Error",
 };
 
+export const historyChartType = {
+  BadLinks: "BAD LINKS",
+  WarningCode: "CODE WARNINGS",
+  ErrorCode: "CODE ERRORS",
+}
+
 export const unscannableLinks = [
   {url: "https://learn.microsoft.com/en-us/"},
   {url: "https://support.google.com/"},
