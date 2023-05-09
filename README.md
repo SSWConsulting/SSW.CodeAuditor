@@ -66,7 +66,7 @@ SSW CodeAuditor is a code and link analysis tool that allows users to identify b
 ## To start contributing to CodeAuditor:
 We always welcome contributions. If you are interested in contributing, please take a look at our [CONTRIBUTING](./CONTRIBUTING.md) guide
 
-## Technologies used in SugarLearning
+## Technologies used in CodeAuditor
 
 ### Front End:
 [SvelteJs](https://svelte.dev/) - Free and open-source JavaScript framework
