@@ -70,7 +70,7 @@
     showSource = true;
     loading = true;
     const res = await fetch(
-      `${CONSTS.API}/api/viewsource?url=${encodeURIComponent(viewUrlSource)}`
+      `${CONSTS.API2}/viewsource?url=${encodeURIComponent(viewUrlSource)}`
     );
     source = await res.text();
     loading = false;
