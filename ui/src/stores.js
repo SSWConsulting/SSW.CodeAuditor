@@ -148,5 +148,26 @@ export const getBuildDetails = async (runId) => {
 	}
 };
 
+export const getLatestBuildDetails = async (api, url) => {
+	const res = await fetch(`${CONSTS.API2}/latest/${api}/${url}`);
+	const result = await res.json();
+
+	if (res.ok) {
+		const d = {
+			summary: {
+				...result.summary[0],
+				whiteListed: result.summary[0].whiteListed
+					? JSON.parse(result.summary[0].whiteListed)
+					: [],
+			},
+			brokenLinks: result.brokenLinks,
+		};
+		activeRun$.set(d);
+		return d;
+	} else {
+		throw new Error('Failed to load');
+	}
+};
+
 let activeRun;
 activeRun$.subscribe((x) => (activeRun = x));

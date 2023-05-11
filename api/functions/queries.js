@@ -144,3 +144,15 @@ exports.getSummaryById = async (runId) => {
 	}
 	return null;
 };
+
+exports.getLatestSummaryFromUrlAndApi = (url, api) => 
+	new Promise(async (resolve) => {
+		const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
+			queryOptions: { filter: odata`url eq ${url} and PartitionKey eq ${api}` }
+		});
+		const iterator = entity.byPage({ maxPageSize: 1 });
+		for await (const item of iterator) {
+			resolve(item)
+			break;
+		}
+	});

@@ -71,6 +71,11 @@ const routes = [
 		layout: AppLayout
 	},
 	{
+		name: '/latest/:api/:url',
+		component: BuildDetails,
+		layout: AppLayout
+	},
+	{
 		name: 'home',
 		component: AppLayout,
 		onlyIf: {

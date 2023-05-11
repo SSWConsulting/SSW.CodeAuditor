@@ -23,7 +23,6 @@ const {
 } = require('./commands');
 const {
 	getSummary,
-	getPublicSummary,
 	getAllPublicSummary,
 	getSummaryById,
 	getConfig,
@@ -33,6 +32,7 @@ const {
 	getScanDetails,
 	getIgnoredUrls,
 	getHTMLHintRulesByRunId,
+	getLatestSummaryFromUrlAndApi,
 } = require('./queries');
 const {
 	newGuid,
@@ -129,6 +129,15 @@ app.get('/run/:runId', async (req, res) => {
 	res.json({
 		summary,
 		brokenLinks,
+	});
+});
+
+app.get('/latest/:api/:url', async (req, res) => {
+	const summary = await getLatestSummaryFromUrlAndApi(req.params.url, req.params.api);
+	const brokenLinks = await getScanDetails(summary[0].runId);
+	res.json({
+		summary,
+		brokenLinks
 	});
 });
 

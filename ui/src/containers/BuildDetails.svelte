@@ -2,7 +2,10 @@
   import {
     getBuildDetails,
     userSession$,
-    getIgnoreList
+    getIgnoreList,
+
+    getLatestBuildDetails
+
   } from "../stores";
   import Tabs from "../components/misccomponents/Tabs.svelte";
   import Breadcrumbs from "../components/misccomponents/Breadcrumbs.svelte";
@@ -18,11 +21,17 @@
 
   export let currentRoute;
 
-  let promise = getBuildDetails(currentRoute.namedParams.id);
+  let promise
   let userNotLoginToast;
   let ignoreUrlShown;
   let urlToIgnore;
   let scanUrl;
+
+  if (currentRoute.namedParams.id) {
+    promise = getBuildDetails(currentRoute.namedParams.id);
+  } else {
+    promise = getLatestBuildDetails(currentRoute.namedParams.api, currentRoute.namedParams.url)
+  }
 
   const onDownload = data => {
     const csvExporter = new ExportToCsv({
