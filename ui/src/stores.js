@@ -149,7 +149,8 @@ export const getBuildDetails = async (runId) => {
 };
 
 export const getLatestBuildDetails = async (api, url) => {
-	const res = await fetch(`${CONSTS.API2}/latest/${api}/${url}`);
+	const fullUrl = `https%3A%2F%2Fwww.${url}%2F` 
+	const res = await fetch(`${CONSTS.API2}/latest/${api}/${fullUrl}`);
 	const result = await res.json();
 
 	if (res.ok) {
