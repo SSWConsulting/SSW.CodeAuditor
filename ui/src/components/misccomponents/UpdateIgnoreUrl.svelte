@@ -85,6 +85,10 @@
       You can use glob matching, e.g. https://twitter.com/** will match with
       https://twitter.com/users/john or https://twitter.com/login
     </div>
+    <div class="text-sm text-grey-400">
+      To see more supported Glob patterns, check out 
+      <a class="link hover:text-red-600" href="https://github.com/SSWConsulting/SSW.CodeAuditor/wiki/SSW-CodeAuditor-Knowledge-Base-(KB)#supported-glob-patterns-when-adding-ignored-urls">CodeAuditor KB</a>
+    </div>
     <label class="block uppercase text-xs mb-2 py-2">For</label>
     <ul>
       <li class="pb-3">
