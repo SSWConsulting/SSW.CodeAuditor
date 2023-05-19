@@ -1,0 +1,31 @@
+name: PR - Test build
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+      - name: Test Svelte build
+        run: |
+          cd ui
+          npm i
+          npm run build
+      - name: Test Firebase API build
+        run: |
+          cd api/functions
+          npm i
+          npm run lint
+          npm run test
+      - name: Test Docker build
+        run: |
+          cd docker
+          docker build -t sswconsulting/codeauditor .
