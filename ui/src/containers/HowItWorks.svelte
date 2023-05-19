@@ -229,7 +229,7 @@
         View prior scans history
         </h1>
         <p class="mb-8 leading-relaxed">
-        Keep your last 100 scan results for FREE
+        View previous scan results
         </p>
     </div>
     <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">

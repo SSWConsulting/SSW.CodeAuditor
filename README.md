@@ -9,7 +9,7 @@
 </p>
 
 SSW CodeAuditor is a code and link analysis tool that allows users to identify broken links or code, view the overall performance of your website, ensuring large, complex source code can be simplified, cleaned and maintained. With CodeAuditor, you can:
-  - View prior scan history - Keep your last 100 scan results for FREE
+  - View prior scan history - View previous scan results
   - Export to CSV - Export scan result to CSV to perform further analysis (PowerBI)
   - View Lighthouse report - See Lighthouse numbers within CodeAuditor
   - Set Lighthouse threshold - E.g. If performance is less than 80 and SEO score is less than 100, fail the build
