@@ -35,7 +35,7 @@
 		"yargs": "^15.4.1"
 	},
 	"devDependencies": {
-		"@lhci/cli": "^0.4.4",
+		"@lhci/cli": "^0.12.0",
 		"artillery": "^1.7.9",
 		"cloc": "^2.11.0",
 		"lighthouse": "^6.5.0"
