@@ -122,7 +122,7 @@ exports.htmlHintConfig = {
   "page-must-not-show-email-addresses": true,
   "link-must-not-show-unc": true,
   "url-must-be-formatted-correctly": true,
-  "youtube-url-must-be-used-correctly": true,
+  "youtube-url-must-be-used-correctly": false,
   "figure-must-use-the-right-code": true,
   "detect-absolute-references-url-path-correctly": true,
   "use-unicode-hex-code-for-special-html-characters": true
