@@ -310,31 +310,32 @@ exports.addCustomHtmlRule = () => {
     },
   });
 
-  HTMLHint.addRule({
-    id: "youtube-url-must-be-used-correctly",
-    description: "Youtube video url should be used correctly.",
-    init: function (parser, reporter) {
-      var self = this;
+  // Rule disabled
+  // HTMLHint.addRule({
+  //   id: "youtube-url-must-be-used-correctly",
+  //   description: "Youtube video url should be used correctly.",
+  //   init: function (parser, reporter) {
+  //     var self = this;
 
-      parser.addListener("tagstart", (event) => {
-        var tagName = event.tagName.toLowerCase(),
-          mapAttrs = parser.getMapAttrs(event.attrs);
-        if (tagName === "a") {
-          if (mapAttrs["href"]) {
-            if (mapAttrs["href"].includes("youtube.com/embed/")) {
-              reporter.warn(
-                "Youtube url must be used correctly.",
-                event.line,
-                event.col,
-                self,
-                event.raw
-              );
-            }
-          }
-        }
-      });
-    },
-  });
+  //     parser.addListener("tagstart", (event) => {
+  //       var tagName = event.tagName.toLowerCase(),
+  //         mapAttrs = parser.getMapAttrs(event.attrs);
+  //       if (tagName === "a") {
+  //         if (mapAttrs["href"]) {
+  //           if (mapAttrs["href"].includes("youtube.com/embed/")) {
+  //             reporter.warn(
+  //               "Youtube url must be used correctly.",
+  //               event.line,
+  //               event.col,
+  //               self,
+  //               event.raw
+  //             );
+  //           }
+  //         }
+  //       }
+  //     });
+  //   },
+  // });
 
   HTMLHint.addRule({
     id: "figure-must-use-the-right-code",

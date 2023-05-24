@@ -494,12 +494,12 @@ export const customHtmlHintRules = [
     ruleLink: "https://www.ssw.com.au/rules/set-language-on-code-blocks",
     type: RuleType.Warning
   },
-  {
-    rule: "youtube-url-must-be-used-correctly",
-    displayName: "Syntax - YouTube videos must not be under an embed URL",
-    ruleLink: "https://ssw.com.au/rules/optimize-videos-for-youtube/",
-    type: RuleType.Warning
-  },
+  // {
+  //   rule: "youtube-url-must-be-used-correctly",
+  //   displayName: "Syntax - YouTube videos must not be under an embed URL",
+  //   ruleLink: "https://ssw.com.au/rules/optimize-videos-for-youtube/",
+  //   type: RuleType.Warning
+  // },
   {
     rule: "figure-must-use-the-right-code",
     displayName: "Syntax - Use the right HTML/CSS figure markup",
@@ -545,7 +545,7 @@ export const customHtmlHintRules = [
   },
   {
     rule: "url-must-be-formatted-correctly",
-    displayName: "Links - URLs must not include full stop or slash at the end",
+    displayName: "Links - URLs should not include full stop or slash at the end",
     ruleLink: "",
     type: RuleType.Warning
   },
