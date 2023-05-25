@@ -34,11 +34,10 @@ FROM node:18
 # RUN apk update && apk add perl
 
 # install chrome for light house
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-RUN echo "deb http://archive.debian.org/debian stretch main" > /etc/apt/sources.list
-RUN apt-get update
-#RUN apt-get install -y google-chrome-stable --no-install-recommends
+RUN apt-get install -y wget
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \ 
+    && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
+RUN apt-get update && apt-get -y install google-chrome-stable
 
 # add user because we can't run lighthouse with root user
 RUN groupadd --system lhci && \
