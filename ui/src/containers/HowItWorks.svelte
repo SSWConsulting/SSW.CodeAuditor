@@ -18,7 +18,7 @@
       tokenText = '--token ' + x.apiKey;
     }
     else {
-      tokenText = '--cap-add=SYS_ADMIN';
+      tokenText = '';
     }
   });
 
@@ -34,7 +34,7 @@
   ## How to Use CodeAuditor
   Scan any website for broken links, [HTML Issues](https://htmlhint.com), [Google Lighthouse Audit](https://developers.google.com/web/tools/lighthouse) and [Artillery Load Test](https://artillery.io/) by running the following command:
   \`\`\` bash
-  $ docker container run sswconsulting/codeauditor ${tokenText} --url <URL>
+  $ docker run sswconsulting/codeauditor --rm --cap-add=SYS_ADMIN ${tokenText} --url <URL>
   \`\`\`
   `;
 
