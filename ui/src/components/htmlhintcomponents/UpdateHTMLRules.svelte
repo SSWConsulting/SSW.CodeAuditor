@@ -40,8 +40,8 @@
         htmlHintSelectedRules = htmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}))
         customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}))
       } else {
-        htmlHintSelectedRules = htmlHintRules
-        customHtmlHintSelectedRules = customHtmlHintRules
+        htmlHintSelectedRules = htmlHintRules.map(htmlRule => ({...htmlRule, isChecked: true}))
+        customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => ({...htmlRule, isChecked: true}))
       }
     }
   })
