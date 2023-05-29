@@ -91,7 +91,7 @@ const _getAgrs = () => {
     .option("lighthouse", {
       describe: "Include Lighthouse audit",
       type: "boolean",
-      default: true,
+      default: false,
     })
     .option("artillery", {
       describe: "Include Artillery test",
