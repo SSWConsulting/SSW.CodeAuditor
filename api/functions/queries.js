@@ -156,3 +156,15 @@ exports.getLatestSummaryFromUrlAndApi = (url, api) =>
 			break;
 		}
 	});
+
+exports.getAllScanSummaryFromUrl = (url, api) =>
+new Promise(async (resolve) => {
+	const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
+		queryOptions: { filter: odata`url eq ${url} and PartitionKey eq ${api}` }
+	});
+	let result = []
+	for await (const item of entity) {
+		result.push(item);
+	}
+	resolve(result)
+});
