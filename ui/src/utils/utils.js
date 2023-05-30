@@ -551,7 +551,7 @@ export const customHtmlHintRules = [
   },
   {
     rule: "detect-absolute-references-url-path-correctly",
-    displayName: "Links - Detect absolute internal URLs",
+    displayName: "Links - Avoid absolute internal URLs",
     ruleLink: "",
     type: RuleType.Warning
   },
