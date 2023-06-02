@@ -102,6 +102,18 @@ exports.getAlertEmailAddresses = (api, url) => {
   );
 };
 
+exports.getAlertEmailConfig = (api) => {
+  return fetch(`${endpoint}/api/${api}/alertEmailConfig`).then(
+    (res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw Error("Failed to retrieve alert email config");
+      }
+    }
+  );
+};
+
 exports.htmlHintConfig = {
   "grammar-scrum-terms": true,
   "code-block-missing-language": true,

@@ -11,15 +11,15 @@ const boxConsole = require("box-console");
 const slug = require("slug");
 const nodemailer = require("nodemailer");
 
-exports.sendAlertEmail = async (email) => {
+exports.sendAlertEmail = async (email, emailConfig) => {
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,
     secure: true,
     auth: {
-      user: "tom.quang.bui@gmail.com",
-      pass: "wqgvpdmdurgzvque"
+      user: emailConfig.ALERT_EMAIL,
+      pass: emailConfig.ALERT_EMAIL_APP_PASS
     }
   });
 

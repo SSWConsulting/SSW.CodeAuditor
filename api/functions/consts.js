@@ -2,6 +2,7 @@ exports.CONSTANTS = {
 	users: 'users',
 	apiKey: 'apiKey',
 	runs: 'runs',
+	config: 'config',
 };
 
 exports.TABLE = {

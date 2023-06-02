@@ -45,7 +45,8 @@ const {
 } = require('./utils');
 const {
 	updateLastBuild,
-	getUserIdFromApiKey
+	getUserIdFromApiKey,
+	getAlertEmailConfig
 } = require('./firestore');
 
 var cors = require('cors');
@@ -61,6 +62,16 @@ app.get('/healthz', async (req, res) => res.json('ok'));
 
 app.get('/config/:api', async (req, res) =>
 	res.json(await getConfig(req.params.api)));
+
+app.get('/:api/alertEmailConfig', async (req, res) => {
+	const uid = await getUserIdFromApiKey(req.params.api);
+	if (!uid) {
+		res.send(401, 'Invalid token');
+		return;
+	} else {
+		res.json(await getAlertEmailConfig())
+	}
+});
 
 app.get('/config/:api/ignore', async (req, res) =>
 	res.json(await getIgnoredUrls(req.params.api)));

@@ -10,6 +10,7 @@ const {
   addHTMLHintRulesForScan,
   getHTMLHintRules,
   getAlertEmailAddresses,
+  getAlertEmailConfig,
 } = require("./api");
 const {
   printTimeDiff,
@@ -394,14 +395,21 @@ const processAndUpload = async (
       '/': '%2F'
     };
     let urlPathWithSpecChars = args.url.replace(/[:/]/g, m => specialChars[m]);
-    
-    const alertEmails = await getAlertEmailAddresses(args.token, urlPathWithSpecChars)
 
-    if (alertEmails && alertEmails.length > 0) {
-      alertEmails.forEach(item => sendAlertEmail(item.emailAddress))
+    let emailConfig = await getAlertEmailConfig(options.token)
+
+    if (emailConfig) {
+      const alertEmails = await getAlertEmailAddresses(args.token, urlPathWithSpecChars)
+  
+      if (alertEmails && alertEmails.length > 0) {
+        alertEmails.forEach(item => sendAlertEmail(item.emailAddress, emailConfig))
+      } else {
+        throw new Error("Fail to fetch alert email addresses")
+      }
     } else {
-      throw new Error("Fail to fetch alert email addresses")
+      throw new Error("Fail to fetch alert email config")
     }
+    
   }
 };
 
