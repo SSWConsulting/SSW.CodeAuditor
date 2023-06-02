@@ -20,6 +20,8 @@ const {
 	addHTMLHintRules,
 	uploadCodeAuditorReport,
 	addHTMLHintRulesForEachRun,
+	addAlertEmailAddresses,
+	removeAlertEmailAddress,
 } = require('./commands');
 const {
 	getSummary,
@@ -33,6 +35,7 @@ const {
 	getIgnoredUrls,
 	getHTMLHintRulesByRunId,
 	getLatestSummaryFromUrlAndApi,
+	getAlertEmailAddressesFromTokenAndUrl,
 } = require('./queries');
 const {
 	newGuid,
@@ -108,6 +111,15 @@ app.post('/config/:api/ignore', async (req, res) => {
 
 	res.json(await getIgnoredUrls(api));
 });
+
+app.put('/:api/addalertemailaddresses', async (req, res) =>
+	res.json(await addAlertEmailAddresses(req.params.api, req.body)));
+
+app.get('/getalertemailaddresses/:api/:url', async (req, res) =>
+	res.json(await getAlertEmailAddressesFromTokenAndUrl(req.params.api, req.params.url)));
+
+app.delete('/deletealertemailaddress', async (req, res) =>
+	res.json(await removeAlertEmailAddress(req.body.api, req.body.rowkey)));
 
 app.get('/scanresult/:api', async (req, res) => {
 	res.json(await getSummary(req.params.api));

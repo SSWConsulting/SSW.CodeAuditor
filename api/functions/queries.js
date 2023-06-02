@@ -156,3 +156,15 @@ exports.getLatestSummaryFromUrlAndApi = (url, api) =>
 			break;
 		}
 	});
+
+exports.getAlertEmailAddressesFromTokenAndUrl = (api, url) => 
+	new Promise(async (resolve) => {
+		const entity = new TableClient(azureUrl, TABLE.alertEmailAddresses, credential).listEntities({
+			queryOptions: { filter: odata`url eq ${url} and PartitionKey eq ${api} and authorToken eq ${api}` }
+		});
+		let result = []
+		for await (const item of entity) {
+			result.push(item);
+		}
+		resolve(result)
+	});

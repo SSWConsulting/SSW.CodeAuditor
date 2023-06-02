@@ -9,6 +9,29 @@ const R = require("ramda");
 const { execSync } = require("child_process");
 const boxConsole = require("box-console");
 const slug = require("slug");
+const nodemailer = require("nodemailer");
+
+exports.sendAlertEmail = async (email) => {
+  // create reusable transporter object using the default SMTP transport
+  let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: "tom.quang.bui@gmail.com",
+      pass: "wqgvpdmdurgzvque"
+    }
+  });
+
+  // send mail with defined transport object
+  await transporter.sendMail({
+    from: 'foo@example.com', // sender address
+    to: email, // list of receivers
+    subject: "Hello ✔", // Subject line
+    text: "Hello world?", // plain text body
+    html: "<b>Hello world?</b>", // html body
+  });
+}
 
 const consoleBox = (text, color) =>
   console.log(

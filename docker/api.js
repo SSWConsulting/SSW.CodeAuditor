@@ -90,6 +90,18 @@ exports.addHTMLHintRulesForScan = (api, url, runId, selectedRules) => {
   });
 };
 
+exports.getAlertEmailAddresses = (api, url) => {
+  return fetch(`${endpoint}/api/getalertemailaddresses/${api}/${url}`).then(
+    (res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw Error("Failed to find shared email addresses");
+      }
+    }
+  );
+};
+
 exports.htmlHintConfig = {
   "grammar-scrum-terms": true,
   "code-block-missing-language": true,
