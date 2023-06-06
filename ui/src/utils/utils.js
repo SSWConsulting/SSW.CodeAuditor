@@ -534,7 +534,7 @@ export const customHtmlHintRules = [
   {
     rule: "use-unicode-hex-code-for-special-html-characters",
     displayName: "Content - Use Unicode Hex code for special HTML characters",
-    ruleLink: "",
+    ruleLink: "https://ssw.com.au/rules/html-unicode-hex-codes/",
     type: RuleType.Error
   },
   {
@@ -546,13 +546,13 @@ export const customHtmlHintRules = [
   {
     rule: "url-must-be-formatted-correctly",
     displayName: "Links - URLs should not include full stop or slash at the end",
-    ruleLink: "",
+    ruleLink: "https://ssw.com.au/rules/no-full-stop-or-slash-at-the-end-of-urls/",
     type: RuleType.Warning
   },
   {
     rule: "detect-absolute-references-url-path-correctly",
     displayName: "Links - Avoid absolute internal URLs",
-    ruleLink: "",
+    ruleLink: "https://ssw.com.au/rules/avoid-absolute-internal-links/",
     type: RuleType.Warning
   },
   {
@@ -564,7 +564,7 @@ export const customHtmlHintRules = [
   {
     rule: "link-must-not-show-unc",
     displayName: "Links - URLs must not have UNC paths",
-    ruleLink: "",
+    ruleLink: "https://www.ssw.com.au/rules/urls-must-not-have-unc-paths/",
     type: RuleType.Warning
   },
   {
