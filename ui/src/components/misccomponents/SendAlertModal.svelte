@@ -90,28 +90,28 @@
           <div class="grid grid-cols-3 gap-x-4">
             <div class="col-span-2">
               <input
-                class="appearance-none block w-full text-gray-700 border border-gray-300
-            rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white
-            focus:border-gray-500"
+                class="appearance-none block w-full text-gray-700 border border-red-700
+                rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white
+                focus:border-red-800"
                 {type}
                 value={emailAddress}
                 class:border-red-300={!emailAddress}
                 class:focus:border-red-500={!emailAddress}
                 on:input={handleInput}
-                placeholder="Add email address"
+                placeholder="email address"
               />
             </div>
             <div>
               <button
                 type="button"
                 disabled={!emailAddress}
-                class="bg-blue-500 hover:bg-blue-800 text-white font-semibold py-2 px-4 border hover:border-transparent rounded"
+                class="bg-red-800 hover:bg-red-700 text-white font-semibold py-2 px-4 border hover:border-transparent rounded"
                 on:click={updateCustomHtmlRules}>Add</button
               >
             </div>
           </div>
           <div class="font-sans font-bold mt-3">
-            Currently alerted Email Addresses:
+            Currently Receiving Alerts:
           </div>
           {#each sharedEmailAddresses as item}
             <li>
@@ -129,14 +129,7 @@
       {/if}
       <!--Footer-->
       <div class="flex justify-end pt-2 mb-3">
-        <button
-          on:click={dismiss}
-          type="button"
-          class="bgdark hover:bg-grey-800 font-semibold ml-1 text-white
-        hover:text-white py-2 px-4 border hover:border-transparent rounded"
-        >
-          Close
-        </button>
+        <span on:click={dismiss} on:keypress={dismiss} class="px-4 link cursor-pointer">Close</span>
       </div>
     </div>
   </div>

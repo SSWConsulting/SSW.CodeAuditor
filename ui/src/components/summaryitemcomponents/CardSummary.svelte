@@ -39,9 +39,9 @@
   <div class="text-left">
     <button
       on:click={emailAlertModal} 
-      class="bg-blue-500 hover:bg-blue-800 text-white font-semibold py-2 px-4 border hover:border-transparent rounded">
+      class="bg-red-800 hover:bg-red-700 text-white font-semibold py-2 px-4 border hover:border-transparent rounded">
       <span class="ml-2">
-        <i class="fas fa-user-plus"></i> Send Email Alerts
+        <i class="fas fa-paper-plane"></i> Send Email Alerts
       </span>
     </button>
   </div>
