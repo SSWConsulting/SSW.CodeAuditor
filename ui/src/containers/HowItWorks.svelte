@@ -119,11 +119,11 @@
       <p>
         CodeAuditor is a tool that automatically scans your website and its code to check 
       </p>
-      <ul>
-        <li>Broken Links - links to pages which do not work</li>
-        <li>HTML Formatting - which may cause pages to be incorrectly shown to the user.</li>
-        <li>Lighthouse Scan - audits for performance, accessibility, SEO and more</li>
-        <li>Artillary Load Test - load tested to see how it behaves when there are a lot of users accessing it at once</li>
+      <ul class="list-disc">
+        <li>Find broken Links - Links to pages which do not work</li>
+        <li>Check HTML formatting - May cause pages to be incorrectly shown to the user</li>
+        <li>Lighthouse scan - Audits for performance, accessibility, SEO, and more</li>
+        <li>Artillery load test - See how website behaves when lot of users access it simultaneously</li>
       </ul> 
     </article>
     <article class="markdown-body mt-5">

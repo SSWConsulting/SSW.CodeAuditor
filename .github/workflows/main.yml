@@ -25,9 +25,9 @@ jobs:
           TIME: "${{ steps.current-time.outputs.time }}"
         run: echo $TIME
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v1
         with:
-          node-version-file: 'package.json'
+          node-version: '16.x'
       - name: Deploy Svelte UI to Firebase
         env:
           FIREBASETOKEN: ${{ secrets.FIREBASETOKEN }}
