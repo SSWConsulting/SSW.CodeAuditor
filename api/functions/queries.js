@@ -27,8 +27,8 @@ exports.getConfig = (api) =>
 	});
 
 // TODO: Tech debt - Replace all exisiting deprecated azure-storage library with new one using similar template as below
-const account = functions.config().azurestorage.account;
-const accountKey = functions.config().azurestorage.key;
+const account = "codeauditorstorage";
+const accountKey = "2aH4fjgpDUicRtC4HA1odpgH6ALfxo1azEfqJk2aHEwt2cJYPpXRooawb2BpTeJFU75vK+TmvOAzG7nBCwIlMQ==";
 const credential = new AzureNamedKeyCredential(account, accountKey);
 const azureUrl = `https://${account}.table.core.windows.net`;
 
