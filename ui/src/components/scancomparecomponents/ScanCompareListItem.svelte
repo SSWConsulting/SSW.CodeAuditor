@@ -21,8 +21,9 @@
         <span class="text-gray-600">{Math.abs(comparisonDifferences.brokenLinksDifference)}</span>
       {/if}
     </span>
-    <span class="block whitespace-no-wrap font-sans mt-2">404 Errors
+    <span class="block whitespace-no-wrap font-sans mt-2">
       <i class="fas fa-exclamation-circle" style="color: red" />
+      404 Errors
     </span>
   </div>
 </div>
@@ -37,11 +38,12 @@
         <span class="text-gray-600">{Math.abs(comparisonDifferences.codeWarningDifference)}</span>
       {/if}
     </span>
-    <span class="block whitespace-no-wrap font-sans mt-2">HTML Warnings
+    <span class="block whitespace-no-wrap font-sans mt-2">
       <i class="fas fa-exclamation-triangle" style="color: #d69e2e" />
+      HTML Warnings
     </span>
   </div>
-  <div class="text-start mt-6">
+  <div class="text-start mt-8 mb-4">
     <span class="font-sans font-bold block lg:inline-block text-red-600">
       <span class="text-4xl">{numberWithCommas(value.htmlErrors)}</span>
       {#if Object.keys(comparisonDifferences).length > 0}
@@ -49,8 +51,9 @@
         <span class="text-gray-600">{Math.abs(comparisonDifferences.codeErrorDifference)}</span>
       {/if}
     </span>
-    <span class="block whitespace-no-wrap font-sans mt-2">HTML Errors
+    <span class="block whitespace-no-wrap font-sans mt-2">
       <i class="fas fa-exclamation-circle" style="color: red" />
+      HTML Errors
     </span>
   </div>
 </div>
