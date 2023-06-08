@@ -32,8 +32,8 @@ jobs:
           FIREBASETOKEN: ${{ secrets.FIREBASETOKEN }}
         run: |
           cd ui
-          firebase use ssw-codeauditor-staging-f8357
-          firebase projects:list
+          firebase use ssw-codeauditor-staging-f8357 --token ${{ secrets.FIREBASETOKEN }}
+          firebase projects:list --token ${{ secrets.FIREBASETOKEN }}
           npm i
           firebase deploy --token ${{ secrets.FIREBASETOKEN }} --only hosting
       - name: Deploy Function to Staging
@@ -41,7 +41,7 @@ jobs:
           FIREBASETOKEN: ${{ secrets.FIREBASETOKEN }}
         run: |
           cd api/functions
-          firebase use ssw-codeauditor-staging-f8357
-          firebase projects:list
+          firebase use ssw-codeauditor-staging-f8357 --token ${{ secrets.FIREBASETOKEN }}
+          firebase projects:list --token ${{ secrets.FIREBASETOKEN }}
           npm i
           firebase deploy --token ${{ secrets.FIREBASETOKEN }} --only functions
