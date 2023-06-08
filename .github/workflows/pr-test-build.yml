@@ -25,7 +25,21 @@ jobs:
           npm i
           npm run lint
           npm run test
-      - name: Test Docker build
+      - name: Deploy Hosting to Staging
+        env:
+          FIREBASETOKEN: ${{ secrets.FIREBASETOKEN }}
         run: |
-          cd docker
-          docker build -t sswconsulting/codeauditor .
+          cd ui
+          firebase use ssw-codeauditor-staging-f8357
+          firebase projects:list
+          npm i
+          firebase deploy --token ${{ secrets.FIREBASETOKEN }} --only hosting
+      - name: Deploy Function to Staging
+        env:
+          FIREBASETOKEN: ${{ secrets.FIREBASETOKEN }}
+        run: |
+          cd api/functions
+          firebase use ssw-codeauditor-staging-f8357
+          firebase projects:list
+          npm i
+          firebase deploy --token ${{ secrets.FIREBASETOKEN }} --only functions

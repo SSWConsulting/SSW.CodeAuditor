@@ -56,8 +56,8 @@ export const newGuid = () => {
 
 export const CONSTS = {
   USERS: "users",
-  API: "http://localhost:5001/sswlinkauditor-c1131/asia-east2",
-  API2: "http://localhost:5001/sswlinkauditor-c1131/asia-northeast1/api2",
+  API: "https://asia-east2-ssw-codeauditor-staging-f8357.cloudfunctions.net",
+  API2: "https://asia-northeast1-ssw-codeauditor-staging-f8357.cloudfunctions.net/api2",
   BlobURL: "https://codeauditorstorage.blob.core.windows.net",
   URLChecker: "https://urlchecker.blob.core.windows.net",
 };
