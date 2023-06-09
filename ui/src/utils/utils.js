@@ -335,6 +335,15 @@ export const getDisplayText = (errorKey) => {
   }
 };
 
+export const convertSpecialCharUrl = (url) => {
+  // Replace special characters in URL string
+  const specialChars = {
+    ':': '%3A',
+    '/': '%2F'
+  };
+  return url.replace(/[:/]/g, m => specialChars[m]);
+};
+
 export const RuleType = {
   Warning: "Warning",
   Error: "Error",

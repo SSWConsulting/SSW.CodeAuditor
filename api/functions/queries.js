@@ -11,7 +11,6 @@ const {
 } = require('./consts');
 const azure = require('azure-storage');
 const { TableClient, AzureNamedKeyCredential, odata } = require('@azure/data-tables');
-const functions = require('firebase-functions');
 
 exports.getConfig = (api) =>
 	new Promise((resolve, reject) => {
@@ -27,8 +26,8 @@ exports.getConfig = (api) =>
 	});
 
 // TODO: Tech debt - Replace all exisiting deprecated azure-storage library with new one using similar template as below
-const account = "codeauditorstorage";
-const accountKey = "2aH4fjgpDUicRtC4HA1odpgH6ALfxo1azEfqJk2aHEwt2cJYPpXRooawb2BpTeJFU75vK+TmvOAzG7nBCwIlMQ==";
+const account = process.env.AZURE_STORAGE_ACCOUNT;
+const accountKey = process.env.AZURE_STORAGE_ACCESS_KEY;
 const credential = new AzureNamedKeyCredential(account, accountKey);
 const azureUrl = `https://${account}.table.core.windows.net`;
 
@@ -130,20 +129,18 @@ exports.getAllPublicSummary = () =>
 		resolve(result)
 	});
 
-exports.getSummaryById = async (runId) => {
-	const val = await getRun(runId).then((doc) =>
-		getTableRows(
-			TABLE.Scans,
-			new azure.TableQuery()
-			.where('PartitionKey eq ?', doc.apikey)
-			.and('runId eq ?', doc.runId)
-		)
-	);
-	if (val && val.length > 0) {
-		return val[0];
-	}
-	return null;
-};
+exports.getSummaryById = async (runId) => 
+	getRun(runId).then((doc) =>
+		new Promise(async (resolve) => {
+			const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
+				queryOptions: { filter: odata`PartitionKey eq ${doc.apiKey} and runId eq ${doc.runId}` }
+			});
+			let result = []
+			for await (const item of entity) {
+				result.push(item);
+			}
+			resolve(result[0])
+		}));
 
 exports.getLatestSummaryFromUrlAndApi = (url, api) => 
 	new Promise(async (resolve) => {
