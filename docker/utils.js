@@ -10,8 +10,9 @@ const { execSync } = require("child_process");
 const boxConsole = require("box-console");
 const slug = require("slug");
 const nodemailer = require("nodemailer");
+const fns = require('date-fns')
 
-exports.sendAlertEmail = async (email, emailConfig) => {
+exports.sendAlertEmail = async (email, emailConfig, scanSummary) => {
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -27,9 +28,8 @@ exports.sendAlertEmail = async (email, emailConfig) => {
   await transporter.sendMail({
     from: 'foo@example.com', // sender address
     to: email, // list of receivers
-    subject: "Hello ✔", // Subject line
-    text: "Hello world?", // plain text body
-    html: "<b>Hello world?</b>", // html body
+    subject: `SSW CodeAuditor Scan Result - ${scanSummary.url}`, // Subject line
+    html: `<h2 style="color: red">Hi there,</h2><p>This is the result from SSW CodeAuditor scan on ${scanSummary.url} on ${fns.format(new Date(scanSummary.buildDate), 'dd MMM yyyy, hh:mm aaaa')}</p><p>⏳ Duration: ${scanSummary.scanDuration} seconds</p><p>🚨 Broken Links: ${scanSummary.uniqueBrokenLinks} / ${scanSummary.totalScanned} Bad links</p><p>⚠️ HTML Warnings: ${scanSummary.htmlWarnings}</p><p>❌ HTML Errors: ${scanSummary.htmlErrors}</p><p>See https://codeauditor.com/build/${scanSummary.runId} for full scan result</p><p>&#60;This is the automated alert email from SSW CodeAuditor&#62;</p>`, 
   });
 }
 
@@ -823,4 +823,13 @@ exports.getFinalEval = (
   }
   consoleBox(`Errors Detected`, "red");
   return "FAIL";
+};
+
+exports.convertSpecialCharUrl = (url) => {
+  // Replace special characters in URL string
+  const specialChars = {
+    ':': '%3A',
+    '/': '%2F'
+  };
+  return url.replace(/[:/]/g, m => specialChars[m]);
 };

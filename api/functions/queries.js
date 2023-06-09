@@ -133,7 +133,7 @@ exports.getSummaryById = async (runId) =>
 	getRun(runId).then((doc) =>
 		new Promise(async (resolve) => {
 			const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
-				queryOptions: { filter: odata`PartitionKey eq ${doc.apiKey} and runId eq ${doc.runId}` }
+				queryOptions: { filter: odata`PartitionKey eq ${doc.apikey} and runId eq ${doc.runId}` }
 			});
 			let result = []
 			for await (const item of entity) {

@@ -1,8 +1,6 @@
 <script>
-  import Modal from "./Modal.svelte";
   import LoadingFlat from "./LoadingFlat.svelte";
-  import TextField from "./TextField.svelte";
-  import { CONSTS, validateEmail } from "../../utils/utils";
+  import { CONSTS, validateEmail, convertSpecialCharUrl } from "../../utils/utils";
 
   export let show;
   export let url;
@@ -19,6 +17,12 @@
     emailAddress = validateEmail(e.target.value) ? e.target.value : null;
   };
 
+  const reloadSharedEmailList = async () => {
+    let fullUrl = convertSpecialCharUrl(url)
+    const res = await fetch(`${CONSTS.API}/api/getalertemailaddresses/${userApiKey}/${fullUrl}`);
+    sharedEmailAddresses = await res.json();
+  }
+
   const removeAlertEmail = async (e) => {
     isLoading = true;
     const res = await fetch(`${CONSTS.API}/api/deletealertemailaddress`, {
@@ -32,7 +36,7 @@
 
     if (res.ok) {
       isLoading = false;
-      show = false;
+      reloadSharedEmailList();
     } else {
       throw new Error("Failed to load");
     }
@@ -55,7 +59,7 @@
 
     if (res.ok) {
       isLoading = false;
-      show = false;
+      reloadSharedEmailList();
     } else {
       throw new Error("Failed to load");
     }

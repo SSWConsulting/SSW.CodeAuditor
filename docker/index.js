@@ -11,6 +11,7 @@ const {
   getHTMLHintRules,
   getAlertEmailAddresses,
   getAlertEmailConfig,
+  getAllScanSummaryFromUrl
 } = require("./api");
 const {
   printTimeDiff,
@@ -25,7 +26,8 @@ const {
   runHtmlHint,
   processBrokenLinks,
   getFinalEval,
-  sendAlertEmail
+  sendAlertEmail,
+  convertSpecialCharUrl
 } = require("./utils");
 
 const { readGithubSuperLinter } = require("./parseSuperLinter");
@@ -375,7 +377,7 @@ const processAndUpload = async (
   if (args.htmlhint && runId) {
     const result = await getHTMLHintRules(args.token, args.url);
 
-    if (result) {
+    if (result && result.length > 0) {
       const selectedRules = result.selectedRules;
       const res = await addHTMLHintRulesForScan(args.token, args.url, runId, selectedRules)
   
@@ -388,28 +390,26 @@ const processAndUpload = async (
   }
 
   // Send alert email to shared participants
-  if (args.token && runId) {
-    // Replace special character in url path
-    const specialChars = {
-      ':': '%3A',
-      '/': '%2F'
-    };
-    let urlPathWithSpecChars = args.url.replace(/[:/]/g, m => specialChars[m]);
+  if (args.token) {
+    let urlPathWithSpecChars = convertSpecialCharUrl(args.url)
 
-    let emailConfig = await getAlertEmailConfig(options.token)
+    let emailConfig = await getAlertEmailConfig(args.token)
+
+    // Get latest scan summary
+    let res = await getAllScanSummaryFromUrl(args.token, urlPathWithSpecChars)
+    let scanSummary = await res[0]
 
     if (emailConfig) {
       const alertEmails = await getAlertEmailAddresses(args.token, urlPathWithSpecChars)
   
       if (alertEmails && alertEmails.length > 0) {
-        alertEmails.forEach(item => sendAlertEmail(item.emailAddress, emailConfig))
+        alertEmails.forEach(item => sendAlertEmail(item.emailAddress, emailConfig, scanSummary))
       } else {
         throw new Error("Fail to fetch alert email addresses")
       }
     } else {
       throw new Error("Fail to fetch alert email config")
     }
-    
   }
 };
 

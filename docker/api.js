@@ -1,8 +1,7 @@
 const fetch = require("node-fetch");
 const slug = require("slug");
-const endpoint = "https://asia-east2-sswlinkauditor-c1131.cloudfunctions.net";
-const endpoint2 = "https://asia-northeast1-sswlinkauditor-c1131.cloudfunctions.net/api2";
-//'http://localhost:5001/sswlinkauditor-c1131/asia-east2';
+const endpoint = "https://asia-east2-ssw-codeauditor-staging-f8357.cloudfunctions.net";
+const endpoint2 = "https://asia-northeast1-ssw-codeauditor-staging-f8357.cloudfunctions.net/api2";
 
 exports.postData = (api, buildId, data) => {
   return fetch(`${endpoint}/api/scanresult/${api}/${buildId || "-"}`, {
@@ -109,6 +108,18 @@ exports.getAlertEmailConfig = (api) => {
         return res.json();
       } else {
         throw Error("Failed to retrieve alert email config");
+      }
+    }
+  );
+};
+
+exports.getAllScanSummaryFromUrl = (api, url) => {
+  return fetch(`${endpoint}/api/scanSummaryFromUrl/${api}/${url}`).then(
+    (res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw Error("Failed to retrieve scan summary");
       }
     }
   );
