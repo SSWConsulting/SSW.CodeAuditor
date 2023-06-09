@@ -10,6 +10,7 @@
   let isLoading;
   let emailAddress = "";
   let type = "text";
+  let showErrorPromp = false;
 
   const dismiss = () => (show = false);
 
@@ -43,25 +44,30 @@
   };
 
   const updateCustomHtmlRules = async () => {
-    isLoading = true;
-    const res = await fetch(
-      `${CONSTS.API}/api/${userApiKey}/addalertemailaddresses`,
-      {
-        method: "PUT",
-        body: JSON.stringify({
-          url,
-          emailAddress,
-          authorToken: userApiKey,
-        }),
-        headers: { "Content-Type": "application/json" },
+    if (emailAddress) {
+      showErrorPromp = false;
+      isLoading = true;
+      const res = await fetch(
+        `${CONSTS.API}/api/${userApiKey}/addalertemailaddresses`,
+        {
+          method: "PUT",
+          body: JSON.stringify({
+            url,
+            emailAddress,
+            authorToken: userApiKey,
+          }),
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+  
+      if (res.ok) {
+        isLoading = false;
+        reloadSharedEmailList();
+      } else {
+        throw new Error("Failed to load");
       }
-    );
-
-    if (res.ok) {
-      isLoading = false;
-      reloadSharedEmailList();
     } else {
-      throw new Error("Failed to load");
+      showErrorPromp = true;
     }
   };
 </script>
@@ -102,17 +108,19 @@
                 class:border-red-300={!emailAddress}
                 class:focus:border-red-500={!emailAddress}
                 on:input={handleInput}
-                placeholder="email address"
+                placeholder="Email address"
               />
             </div>
             <div>
               <button
                 type="button"
-                disabled={!emailAddress}
-                class="bg-red-800 hover:bg-red-700 text-white font-semibold py-2 px-4 border hover:border-transparent rounded"
+                class="bg-black hover:bg-gray-800 text-white font-semibold py-2 px-4 border hover:border-transparent rounded"
                 on:click={updateCustomHtmlRules}>Add</button
               >
             </div>
+            {#if showErrorPromp}
+              <div class="text-red-700 font-sans">Invalid email input</div>
+            {/if}
           </div>
           <div class="font-sans font-bold mt-3">
             Currently Receiving Alerts:
@@ -123,9 +131,9 @@
               <button
                 type="button"
                 on:click={removeAlertEmail(item)}
-                class="bg-red-600 hover:bg-red-800 text-white px-2 border hover:border-transparent rounded"
+                class="bg-red-600 hover:bg-red-800 text-white px-2 border hover:border-transparent rounded text-xs"
               >
-                <i class="fas fa-minus" />
+                <i class="fas fa-minus fa-sm" />
               </button>
             </li>
           {/each}
