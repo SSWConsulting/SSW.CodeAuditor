@@ -56,8 +56,8 @@ export const newGuid = () => {
 
 export const CONSTS = {
   USERS: "users",
-  API: "https://asia-east2-sswlinkauditor-c1131.cloudfunctions.net",
-  API2: "https://asia-northeast1-sswlinkauditor-c1131.cloudfunctions.net/api2",
+  API: "https://asia-east2-ssw-codeauditor-staging-f8357.cloudfunctions.net",
+  API2: "https://asia-northeast1-ssw-codeauditor-staging-f8357.cloudfunctions.net/api2",
   BlobURL: "https://codeauditorstorage.blob.core.windows.net",
   URLChecker: "https://urlchecker.blob.core.windows.net",
 };
@@ -333,6 +333,15 @@ export const getDisplayText = (errorKey) => {
   } else {
     return errorKey;
   }
+};
+
+export const convertSpecialCharUrl = (url) => {
+  // Replace special characters in URL string
+  const specialChars = {
+    ':': '%3A',
+    '/': '%2F'
+  };
+  return url.replace(/[:/]/g, m => specialChars[m]);
 };
 
 export const RuleType = {

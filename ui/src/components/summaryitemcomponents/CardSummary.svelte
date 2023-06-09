@@ -3,6 +3,8 @@
   import formatDistanceToNow from "date-fns/formatDistanceToNow";
   import { createEventDispatcher } from "svelte";
   import { printTimeDiff } from "../../utils/utils";
+  import { navigateTo } from "svelte-router-spa";
+  import { convertSpecialCharUrl } from "../../utils/utils";
 
   export let value;
   export let isHtmlHintComp;
@@ -33,6 +35,15 @@
         Duration: {printTimeDiff(+value.scanDuration)}
       </span>
     </div>
+  </div>
+  <div class="text-center mt-3">
+    <button 
+      type="button"
+      class="w-48 link cursor-pointer border rounded hover:bg-red-600 hover:text-white" 
+      on:click={navigateTo(`/scanCompare/${value.partitionKey}/${convertSpecialCharUrl(value.url.slice(12))}/${value.buildDate}`)}
+    >
+      Compare to latest scan
+    </button>
   </div>
   <div class="text-right">
     {#if (value.buildDate && isHtmlHintComp)}

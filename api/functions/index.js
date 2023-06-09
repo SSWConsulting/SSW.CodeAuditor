@@ -33,6 +33,7 @@ const {
 	getIgnoredUrls,
 	getHTMLHintRulesByRunId,
 	getLatestSummaryFromUrlAndApi,
+	getAllScanSummaryFromUrl,
 } = require('./queries');
 const {
 	newGuid,
@@ -139,6 +140,10 @@ app.get('/latest/:api/:url', async (req, res) => {
 		summary,
 		brokenLinks
 	});
+});
+
+app.get('/scanSummaryFromUrl/:api/:url', async (req, res) => {
+	res.json(await getAllScanSummaryFromUrl(req.params.url, req.params.api));
 });
 
 app.post('/scanresult/:api/:buildId', async (req, res) => {

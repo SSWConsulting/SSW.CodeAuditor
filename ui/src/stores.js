@@ -170,5 +170,17 @@ export const getLatestBuildDetails = async (api, url) => {
 	}
 };
 
+export const getAllScanSummaryFromUrl = async (api, url) => {
+	const fullUrl = `https%3A%2F%2Fwww.${url}` 
+	const res = await fetch(`${CONSTS.API}/api/scanSummaryFromUrl/${api}/${fullUrl}`);
+	const result = await res.json();
+
+	if (res.ok) {
+		return result;
+	} else {
+		throw new Error('Failed to load');
+	}
+};
+
 let activeRun;
 activeRun$.subscribe((x) => (activeRun = x));
