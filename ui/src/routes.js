@@ -12,6 +12,8 @@ import Rules from './containers/Rules.svelte';
 import LighthouseReport from './containers/LighthouseReport.svelte';
 import ArtilleryReport from './containers/ArtilleryReport.svelte';
 import AppLayout from './containers/Layout.svelte';
+import ScanCompare from './containers/ScanCompare.svelte';
+import ErrorPage from './containers/ErrorPage.svelte';
 import { isLoggedIn } from './stores.js';
 
 let loggedIn = false;
@@ -73,6 +75,16 @@ const routes = [
 	{
 		name: '/latest/:api/:url',
 		component: BuildDetails,
+		layout: AppLayout
+	},
+	{
+		name: '/scanCompare/:api/:url/:buildDate',
+		component: ScanCompare,
+		layout: AppLayout
+	},
+	{
+		name: '/error',
+		component: ErrorPage,
 		layout: AppLayout
 	},
 	{
