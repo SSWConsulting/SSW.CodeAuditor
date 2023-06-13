@@ -15,7 +15,7 @@
   </div>
   <div class="col-span-1 text-start">
     <span class="block whitespace-no-wrap font-sans">404 Errors
-      <i class="fas fa-exclamation-circle" style="color: red"></i>
+      <i class="textred fas fa-link-slash"></i>
     </span>
     <span
       class="font-sans font-bold block lg:inline-block"

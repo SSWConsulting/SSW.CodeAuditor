@@ -94,7 +94,33 @@
   ];
   \`\`\`
   #### 7. Make a Pull Request and have it checked by CodeAuditor Team`;
+  
+  const emailAlertInstruction = `
+  ## How to send automated Email Alert for future scans
+  #### 1. Click on "Send Email Alerts" to open the modal
+  ![Image](https://github.com/SSWConsulting/SSW.CodeAuditor/assets/67776356/d466a84e-b142-4185-880a-1d60dac78d41)
+  **Figure: Send Email Alerts button**
 
+  #### 2. Add or remove email addresses to receive alert
+  ![Image](https://github.com/SSWConsulting/SSW.CodeAuditor/assets/67776356/4b7492d0-5dde-4b6c-be43-e1b05b98fb89)
+  **Figure: Email alerts modal**
+
+  #### 3. After you run your next scan, the email addresses will receive automated email alerts 
+  ![Image](https://github.com/SSWConsulting/SSW.CodeAuditor/assets/67776356/69b44d1b-22b3-477c-8ab4-19560d88e64d)
+  **Figure: Sample email alerts**
+  `
+
+  const scanCompareInstruction = `
+  ## How to compare to latest scan
+  #### 1. Click on "Compare to latest scan" to go to scan compare page
+  ![Image](https://github.com/SSWConsulting/SSW.CodeAuditor/assets/67776356/a0b1c84a-8dd7-42d8-9366-587c14d09596)
+  **Figure: Scan compare button**
+
+  #### 2. Select in the dropdown list to choose which previous scan you want to compare to the latest one
+  ![Image](https://github.com/SSWConsulting/SSW.CodeAuditor/assets/67776356/d0978ed2-417d-4085-907e-ae4fc6a8b20b)
+  **Figure: Scan comparison page**
+  `
+  
   const customRuleConfig = `
   ## How to Use Custom HTML Rules Configuration
   #### 1. Click on "Enabled Rules" 
@@ -102,7 +128,7 @@
   **Figure: Enabled Rules button**
 
   #### 2. Select which custom rules you want for your next scan  
-  ![image](https://user-images.githubusercontent.com/67776356/229018454-bbf0272d-df50-4999-863e-e14dfe25a4ab.png)
+  ![Image](https://github.com/SSWConsulting/SSW.CodeAuditor/assets/67776356/f6d09566-0ff8-4ef8-a120-53fade615689)
   **Figure: Custom rule selection modal**
 
   #### 3. After you run your next scan, you should only be able to see the scan results for your selected html rules
@@ -147,25 +173,31 @@
       <article class="markdown-body">
         {@html marked(instruction)}
       </article>
-      <article class="markdown-body mt-5">
+      <article class="markdown-body mt-8">
         {@html marked(systemRequirements)}
       </article>
-      <article class="markdown-body mt-5">
+      <article class="markdown-body mt-8">
         {@html marked(instructionSteps)}
       </article>
-      <article class="markdown-body mt-5">
+      <article class="markdown-body mt-8">
         <h3>Video - How to use Code Auditor:</h3>
         <div>
           <iframe width="560" height="315" src="https://www.youtube.com/embed/DCDAtmvaPUY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
       </article>
-      <article class="markdown-body mt-5">
+      <article class="markdown-body mt-8">
+        {@html marked(emailAlertInstruction)}
+      </article>
+      <article class="markdown-body mt-8">
+        {@html marked(scanCompareInstruction)}
+      </article>
+      <article class="markdown-body mt-8">
         {@html marked(customRuleConfig)}
       </article>
-      <article class="markdown-body mt-5">
+      <article class="markdown-body mt-8">
         {@html marked(addingCustomRule)}
       </article>
-      <article class="markdown-body mt-5">
+      <article class="markdown-body mt-8">
         <h3>Video - How To Add, Test and Deploy Custom HTML Rules (For Devs):</h3>
         <div>
           <iframe width="560" height="315" src="https://www.youtube.com/embed/iduwnyzdcFo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

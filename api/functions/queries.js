@@ -170,9 +170,9 @@ new Promise(async (resolve) => {
 	const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
 		queryOptions: { filter: odata`url eq ${url} and PartitionKey eq ${api}` }
 	});
-	let result = []
-	for await (const item of entity) {
-		result.push(item);
+	const iterator = entity.byPage({ maxPageSize: 10 });
+	for await (const item of iterator) {
+		resolve(item)
+		break;
 	}
-	resolve(result)
 });

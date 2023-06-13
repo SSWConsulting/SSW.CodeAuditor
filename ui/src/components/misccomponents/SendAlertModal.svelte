@@ -43,7 +43,7 @@
     }
   };
 
-  const updateCustomHtmlRules = async () => {
+  const updateEmailAddress = async () => {
     if (emailAddress) {
       showErrorPromp = false;
       isLoading = true;
@@ -115,33 +115,33 @@
               <button
                 type="button"
                 class="bg-black hover:bg-gray-800 text-white font-semibold py-2 px-4 border hover:border-transparent rounded"
-                on:click={updateCustomHtmlRules}>Add</button
+                on:click={updateEmailAddress}>Add</button
               >
             </div>
             {#if showErrorPromp}
               <div class="text-red-700 font-sans">Invalid email input</div>
             {/if}
           </div>
-          <div class="font-sans font-bold mt-3">
-            Currently Receiving Alerts:
+          <div class="font-sans font-bold mt-5">
+            Currently receiving alerts:
           </div>
           {#each sharedEmailAddresses as item}
-            <li>
+            <li 
+              class="cursor-pointer"
+              on:mouseover={() => {item = { ...item, showDeleteIcon: true } }}
+              on:mouseleave={()=> {item = { ...item, showDeleteIcon: false } }}
+            >
               {item.emailAddress}
-              <button
-                type="button"
-                on:click={removeAlertEmail(item)}
-                class="bg-red-600 hover:bg-red-800 text-white px-2 border hover:border-transparent rounded text-xs"
-              >
-                <i class="fas fa-minus fa-sm" />
-              </button>
+              {#if item.showDeleteIcon}
+                <i class="fas fa-trash-can fa-sm text-red-600 ml-1 cursor-pointer" on:click={() => removeAlertEmail(item)}/>
+              {/if}
             </li>
           {/each}
         </div>
       {/if}
       <!--Footer-->
       <div class="flex justify-end pt-2 mb-3">
-        <span on:click={dismiss} on:keypress={dismiss} class="px-4 link cursor-pointer">Close</span>
+        <span on:click={dismiss} on:keypress={dismiss} class="link cursor-pointer">Close</span>
       </div>
     </div>
   </div>
