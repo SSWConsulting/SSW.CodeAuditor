@@ -20,6 +20,8 @@ const {
 	addHTMLHintRules,
 	uploadCodeAuditorReport,
 	addHTMLHintRulesForEachRun,
+	addAlertEmailAddresses,
+	removeAlertEmailAddress,
 } = require('./commands');
 const {
 	getSummary,
@@ -33,6 +35,7 @@ const {
 	getIgnoredUrls,
 	getHTMLHintRulesByRunId,
 	getLatestSummaryFromUrlAndApi,
+	getAlertEmailAddressesFromTokenAndUrl,
 	getAllScanSummaryFromUrl,
 } = require('./queries');
 const {
@@ -43,7 +46,8 @@ const {
 } = require('./utils');
 const {
 	updateLastBuild,
-	getUserIdFromApiKey
+	getUserIdFromApiKey,
+	getAlertEmailConfig
 } = require('./firestore');
 
 var cors = require('cors');
@@ -59,6 +63,16 @@ app.get('/healthz', async (req, res) => res.json('ok'));
 
 app.get('/config/:api', async (req, res) =>
 	res.json(await getConfig(req.params.api)));
+
+app.get('/:api/alertEmailConfig', async (req, res) => {
+	const uid = await getUserIdFromApiKey(req.params.api);
+	if (!uid) {
+		res.send(401, 'Invalid token');
+		return;
+	} else {
+		res.json(await getAlertEmailConfig())
+	}
+});
 
 app.get('/config/:api/ignore', async (req, res) =>
 	res.json(await getIgnoredUrls(req.params.api)));
@@ -109,6 +123,15 @@ app.post('/config/:api/ignore', async (req, res) => {
 
 	res.json(await getIgnoredUrls(api));
 });
+
+app.put('/:api/addalertemailaddresses', async (req, res) =>
+	res.json(await addAlertEmailAddresses(req.params.api, req.body)));
+
+app.get('/getalertemailaddresses/:api/:url', async (req, res) =>
+	res.json(await getAlertEmailAddressesFromTokenAndUrl(req.params.api, req.params.url)));
+
+app.delete('/deletealertemailaddress', async (req, res) =>
+	res.json(await removeAlertEmailAddress(req.body.api, req.body.rowkey)));
 
 app.get('/scanresult/:api', async (req, res) => {
 	res.json(await getSummary(req.params.api));

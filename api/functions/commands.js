@@ -116,6 +116,27 @@ exports.insertScanSummary = (api, buildId, runId, buildDate, data) => {
 	return insertEntity(TABLE.Scans, replaceProp(data, entity));
 };
 
+exports.addAlertEmailAddresses = (api, data) => {
+	const entGen = azure.TableUtilities.entityGenerator;
+	return updateEntity(
+		TABLE.alertEmailAddresses,
+		replaceProp(data, {
+			PartitionKey: entGen.String(api),
+			RowKey: entGen.String(getReversedTick()),
+		})
+	);
+};
+
+exports.removeAlertEmailAddress = (api, rowkey) => {
+	const entGen = azure.TableUtilities.entityGenerator;
+
+	let entity = {
+		PartitionKey: entGen.String(api),
+		RowKey: rowkey,
+	};
+	return deleteEntity(TABLE.alertEmailAddresses, entity);
+};
+
 exports.uploadLighthouseReport = (runId, lhr) =>
 	uploadBlob(BLOB.lhr, `${runId}.json`, JSON.stringify(lhr));
 

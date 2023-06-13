@@ -133,7 +133,7 @@ exports.getSummaryById = async (runId) =>
 	getRun(runId).then((doc) =>
 		new Promise(async (resolve) => {
 			const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
-				queryOptions: { filter: odata`PartitionKey eq ${doc.apiKey} and runId eq ${doc.runId}` }
+				queryOptions: { filter: odata`PartitionKey eq ${doc.apikey} and runId eq ${doc.runId}` }
 			});
 			let result = []
 			for await (const item of entity) {
@@ -154,14 +154,25 @@ exports.getLatestSummaryFromUrlAndApi = (url, api) =>
 		}
 	});
 
+exports.getAlertEmailAddressesFromTokenAndUrl = (api, url) => 
+	new Promise(async (resolve) => {
+		const entity = new TableClient(azureUrl, TABLE.alertEmailAddresses, credential).listEntities({
+			queryOptions: { filter: odata`url eq ${url} and PartitionKey eq ${api} and authorToken eq ${api}` }
+		});
+		let result = []
+		for await (const item of entity) {
+			result.push(item);
+		}
+		resolve(result)
+	});
 exports.getAllScanSummaryFromUrl = (url, api) =>
 new Promise(async (resolve) => {
 	const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
 		queryOptions: { filter: odata`url eq ${url} and PartitionKey eq ${api}` }
 	});
-	let result = []
-	for await (const item of entity) {
-		result.push(item);
+	const iterator = entity.byPage({ maxPageSize: 10 });
+	for await (const item of iterator) {
+		resolve(item)
+		break;
 	}
-	resolve(result)
 });

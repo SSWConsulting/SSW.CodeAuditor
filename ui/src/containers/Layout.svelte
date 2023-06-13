@@ -25,7 +25,7 @@
           <a href="/" class="sm:w-4/4 lg:w-1/3 ml-2">
             <img
               class="h-7 object-cover"
-              src="https://i.ibb.co/QYTq9D3/Code-Auditor-logo.png"
+              src="https://github.com/SSWConsulting/SSW.Website/assets/67776356/f1467110-1677-4c76-a18e-3ffb6b3abcb9"
               alt="CodeAuditor"
             />
           </a> 

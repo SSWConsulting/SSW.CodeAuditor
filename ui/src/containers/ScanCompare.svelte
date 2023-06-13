@@ -56,13 +56,13 @@
       </a>
     </div>
     <div class="grid grid-cols-7 text-left mt-8">
-      <div class="col-start-2 col-span-2 border-2 rounded px-4">
-        <div class="text-lg text-gray-600 mb-2 mt-4">Select past scan to compare:</div>
+      <div class="col-start-2 col-span-2 border-2 rounded px-4 border-black">
+        <div class="text-lg textgrey mb-2 mt-4">Select past scan to compare:</div>
         <div>
           <select
             bind:value={selectedScan}
             on:change={() => getDifferences()}
-            class="mb-4 text-gray-900 text-lg font-sans font-bold"
+            class="mb-4 textgrey text-lg font-sans font-bold cursor-pointer"
             style="border: none"
           >
             {#each allScans as scan}
@@ -80,10 +80,10 @@
           {/if}
         </div>
       </div>
-      <div class="flex items-center justify-center text-5xl text-gray-600"><i class="fas fa-angle-right"></i></div>
-      <div class="col-span-2 border-2 rounded px-4">
-        <div class="text-lg text-gray-600 mb-2 mt-4">Latest scan</div>
-        <div class="font-sans font-bold text-lg text-gray-900 mb-4">
+      <div class="flex items-center justify-center text-5xl textgrey"><i class="fas fa-angles-right"></i></div>
+      <div class="col-span-2 border-2 border-black rounded px-4">
+        <div class="text-lg textgrey mb-2 mt-4">Latest scan</div>
+        <div class="font-sans font-bold text-lg textgrey mb-4">
           {allScans.length > 0
             ? `${format(new Date(allScans[0].buildDate), "dd LLL y")} at ${format(new Date(allScans[0].buildDate), "h:mm bbb")}`
             : ""}
