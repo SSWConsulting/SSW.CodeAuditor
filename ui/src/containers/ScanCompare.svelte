@@ -49,7 +49,7 @@
   <LoadingFlat />
 {:else}
   <div class="container mx-auto mt-2">
-    <Breadcrumbs displayMode="ScanCompare" />
+    <Breadcrumbs displayMode="Scan Compare" />
     <br>
     <div class="text-center text-3xl font-sans font-bold mb-2">
       Compare Scans:
