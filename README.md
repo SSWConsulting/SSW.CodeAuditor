@@ -17,7 +17,7 @@ SSW CodeAuditor is a code and link analysis tool that allows users to identify b
   - View code errors - View HTML code errors and code errors within CodeAuditor
 
 ## Architecture Diagram
-![Untitled Diagram](https://user-images.githubusercontent.com/67776356/122136530-08973980-ce86-11eb-9eb8-a24c945a984e.png)
+![image](https://github.com/SSWConsulting/SSW.CodeAuditor/assets/67776356/d588c0ab-52d9-44f7-ac6c-75eacf0c7437)
 
 **Figure: CodeAuditor Architecture Diagram**
 
