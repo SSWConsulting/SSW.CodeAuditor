@@ -1,7 +1,7 @@
 const fetch = require("node-fetch");
 const slug = require("slug");
-const endpoint = "https://asia-east2-ssw-codeauditor-staging-f8357.cloudfunctions.net";
-const endpoint2 = "https://asia-northeast1-ssw-codeauditor-staging-f8357.cloudfunctions.net/api2";
+const endpoint = "https://asia-east2-sswlinkauditor-c1131.cloudfunctions.net";
+const endpoint2 = "https://asia-northeast1-sswlinkauditor-c1131.cloudfunctions.net/api2";
 
 exports.postData = (api, buildId, data) => {
   return fetch(`${endpoint}/api/scanresult/${api}/${buildId || "-"}`, {

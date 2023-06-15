@@ -56,13 +56,13 @@
 
 {#if builds.length === 0}
   <div class="mb-6 text-center text-xl py-8">
-    <Icon cssClass="text-yellow-800 inline-block">
+    <Icon cssClass="inline-block">
       <path
         d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13
         21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
     </Icon>
-    There is no broken links in this build!!
-    <Icon cssClass="text-yellow-800 inline-block">
+    No broken links in this build!
+    <Icon cssClass="inline-block">
       <path
         d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13
         21l-2.286-6.857L5 12l5.714-2.143L13 3z" />

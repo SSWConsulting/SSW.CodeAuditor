@@ -5,6 +5,7 @@
   import ScanCompareListItem from "../components/scancomparecomponents/ScanCompareListItem.svelte";
   import LoadingFlat from "../components/misccomponents/LoadingFlat.svelte";
   import { navigateTo } from "svelte-router-spa";
+  import Breadcrumbs from "../components/misccomponents/Breadcrumbs.svelte";
 
   export let currentRoute;
   let allScans = [];
@@ -19,7 +20,11 @@
     );
 
     if (allScans.length > 0) {
-      selectedScan = currentRoute.namedParams.buildDate ? allScans.filter(scan => scan.buildDate === currentRoute.namedParams.buildDate)[0] : allScans[1];
+      selectedScan = 
+        // selected scan should not compare to itself (the latest one)
+        currentRoute.namedParams.buildDate && allScans[0].buildDate !== currentRoute.namedParams.buildDate ? 
+        allScans.filter(scan => scan.buildDate === currentRoute.namedParams.buildDate)[0] : 
+        allScans[1];
       getDifferences();
       loading = false;
     } else {
@@ -43,7 +48,9 @@
 {#if loading}
   <LoadingFlat />
 {:else}
-  <div class="container mx-auto mt-8">
+  <div class="container mx-auto mt-2">
+    <Breadcrumbs displayMode="ScanCompare" />
+    <br>
     <div class="text-center text-3xl font-sans font-bold mb-2">
       Compare Scans:
     </div>
@@ -56,7 +63,7 @@
       </a>
     </div>
     <div class="grid grid-cols-7 text-left mt-8">
-      <div class="col-start-2 col-span-2 border-2 rounded px-4 border-black">
+      <div class="col-start-2 col-span-2 border-black border border-opacity-25 hover:border-opacity-50 rounded px-4">
         <div class="text-lg textgrey mb-2 mt-4">Select past scan to compare:</div>
         <div>
           <select
@@ -65,7 +72,7 @@
             class="mb-4 textgrey text-lg font-sans font-bold cursor-pointer"
             style="border: none"
           >
-            {#each allScans as scan}
+            {#each allScans.slice(1) as scan}
               <option value={scan}>
                 {format(new Date(scan.buildDate), "dd LLL y")} at
                 {format(new Date(scan.buildDate), "h:mm bbb")}
@@ -81,12 +88,16 @@
         </div>
       </div>
       <div class="flex items-center justify-center text-5xl textgrey"><i class="fas fa-angles-right"></i></div>
-      <div class="col-span-2 border-2 border-black rounded px-4">
+      <div class="col-span-2 border-black border border-opacity-25 hover:border-opacity-50 rounded px-4">
         <div class="text-lg textgrey mb-2 mt-4">Latest scan</div>
-        <div class="font-sans font-bold text-lg textgrey mb-4">
-          {allScans.length > 0
+        <div
+          on:click={() => navigateTo(`/build/${allScans[0].runId}`)}
+          class="font-sans font-bold text-lg textgrey mb-4 cursor-pointer">
+          {
+            allScans.length > 0
             ? `${format(new Date(allScans[0].buildDate), "dd LLL y")} at ${format(new Date(allScans[0].buildDate), "h:mm bbb")}`
-            : ""}
+            : ""
+          }
         </div>
         <hr class="mb-4">
         <div>
