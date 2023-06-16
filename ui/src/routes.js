@@ -22,7 +22,7 @@ isLoggedIn.subscribe((x) => (loggedIn = x));
 const routes = [
 	{
 		name: '/',
-		component: Public,
+		component: HowItWorks,
 		layout: AppLayout,
 	},
 	{
@@ -43,7 +43,7 @@ const routes = [
 		component: ForgetPassword,
 	},
 	{
-		name: '/howitworks',
+		name: '/home',
 		component: HowItWorks,
 		layout: AppLayout
 	},

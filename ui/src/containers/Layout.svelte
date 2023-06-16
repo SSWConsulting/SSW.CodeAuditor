@@ -87,20 +87,15 @@
         </div>
       </div>
       <hr class="mt-4 bg-white w-full">
-      <div class="w-full grid grid-cols-1 md:grid-cols-4 overflow-hidden text-center mt-4">
+      <div class="w-full grid grid-cols-1 md:grid-cols-3 overflow-hidden text-center mt-4">
         <span class="text-white text-lg pt-4 lg:pt-0 lg:mx-4">
-          <span class="hover:text-red-600 {currentRoute.path === '/home' ? 'text-red-600' : 'text-white'}">
-            <Navigate to="/home">Home</Navigate> 
+          <span class="hover:text-red-600 {currentRoute.path === '/home' ? 'text-red-600' : 'text-white'}">        
+            <Navigate to="/home">Home</Navigate>
           </span>
         </span>
         <span class="text-white text-lg pt-4 lg:pt-0 lg:mx-4">
           <span class="hover:text-red-600 {currentRoute.path === '/explore' ? 'text-red-600' : 'text-white'}">
             <Navigate to="/explore">Explore</Navigate> 
-          </span>
-        </span>
-        <span class="text-white text-lg pt-4 lg:pt-0 lg:mx-4">
-          <span class="hover:text-red-600 {currentRoute.path === '/howitworks' ? 'text-red-600' : 'text-white'}">        
-            <Navigate to="/howitworks">How It Works</Navigate>
           </span>
         </span>
         <span class="text-white text-lg pt-4 lg:pt-0 lg:mx-4">
