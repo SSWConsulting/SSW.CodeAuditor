@@ -43,11 +43,6 @@ const routes = [
 		component: ForgetPassword,
 	},
 	{
-		name: '/home',
-		component: HowItWorks,
-		layout: AppLayout
-	},
-	{
 		name: '/rules',
 		component: Rules,
 		layout: AppLayout
@@ -88,6 +83,11 @@ const routes = [
 		layout: AppLayout
 	},
 	{
+		name: '/yourScan',
+		component: Dashboard,
+		layout: AppLayout
+	},
+	{
 		name: 'home',
 		component: AppLayout,
 		onlyIf: {
@@ -98,7 +98,7 @@ const routes = [
 			redirect: '/login',
 		},
 		nestedRoutes: [
-			{ name: 'index', component: Dashboard },
+			{ name: 'index', component: HowItWorks },
 			{ name: 'settings', component: Settings },
 		],
 	},
