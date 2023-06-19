@@ -29,7 +29,7 @@
     "date-fns": "^2.30.0",
     "export-to-csv": "^0.2.1",
     "firebase": "^9.22.1",
-    "firebase-tools": "^8.7.0",
+    "firebase-tools": "^12.4.0",
     "fs": "0.0.1-security",
     "i": "^0.3.7",
     "lighthouse": "^6.2.0",
