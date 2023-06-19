@@ -1,5 +1,7 @@
-const functions = require('firebase-functions');
 const azure = require('azure-storage');
+
+const account = process.env.AZURE_STORAGE_ACCOUNT;
+const accountKey = process.env.AZURE_STORAGE_ACCESS_KEY;
 
 const _createTableIfNotExists = (table) =>
 	new Promise((resolve, reject) => {
@@ -26,21 +28,11 @@ const _createBlobContainerIfNotExists = (container) =>
 	});
 
 const _getService = () => {
-	return azure.createTableService(
-		process.env.AZURE_STORAGE_ACCOUNT ||
-			functions.config().azurestorage.account,
-		process.env.AZURE_STORAGE_ACCESS_KEY ||
-			functions.config().azurestorage.key
-	);
+	return azure.createTableService(account, accountKey);
 };
 
 const _getBlobService = () => {
-	return azure.createBlobService(
-		process.env.AZURE_STORAGE_ACCOUNT ||
-			functions.config().azurestorage.account,
-		process.env.AZURE_STORAGE_ACCESS_KEY ||
-			functions.config().azurestorage.key
-	);
+	return azure.createBlobService(account, accountKey);
 };
 
 exports.getTableRows = (table, query) =>

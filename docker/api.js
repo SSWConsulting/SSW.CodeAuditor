@@ -2,7 +2,6 @@ const fetch = require("node-fetch");
 const slug = require("slug");
 const endpoint = "https://asia-east2-sswlinkauditor-c1131.cloudfunctions.net";
 const endpoint2 = "https://asia-northeast1-sswlinkauditor-c1131.cloudfunctions.net/api2";
-//'http://localhost:5001/sswlinkauditor-c1131/asia-east2';
 
 exports.postData = (api, buildId, data) => {
   return fetch(`${endpoint}/api/scanresult/${api}/${buildId || "-"}`, {
@@ -88,6 +87,42 @@ exports.addHTMLHintRulesForScan = (api, url, runId, selectedRules) => {
       throw Error("Failed to upload custom htmlhint rules");
     }
   });
+};
+
+exports.getAlertEmailAddresses = (api, url) => {
+  return fetch(`${endpoint}/api/getalertemailaddresses/${api}/${url}`).then(
+    (res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw Error("Failed to find shared email addresses");
+      }
+    }
+  );
+};
+
+exports.getAlertEmailConfig = (api) => {
+  return fetch(`${endpoint}/api/${api}/alertEmailConfig`).then(
+    (res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw Error("Failed to retrieve alert email config");
+      }
+    }
+  );
+};
+
+exports.getAllScanSummaryFromUrl = (api, url) => {
+  return fetch(`${endpoint}/api/scanSummaryFromUrl/${api}/${url}`).then(
+    (res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw Error("Failed to retrieve scan summary");
+      }
+    }
+  );
 };
 
 exports.htmlHintConfig = {

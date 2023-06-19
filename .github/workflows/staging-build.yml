@@ -1,11 +1,11 @@
 # This is a basic workflow to help you get started with Actions
-name: CI
+name: Staging build
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
   push:
-    branches: [main]
+    branches: [staging]
 
 # A workflow run is made up of one or more jobsjj that can run sequentially or in parallel
 jobs:
@@ -30,12 +30,12 @@ jobs:
           node-version-file: 'package.json'
       - name: Install Firebase-tools
         run: npm i firebase-tools -g
-      - name: Deploy Svelte UI to Firebase
+      - name: Deploy Hosting to Staging
         env:
           FIREBASETOKEN: ${{ secrets.FIREBASETOKEN }}
         run: |
           cd ui
-          firebase use sswlinkauditor-c1131 --token ${{ secrets.FIREBASETOKEN }}
+          firebase use ssw-codeauditor-staging-f8357 --token ${{ secrets.FIREBASETOKEN }}
           firebase projects:list --token ${{ secrets.FIREBASETOKEN }}
           npm i
           firebase deploy --token ${{ secrets.FIREBASETOKEN }} --only hosting
@@ -45,18 +45,12 @@ jobs:
           touch .env
           echo AZURE_STORAGE_ACCOUNT=${{ secrets.AZURE_STORAGE_ACCOUNT }} >> .env
           echo AZURE_STORAGE_ACCESS_KEY=${{ secrets.AZURE_STORAGE_ACCESS_KEY }} >> .env 
-      - name: Deploy API to Firebase
+      - name: Deploy Function to Staging
         env:
           FIREBASETOKEN: ${{ secrets.FIREBASETOKEN }}
         run: |
           cd api/functions
-          firebase use sswlinkauditor-c1131 --token ${{ secrets.FIREBASETOKEN }}
+          firebase use ssw-codeauditor-staging-f8357 --token ${{ secrets.FIREBASETOKEN }}
           firebase projects:list --token ${{ secrets.FIREBASETOKEN }}
           npm i
-          firebase deploy --token ${{ secrets.FIREBASETOKEN }} --only functions 
-      - name: Build and Push Docker image
-        run: |
-          cd docker
-          docker build -t sswconsulting/codeauditor .
-          docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
-          docker push sswconsulting/codeauditor
+          firebase deploy --token ${{ secrets.FIREBASETOKEN }} --only functions          

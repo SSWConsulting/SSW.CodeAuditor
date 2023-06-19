@@ -9,6 +9,9 @@ const {
   getLoadThreshold,
   addHTMLHintRulesForScan,
   getHTMLHintRules,
+  getAlertEmailAddresses,
+  getAlertEmailConfig,
+  getAllScanSummaryFromUrl
 } = require("./api");
 const {
   printTimeDiff,
@@ -23,6 +26,8 @@ const {
   runHtmlHint,
   processBrokenLinks,
   getFinalEval,
+  sendAlertEmail,
+  convertSpecialCharUrl
 } = require("./utils");
 
 const { readGithubSuperLinter } = require("./parseSuperLinter");
@@ -357,7 +362,7 @@ const processAndUpload = async (
     }
   }
 
-    printResultsToConsole(
+  printResultsToConsole(
     results,
     lhrSummary,
     runId,
@@ -372,15 +377,38 @@ const processAndUpload = async (
   if (args.htmlhint && runId) {
     const result = await getHTMLHintRules(args.token, args.url);
 
-    if (result) {
+    if (result && result.length > 0) {
       const selectedRules = result.selectedRules;
       const res = await addHTMLHintRulesForScan(args.token, args.url, runId, selectedRules)
   
       if (res.ok) {
         console.log('Upload selected HTMLHint Rules successfully')
       } else {
-        throw new Error("Failed to load");
+        throw new Error("Failed to add custom html rules for each scan");
       }
+    }
+  }
+
+  // Send alert email to shared participants
+  if (args.token) {
+    let urlPathWithSpecChars = convertSpecialCharUrl(args.url)
+
+    let emailConfig = await getAlertEmailConfig(args.token)
+
+    // Get latest scan summary
+    let res = await getAllScanSummaryFromUrl(args.token, urlPathWithSpecChars)
+    let scanSummary = await res[0]
+
+    if (emailConfig) {
+      const alertEmails = await getAlertEmailAddresses(args.token, urlPathWithSpecChars)
+  
+      if (alertEmails && alertEmails.length > 0) {
+        alertEmails.forEach(item => sendAlertEmail(item.emailAddress, emailConfig, scanSummary))
+      } else {
+        throw new Error("Fail to fetch alert email addresses")
+      }
+    } else {
+      throw new Error("Fail to fetch alert email config")
     }
   }
 };
