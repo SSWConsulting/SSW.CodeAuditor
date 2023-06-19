@@ -34,3 +34,12 @@ exports.getRun = (runId) =>
 		.doc(runId)
 		.get()
 		.then((doc) => doc.data());
+
+exports.getAlertEmailConfig = () => {
+	return admin
+		.firestore()
+		.collection(CONSTANTS.config)
+		.doc('alertEmailConfig')
+		.get()
+		.then((doc) => doc.data())
+};

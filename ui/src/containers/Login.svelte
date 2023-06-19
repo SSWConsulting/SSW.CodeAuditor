@@ -44,7 +44,7 @@
       <span on:click={() => navigateTo('/')} class="align-middle ml-2">
         <img
           class="h-7 object-cover"
-          src="https://i.ibb.co/8mfYrX2/Code-Auditor-footer.png"
+          src="https://github.com/SSWConsulting/SSW.CodeAuditor/assets/67776356/6c8b11a5-35cf-469e-a945-57186d0270ef"
           alt="CodeAuditor" />
       </span>
     </div>
@@ -53,7 +53,7 @@
     <div class="mb-4">
       <TextField
         bind:value={username}
-        label="User Name"
+        label="Username"
         type="email"
         on:enterKey={loginEmailPassword} />
     </div>
@@ -99,7 +99,7 @@
         class="inline-block align-baseline font-bold text-sm text-blue
         hover:text-blue-darker"
         href="/forgetPassword">
-        Forget Password?
+        Forgot Password?
       </a>
     </div>
   </div>

@@ -220,16 +220,18 @@ exports.addCustomHtmlRule = () => {
       const re =
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-      parser.addListener("text", (event) => {
-        if (event.raw) {
-          if (re.test(event.raw.toLowerCase())) {
-            reporter.warn(
-              "Page must not show email addresses.",
-              event.line,
-              event.col,
-              self,
-              event.raw
-            );
+      parser.addListener("all", (event) => {
+        if (event.tagName !== "code" && event.tagName !== "a") {
+          if (event.lastEvent.raw) {
+            if (re.test(event.lastEvent.raw.toLowerCase())) {
+              reporter.warn(
+                "Page must not show email addresses.",
+                event.line,
+                event.col,
+                self,
+                event.raw
+              );
+            }
           }
         }
       });

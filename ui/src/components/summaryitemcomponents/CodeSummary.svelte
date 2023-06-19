@@ -34,8 +34,9 @@
 
   {#if codeSummary.htmlWarnings || codeSummary.htmlErrors}
   <div class="col-span-1 text-start">
-    <span class="block whitespace-no-wrap font-sans">Warnings
+    <span class="block whitespace-no-wrap font-sans">
       <i class="fas fa-exclamation-triangle" style="color: #d69e2e"></i>
+      Warnings
     </span>
     <span
       class="font-sans font-bold block lg:inline-block"
@@ -49,8 +50,9 @@
     </span>
   </div>
     <div class="col-span-1 text-start">
-      <span class="block whitespace-no-wrap font-sans">Errors
-        <i class="fas fa-exclamation-circle" style="color: red"></i>
+      <span class="block whitespace-no-wrap font-sans">
+        <i class="textred fas fa-exclamation-circle"></i>
+        Errors
       </span>
       <span
         class="font-sans font-bold block lg:inline-block"

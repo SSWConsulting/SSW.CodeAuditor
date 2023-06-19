@@ -14,8 +14,9 @@
       class="font-sans font-bold block lg:inline-block">{numberWithCommas(value.totalScanned)}</span>
   </div>
   <div class="col-span-1 text-start">
-    <span class="block whitespace-no-wrap font-sans">404 Errors
-      <i class="fas fa-exclamation-circle" style="color: red"></i>
+    <span class="block whitespace-no-wrap font-sans">
+      <i class="textred fas fa-link-slash"></i>
+      404 Errors
     </span>
     <span
       class="font-sans font-bold block lg:inline-block"

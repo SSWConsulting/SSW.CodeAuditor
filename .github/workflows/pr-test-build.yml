@@ -2,7 +2,7 @@ name: PR - Test build
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, staging]
 
 jobs:
   build:

@@ -12,6 +12,8 @@ import Rules from './containers/Rules.svelte';
 import LighthouseReport from './containers/LighthouseReport.svelte';
 import ArtilleryReport from './containers/ArtilleryReport.svelte';
 import AppLayout from './containers/Layout.svelte';
+import ScanCompare from './containers/ScanCompare.svelte';
+import ErrorPage from './containers/ErrorPage.svelte';
 import { isLoggedIn } from './stores.js';
 
 let loggedIn = false;
@@ -20,7 +22,7 @@ isLoggedIn.subscribe((x) => (loggedIn = x));
 const routes = [
 	{
 		name: '/',
-		component: Public,
+		component: HowItWorks,
 		layout: AppLayout,
 	},
 	{
@@ -39,11 +41,6 @@ const routes = [
 	{
 		name: '/forgetPassword',
 		component: ForgetPassword,
-	},
-	{
-		name: '/howitworks',
-		component: HowItWorks,
-		layout: AppLayout
 	},
 	{
 		name: '/rules',
@@ -76,6 +73,21 @@ const routes = [
 		layout: AppLayout
 	},
 	{
+		name: '/scanCompare/:api/:url/:buildDate',
+		component: ScanCompare,
+		layout: AppLayout
+	},
+	{
+		name: '/error',
+		component: ErrorPage,
+		layout: AppLayout
+	},
+	{
+		name: '/yourScan',
+		component: Dashboard,
+		layout: AppLayout
+	},
+	{
 		name: 'home',
 		component: AppLayout,
 		onlyIf: {
@@ -86,7 +98,7 @@ const routes = [
 			redirect: '/login',
 		},
 		nestedRoutes: [
-			{ name: 'index', component: Dashboard },
+			{ name: 'index', component: HowItWorks },
 			{ name: 'settings', component: Settings },
 		],
 	},
