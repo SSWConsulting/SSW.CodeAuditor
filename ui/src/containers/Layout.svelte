@@ -106,7 +106,7 @@
   </nav>
   <Route {currentRoute} {params} />
   </main>
-  <footer class="footer py-6 text-white md:py-4 lg:py-2 text-sm mt-16">
+  <footer class="footer py-6 text-white md:py-4 lg:py-2 text-sm mt-16" style="background-color: #414141">
     <section class="main-container">
       <div class="xl:mx-6">
         <div class="mx-6 flex flex-col-reverse md:flex-row justify-between">
@@ -167,9 +167,6 @@
 <style>
   .brand {
     color: white !important;
-  }
-  footer {
-    background-color: #333;
   }
   img {
     max-width: 100%;
