@@ -6,13 +6,13 @@
 
   export let currentRoute;
 
+  let scanActive = false, settingActive = false, signOutActive = false;
+  
   let menu = false;
 
   const params = {};
 
   const signOut = () => userSession.logout();
-
-  const showMenu = () => (menu = !menu);
 
 </script>
 
@@ -33,33 +33,45 @@
           {#if $isLoggedIn}
             <div>
               <span class="text-white">
-                <div class="relative">
-                  <button
-                    on:click={showMenu}
+                <div 
+                  class="relative"
+                  on:mouseenter={() => menu = true}
+                  on:mouseleave={() => menu = false}
+                >
+                  <div
                     class="inline-block text-l px-4 py-2 leading-none border rounded
                     text-white border-white hover:border-transparent hover:text-red-600
-                    hover:bg-white mt-4 lg:mt-0"
+                    hover:bg-white"
                     >{$userName}
-                  </button>
+                  </div>
                   {#if menu}
                     <span
                       in:scale={{ duration: 100, start: 0.95 }}
                       out:scale={{ duration: 75, start: 0.95 }}
-                      class="origin-top-right absolute right-0 w-48 py-2 mt-10 rounded shadow-md"
+                      class="origin-top-right absolute right-0 w-48 py-2 mt-8 rounded shadow-md"
                       style="background-color: #797979"
                     >
+                      <!-- svelte-ignore a11y-click-events-have-key-events -->
                       <span
+                        class="{scanActive ? 'bgred' : '#797979'} block px-4 py-2 cursor-pointer"
                         on:click={() => navigateTo('/yourScan')}
-                        class="block px-4 py-2 cursor-pointer hover:bg-red-800"
+                        on:mouseenter={() => scanActive = true}
+                        on:mouseleave={() => scanActive = false}
                       >Your Scans</span>
+                      <!-- svelte-ignore a11y-click-events-have-key-events -->
                       <span
+                        class="{settingActive ? 'bgred' : '#797979'} block px-4 py-2 cursor-pointer"
                         on:click={() => navigateTo('/home/settings')}
-                        class="block px-4 py-2 cursor-pointer hover:bg-red-800"
+                        on:mouseenter={() => settingActive = true}
+                        on:mouseleave={() => settingActive = false}
                       >Ignored URLs</span>
+                      <!-- svelte-ignore a11y-click-events-have-key-events -->
                       <span
+                        class="{signOutActive ? 'bgred' : '#797979'} block px-4 py-2 cursor-pointer"
                         on:click={signOut}
-                        class="block px-4 py-2 cursor-pointer hover:bg-red-800"
-                        >Logout</span>
+                        on:mouseenter={() => signOutActive = true}
+                        on:mouseleave={() => signOutActive = false}
+                      >Logout</span>
                     </span>
                   {/if}
                 </div>
@@ -67,6 +79,7 @@
             </div>
           {:else}
             <div>
+              <!-- svelte-ignore a11y-click-events-have-key-events -->
               <span 
                 class="text-white mx-2 cursor-pointer"
                 on:click={() => navigateTo('/login')}
