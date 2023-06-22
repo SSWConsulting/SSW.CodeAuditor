@@ -24,6 +24,8 @@ export default {
         env: {
           isProd: production,
           ...config().parsed,
+          API: process.env.API,
+          API2: process.env.API2,
         },
       }),
     }),
