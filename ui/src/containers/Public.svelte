@@ -56,13 +56,13 @@
 <div class="container mx-auto">
   <div class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
       <article class="markdown-body">
-        {@html marked(instructions)}
+        {@html marked.parse(instructions)}
       </article>
     <article class="markdown-body mt-5">
-      {@html marked(systemRequirements)}
+      {@html marked.parse(systemRequirements)}
     </article>
     <article class="markdown-body mt-5">
-      {@html marked(instructionSteps)}
+      {@html marked.parse(instructionSteps)}
     </article>
   </div>
 

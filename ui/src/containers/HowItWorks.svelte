@@ -171,13 +171,13 @@
   </div>
   <div class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
       <article class="markdown-body">
-        {@html marked(instruction)}
+        {@html marked.parse(instruction)}
       </article>
       <article class="markdown-body mt-8">
-        {@html marked(systemRequirements)}
+        {@html marked.parse(systemRequirements)}
       </article>
       <article class="markdown-body mt-8">
-        {@html marked(instructionSteps)}
+        {@html marked.parse(instructionSteps)}
       </article>
       <article class="markdown-body mt-8">
         <h3>Video - How to use Code Auditor:</h3>
@@ -186,16 +186,16 @@
         </div>
       </article>
       <article class="markdown-body mt-8">
-        {@html marked(emailAlertInstruction)}
+        {@html marked.parse(emailAlertInstruction)}
       </article>
       <article class="markdown-body mt-8">
-        {@html marked(scanCompareInstruction)}
+        {@html marked.parse(scanCompareInstruction)}
       </article>
       <article class="markdown-body mt-8">
-        {@html marked(customRuleConfig)}
+        {@html marked.parse(customRuleConfig)}
       </article>
       <article class="markdown-body mt-8">
-        {@html marked(addingCustomRule)}
+        {@html marked.parse(addingCustomRule)}
       </article>
       <article class="markdown-body mt-8">
         <h3>Video - How To Add, Test and Deploy Custom HTML Rules (For Devs):</h3>

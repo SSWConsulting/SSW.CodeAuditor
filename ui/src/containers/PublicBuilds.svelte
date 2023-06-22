@@ -36,11 +36,11 @@
   <div class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
     {#if !$isLoggedIn}
       <article class="markdown-body">
-        {@html marked(notLoggedIn)}
+        {@html marked.parse(notLoggedIn)}
       </article>
     {:else}
       <article class="markdown-body">
-        {@html marked(isLoggedInMsg)}
+        {@html marked.parse(isLoggedInMsg)}
       </article>
     {/if}
   </div>
