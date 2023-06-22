@@ -13,6 +13,8 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    environment: 
+      name: Production
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -28,20 +30,40 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: 'package.json'
+      - name: Install Firebase-tools
+        run: npm i firebase-tools -g
+      - name: Create env file for Svelte UI
+        run: |
+          cd ui
+          touch .env
+          echo "API -> ${{vars.API}}"
+          echo "API2 -> ${{vars.API2}}"
+          echo API=${{ vars.API }} >> .env
+          echo API2=${{ vars.API2 }} >> .env 
       - name: Deploy Svelte UI to Firebase
         env:
           FIREBASETOKEN: ${{ secrets.FIREBASETOKEN }}
         run: |
           cd ui
+          firebase use sswlinkauditor-c1131 --token ${{ secrets.FIREBASETOKEN }}
+          firebase projects:list --token ${{ secrets.FIREBASETOKEN }}
           npm i
-          npm run deploy
+          firebase deploy --token ${{ secrets.FIREBASETOKEN }} --only hosting
+      - name: Create env file for NodeJS app
+        run: |
+          cd api/functions
+          touch .env
+          echo AZURE_STORAGE_ACCOUNT=${{ secrets.AZURE_STORAGE_ACCOUNT }} >> .env
+          echo AZURE_STORAGE_ACCESS_KEY=${{ secrets.AZURE_STORAGE_ACCESS_KEY }} >> .env 
       - name: Deploy API to Firebase
         env:
           FIREBASETOKEN: ${{ secrets.FIREBASETOKEN }}
         run: |
           cd api/functions
+          firebase use sswlinkauditor-c1131 --token ${{ secrets.FIREBASETOKEN }}
+          firebase projects:list --token ${{ secrets.FIREBASETOKEN }}
           npm i
-          npm run deploy
+          firebase deploy --token ${{ secrets.FIREBASETOKEN }} --only functions 
       - name: Build and Push Docker image
         run: |
           cd docker
