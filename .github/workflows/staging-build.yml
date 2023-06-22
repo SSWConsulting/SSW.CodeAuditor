@@ -13,6 +13,8 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    environment: 
+      name: Staging
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -30,6 +32,14 @@ jobs:
           node-version-file: 'package.json'
       - name: Install Firebase-tools
         run: npm i firebase-tools -g
+      - name: Create env file for Svelte UI
+        run: |
+          cd ui
+          touch .env
+          echo "API -> ${{vars.API}}"
+          echo "API2 -> ${{vars.API2}}"
+          echo API=${{ vars.API }} >> .env
+          echo API2=${{ vars.API2 }} >> .env 
       - name: Deploy Hosting to Staging
         env:
           FIREBASETOKEN: ${{ secrets.FIREBASETOKEN }}
