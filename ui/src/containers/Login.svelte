@@ -80,6 +80,7 @@
         on:click|preventDefault={loginEmailPassword}
         type="button"
         disabled={!valid || loading}
+        style={"color: white"}
         class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4 border
         hover:border-transparent rounded">
         Login
