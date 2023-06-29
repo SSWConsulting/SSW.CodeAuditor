@@ -130,6 +130,7 @@
           <div class="w-full md:w-3/6 md:text-right py-2">
             <a
               class="footer-link"
+              target="_blank"
               href="https://github.com/SSWConsulting/SSW.CodeAuditor/issues"
             >
               FEEDBACK TO SSW
@@ -137,6 +138,7 @@
             <span class="px-2">|</span>
             <a
               class="footer-link"
+              target="_blank"
               href="https://www.ssw.com.au/ssw/Standards/Forms/ConsultingOrderTermsConditions.aspx"
             >
               TERMS AND CONDITIONS
@@ -144,9 +146,10 @@
             <span class="px-2">|</span>
             <a
               class="footer-link footer-facebook"
-              href="https://www.facebook.com/SSW.page"
+              target="_blank"
+              href="https://github.com/SSWConsulting/SSW.CodeAuditor"
             >
-              FIND US ON FACEBOOK
+              FIND US ON GITHUB
             </a>
           </div>
         </div>
