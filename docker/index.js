@@ -103,6 +103,11 @@ const _getAgrs = () => {
       type: "boolean",
       default: true,
     })
+    .option("disableUrlFormatter", {
+      describe: "Disable formatting URLs",
+      type: "boolean",
+      default: false,
+    })
     .option("private", {
       describe: "Upload scan results privately",
       type: "boolean",
@@ -120,15 +125,18 @@ const main = async () => {
   let _superlinter = [];
 
   // Standardize url string
-  if (!options.url.startsWith("https://")) {
-    options.url = "https://" + options.url;
-  }  
-  if (!options.url.includes("www.")) {
-    options.url = options.url.replace('https://', 'https://www.');
-  } 
-  if (!options.url.endsWith("/")) {
-    options.url = options.url + '/';
+  if (!options.disableUrlFormatter) {
+    if (!options.url.startsWith("https://")) {
+      options.url = "https://" + options.url;
+    }  
+    if (!options.url.includes("www.")) {
+      options.url = options.url.replace('https://', 'https://www.');
+    } 
+    if (!options.url.endsWith("/")) {
+      options.url = options.url + '/';
+    }
   }
+
   // Static Code Analysis and CLOC - Not use (remove once approved from Anthony)
   // if (fs.readdirSync('./src').length > 0) {
   // 	writeLog(chalk.yellowBright(`Counting lines of codes`));
@@ -171,10 +179,7 @@ const main = async () => {
   // }
 
   // Lighthouse
-  if (
-    options.lighthouse &&
-    fs.existsSync("/etc/apt/sources.list.d/google.list")
-  ) {
+  if (options.lighthouse) {
     writeLog(`start lighthouse`);
     try {
       const rs = execSync(
