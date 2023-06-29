@@ -53,18 +53,19 @@ exports.addCustomHtmlRule = () => {
         ];
 
         if (event.tagName) {
-          if (event.tagName !== "a") { 
+          if (event.tagName !== "a" && event.tagName !== "meta" && event.tagName !== "link" && event.tagName !== "script" && event.tagName !== "svg") { 
             if (event.lastEvent) {
               let pageContent = event.lastEvent.raw;
               if (pageContent) {
                 scrumTerms.forEach((i) => {
                   var contentIndex = pageContent.indexOf(i);
-                  
+                  var col = event.lastEvent.col;
+
                   if (contentIndex >= 0) {
                     reporter.warn(
                       "Incorrect Scrum term: '" + i + "'.",
                       event.line,
-                      event.col,
+                      col,
                       self,
                       event.raw
                     );
