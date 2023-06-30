@@ -18,7 +18,7 @@
       tokenText = '--token ' + x.apiKey;
     }
     else {
-      tokenText = '--cap-add=SYS_ADMIN';
+      tokenText = '';
     }
   });
 
