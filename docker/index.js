@@ -96,7 +96,7 @@ const _getAgrs = () => {
     .option("lighthouse", {
       describe: "Include Lighthouse audit",
       type: "boolean",
-      default: false,
+      default: true,
     })
     .option("artillery", {
       describe: "Include Artillery test",
@@ -183,7 +183,7 @@ const main = async () => {
     writeLog(`start lighthouse`);
     try {
       const rs = execSync(
-        `./node_modules/.bin/lhci collect --url="${options.url}" -n 1`
+        `./node_modules/.bin/lhci collect --url="${options.url}"`
       ).toString();
       writeLog(`lighthouse check finished`, rs);
     } catch (e) {

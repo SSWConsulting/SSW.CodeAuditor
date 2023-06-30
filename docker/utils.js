@@ -7,7 +7,6 @@ const boxen = require("boxen");
 const { htmlHintConfig, fetchHtml, getHTMLHintRules } = require("./api");
 const R = require("ramda");
 const { execSync } = require("child_process");
-const boxConsole = require("box-console");
 const slug = require("slug");
 const nodemailer = require("nodemailer");
 const fns = require('date-fns')
@@ -595,7 +594,7 @@ exports.printResultsToConsole = (
       `${strPwa.padEnd(10)} ${lhScaled.pwaScore.toString().padStart(10)} / 100`
     );
 
-    boxConsole([avg, performance, bestPractice, seo, pwa]);
+    consoleBox([avg, performance, bestPractice, seo, pwa], "green");
   }
 
   if (atrSummary) {
@@ -642,7 +641,7 @@ exports.printResultsToConsole = (
     );
     let errors = chalk(`${strErrors} ${atrSummary.errors}`);
 
-    boxConsole([
+    consoleBox([
       timestamp,
       scenCreated,
       scenCompleted,
@@ -657,7 +656,7 @@ exports.printResultsToConsole = (
       scenarioDurationP95,
       scenarioDurationP99,
       errors,
-    ]);
+    ], "green");
   }
 
   // output htmlhint summary

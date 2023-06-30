@@ -25,7 +25,7 @@
   ## SSW CodeAuditor
   Scan any website for broken links, [HTML Issues](https://htmlhint.com), [Google Lighthouse Audit](https://developers.google.com/web/tools/lighthouse) and [Artillery Load Test](https://artillery.io/) by running the following command:
   \`\`\` bash
-  $ docker container run sswconsulting/codeauditor --cap-add=SYS_ADMIN --url <URL>
+  $ docker container run --cap-add=SYS_ADMIN sswconsulting/codeauditor --url <URL>
   \`\`\`
   Sign in to view prior scans and unlock more features 
   `;

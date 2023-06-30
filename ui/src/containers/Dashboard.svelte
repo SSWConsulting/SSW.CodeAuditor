@@ -63,12 +63,12 @@
   ## Get Started
   Scan any website for broken links and [HTML Issues](https://htmlhint.com) by running the following command:
   \`\`\` bash
-  $ docker run sswconsulting/codeauditor --token ${token} --url <URL> 
+  $ docker container run --cap-add=SYS_ADMIN sswconsulting/codeauditor --token ${token} --url <URL>
   \`\`\`
 
   If you don't you your scan to be uploaded publicly, following command will upload your scan to your private profile:
   \`\`\` bash
-  $ docker run sswconsulting/codeauditor --token ${token} --url <URL> --private
+  $ docker container run --cap-add=SYS_ADMIN sswconsulting/codeauditor --token ${token} --url <URL> --private
   \`\`\`
 
   Where: **${token}** is a unique token assigned to your account and **BUILDID** (optional) is your CI build number
