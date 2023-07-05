@@ -18,9 +18,10 @@
   let canClose;
   let unsubscription;
   let lastBuild;
+  let showAllScan = false;
 
   async function getLastBuilds(api) {
-    const res = await fetch(`${CONSTS.API}/api/scanresult/${api}`);
+    const res = await fetch(`${CONSTS.API}/api/scanresult/${api}?showAll=${showAllScan}`);
     const result = await res.json();
     if (res.ok) {
       showInstruction = !result.length;
@@ -45,95 +46,47 @@
     }
   });
 
+  const toggleShowAllScan = () => {
+    showAllScan = true
+    promise = getLastBuilds(token);
+  }
+
   onDestroy(() => {
     if (unsubscription) {
       unsubscription();
     }
   });
 
-  const systemRequirements = `
-  ## System requirements
-  Make sure your system meets the following requirements:
-  \`\`\` bash
-  - Have Docker Desktop in the background 
-  - Have at least 1GB of storage to download the Docker image
-  \`\`\``;
-
-  const instructions = `
-  ## Get Started
-  Scan any website for broken links and [HTML Issues](https://htmlhint.com) by running the following command:
-  \`\`\` bash
-  $ docker container run --cap-add=SYS_ADMIN sswconsulting/codeauditor --token ${token} --url <URL>
-  \`\`\`
-
-  If you don't you your scan to be uploaded publicly, following command will upload your scan to your private profile:
-  \`\`\` bash
-  $ docker container run --cap-add=SYS_ADMIN sswconsulting/codeauditor --token ${token} --url <URL> --private
-  \`\`\`
-
-  Where: **${token}** is a unique token assigned to your account and **BUILDID** (optional) is your CI build number
+  const personalScanTitle = `
+  ## Your Personal Scans
   `;
-  const instructionSteps = `
-  ## Instructions to scan an URL 
-  ### On Windows 
-  \`\`\` bash
-  1. Download Docker for Windows at https://docs.docker.com/docker-for-windows/install/
-  2. Follow the installation steps and run Docker
-  3. On CodeAuditor, copy the following command: docker run sswconsulting/codeauditor --token ${token} --url <URL>
-  4. Open Windows Powershell and paste the above command, replace <URL> with your designated url 
-    (make sure to include the full URL with 'https')
-  5. Once scan is complete, a result script will display which gives you a link to your scan result page
-  \`\`\`
 
-  ### On Mac 
-  \`\`\` bash
-  1. Download Docker for Mac at https://docs.docker.com/docker-for-mac/install/
-  2. Follow the installation steps and run Docker
-  3. On CodeAuditor, copy the following command: docker run sswconsulting/codeauditor --token ${token} --url <URL>
-  4. Open the Terminal and paste the above command, replace <URL> with your designated url 
-    (make sure to include the full URL with 'https')
-  5. Once scan is complete, a result script will display which gives you a link to your scan result page
-  \`\`\``;
+  const topScanTitle = `
+  ### Latest 500 Personal Scans
+  `;
 </script>
 
 <div class="container mx-auto">
-  {#if showInstruction}
-    <div
-      class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col"
-      in:fly={{ y: 100, duration: 400 }}
-      out:fade={{ y: -100, duration: 250 }}>
-      {#if canClose}
-        <a
-          class="text-right align-baseline text-sm font-bold text-blue
-            hover:text-blue-darker text-2xl"
-          on:click={() => (showInstruction = false)}
-          href="javascript:void(0)">
-          <Icon cssClass="inline-block">
-            <path d="M6 18L18 6M6 6l12 12" />
-          </Icon>
-        </a>
-      {/if}
-      <article class="markdown-body">
-        {@html marked.parse(instructions)}
-      </article>
-      <article class="markdown-body mt-5">
-        {@html marked.parse(systemRequirements)}
-      </article>
-      <article class="markdown-body mt-5">
-      {@html marked.parse(instructionSteps)}
+  <div class="bg-white shadow-lg rounded px-8 pt-6 pb-6 mb-4 flex flex-col">
+    <article class="markdown-body">
+      {@html marked.parse(personalScanTitle)}
     </article>
-    </div>
-  {/if}
+    {#if !showAllScan}
+      <article class="markdown-body mt-5">
+        {@html marked.parse(topScanTitle)}
+      </article>
+    {/if}
+  </div>
 
   <div class="bg-white shadow-lg rounded px-8 pt-6 mb-6 flex flex-col">
-    {#if !showInstruction}
+    {#if !showAllScan}
       <span class="text-right">
         <a
           href="javascript:void(0)"
-          on:click={() => (showInstruction = true)}
+          on:click={() => toggleShowAllScan()}
           class="cursor-pointer underline text-sm text-blue font-bold
         pb-6 hover:text-red-600">
-          Show instructions
+          Show all personal scans
         </a>
       </span>
     {/if}

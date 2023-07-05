@@ -47,10 +47,11 @@ RUN npm install -g puppeteer
 # Setup a user to avoid doing everything as root
 RUN groupadd --system lhci && \
   useradd --system --create-home --gid lhci lhci && \
-  mkdir --parents /home/lhci/reports && \
+  mkdir --parents /home/lhci/app && \
+  mkdir --parents /home/lhci/app/src && \
   chown --recursive lhci:lhci /home/lhci
 
-RUN cd /home/lhci/reports && npm link puppeteer
+RUN cd /home/lhci/app/src && npm link puppeteer
 USER lhci
 
 WORKDIR /home/lhci/app
@@ -60,7 +61,5 @@ COPY --from=builder /go/bin/sswlinkauditor /home/lhci/app/sswlinkauditor
 
 # main nodejs app
 COPY --from=nodeBuilder /usr/src/app /home/lhci/app
-
-CMD [ "lhci", "--help" ]
 
 ENTRYPOINT ["node","."]
