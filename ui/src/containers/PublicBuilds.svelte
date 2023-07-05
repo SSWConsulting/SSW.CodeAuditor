@@ -9,9 +9,10 @@
 
   let canClose;
   let lastBuild;
+  let showAllScan = false;
 
   async function getLastBuilds() {
-    const res = await fetch(`${CONSTS.API}/api/allscans`);
+    const res = await fetch(`${CONSTS.API}/api/allscans?showAll=${showAllScan}`);
     const result = await res.json();
     if (res.ok) {
       return sort(descend(prop("buildDate")), result);
@@ -22,6 +23,11 @@
 
   let promise = getLastBuilds();
 
+  const toggleShowAllScan = () => {
+    showAllScan = true;
+    promise = getLastBuilds();
+  }
+
   const notLoggedIn = `
   ## Explore SSW CodeAuditor
   Showing all Public Scans - [See all](https://codeauditor.com/login)
@@ -30,10 +36,14 @@
   const isLoggedInMsg = `
   ## Explore SSW CodeAuditor
   `;
+
+  const topScanTitle = `
+  ### Latest 500 Public Scans
+  `;
 </script>
 
 <div class="container mx-auto">
-  <div class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
+  <div class="bg-white shadow-lg rounded px-8 pt-6 pb-6 mb-4 flex flex-col">
     {#if !$isLoggedIn}
       <article class="markdown-body">
         {@html marked.parse(notLoggedIn)}
@@ -43,9 +53,25 @@
         {@html marked.parse(isLoggedInMsg)}
       </article>
     {/if}
+    {#if !showAllScan}
+      <article class="markdown-body mt-5">
+        {@html marked.parse(topScanTitle)}
+      </article>
+    {/if}
   </div>
 
   <div class="bg-white rounded px-4 pt-2 mb-12 flex flex-col">
+    {#if !showAllScan}
+      <span class="text-right">
+        <a
+          href="javascript:void(0)"
+          on:click={() => toggleShowAllScan()}
+          class="cursor-pointer underline text-sm text-blue font-bold
+        pb-6 hover:text-red-600">
+          Show all Public Scans
+        </a>
+      </span>
+    {/if}
     {#await promise}
       <LoadingFlat />
     {:then data}

@@ -24,7 +24,7 @@ const {
 	removeAlertEmailAddress,
 } = require('./commands');
 const {
-	getSummary,
+	getPersonalSummary,
 	getAllPublicSummary,
 	getSummaryById,
 	getConfig,
@@ -134,11 +134,11 @@ app.delete('/deletealertemailaddress', async (req, res) =>
 	res.json(await removeAlertEmailAddress(req.body.api, req.body.rowkey)));
 
 app.get('/scanresult/:api', async (req, res) => {
-	res.json(await getSummary(req.params.api));
+	res.json(await getPersonalSummary(req.params.api, req.query.showAll));
 });
 
 app.get('/allscans', async (req, res) => {
-	res.json(await getAllPublicSummary());
+	res.json(await getAllPublicSummary(req.query.showAll));
 });
 
 app.get('/viewsource', async (req, res) => {

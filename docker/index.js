@@ -183,7 +183,7 @@ const main = async () => {
     writeLog(`start lighthouse`);
     try {
       const rs = execSync(
-        `./node_modules/.bin/lhci collect --url="${options.url}"`
+        `./node_modules/.bin/lhci collect --url="${options.url}" -n 1`
       ).toString();
       writeLog(`lighthouse check finished`, rs);
     } catch (e) {

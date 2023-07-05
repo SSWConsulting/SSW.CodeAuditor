@@ -105,28 +105,44 @@ exports.getHTMLHintRulesByRunId = async (runId) => {
 	return null;
 };
 
-exports.getSummary = (api) =>
+exports.getPersonalSummary = (api, showAll) =>
 	new Promise(async (resolve) => {
 		const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
 			queryOptions: { filter: odata`PartitionKey eq ${api}` }
 		});
-		let result = []
-		for await (const item of entity) {
-			result.push(item);
+		if (showAll === 'true') {
+			let result = []
+			for await (const item of entity) {
+				result.push(item);
+			}
+			resolve(result)
+		} else {
+			const iterator = entity.byPage({ maxPageSize: 500 });
+			for await (const item of iterator) {
+				resolve(item)
+				break;
+			}
 		}
-		resolve(result)
 	});
 
-exports.getAllPublicSummary = () =>
+exports.getAllPublicSummary = (showAll) =>
 	new Promise(async (resolve) => {
 		const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
 			queryOptions: { filter: odata`isPrivate eq ${false}` }
 		});
-		let result = []
-		for await (const item of entity) {
-			result.push(item);
+		if (showAll === 'true') {
+			let result = []
+			for await (const item of entity) {
+				result.push(item);
+			}
+			resolve(result)
+		} else {
+			const iterator = entity.byPage({ maxPageSize: 500 });
+			for await (const item of iterator) {
+				resolve(item)
+				break;
+			}
 		}
-		resolve(result)
 	});
 
 exports.getSummaryById = async (runId) => 
