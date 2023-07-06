@@ -8,15 +8,6 @@
   <!-- content here -->
   <div>
     <div class="grid grid-cols-2 lg:grid-cols-3 gap-x-5 text-center text-lg">
-      <div class="col-span-1 text-start whitespace-no-wrap">
-        <span class="block font-sans">Average</span>
-        <span
-          class="font-bold block lg:inline-block textgrey"
-          title="Average"
-          class:text-red-400={perf.average < 50}>
-          {perf.average.toFixed(1)}
-        </span>
-      </div>
       <div class="col-span-1 text-start">
         <span class="block font-sans">Performance</span>
         <span
@@ -43,15 +34,6 @@
           class="font-bold block lg:inline-block textgrey"
           class:text-red-400={perf.seoScore < 50}>
           {perf.seoScore}
-        </span>
-      </div>
-      <div class="col-span-1 text-start">
-        <span class="block font-sans">PWA</span>
-        <span
-          class="font-bold block lg:inline-block textgrey"
-          title="PWA"
-          class:text-red-400={perf.pwaScore < 50}>
-          {perf.pwaScore}
         </span>
       </div>
       <div class="text-start">
