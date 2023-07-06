@@ -10,7 +10,6 @@
     userSession$,
     performingLogin,
   } from "./stores.js";
-  import LoadingFlat from "./components/misccomponents/LoadingFlat.svelte";
 
   firebase.initializeApp({
     apiKey: "AIzaSyCHljUPnjRcaQt7lGRDPtZsYWIj3eP4Pok",
@@ -36,7 +35,7 @@
 
 {#if $performingLogin}
   <div class="h-full flex items-center container mx-auto">
-    <LoadingFlat />
+    <Spinner />
   </div>
 {/if}
 <div class:hidden={$performingLogin}>
