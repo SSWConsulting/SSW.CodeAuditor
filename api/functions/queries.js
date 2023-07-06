@@ -107,16 +107,23 @@ exports.getHTMLHintRulesByRunId = async (runId) => {
 
 exports.getPersonalSummary = (api, showAll) =>
 	new Promise(async (resolve) => {
-		const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
-			queryOptions: { filter: odata`PartitionKey eq ${api}` }
-		});
 		if (showAll === 'true') {
+			const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
+				queryOptions: { filter: odata`PartitionKey eq ${api}` }
+			});
 			let result = []
 			for await (const item of entity) {
 				result.push(item);
 			}
 			resolve(result)
 		} else {
+			// Top 500 scans in last 6 months
+			var date = new Date();
+			date.setMonth(date.getMonth() - 6);
+
+			const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
+				queryOptions: { filter: odata`PartitionKey eq ${api} and buildDate gt datetime'${date.toISOString()}'` }
+			});
 			const iterator = entity.byPage({ maxPageSize: 500 });
 			for await (const item of iterator) {
 				resolve(item)
@@ -127,16 +134,23 @@ exports.getPersonalSummary = (api, showAll) =>
 
 exports.getAllPublicSummary = (showAll) =>
 	new Promise(async (resolve) => {
-		const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
-			queryOptions: { filter: odata`isPrivate eq ${false}` }
-		});
 		if (showAll === 'true') {
+			const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
+				queryOptions: { filter: odata`isPrivate eq ${false}` }
+			});
 			let result = []
 			for await (const item of entity) {
 				result.push(item);
 			}
 			resolve(result)
 		} else {
+			// Top 500 scans in last 6 months
+			var date = new Date();
+			date.setMonth(date.getMonth() - 6);
+
+			const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
+				queryOptions: { filter: odata`isPrivate eq ${false} and buildDate gt datetime'${date.toISOString()}'` }
+			});
 			const iterator = entity.byPage({ maxPageSize: 500 });
 			for await (const item of iterator) {
 				resolve(item)
