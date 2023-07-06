@@ -27,12 +27,13 @@ const {
   processBrokenLinks,
   getFinalEval,
   sendAlertEmail,
-  convertSpecialCharUrl
+  convertSpecialCharUrl,
+  runLighthouseReport
 } = require("./utils");
 
 const { readGithubSuperLinter } = require("./parseSuperLinter");
 
-const LIGHTHOUSEFOLDER = "./.lighthouseci/";
+const LIGHTHOUSEFOLDER = "./lhr.json";
 const ARTILLERYFOLDER = "./artilleryOut.json";
 
 const PACKAGE_CONFIG = require('./package-lock.json');
@@ -51,7 +52,7 @@ const _getAgrs = () => {
       alias: "t",
       describe: "Dashboard token (sign up at https://codeauditor.com/)",
       type: "string",
-      demandOption: true,
+      demandOption: false,
     })
     .option("buildId", {
       describe: "Build/Run number, e.g. CI Build number",
@@ -181,14 +182,7 @@ const main = async () => {
   // Lighthouse
   if (options.lighthouse) {
     writeLog(`start lighthouse`);
-    try {
-      const rs = execSync(
-        `./node_modules/.bin/lhci collect --url="${options.url}" -n 1`
-      ).toString();
-      writeLog(`lighthouse check finished`, rs);
-    } catch (e) {
-      writeLog(`lighthouse check failed`, e);
-    }
+    await runLighthouseReport(options.url);
   }
 
   // Artillery

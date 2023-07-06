@@ -225,8 +225,6 @@ exports.addCustomHtmlRule = () => {
           if (event.tagName !== "code" && event.tagName !== "a") {
             if (event.lastEvent.raw) {
               if (re.test(event.lastEvent.raw.toLowerCase())) {
-                console.log('BRUHHHHH')
-                console.log(event)
                 reporter.warn(
                   "Page must not show email addresses.",
                   event.line,
