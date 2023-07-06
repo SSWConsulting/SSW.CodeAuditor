@@ -192,8 +192,7 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 			performanceScore: lhr.categories.performance.score,
 			accessibilityScore: lhr.categories.accessibility.score,
 			bestPracticesScore: lhr.categories['best-practices'].score,
-			seoScore: lhr.categories.seo.score,
-			pwaScore: lhr.categories.pwa.score,
+			seoScore: lhr.categories.seo.score
 		};
 	}
 

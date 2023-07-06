@@ -10,6 +10,7 @@ const { execSync } = require("child_process");
 const slug = require("slug");
 const nodemailer = require("nodemailer");
 const fns = require('date-fns')
+const fetch = require('node-fetch')
 
 exports.sendAlertEmail = async (email, emailConfig, scanSummary) => {
   // create reusable transporter object using the default SMTP transport
@@ -256,41 +257,64 @@ exports.runBrokenLinkCheck = (url, maxthread) => {
 };
 
 /**
+ * run Lighthouse Report
+ * @param {string} url 
+ */
+exports.runLighthouseReport = async (url) => {
+  const categories = ["accessibility","best_practices","performance","SEO"]
+  const lighthouseUrl = new URL(
+    'https://www.googleapis.com/pagespeedonline/v5/runPagespeed'
+  )
+  lighthouseUrl.searchParams.append('key', 'AIzaSyBGZtZ045o_LRrs3Wgk4MvrDabMqMjHFnQ')
+  lighthouseUrl.searchParams.append('url', url)
+  lighthouseUrl.searchParams.append('strategy', 'mobile')
+  for (const category of categories) {
+    lighthouseUrl.searchParams.append('category', category.toUpperCase())
+  }
+  const response = await fetch(lighthouseUrl)
+  if (response.ok) {
+    const data = await response.json()
+    const lighthouseResult = data.lighthouseResult
+    var json = JSON.stringify(lighthouseResult);
+    if (lighthouseResult) {
+      fs.writeFile('lhr.json', json, 'utf8', err => {
+        if (err) {
+          console.error(err);
+        }
+      });
+    }
+  }
+}
+
+/**
  * parse Lighthouse Report
- * @param {string} folder - .lighthouseci folder
+ * @param {string} folder - lhr file
  * @param {func} writeLog - logging method
  */
 exports.readLighthouseReport = (folder, writeLog) => {
   if (!fs.existsSync(folder)) {
     console.log(
-      'ERROR => No lighthouse report found. Run again with `-v "%.LIGHTHOUSECI%:/usr/app/.lighthouseci"` option'
+      'ERROR => No lighthouse report found'
     );
     return [null, null];
   }
 
   writeLog(`Reading Lighthouse report files`);
-  let lhFiles = fs.readdirSync(folder);
 
-  if (lhFiles.filter((x) => x.endsWith(".json")).length === 0) {
-    return [null, null];
-  }
-
-  const jsonReport = lhFiles.filter((x) => x.endsWith(".json")).splice(-1)[0];
-  const lhr = JSON.parse(fs.readFileSync(`${folder}${jsonReport}`).toString());
+  const lhr = JSON.parse(fs.readFileSync(`lhr.json`).toString());
 
   const lhrSummary = {
     performanceScore: lhr.categories.performance.score,
     accessibilityScore: lhr.categories.accessibility.score,
     bestPracticesScore: lhr.categories["best-practices"].score,
     seoScore: lhr.categories.seo.score,
-    pwaScore: lhr.categories.pwa.score,
   };
   return [lhr, lhrSummary];
 };
 
 /**
  * parse Artillery Report
- * @param {string} folder - .lighthouseci folder
+ * @param {string} folder - Artillery report file
  * @param {func} writeLog - logging method
  */
 exports.readArtilleryReport = (folder, writeLog) => {
@@ -553,7 +577,6 @@ exports.printResultsToConsole = (
     // output Lighthouse Score Box
     lhScaled = {
       performanceScore: Math.round(lh.performanceScore * 100),
-      pwaScore: Math.round(lh.pwaScore * 100),
       seoScore: Math.round(lh.seoScore * 100),
       accessibilityScore: Math.round(lh.accessibilityScore * 100),
       bestPracticesScore: Math.round(lh.bestPracticesScore * 100),
@@ -561,8 +584,7 @@ exports.printResultsToConsole = (
         ((lh.performanceScore +
           lh.seoScore +
           lh.bestPracticesScore +
-          lh.accessibilityScore +
-          lh.pwaScore) /
+          lh.accessibilityScore) /
           5) *
           100
       ),
@@ -572,7 +594,6 @@ exports.printResultsToConsole = (
     let strPerformance = "Performance: ";
     let strSeo = "SEO: ";
     let strBP = "Best practices: ";
-    let strPwa = "PWA: ";
 
     let avg = chalk(
       `${strAvg.padEnd(10)} ${lhScaled.average.toString().padStart(10)} / 100`
@@ -590,11 +611,8 @@ exports.printResultsToConsole = (
         .toString()
         .padStart(4)} / 100`
     );
-    let pwa = chalk(
-      `${strPwa.padEnd(10)} ${lhScaled.pwaScore.toString().padStart(10)} / 100`
-    );
 
-    consoleBox([avg, performance, bestPractice, seo, pwa], "green");
+    consoleBox([avg, performance, bestPractice, seo], "green");
   }
 
   if (atrSummary) {
@@ -740,7 +758,6 @@ exports.getFinalEval = (
     // output Lighthouse Score Box
     lhScaled = {
       performanceScore: Math.round(lh.performanceScore * 100),
-      pwaScore: Math.round(lh.pwaScore * 100),
       seoScore: Math.round(lh.seoScore * 100),
       accessibilityScore: Math.round(lh.accessibilityScore * 100),
       bestPracticesScore: Math.round(lh.bestPracticesScore * 100),
@@ -748,8 +765,7 @@ exports.getFinalEval = (
         ((lh.performanceScore +
           lh.seoScore +
           lh.bestPracticesScore +
-          lh.accessibilityScore +
-          lh.pwaScore) /
+          lh.accessibilityScore) /
           5) *
           100
       ),
@@ -767,7 +783,6 @@ exports.getFinalEval = (
       (reqThreshold.bestPracticesScore &&
         lhScaled.bestPracticesScore < reqThreshold.bestPracticesScore) ||
       (reqThreshold.seoScore && lhScaled.seoScore < reqThreshold.seoScore) ||
-      (reqThreshold.pwaScore && lhScaled.pwaScore < reqThreshold.pwaScore) ||
       (reqThreshold.average && lhScaled.average < reqThreshold.average)
     ) {
       consoleBox(
@@ -777,7 +792,7 @@ exports.getFinalEval = (
           reqThreshold.accessibilityScore
         } Best practices=${reqThreshold.bestPracticesScore} SEO=${
           reqThreshold.seoScore
-        } PWA=${reqThreshold.pwaScore} !!!`,
+        }`,
         "red"
       );
       failedThreshold = true;
