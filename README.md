@@ -31,38 +31,7 @@ SSW CodeAuditor is a code and link analysis tool that allows users to identify b
 <img src='https://user-images.githubusercontent.com/67776356/90726194-aa9cd280-e304-11ea-805c-d8780088d691.gif' width='700' alt='npm start' />
 </p>
 
-## Site
-### Home Page
-
-<p align='center'>
-<img width="3008" alt="image" src="https://user-images.githubusercontent.com/67776356/111554107-cd7b6080-87d9-11eb-9fdd-02ece996a9d4.png">
-</p>
-
-### Links Tab
-
-<p align='center'>
-<img width="3008" alt="image" src="https://user-images.githubusercontent.com/67776356/111554211-fef42c00-87d9-11eb-95e5-a166696776af.png">
-</p>
-
-### Code Issue Tab (HTML Hint)
-
-<p align='center'>
-<img width="3008" alt="image" src="https://user-images.githubusercontent.com/67776356/111554237-087d9400-87da-11eb-880f-96af1c7cf07a.png">
-</p>
-
-### Lighthouse Audit Tab
-
-<p align='center'>
-<img width="3008" alt="image" src="https://user-images.githubusercontent.com/67776356/111554329-39f65f80-87da-11eb-9f6e-76ee2275eaf1.png">
-</p>
-
-### Artillery Load Test Tab
-
-<p align='center'>
-<img width="3008" alt="image" src="https://user-images.githubusercontent.com/67776356/111554279-1e8b5480-87da-11eb-8776-ee1d276b1235.png">
-</p>
-
-## To start contributing to CodeAuditor:
+## To start developing CodeAuditor:
 We always welcome contributions. If you are interested in contributing, please take a look at our [CONTRIBUTING](./CONTRIBUTING.md) guide
 
 ## Technologies used in CodeAuditor
