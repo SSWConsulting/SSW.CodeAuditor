@@ -48,20 +48,22 @@ The general flow for making a change to the script host is:
 
 ## Running the Project
 
-1. To run the web UI, open your terminal in Visual Studio or Visual Studio Code and type the following:  
+1. Chat with @tombui99 to setup the `env` files locally for the UI and API
+
+2. To run the web UI, open your terminal in Visual Studio or Visual Studio Code and type the following:  
 ``` bash
 $ cd ui
 $ npm i
 $ npm run dev
 ```
 
-2. To build your docker image, first make sure that Docker is running then type the following in your terminal:
+3. To build your docker image, first make sure that Docker is running then type the following in your terminal:
 ``` bash
 $ cd docker
 $ docker build -t sswconsulting/codeauditor .
 ```
 
-3. To run the Firebase API, type the following in your terminal:
+4. To run the Firebase API, type the following in your terminal:
 ``` bash
 $ cd api
 $ npm i
@@ -73,19 +75,19 @@ $ npm run serve
 In order to test your code changes in the UI
 - Make the changes in the **ui** folder
 - Make sure the ui is already running (`npm run dev`)
-- View the changes in your browser via `localhost:5000`
+- View the changes in your browser via `localhost:4200`
 
 2. Docker  
 In order to test your code changes in Docker 
 - Make the changes in the **docker** folder
 - Rebuild the Docker image (`docker build -t sswconsulting/codeauditor .`)
-- Run CodeAuditor code in Powershell to see the changes (`$ docker run sswconsulting/codeauditor --token 3c34a549-dfb3-442c-b0e3-45942104a8bf --url <URL> --buildId [BUILDID]`) 
+- Run CodeAuditor code in Powershell to see the changes (`$ docker run sswconsulting/codeauditor --token 3c34a549-dfb3-442c-b0e3-45942104a8bf --url <URL>`) 
 
 3. Firebase API  
 In order to test your code changes in the API
 - Make the changes in the **api** folder
 - Run the api (`npm run serve`)
-- View the changes in *console.firebase.google* (contact Anthony for authentication)
+- Run the API locally via `localhost:5000` (contact @tombui99 for authentication)
 
 ## Adding your own custom HTML rule
 1. In your local repo, go to ```docker/customHtmlRules.js```

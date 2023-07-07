@@ -1,2 +1,0 @@
-Running Lighthouse 3 time(s) on https://testsswpeoplestaging.z6.web.core.windows.net/people/
-Run #1...failed!

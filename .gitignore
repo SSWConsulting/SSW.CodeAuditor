@@ -6,12 +6,15 @@
 /.pnp
 .pnp.js
 /.vscode
+
 # testing
 /coverage
 /screamingfrog
+
 # production
 /build
 /docker/output
+
 # misc
 .DS_Store
 .env.local
