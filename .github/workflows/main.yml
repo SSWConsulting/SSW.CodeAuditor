@@ -36,10 +36,9 @@ jobs:
         run: |
           cd ui
           touch .env
-          echo "API -> ${{vars.API}}"
-          echo "API2 -> ${{vars.API2}}"
           echo API=${{ vars.API }} >> .env
           echo API2=${{ vars.API2 }} >> .env 
+          echo MAX_SCAN_SIZE=${{ vars.MAX_SCAN_SIZE }} >> .env 
       - name: Deploy Svelte UI to Firebase
         env:
           FIREBASETOKEN: ${{ secrets.FIREBASETOKEN }}
@@ -56,6 +55,7 @@ jobs:
           touch .env
           echo AZURE_STORAGE_ACCOUNT=${{ secrets.AZURE_STORAGE_ACCOUNT }} >> .env
           echo AZURE_STORAGE_ACCESS_KEY=${{ secrets.AZURE_STORAGE_ACCESS_KEY }} >> .env 
+          echo MAX_SCAN_SIZE=${{ vars.MAX_SCAN_SIZE }} >> .env 
       - name: Deploy API to Firebase
         env:
           FIREBASETOKEN: ${{ secrets.FIREBASETOKEN }}

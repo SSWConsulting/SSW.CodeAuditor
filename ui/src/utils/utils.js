@@ -369,6 +369,10 @@ export const unscannableLinks = [
   {url: "https://twitter.com/"},
   {url: "https://marketplace.visualstudio.com/"},
   {url: "https://www.nuget.org/"},
+  {url: "https://make.powerautomate.com/connectors"},
+  {url: "https://answers.microsoft.com/"},
+  {url: "https://admin.microsoft.com/"},
+  {url: "https://ngrx.io"},
 ]
 
 export const htmlHintRules = [

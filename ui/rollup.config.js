@@ -26,6 +26,7 @@ export default {
           ...config().parsed,
           API: process.env.API,
           API2: process.env.API2,
+          MAX_SCAN_SIZE: process.env.MAX_SCAN_SIZE
         },
       }),
     }),

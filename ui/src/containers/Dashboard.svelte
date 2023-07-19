@@ -62,7 +62,7 @@
   `;
 
   const topScanTitle = `
-  ### Latest 500 Personal Scans
+  ### Latest ${__myapp.env.MAX_SCAN_SIZE} Personal Scans
   `;
 </script>
 
