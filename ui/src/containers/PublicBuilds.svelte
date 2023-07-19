@@ -38,7 +38,7 @@
   `;
 
   const topScanTitle = `
-  ### Latest 500 Public Scans
+  ### Latest ${__myapp.env.MAX_SCAN_SIZE} Public Scans
   `;
 </script>
 

@@ -117,14 +117,14 @@ exports.getPersonalSummary = (api, showAll) =>
 			}
 			resolve(result)
 		} else {
-			// Top 500 scans in last 6 months
+			// Top 500 scans in last 24 months
 			var date = new Date();
-			date.setMonth(date.getMonth() - 6);
+			date.setMonth(date.getMonth() - 24);
 
 			const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
 				queryOptions: { filter: odata`PartitionKey eq ${api} and buildDate gt datetime'${date.toISOString()}'` }
 			});
-			const iterator = entity.byPage({ maxPageSize: 500 });
+			const iterator = entity.byPage({ maxPageSize: parseInt(process.env.MAX_SCAN_SIZE) });
 			for await (const item of iterator) {
 				resolve(item)
 				break;
@@ -144,14 +144,14 @@ exports.getAllPublicSummary = (showAll) =>
 			}
 			resolve(result)
 		} else {
-			// Top 500 scans in last 6 months
+			// Top 500 scans in last 24 months
 			var date = new Date();
-			date.setMonth(date.getMonth() - 6);
+			date.setMonth(date.getMonth() - 24);
 
 			const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
 				queryOptions: { filter: odata`isPrivate eq ${false} and buildDate gt datetime'${date.toISOString()}'` }
 			});
-			const iterator = entity.byPage({ maxPageSize: 500 });
+			const iterator = entity.byPage({ maxPageSize: parseInt(process.env.MAX_SCAN_SIZE) });
 			for await (const item of iterator) {
 				resolve(item)
 				break;
