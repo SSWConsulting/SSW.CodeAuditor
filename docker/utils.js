@@ -9,8 +9,9 @@ const R = require("ramda");
 const { execSync } = require("child_process");
 const slug = require("slug");
 const nodemailer = require("nodemailer");
-const fns = require('date-fns')
-const fetch = require('node-fetch')
+const fns = require('date-fns');
+const fetch = require('node-fetch');
+const beautify = require('js-beautify/js').js;
 
 exports.sendAlertEmail = async (email, emailConfig, scanSummary) => {
   // create reusable transporter object using the default SMTP transport
@@ -166,7 +167,10 @@ const runHtmlHint = async (url, startUrl, tokenApi) => {
   }
 
   try {
-    const html = await fetchHtml(url);
+    let html = await fetchHtml(url);
+  
+    html = beautify(html, { indent_size: 2, space_in_empty_paren: true });
+
     return R.pipe(
       (html) => HTMLHint.verify(html, htmlHintConfig),
       R.map((x) => {

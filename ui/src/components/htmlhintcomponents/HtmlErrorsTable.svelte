@@ -73,6 +73,11 @@
       `${CONSTS.API2}/viewsource?url=${encodeURIComponent(viewUrlSource)}`
     );
     source = await res.text();
+
+    const options = { indent_size: 2, space_in_empty_paren: true }
+
+    source = js_beautify(source, options)
+
     loading = false;
     showSourceWindow();
   }
