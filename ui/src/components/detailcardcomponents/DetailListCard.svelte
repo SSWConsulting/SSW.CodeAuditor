@@ -84,7 +84,7 @@
           <h2>
             <span class="font-bold font-sans text-gray-600">LINKS</span>
           </h2>
-          <LinkSummary value={val} brokenLinks={val.totalUnique404}/>
+          <LinkSummary value={val}/>
         </div>
 
         <div

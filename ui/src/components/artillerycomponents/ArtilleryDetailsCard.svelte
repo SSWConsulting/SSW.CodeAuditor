@@ -43,7 +43,7 @@
       <div class="grid grid-rows-3 col-span-4">
         <div class="md:row-span-1 text-sm my-2">
           <h2><span class="font-bold font-sans text-gray-600">LINKS</span></h2>
-          <LinkSummary value={val} brokenLinks={brokenLinks.length}/>
+          <LinkSummary value={val}/>
         </div>
   
         <div class="md:row-span-1 text-sm my-2">

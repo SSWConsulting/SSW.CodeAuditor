@@ -25,35 +25,6 @@ COPY *.js ./
 
 FROM node:16-bullseye-slim
 
-# Set variable so puppeteer will not try to download chromium
-ENV PUPPETEER_SKIP_DOWNLOAD=true
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
-
-# Install utilities
-RUN apt-get update --fix-missing && apt-get -y upgrade && apt-get install -y git wget gnupg && apt-get clean
-
-# Install Chromium for lighthouse
-RUN apt-get update \
-    && apt-get install -y chromium --no-install-recommends \
-    && apt-get clean
-
-# Install Lighthouse CI
-RUN npm install -g @lhci/cli@0.12.0
-RUN npm install -g lighthouse
-
-# Install puppeteer
-RUN npm install -g puppeteer
-
-# Setup a user to avoid doing everything as root
-RUN groupadd --system lhci && \
-  useradd --system --create-home --gid lhci lhci && \
-  mkdir --parents /home/lhci/app && \
-  mkdir --parents /home/lhci/app/src && \
-  chown --recursive lhci:lhci /home/lhci
-
-RUN cd /home/lhci/app/src && npm link puppeteer
-USER lhci
-
 WORKDIR /home/lhci/app
 
 # copy tools
