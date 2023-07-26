@@ -17,7 +17,7 @@
   import LoadingFlat from "../components/misccomponents/LoadingFlat.svelte";
   import UpdateIgnoreUrl from "../components/misccomponents/UpdateIgnoreUrl.svelte";
   import CardSummary from "../components/summaryitemcomponents/CardSummary.svelte";
-  import { unscannableLinks } from "../utils/utils";
+  import { unscannableLinks } from "../../../api/functions/consts";
 
   export let currentRoute;
 

@@ -192,18 +192,6 @@ func writeResultFile(allUrls map[string]LinkStatus) {
 
 	f.WriteString("Source" + "\t" + "Destination" + "\t" + "Status" + "\t" + "StatusCode" + "\t" + "Anchor" + "\n")
 	for _, v := range allUrls {
-		if (!strings.HasPrefix(v.url, "https://twitter.com") &&
-			!strings.HasPrefix(v.url, "https://marketplace") &&
-			!strings.HasPrefix(v.url, "https://www.nuget.org/") &&
-			!strings.HasPrefix(v.url, "http://nuget.org") &&
-			!strings.HasPrefix(v.url, "https://t.co") &&
-			!strings.HasPrefix(v.url, "https://support.google.com") &&
-			!strings.HasPrefix(v.url, "https://playwright.dev") &&
-			!strings.HasPrefix(v.url, "https://www.theurlist.com/xamarinstreamers") &&
-			!strings.HasPrefix(v.url, "https://dev.botframework.com") &&
-			!strings.HasPrefix(v.url, "https://www.ssw.com.au/rules/rules-to-better-research-and-development/") &&
-			!strings.HasPrefix(v.url, "https://www.ato.gov.au/Business/Research-and-development-tax-incentive/") && 
-			!strings.HasPrefix(v.url, "https://learn.microsoft.com/en-us/assessments/?mode=home/")) {
 			f.WriteString(v.srcUrl + "\t" + v.url + "\t" + v.status + "\t" + strconv.Itoa(v.statusCode) + "\t" + strings.ReplaceAll(v.anchor,"\"","") + "\n")
 		}
 	}

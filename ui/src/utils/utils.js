@@ -363,18 +363,6 @@ export const historyChartType = {
   ErrorCode: "CODE ERRORS",
 }
 
-export const unscannableLinks = [
-  {url: "https://learn.microsoft.com/en-us/"},
-  {url: "https://support.google.com/"},
-  {url: "https://twitter.com/"},
-  {url: "https://marketplace.visualstudio.com/"},
-  {url: "https://www.nuget.org/"},
-  {url: "https://make.powerautomate.com/connectors"},
-  {url: "https://answers.microsoft.com/"},
-  {url: "https://admin.microsoft.com/"},
-  {url: "https://ngrx.io"},
-]
-
 export const htmlHintRules = [
   {
     rule: "tagname-lowercase",

@@ -11,7 +11,7 @@
 
   if (dataType === historyChartType.BadLinks) {
     chartTitle = historyChartType.BadLinks;
-    allDataToDisplay = value.map((i) => i.totalBrokenLinks);
+    allDataToDisplay = value.map((i) => i.totalUnique404);
     barColor = 'red'
   } else if (dataType === historyChartType.WarningCode) {
     chartTitle = historyChartType.WarningCode;
