@@ -1,6 +1,5 @@
 <script>
   export let value = {};
-  export let brokenLinks = {};
 
   function numberWithCommas(x) {
     return x.toLocaleString()
@@ -22,7 +21,7 @@
       class="font-sans font-bold block lg:inline-block"
       class:text-red-600={value.totalUnique404 > 0}
       class:text-gray-600={value.totalUnique404 === 0}>
-      {brokenLinks}
+      {value.totalUnique404}
       {#if value.totalUnique404 === 0}
         <i class="fas fa-check"></i>
       {/if}

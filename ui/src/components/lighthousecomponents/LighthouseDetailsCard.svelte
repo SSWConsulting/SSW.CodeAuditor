@@ -7,7 +7,6 @@
 
   export let build = {};
   let val = build.summary;
-  let brokenLinks = build.brokenLinks;
 
   const dispatch = createEventDispatcher();
   const perfThreshold = () => dispatch("perfThreshold");
@@ -54,7 +53,7 @@
 
       <div class="row-span-1 text-sm my-2">
         <h2><span class="font-bold font-sans text-gray-600">LINKS</span></h2>
-        <LinkSummary value={val} brokenLinks={brokenLinks.length} />
+        <LinkSummary value={val} />
       </div>
 
       <div class="row-span-1 text-sm my-2">
