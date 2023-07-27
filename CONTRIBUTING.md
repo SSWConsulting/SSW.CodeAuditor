@@ -65,7 +65,7 @@ $ docker build -t sswconsulting/codeauditor .
 
 4. To run the Firebase API, type the following in your terminal:
 ``` bash
-$ cd api
+$ cd api/functions
 $ npm i
 $ npm run serve
 ```

@@ -138,47 +138,6 @@ const main = async () => {
     }
   }
 
-  // Static Code Analysis and CLOC - Not use (remove once approved from Anthony)
-  // if (fs.readdirSync('./src').length > 0) {
-  // 	writeLog(chalk.yellowBright(`Counting lines of codes`));
-  // 	const [result, error] = countLineOfCodes(writeLog);
-  // 	if (!error) {
-  // 		_cloc = result;
-  // 	}
-
-  // 	const [resultCode, errorCode] = runCodeAuditor(
-  // 		options.ignorefile,
-  // 		options.rules
-  // 	);
-  // 	if (errorCode) {
-  // 		writeLog(`Error running SSWCodeAuditor command: ${error}`);
-  // 	}
-  // 	writeLog(resultCode);
-
-  // 	_codeAuditor = resultCode;
-  // 	let codeSummary = '';
-  // 	if (_codeAuditor) {
-  // 		const errors = _codeAuditor.filter((x) => !!x.error);
-  // 		const warns = _codeAuditor.filter((x) => !x.error);
-  // 		codeSummary = ` Errors=${errors.length} Warnings=${warns.length}`;
-  // 	}
-
-  // 	// output the result
-  // 	consoleBox(
-  // 		`Codes: Files=${result.header.n_files} Lines=${result.header.n_lines}${codeSummary}`,
-  // 		'green'
-  // 	);
-  // }
-
-  // Github Superlinter - Not use (remove once approved from Anthony)
-  // if (fs.existsSync('./src/superlinter.log')) {
-  // 	writeLog(
-  // 		`We have github SuperLinter output file at ./src/superlinter.log`
-  // 	);
-  // 	_superlinter = readGithubSuperLinter('./src/superlinter.log');
-  // 	writeLog(`total number of issues found`, _superlinter.length);
-  // }
-
   // Lighthouse
   if (options.lighthouse) {
     writeLog(`start lighthouse`);
