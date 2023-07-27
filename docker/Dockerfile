@@ -25,6 +25,9 @@ COPY *.js ./
 
 FROM node:16-bullseye-slim
 
+# Install utilities
+RUN apt-get update --fix-missing && apt-get -y upgrade && apt-get install -y git wget gnupg && apt-get clean
+
 WORKDIR /home/lhci/app
 
 # copy tools
