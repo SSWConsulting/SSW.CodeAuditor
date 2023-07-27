@@ -146,7 +146,7 @@ exports.getAllPublicSummary = (showAll) =>
 		} else {
 			// Top 500 scans in last 24 months
 			var date = new Date();
-			date.setMonth(date.getMonth() - 24);
+			date.setMonth(date.getMonth() - 12);
 
 			const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
 				queryOptions: { filter: odata`isPrivate eq ${false} and buildDate gt datetime'${date.toISOString()}'` }
