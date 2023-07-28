@@ -133,7 +133,7 @@
               target="_blank"
               href="https://github.com/SSWConsulting/SSW.CodeAuditor/issues"
             >
-              FEEDBACK TO SSW
+              FEEDBACK TO SSW CODEAUDITOR
             </a>
             <span class="px-2">|</span>
             <a
