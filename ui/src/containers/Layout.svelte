@@ -146,7 +146,7 @@
   </main>
   <footer
     class="footer py-6 text-white md:py-4 lg:py-2 text-sm mt-16"
-    style="background-color: #414141"
+    style="background-color: #000"
   >
     <section class="main-container">
       <div class="xl:mx-6">
@@ -217,11 +217,29 @@
 </body>
 
 <style>
+  .main-container {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1280px;
+  }
   .brand {
     color: white !important;
   }
   img {
     max-width: 100%;
     height: auto;
+  }
+  footer {
+    color: #9e9e9e;
+    font-size: 0.75rem;
+  }
+  a.footer-link {
+    color: #fff;
+    line-height: 0.75rem;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+  }
+  a.footer-link:hover {
+    color: #cc4141;
   }
 </style>
