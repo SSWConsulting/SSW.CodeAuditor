@@ -185,13 +185,13 @@
           <iframe width="560" height="315" src="https://www.youtube.com/embed/DCDAtmvaPUY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
       </article>
-      <article class="markdown-body mt-8">
+      <article class="markdown-body mt-8 img-bordered">
         {@html marked.parse(emailAlertInstruction)}
       </article>
-      <article class="markdown-body mt-8">
+      <article class="markdown-body mt-8 img-bordered">
         {@html marked.parse(scanCompareInstruction)}
       </article>
-      <article class="markdown-body mt-8">
+      <article class="markdown-body mt-8 img-bordered">
         {@html marked.parse(customRuleConfig)}
       </article>
       <article class="markdown-body mt-8">
@@ -426,3 +426,11 @@
       </div>
   </section>
 </div>
+
+<style>
+  :global(.markdown-body.img-bordered img),
+  img {
+    border: 10px solid #eee;
+    outline: 1px solid #ccc;
+  }
+</style>
