@@ -161,7 +161,7 @@
               target="_blank"
               href="https://github.com/SSWConsulting/SSW.CodeAuditor/issues"
             >
-              FEEDBACK TO SSW CODEAUDITOR
+              FEEDBACK / SUGGEST A FEATURE
             </a>
             <span class="px-2">|</span>
             <a
