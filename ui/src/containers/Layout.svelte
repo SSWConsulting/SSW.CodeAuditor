@@ -311,9 +311,9 @@
     margin-right: auto;
     max-width: 1280px;
   }
-  .brand {
+  /* .brand {
     color: white !important;
-  }
+  } */
   img {
     max-width: 100%;
     height: auto;
