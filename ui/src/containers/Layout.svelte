@@ -3,6 +3,7 @@
   import { Navigate, navigateTo } from "svelte-router-spa";
   import { userSession, userName, isLoggedIn } from "../stores.js";
   import { scale } from "svelte/transition";
+  import { onMount } from "svelte";
 
   export let currentRoute;
 
@@ -15,6 +16,23 @@
   const params = {};
 
   const signOut = () => userSession.logout();
+
+  let latestBuildDaysAgo = "";
+  let latestBuildNumber = "";
+
+  onMount(async () => {
+    const deploymentUrl =
+      "https://api.github.com/repos/SSWConsulting/SSW.CodeAuditor/deployments?environment=production&task=deploy&per_page=1";
+    const deploymentResp = await fetch(deploymentUrl);
+    const deploymentPayload = await deploymentResp.json();
+    latestBuildNumber = deploymentPayload[0].id;
+
+    const latestBuildCreated = deploymentPayload[0].created_at;
+    const currentDate = new Date();
+    const latestBuildDate = new Date(latestBuildCreated);
+    const timeDifference = currentDate.getTime() - latestBuildDate.getTime();
+    latestBuildDaysAgo = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+  });
 </script>
 
 <body class="flex flex-col min-h-screen">
@@ -307,8 +325,13 @@
               class="footer-link"
               href="https://www.ssw.com.au/rules/rules-to-better-continuous-deployment-with-tfs"
             >
-              CONSTANT CONTINUOUS DEPLOYMENT.
-            </a>
+              CONSTANT CONTINUOUS DEPLOYMENT</a
+            >. Last deployed {latestBuildDaysAgo} day(s) ago (Build #
+            <a
+              class="footer-link"
+              href="https://github.com/SSWConsulting/SSW.CodeAuditor/deployments/activity_log?environment=Production"
+              >{latestBuildNumber}</a
+            >)
           </div>
           <div class="md:text-right py-2">
             Powered by{" "}
@@ -336,7 +359,7 @@
 
 <style>
   .bg-grey-translucent {
-    background-color: hsla(0,0%,40%,.1);
+    background-color: hsla(0, 0%, 40%, 0.1);
   }
   .main-container {
     margin-left: auto;
@@ -349,7 +372,7 @@
   }
   a.footer-greybar-link {
     text-decoration: underline;
-    transition: color .25s ease;
+    transition: color 0.25s ease;
   }
   a.footer-greybar-link:hover {
     text-decoration: underline;
