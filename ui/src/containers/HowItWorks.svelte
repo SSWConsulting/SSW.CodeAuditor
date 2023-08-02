@@ -185,13 +185,13 @@
           <iframe width="560" height="315" src="https://www.youtube.com/embed/DCDAtmvaPUY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
       </article>
-      <article class="markdown-body mt-8 img-bordered">
+      <article class="markdown-body mt-8">
         {@html marked.parse(emailAlertInstruction)}
       </article>
-      <article class="markdown-body mt-8 img-bordered">
+      <article class="markdown-body mt-8">
         {@html marked.parse(scanCompareInstruction)}
       </article>
-      <article class="markdown-body mt-8 img-bordered">
+      <article class="markdown-body mt-8">
         {@html marked.parse(customRuleConfig)}
       </article>
       <article class="markdown-body mt-8">
@@ -267,7 +267,7 @@
       <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
         <a href="/images/dashboard.png" target="_blank">
         <img
-            class="object-cover object-center rounded"
+            class="object-cover object-center rounded bordered"
             alt="hero"
             src="/images/dashboard.png" />
         </a>
@@ -281,7 +281,7 @@
       <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
           <a href="/images/exportcsv.png" target="_blank">
           <img
-              class="object-cover object-center rounded"
+              class="object-cover object-center rounded bordered"
               alt="hero"
               src="/images/exportcsv.png" />
           </a>
@@ -317,7 +317,7 @@
       <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
         <a href="/images/lighthouse2.png" target="_blank">
         <img
-            class="object-cover object-center rounded"
+            class="object-cover object-center rounded bordered"
             alt="hero"
             src="/images/lighthouse2.png" />
         </a>
@@ -331,7 +331,7 @@
       <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
           <a href="/images/threshold.png" target="_blank">
           <img
-              class="object-cover object-center rounded"
+              class="object-cover object-center rounded bordered"
               alt="hero"
               src="/images/threshold.png" />
           </a>
@@ -368,7 +368,7 @@
       <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
         <a href="/images/ignore.png" target="_blank">
         <img
-            class="object-cover object-center rounded"
+            class="object-cover object-center rounded bordered"
             alt="hero"
             src="/images/ignore.png" />
         </a>
@@ -382,7 +382,7 @@
       <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
           <a href="/images/codeissues.png" target="_blank">
           <img
-              class="object-cover object-center rounded"
+              class="object-cover object-center rounded bordered"
               alt="hero"
               src="/images/codeissues.png" />
           </a>
@@ -418,7 +418,7 @@
       <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
         <a href="/images/artillery.png" target="_blank">
         <img
-            class="object-cover object-center rounded"
+            class="object-cover object-center rounded bordered"
             alt="hero"
             src="/images/artillery.png" />
         </a>
