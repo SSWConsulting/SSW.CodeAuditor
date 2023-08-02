@@ -46,11 +46,6 @@ input[type='range'] {
 	height: 0;
 }
 
-img {
-    border: 10px solid #eee;
-    outline: 1px solid #ccc;
-}
-
 button {
 	color: #333;
 	background-color: #f4f4f4;
@@ -97,4 +92,9 @@ button:focus {
 .link:hover {
 	color: #cc4141;
 	text-decoration: none !important;
+}
+
+.bordered {
+    border: 10px solid #eee;
+    outline: 1px solid #ccc;
 }
