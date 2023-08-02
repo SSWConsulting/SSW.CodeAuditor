@@ -102,7 +102,7 @@
 <Modal
   bind:show
   bind:loading={saving}
-  header="Enabled Rules:"
+  header="Enable/Disable Rules:"
   mainAction="Save"
   on:action={updateCustomHtmlRules}
   on:dismiss={dismiss}>
