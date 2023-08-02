@@ -38,6 +38,7 @@ jobs:
           touch .env
           echo API=${{ vars.API }} >> .env
           echo API2=${{ vars.API2 }} >> .env 
+          echo DEPLOYMENTS_URL=${{ vars.DEPLOYMENTS_URL }} >> .env 
           echo MAX_SCAN_SIZE=${{ vars.MAX_SCAN_SIZE }} >> .env 
       - name: Deploy Svelte UI to Firebase
         env:

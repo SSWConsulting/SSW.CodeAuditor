@@ -4,6 +4,7 @@
   import { userSession, userName, isLoggedIn } from "../stores.js";
   import { scale } from "svelte/transition";
   import { onMount } from "svelte";
+  import { CONSTS } from "../utils/utils.js";
 
   export let currentRoute;
 
@@ -21,9 +22,7 @@
   let latestBuildNumber = "";
 
   onMount(async () => {
-    const deploymentUrl =
-      "https://api.github.com/repos/SSWConsulting/SSW.CodeAuditor/deployments?environment=production&task=deploy&per_page=1";
-    const deploymentResp = await fetch(deploymentUrl);
+    const deploymentResp = await fetch(CONSTS.DEPLOYMENTS_URL);
     const deploymentPayload = await deploymentResp.json();
     latestBuildNumber = deploymentPayload[0].id;
 
