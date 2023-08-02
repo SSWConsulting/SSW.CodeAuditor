@@ -200,7 +200,7 @@
             Copyright © SSW 1990 - {new Date().getFullYear()}. All Rights
             Reserved.
           </div>
-          <div class="w-full md:w-3/6 md:text-right py-2">
+          <div class="w-full md:w-3/5 md:text-right py-2">
             <a
               class="footer-link"
               target="_blank"
