@@ -162,7 +162,7 @@
     </nav>
     <Route {currentRoute} {params} />
   </main>
-  <div class="py-2 text-center bg-grey-translucent text-sm">
+  <div class="py-2 text-center text-sm bggrey">
     <section class="main-container">
       We <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -175,9 +175,7 @@
         /></svg
       >
       open source. Powered by
-      <a
-        class="footer-greybar-link"
-        href="https://github.com/SSWConsulting/SSW.CodeAuditor"
+      <a class="link" href="https://github.com/SSWConsulting/SSW.CodeAuditor"
         >GitHub <svg
           xmlns="http://www.w3.org/2000/svg"
           height="1em"
@@ -358,9 +356,6 @@
 </body>
 
 <style>
-  .bg-grey-translucent {
-    background-color: hsla(0, 0%, 40%, 0.1);
-  }
   .main-container {
     margin-left: auto;
     margin-right: auto;
@@ -369,14 +364,6 @@
   img {
     max-width: 100%;
     height: auto;
-  }
-  a.footer-greybar-link {
-    text-decoration: underline;
-    transition: color 0.25s ease;
-  }
-  a.footer-greybar-link:hover {
-    text-decoration: underline;
-    color: #cc4141;
   }
   footer {
     color: #9e9e9e;
