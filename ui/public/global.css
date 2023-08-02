@@ -46,6 +46,11 @@ input[type='range'] {
 	height: 0;
 }
 
+img {
+    border: 10px solid #eee;
+    outline: 1px solid #ccc;
+}
+
 button {
 	color: #333;
 	background-color: #f4f4f4;

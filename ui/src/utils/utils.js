@@ -58,6 +58,7 @@ export const CONSTS = {
   USERS: "users",
   API: __myapp.env.API,
   API2: __myapp.env.API2,
+  DEPLOYMENTS_URL: __myapp.env.DEPLOYMENTS_URL,
   BlobURL: "https://codeauditorstorage.blob.core.windows.net",
   URLChecker: "https://urlchecker.blob.core.windows.net",
 };
