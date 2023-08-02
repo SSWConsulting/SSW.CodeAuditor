@@ -426,11 +426,3 @@
       </div>
   </section>
 </div>
-
-<style>
-  :global(.markdown-body.img-bordered img),
-  img {
-    border: 10px solid #eee;
-    outline: 1px solid #ccc;
-  }
-</style>
