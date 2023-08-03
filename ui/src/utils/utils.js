@@ -585,3 +585,21 @@ export const customHtmlHintRules = [
   },
   // Add new rule id below
 ];
+
+export const PresetType = {
+  Whitelist: "Whitelist",
+  Blacklist: "Blacklist",
+};
+
+export const rulePresets = [
+  { 
+    name: 'Select All',
+    type: PresetType.Blacklist,
+    rules: []
+  },
+  {
+    name: 'React project',
+    type: PresetType.Whitelist,
+    rules: ["tagname-lowercase", "tag-pair", "meta-tag-must-not-redirect"]
+  },
+];
