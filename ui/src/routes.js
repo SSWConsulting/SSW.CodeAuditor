@@ -7,6 +7,7 @@ import HtmlHints from './containers/HtmlHints.svelte';
 import BuildDetails from './containers/BuildDetails.svelte';
 import Public from './containers/Public.svelte';
 import PublicBuilds from './containers/PublicBuilds.svelte';
+import Home from './containers/Home.svelte';
 import HowItWorks from './containers/HowItWorks.svelte';
 import Rules from './containers/Rules.svelte';
 import LighthouseReport from './containers/LighthouseReport.svelte';
@@ -22,7 +23,7 @@ isLoggedIn.subscribe((x) => (loggedIn = x));
 const routes = [
 	{
 		name: '/',
-		component: HowItWorks,
+		component: Home,
 		layout: AppLayout,
 	},
 	{
@@ -88,6 +89,11 @@ const routes = [
 		layout: AppLayout
 	},
 	{
+		name: '/howItWorks',
+		component: HowItWorks,
+		layout: AppLayout
+	},
+	{
 		name: 'home',
 		component: AppLayout,
 		onlyIf: {
@@ -98,7 +104,7 @@ const routes = [
 			redirect: '/login',
 		},
 		nestedRoutes: [
-			{ name: 'index', component: HowItWorks },
+			{ name: 'index', component: Home },
 			{ name: 'settings', component: Settings },
 		],
 	},
