@@ -22,6 +22,9 @@
   let htmlHintSelectedRules = []
   let customHtmlHintSelectedRules = []
 
+  $: htmlHintSelectedRules, handleSelectionChange();
+  $: customHtmlHintSelectedRules, handleSelectionChange();
+
   const dispatch = createEventDispatcher();
   const updateHtmlRules = () => dispatch("updateHtmlRules");
   
@@ -60,6 +63,23 @@
     }));
   };
 
+  const getPresetSelections = (presetName) => {
+    const preset = rulePresets.find((preset) => preset.name === presetName);
+    const isWhitelist = preset.type === PresetType.Whitelist;
+    return [
+      ...htmlHintSelectedRules.filter((rule) => {
+        return isWhitelist
+          ? preset.rules.includes(rule.rule)
+          : !preset.rules.includes(rule.rule)
+      }).map((rule) => rule.rule),
+      ...customHtmlHintSelectedRules.filter((rule) => {
+        return isWhitelist
+          ? preset.rules.includes(rule.rule)
+          : !preset.rules.includes(rule.rule)
+      }).map((rule) => rule.rule),
+    ]
+  }
+ 
   const deselectAllRules = () => {
     htmlHintSelectedRules = htmlHintSelectedRules.map(rule => ({...rule, isChecked: false}))
     customHtmlHintSelectedRules = customHtmlHintSelectedRules.map(rule => ({...rule, isChecked: false}))
@@ -115,6 +135,23 @@
       presetSelection = [value];
       selectPreset(value);
     }
+  };
+
+  const handleSelectionChange = () => {
+    let selection = [];
+
+    for (let i = 0; i < rulePresets.length; i++) {
+      const presetName = rulePresets[i].name;
+      const presetSelections = getPresetSelections(presetName);
+      const selectedRules = getSelectedRules();
+
+      if (JSON.stringify(presetSelections) === JSON.stringify(selectedRules)) {
+        selection = [presetName];
+        break;
+      }
+    }
+
+    presetSelection = selection;
   };
   
 </script>
