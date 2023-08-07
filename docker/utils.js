@@ -261,6 +261,23 @@ exports.runBrokenLinkCheck = (url, maxthread) => {
 };
 
 /**
+ * run Artillery Load Test
+ * @param {func} writeLog - logging method
+ * @param {string} url - URL to run
+ */
+exports.runArtilleryLoadTest = (url, writeLog) => {
+  writeLog(`start artillery`);
+  try {
+    const rs = execSync(
+      `./node_modules/.bin/artillery quick -d 20 -r 10 -k -o artilleryOut.json "${url}"`
+    ).toString();
+    writeLog(`artillery check finished`, rs);
+  } catch (e) {
+    writeLog(`artillery check failed`, e);
+  }
+}
+
+/**
  * run Lighthouse Report
  * @param {string} url 
  */

@@ -2,6 +2,7 @@ const fs = require("fs");
 const { execSync } = require("child_process");
 const chalk = require("chalk");
 const yargs = require("yargs");
+const fetch = require("node-fetch");
 const {
   getConfigs,
   getPerfThreshold,
@@ -28,7 +29,8 @@ const {
   getFinalEval,
   sendAlertEmail,
   convertSpecialCharUrl,
-  runLighthouseReport
+  runLighthouseReport,
+  runArtilleryLoadTest
 } = require("./utils");
 
 const { readGithubSuperLinter } = require("./parseSuperLinter");
@@ -146,14 +148,25 @@ const main = async () => {
 
   // Artillery
   if (options.artillery) {
-    writeLog(`start artillery`);
-    try {
-      const rs = execSync(
-        `./node_modules/.bin/artillery quick -d 20 -r 10 -k -o artilleryOut.json "${options.url}"`
-      ).toString();
-      writeLog(`artillery check finished`, rs);
-    } catch (e) {
-      writeLog(`artillery check failed`, e);
+    // Check if cookie is configured correctly to run Artillery
+    let setCookieValue = await fetch(options.url).then((res) => {
+      return res.headers.get('set-cookie');
+    });
+  
+    if (setCookieValue) {
+      let setCookieObj = {};
+      setCookieValue.split(/\s*;\s*/).forEach(pair => {
+        pair = pair.split(/\s*=\s*/);
+        setCookieObj[pair[0]] = pair.splice(1).join('=');
+      });
+      // if cookie domain does not match URL or cookie uses Azure ARRAffinity then Load Test will fail
+      if ((setCookieObj.Domain !== options.url) || (setCookieObj.ARRAffinity)) {
+        consoleBox("Artillery Test will fail because the Cookie in this URL does not match its Host domain or Cookie uses Azure ARRAffinity\nSee https://github.com/SSWConsulting/SSW.CodeAuditor/wiki/SSW-CodeAuditor-Knowledge-Base-(KB)#why-artillery-load-test-might-fail-on-your-url-and-how-you-can-fix-it to see how you can fix your website cookie setting to run Artillery Load Test", "red")
+      } else {
+        runArtilleryLoadTest(options.url, writeLog)   
+      }
+    } else {
+      runArtilleryLoadTest(options.url, writeLog)  
     }
   }
 
