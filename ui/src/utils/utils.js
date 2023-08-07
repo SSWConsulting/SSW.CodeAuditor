@@ -599,7 +599,7 @@ export const rulePresets = [
   },
   {
     name: 'React project',
-    type: PresetType.Whitelist,
-    rules: ["tagname-lowercase", "tag-pair", "meta-tag-must-not-redirect"]
+    type: PresetType.Blacklist,
+    rules: []
   },
 ];
