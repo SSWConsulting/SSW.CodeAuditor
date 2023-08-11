@@ -52,6 +52,13 @@
   .active:visited {
     color: #cc4141;
   }
+  .table-header {
+    text-align: right;
+    background: #eee;
+    border-style: solid;
+    border-color: #ccc;
+    border-width: 1px;
+  }
 </style>
 
 {#if builds.length === 0}
@@ -122,44 +129,33 @@
       Unscannable Links:
     </span>
     {#if !hiddenRows}
-      <span class="font-bold mb-3">
+      <span class="mb-3">
         Some working links are reported as broken by CodeAuditor. They're marked as "unscannable". <a class="link hover:text-red-600" href="https://github.com/SSWConsulting/SSW.CodeAuditor/wiki/SSW-CodeAuditor-Knowledge-Base-(KB)#known-websites-that-has-anti-web-scraping-measures">Learn more on our KB.</a>
       </span>
-      <table
-      class="table-fixed w-full md:table-auto mb-8"
-      in:fade={{ y: 100, duration: 400 }}
-      out:fade={{ y: -100, duration: 200 }}>
-      <thead>
-        <tr>
-          <th class="w-3/12 px-4 py-2">Unscannable Link</th>
-          <th class="w-3/12 px-4 py-2">Source</th>
-          <th class="hidden md:table-cell w-3/12 px-4 py-2">Anchor Text</th>
-        </tr>
-      </thead>
-      <tbody>
-        {#each foundUnscannableLinks as url}
-          <tr>
-            <td class="w-3/12 border px-4 py-2 break-all">
-              <a
-                class="inline-block align-baseline link md:truncate"
-                target="_blank"
-                href={url.dst}>
-                {url.dst.length < 70 ? url.dst : url.dst.substring(0, 70) + '...'}
-              </a>
-            </td>
-            <td class="w-3/12 border px-4 py-2 break-all">
-              <a
-                class="inline-block align-baseline link md:truncate"
-                target="_blank"
-                href={url.src}>
-                {url.src.length < 70 ? url.src : url.src.substring(0, 70) + '...'}
-              </a>
-            </td>
-            <td class="hidden md:table-cell w-3/12 border px-4 py-2 break-all">{url.link || ''}</td>
-          </tr>
-          {/each}
-        </tbody>
-      </table>
+      {#each foundUnscannableLinks as url}
+        <table 
+          class="table-fixed w-full md:table-auto mb-8"
+          in:fade={{ y: 100, duration: 400 }}
+          out:fade={{ y: -100, duration: 200 }}>
+          <tbody>
+            <tr>
+              <th class="table-header hidden md:table-cell w-2/12 px-4 py-2">Source</th>
+              <td class="w-10/12 border px-4 py-2 break-all">
+                <a class="inline-block align-baseline link md:truncate" target="_blank" href={url.src}>{url.src.length < 70 ? url.src : url.src.substring(0, 70) + '...'}</a>
+              </td> 
+            </tr>
+          
+            <tr>
+              <th class="table-header hidden md:table-cell w-2/12 px-4 py-2">Anchor Text</th>
+              <td class="hidden md:table-cell w-10/12 border px-4 py-2 break-all">{url.link || ''}</td>
+            </tr>
+            <tr>
+              <th class="table-header w-2/12 px-4 py-2">Unscannable Link</th> 
+              <td class="w-10/12 border px-4 py-2 break-all"><a class="inline-block align-baseline link md:truncate" target="_blank" href={url.dst}>{url.dst.length < 70 ? url.dst : url.dst.substring(0, 70) + '...'}</a></td>    
+            </tr>
+          </tbody>
+        </table>
+      {/each}
     {/if}
   {/if}
 
