@@ -1,7 +1,7 @@
 const fetch = require("node-fetch");
 const slug = require("slug");
 const endpoint = "https://asia-east2-sswlinkauditor-c1131.cloudfunctions.net";
-const endpoint2 = "https://asia-northeast1-sswlinkauditor-c1131.cloudfunctions.net/api2";
+// const endpoint2 = "https://asia-northeast1-sswlinkauditor-c1131.cloudfunctions.net/api2";
 
 exports.postData = (api, buildId, data) => {
   return fetch(`${endpoint}/api/scanresult/${api}/${buildId || "-"}`, {
@@ -60,7 +60,7 @@ exports.getLoadThreshold = (api, url) => {
 };
 
 exports.getHTMLHintRules = (api, url) => {
-  return fetch(`${endpoint2}/config/${api}/htmlhintrules/${slug(url)}`).then(
+  return fetch(`${endpoint}/api/config/${api}/htmlhintrules/${slug(url)}`).then(
     (res) => {
       if (res.ok) {
         return res.json();
