@@ -11,7 +11,7 @@ const slug = require("slug");
 const nodemailer = require("nodemailer");
 const fns = require('date-fns');
 const fetch = require('node-fetch');
-const beautify = require('js-beautify/js').js;
+const beautify_html = require('js-beautify').html;
 
 exports.sendAlertEmail = async (email, emailConfig, scanSummary) => {
   // create reusable transporter object using the default SMTP transport
@@ -169,7 +169,7 @@ const runHtmlHint = async (url, startUrl, tokenApi) => {
   try {
     let html = await fetchHtml(url);
   
-    html = beautify(html, { indent_size: 2, space_in_empty_paren: true });
+    html = beautify_html(html, { indent_size: 2, space_in_empty_paren: true });
 
     return R.pipe(
       (html) => HTMLHint.verify(html, htmlHintConfig),
