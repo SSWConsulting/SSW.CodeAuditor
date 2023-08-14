@@ -600,6 +600,16 @@ export const rulePresets = [
   {
     name: 'React project',
     type: PresetType.Blacklist,
-    rules: []
+    rules: [
+      "attr-lowercase",
+      "style-disabled",
+      "head-script-disabled",
+      "inline-style-disabled",
+      "figure-must-use-the-right-code",
+      "alt-require",
+      "attr-value-not-empty",
+      "spec-char-escape",
+      "use-unicode-hex-code-for-special-html-characters"
+    ]
   },
 ];
