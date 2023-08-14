@@ -141,7 +141,7 @@
             <tr>
               <th class="table-header hidden md:table-cell w-2/12 px-4 py-2">Source</th>
               <td class="w-10/12 border px-4 py-2 break-all">
-                <a class="inline-block align-baseline link md:truncate" target="_blank" href={url.src}>{url.src.length < 70 ? url.src : url.src.substring(0, 70) + '...'}</a>
+                <a class="inline-block align-baseline link" target="_blank" href={url.src}>{url.src}</a>
               </td> 
             </tr>
           
@@ -151,7 +151,9 @@
             </tr>
             <tr>
               <th class="table-header w-2/12 px-4 py-2">Unscannable Link</th> 
-              <td class="w-10/12 border px-4 py-2 break-all"><a class="inline-block align-baseline link md:truncate" target="_blank" href={url.dst}>{url.dst.length < 70 ? url.dst : url.dst.substring(0, 70) + '...'}</a></td>    
+              <td class="w-10/12 border px-4 py-2 break-all">
+                <a class="inline-block align-baseline link" target="_blank" href={url.dst}>{url.dst}</a>
+              </td>    
             </tr>
           </tbody>
         </table>
