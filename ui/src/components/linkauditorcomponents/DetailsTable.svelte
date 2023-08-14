@@ -119,12 +119,11 @@
             <path d="M9 5l7 7-7 7" />
           {/if}
         </Icon>
-      Found Unscannable Links:
+      Unscannable Links:
     </span>
     {#if !hiddenRows}
       <span class="font-bold mb-3">
-        See our <a class="link hover:text-red-600" href="https://github.com/SSWConsulting/SSW.CodeAuditor/wiki/SSW-CodeAuditor-Knowledge-Base-(KB)#known-websites-that-has-anti-web-scraping-measures">Knowledge Base (KB)</a> to learn more about 
-        why some working websites are reported as broken in CodeAuditor?
+        Some working links are reported as broken by CodeAuditor. They're marked as "unscannable". <a class="link hover:text-red-600" href="https://github.com/SSWConsulting/SSW.CodeAuditor/wiki/SSW-CodeAuditor-Knowledge-Base-(KB)#known-websites-that-has-anti-web-scraping-measures">Learn more on our KB.</a>
       </span>
       <table
       class="table-fixed w-full md:table-auto mb-8"
