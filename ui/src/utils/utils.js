@@ -585,3 +585,31 @@ export const customHtmlHintRules = [
   },
   // Add new rule id below
 ];
+
+export const PresetType = {
+  Whitelist: "Whitelist",
+  Blacklist: "Blacklist",
+};
+
+export const rulePresets = [
+  { 
+    name: 'Select All',
+    type: PresetType.Blacklist,
+    rules: []
+  },
+  {
+    name: 'React project',
+    type: PresetType.Blacklist,
+    rules: [
+      "attr-lowercase",
+      "style-disabled",
+      "head-script-disabled",
+      "inline-style-disabled",
+      "figure-must-use-the-right-code",
+      "alt-require",
+      "attr-value-not-empty",
+      "spec-char-escape",
+      "use-unicode-hex-code-for-special-html-characters"
+    ]
+  },
+];

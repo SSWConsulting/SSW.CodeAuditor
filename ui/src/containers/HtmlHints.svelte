@@ -177,6 +177,7 @@
   bind:show={htmlHintRulesShown}
   user={$userSession$}
   htmlRules={null}
+  threshold={null}
   on:updateHtmlRules={() => getSelectedHtmlRules()}
   />
 {/if}
