@@ -29,6 +29,10 @@
   const updateHtmlRules = () => dispatch("updateHtmlRules");
   
   onMount(() => {
+    initSelectedRules();
+  })
+
+  const initSelectedRules = () => {
     if (htmlRules) {
       let selectedHTMLRules = htmlRules.selectedRules.split(/[,]+/)
       htmlHintSelectedRules = htmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}))
@@ -43,7 +47,7 @@
         customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => ({...htmlRule, isChecked: true}))
       }
     }
-  })
+  };
 
   const selectPreset = (presetName) => {
     const preset = rulePresets.find((preset) => preset.name === presetName);
@@ -92,7 +96,10 @@
     ];
   };
 
-  const dismiss = () => (show = false);
+  const dismiss = () => {
+    show = false;
+    initSelectedRules();
+  };
 
   const updateCustomHtmlRules = async () => {
     const selection = getSelectedRules();
