@@ -18,6 +18,9 @@
   export let errors = [];
   export let codeIssues = [];
 
+  let showAllErrorLocations = false;
+  let currentlySelectedUrl;
+
   const dispatch = createEventDispatcher();
 
   const viewSource = (url, location, key) => {
@@ -126,12 +129,31 @@
                     </a>
                   </div>
                 {/each}
+                {#if showAllErrorLocations}
+                  {#each page.locations.slice(49) as item}
+                    {#if page.url === currentlySelectedUrl}
+                      <div
+                        class="text-xs mr-2 my-1 uppercase tracking-wider border
+                        px-2 border-red-600 hover:bg-red-600 hover:text-white
+                        cursor-default whitespace-no-wrap">
+                        <a
+                          on:click={() => viewSource(page.url, item, error.error)}
+                          href="javascript:void(0)"
+                          title="View source">
+                          {item}
+                        </a>
+                      </div>
+                    {/if}
+                  {/each}
+                {/if}
               </div>
-              {#if page.locations.length > 50}
-                <div
-                  class="text-xs mr-2 my-1 tracking-wider px-2 cursor-default">
+              {#if page.locations.length > 50 && currentlySelectedUrl !== page.url}
+                <a
+                  class="text-xs mr-2 my-1 tracking-wider px-2 cursor-pointer"
+                  on:click={() => {showAllErrorLocations = true, currentlySelectedUrl = page.url}}
+                  href="javascript:void(0)">
                   {page.locations.length - 50} more..
-                </div>
+                </a>
               {/if}
             </td>
           </tr>
