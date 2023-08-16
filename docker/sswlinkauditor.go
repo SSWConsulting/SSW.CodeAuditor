@@ -48,7 +48,6 @@ func check(link Link, linkch chan LinkStatus, number int) {
 	client := &http.Client{}
 	method := "HEAD"
 
-
 	if isLinkUnscannable(link.url) {
 		method = "GET"
 	}
