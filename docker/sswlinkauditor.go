@@ -206,12 +206,12 @@ func writeResultFile(allUrls map[string]LinkStatus) {
 }
 
 func isLinkUnscannable(a string) bool {
-    for _, b := range unscannableLinks {
-        if strings.HasPrefix(strings.ToLower(a), strings.ToLower(b)) {
-            return true
-        }
-    }
-    return false
+	for _, b := range unscannableLinks {
+		if strings.HasPrefix(strings.ToLower(a), strings.ToLower(b)) {
+			return true
+		}
+	}
+	return false
 }
 
 var unscannableLinks = []string{
