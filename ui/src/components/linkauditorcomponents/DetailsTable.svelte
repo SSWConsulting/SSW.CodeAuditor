@@ -141,7 +141,7 @@
             <tr>
               <th class="table-header md:table-cell w-2/12 px-4 py-2">Source</th>
               <td class="w-10/12 border px-4 py-2 break-all">
-                <a class="inline-block align-baseline link" target="_blank" href={url.src}>{url.src + 'sdfwdfdsfdsdfdsdfddsdfsdfsffsdfd'}</a>
+                <a class="inline-block align-baseline link" target="_blank" href={url.src}>{url.src}</a>
               </td> 
             </tr>
           
