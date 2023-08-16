@@ -206,38 +206,38 @@ func writeResultFile(allUrls map[string]LinkStatus) {
 }
 
 func isLinkUnscannable(a string) bool {
-	unscannableLinks := []string{
-		"https://learn.microsoft.com/en-us/",
-        "https://support.google.com/",
-        "https://twitter.com/",
-        "https://marketplace.visualstudio.com/",
-        "https://www.nuget.org/",
-        "https://make.powerautomate.com",
-        "https://www.microsoft.com/",
-        "http://www.microsoft.com/",
-        "https://answers.microsoft.com/",
-        "https://admin.microsoft.com/",
-        "https://ngrx.io",
-        "https://twitter.com",
-        "https://marketplace",
-        "https://www.nuget.org/",
-        "http://nuget.org",
-        "https://t.co",
-        "https://support.google.com",
-        "https://playwright.dev",
-        "https://www.theurlist.com/xamarinstreamers",
-        "https://dev.botframework.com",
-        "https://www.ssw.com.au/rules/rules-to-better-research-and-development/",
-        "https://www.ato.gov.au/Business/Research-and-development-tax-incentive/",
-        "https://learn.microsoft.com/en-us/assessments/?mode=home/",
-	}
-
     for _, b := range unscannableLinks {
         if strings.HasPrefix(strings.ToLower(a), strings.ToLower(b)) {
             return true
         }
     }
     return false
+}
+
+var unscannableLinks = []string{
+	"https://learn.microsoft.com/en-us/",
+	"https://support.google.com/",
+	"https://twitter.com/",
+	"https://marketplace.visualstudio.com/",
+	"https://www.nuget.org/",
+	"https://make.powerautomate.com",
+	"https://www.microsoft.com/",
+	"http://www.microsoft.com/",
+	"https://answers.microsoft.com/",
+	"https://admin.microsoft.com/",
+	"https://ngrx.io",
+	"https://twitter.com",
+	"https://marketplace",
+	"https://www.nuget.org/",
+	"http://nuget.org",
+	"https://t.co",
+	"https://support.google.com",
+	"https://playwright.dev",
+	"https://www.theurlist.com/xamarinstreamers",
+	"https://dev.botframework.com",
+	"https://www.ssw.com.au/rules/rules-to-better-research-and-development/",
+	"https://www.ato.gov.au/Business/Research-and-development-tax-incentive/",
+	"https://learn.microsoft.com/en-us/assessments/?mode=home/",
 }
 
 func main() {
