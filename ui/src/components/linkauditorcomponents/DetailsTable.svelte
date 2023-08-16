@@ -35,7 +35,7 @@
     }
   });
 
-  let hiddenRows = false;
+  let hiddenRows = true;
   const hideShow = () => {
     hiddenRows = !hiddenRows
   }
