@@ -15,8 +15,13 @@
 
   export let errors = [];
   export let codeIssues = [];
+  let showAllErrorLocations = false;
+  let currentlySelectedUrl = '';
+  let currentlySelectedKey = '';
+  
   $: allErrors = errors.concat(getCodeErrorsByFile(codeIssues));
   $: htmlHintIssues = getHtmlHintIssues(errors);
+  
   const dispatch = createEventDispatcher();
   const viewSource = (url, location, key) => {
     console.log(url, location);
@@ -115,12 +120,31 @@
                     </a>
                   </div>
                 {/each}
+                {#if showAllErrorLocations}
+                  {#each url.errors[key].slice(49) as item}
+                    {#if url.url === currentlySelectedUrl && key === currentlySelectedKey}
+                      <div
+                        class="text-xs mr-2 my-1 uppercase tracking-wider border
+                        px-2 border-red-600 hover:bg-red-600 hover:text-white
+                        cursor-default whitespace-no-wrap">
+                        <a
+                          on:click={() => viewSource(url.url, item, key)}
+                          href="javascript:void(0)"
+                          title="View source">
+                          {item}
+                        </a>
+                      </div>
+                    {/if}
+                  {/each}
+                {/if}
               </div>
-              {#if url.errors[key].length > 50}
-                <div
-                  class="text-xs mr-2 my-1 tracking-wider px-2 cursor-default">
+              {#if url.errors[key].length > 50 && key !== currentlySelectedKey}
+                <a
+                  class="text-xs mr-2 my-1 tracking-wider px-2 cursor-pointer"
+                  on:click={() => {showAllErrorLocations = true, currentlySelectedUrl = url.url, currentlySelectedKey = key}}
+                  href="javascript:void(0)">
                   {url.errors[key].length - 50} more..
-                </div>
+                </a>
               {/if}
             </td>
           </tr>
