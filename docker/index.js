@@ -348,7 +348,7 @@ const processAndUpload = async (
   if (args.htmlhint && runId) {
     const result = await getHTMLHintRules(args.token, args.url);
 
-    if (result && result.length > 0) {
+    if (result && result.selectedRules.length > 0) {
       const selectedRules = result.selectedRules;
       const res = await addHTMLHintRulesForScan(args.token, args.url, runId, selectedRules)
   
