@@ -14,6 +14,7 @@ exports.TABLE = {
 	ScanResults: 'ScanResults',
 	htmlhintrules: 'htmlhintrules',
 	alertEmailAddresses: 'alertEmailAddresses',
+	UnscannableLinks: 'UnscannableLinks'
 };
 
 // blob storage names cannot have uppercase or numbers
