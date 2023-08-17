@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 
 	urlP "net/url"
@@ -31,6 +33,8 @@ type Link struct {
 	linkType string
 	anchor   string
 }
+
+const unscannableLinksEndpoint = "https://asia-east2-sswlinkauditor-c1131.cloudfunctions.net/api/unscannableLinks";
 
 func getHref(t html.Token) (ok bool, href string) {
 	for _, a := range t.Attr {
@@ -205,6 +209,7 @@ func writeResultFile(allUrls map[string]LinkStatus) {
 }
 
 func isLinkUnscannable(a string) bool {
+	unscannableLinks := getUnscannableLinks();
 	for _, b := range unscannableLinks {
 		if strings.HasPrefix(strings.ToLower(a), strings.ToLower(b)) {
 			return true
@@ -213,30 +218,20 @@ func isLinkUnscannable(a string) bool {
 	return false
 }
 
-var unscannableLinks = []string{
-	"https://learn.microsoft.com/en-us/",
-	"https://support.google.com/",
-	"https://twitter.com/",
-	"https://marketplace.visualstudio.com/",
-	"https://www.nuget.org/",
-	"https://make.powerautomate.com",
-	"https://www.microsoft.com/",
-	"http://www.microsoft.com/",
-	"https://answers.microsoft.com/",
-	"https://admin.microsoft.com/",
-	"https://ngrx.io",
-	"https://twitter.com",
-	"https://marketplace",
-	"https://www.nuget.org/",
-	"http://nuget.org",
-	"https://t.co",
-	"https://support.google.com",
-	"https://playwright.dev",
-	"https://www.theurlist.com/xamarinstreamers",
-	"https://dev.botframework.com",
-	"https://www.ssw.com.au/rules/rules-to-better-research-and-development/",
-	"https://www.ato.gov.au/Business/Research-and-development-tax-incentive/",
-	"https://learn.microsoft.com/en-us/assessments/?mode=home/",
+func getUnscannableLinks() []string {
+	resp, err := http.Get(unscannableLinksEndpoint)
+	if err != nil { 
+		fmt.Println("Error getting unscannable links", err)
+		return []string{}
+	}
+	
+	defer resp.Body.Close()
+	respBody, _ := ioutil.ReadAll(resp.Body)
+
+	var linksList []string
+	json.Unmarshal(respBody, &linksList)
+
+	return linksList
 }
 
 func main() {
