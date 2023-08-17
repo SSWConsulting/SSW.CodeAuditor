@@ -195,14 +195,25 @@ exports.getAlertEmailAddressesFromTokenAndUrl = (api, url) =>
 		}
 		resolve(result)
 	});
+
 exports.getAllScanSummaryFromUrl = (url, api) =>
-new Promise(async (resolve) => {
-	const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
-		queryOptions: { filter: odata`url eq ${url} and PartitionKey eq ${api}` }
+	new Promise(async (resolve) => {
+		const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
+			queryOptions: { filter: odata`url eq ${url} and PartitionKey eq ${api}` }
+		});
+		const iterator = entity.byPage({ maxPageSize: 10 });
+		for await (const item of iterator) {
+			resolve(item)
+			break;
+		}
 	});
-	const iterator = entity.byPage({ maxPageSize: 10 });
-	for await (const item of iterator) {
-		resolve(item)
-		break;
-	}
-});
+
+exports.getUnscannableLinks = () =>
+	new Promise(async (resolve) => {
+		const entity = new TableClient(azureUrl, TABLE.UnscannableLinks, credential).listEntities();
+		let result = []
+		for await (const item of entity) {
+			result.push(item.url);
+		}
+		resolve(result)
+	});
