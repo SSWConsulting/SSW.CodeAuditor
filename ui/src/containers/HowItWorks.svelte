@@ -121,9 +121,9 @@
   
   const customRuleConfig = `
   ## How to Use Custom HTML Rules Configuration
-  #### 1. Click on "Enabled Rules" 
+  #### 1. Click on "Enable/Disable Rules" 
   ![image](https://user-images.githubusercontent.com/67776356/229018349-ab11cb85-1650-41c5-b3e5-af3e81a53bc0.png)
-  **Figure: Enabled Rules button**
+  **Figure: Enable/Disable Rules button**
 
   #### 2. Select which custom rules you want for your next scan  
   ![Image](https://github.com/SSWConsulting/SSW.CodeAuditor/assets/67776356/f6d09566-0ff8-4ef8-a120-53fade615689)

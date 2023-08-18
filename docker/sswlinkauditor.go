@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 
 	urlP "net/url"
@@ -32,6 +34,8 @@ type Link struct {
 	anchor   string
 }
 
+const unscannableLinksEndpoint = "https://asia-east2-sswlinkauditor-c1131.cloudfunctions.net/api/unscannableLinks";
+
 func getHref(t html.Token) (ok bool, href string) {
 	for _, a := range t.Attr {
 		if a.Key == "href" || a.Key == "src" {
@@ -46,7 +50,13 @@ func check(link Link, linkch chan LinkStatus, number int) {
 	fmt.Println("CHEC", number, link.url)
 
 	client := &http.Client{}
-	r, e := http.NewRequest("HEAD", link.url, nil)
+	method := "HEAD"
+
+	if isLinkUnscannable(link.url) {
+		method = "GET"
+	}
+
+	r, e := http.NewRequest(method, link.url, nil)
 
 	if e != nil {
 		linkch <- LinkStatus{link.url, link.srcUrl, "Link Invalid", 0, link.anchor}
@@ -196,6 +206,32 @@ func writeResultFile(allUrls map[string]LinkStatus) {
 	}
 
 	f.Close()
+}
+
+func isLinkUnscannable(a string) bool {
+	unscannableLinks := getUnscannableLinks();
+	for _, b := range unscannableLinks {
+		if strings.HasPrefix(strings.ToLower(a), strings.ToLower(b)) {
+			return true
+		}
+	}
+	return false
+}
+
+func getUnscannableLinks() []string {
+	resp, err := http.Get(unscannableLinksEndpoint)
+	if err != nil { 
+		fmt.Println("Error getting unscannable links", err)
+		return []string{}
+	}
+	
+	defer resp.Body.Close()
+	respBody, _ := ioutil.ReadAll(resp.Body)
+
+	var linksList []string
+	json.Unmarshal(respBody, &linksList)
+
+	return linksList
 }
 
 func main() {

@@ -86,12 +86,17 @@ button:focus {
 }
 
 .link {
-	border-bottom: 1px dotted #9e9e9e;
-	background-color: transparent;
+    text-decoration: underline;
+    text-decoration-color: #aaa;
+    text-decoration-style: solid;
+    text-decoration-thickness: 1px;
+    transition: color .25s ease;
+    word-break: break-word;
 }
+
 .link:hover {
-	color: #cc4141;
-	text-decoration: none !important;
+    color: #cc4141;
+    text-decoration-color: #cc4141;
 }
 
 .bordered {

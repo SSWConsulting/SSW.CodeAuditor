@@ -1,6 +1,6 @@
 <script>
   import Toastr from "../misccomponents/Toastr.svelte";
-  import { CONSTS, htmlHintRules, customHtmlHintRules, RuleType } from "../../utils/utils";
+  import { CONSTS, htmlHintRules, customHtmlHintRules, RuleType, rulePresets, PresetType } from "../../utils/utils";
   import Modal from "../misccomponents//Modal.svelte";
   import LoadingFlat from "../misccomponents/LoadingFlat.svelte";
   import { onMount, createEventDispatcher } from "svelte";
@@ -16,20 +16,23 @@
   let addedSuccess;
   let addedFail;
 
-	let selection = [];
-
-  let selectOption = []
-
-  $: selectOption, selectOption[0] === true ? selectAllRules() : deselectAllRules()
+  let presetSelection = [];
   
   // Check all selected htmlhint rules
   let htmlHintSelectedRules = []
   let customHtmlHintSelectedRules = []
 
+  $: htmlHintSelectedRules, handleSelectionChange();
+  $: customHtmlHintSelectedRules, handleSelectionChange();
+
   const dispatch = createEventDispatcher();
   const updateHtmlRules = () => dispatch("updateHtmlRules");
   
   onMount(() => {
+    initSelectedRules();
+  })
+
+  const initSelectedRules = () => {
     if (htmlRules) {
       let selectedHTMLRules = htmlRules.selectedRules.split(/[,]+/)
       htmlHintSelectedRules = htmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}))
@@ -44,31 +47,63 @@
         customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => ({...htmlRule, isChecked: true}))
       }
     }
-  })
+  };
 
-  const selectAllRules = () => {
-    htmlHintSelectedRules = htmlHintSelectedRules.map(rule => ({...rule, isChecked: true}))
-    customHtmlHintSelectedRules = customHtmlHintSelectedRules.map(rule => ({...rule, isChecked: true}))
+  const selectPreset = (presetName) => {
+    const preset = rulePresets.find((preset) => preset.name === presetName);
+    const isWhitelist = preset.type === PresetType.Whitelist;
 
-    htmlHintSelectedRules.forEach(htmlRule => {
-      selection.push(htmlRule.rule)
-    })
+    htmlHintSelectedRules = htmlHintSelectedRules.map((rule) => ({
+      ...rule,
+      isChecked: isWhitelist
+        ? preset.rules.includes(rule.rule)
+        : !preset.rules.includes(rule.rule),
+    }));
+    customHtmlHintSelectedRules = customHtmlHintSelectedRules.map((rule) => ({
+      ...rule,
+      isChecked: isWhitelist
+        ? preset.rules.includes(rule.rule)
+        : !preset.rules.includes(rule.rule),
+    }));
+  };
 
-    customHtmlHintSelectedRules.forEach(customRule => {
-      selection.push(customRule.rule)
-    })
+  const getPresetSelections = (presetName) => {
+    const preset = rulePresets.find((preset) => preset.name === presetName);
+    const isWhitelist = preset.type === PresetType.Whitelist;
+    return [
+      ...htmlHintSelectedRules.filter((rule) => {
+        return isWhitelist
+          ? preset.rules.includes(rule.rule)
+          : !preset.rules.includes(rule.rule)
+      }).map((rule) => rule.rule),
+      ...customHtmlHintSelectedRules.filter((rule) => {
+        return isWhitelist
+          ? preset.rules.includes(rule.rule)
+          : !preset.rules.includes(rule.rule)
+      }).map((rule) => rule.rule),
+    ]
   }
-
+ 
   const deselectAllRules = () => {
     htmlHintSelectedRules = htmlHintSelectedRules.map(rule => ({...rule, isChecked: false}))
     customHtmlHintSelectedRules = customHtmlHintSelectedRules.map(rule => ({...rule, isChecked: false}))
-    selection = []
-  }
-  
-  const dismiss = () => (show = false);
+  };
+
+  const getSelectedRules = () => {
+    return [
+      ...htmlHintSelectedRules.filter((rule) => rule.isChecked).map((rule) => rule.rule),
+      ...customHtmlHintSelectedRules.filter((rule) => rule.isChecked).map((rule) => rule.rule),
+    ];
+  };
+
+  const dismiss = () => {
+    show = false;
+    initSelectedRules();
+  };
 
   const updateCustomHtmlRules = async () => {
-    const selectedRules = selection.toString()
+    const selection = getSelectedRules();
+    const selectedRules = selection.toString();
     saving = true;
     if (selection.length > 0) {
       const res = await fetch(
@@ -96,13 +131,42 @@
       saving = false
     }
   };
+
+  const handlePresetInput = (event) => {
+    const value = event.target.value;
+
+    if (presetSelection[0] === value) {
+      presetSelection = [];
+      deselectAllRules();
+    } else {
+      presetSelection = [value];
+      selectPreset(value);
+    }
+  };
+
+  const handleSelectionChange = () => {
+    let selection = [];
+
+    for (let i = 0; i < rulePresets.length; i++) {
+      const presetName = rulePresets[i].name;
+      const presetSelections = getPresetSelections(presetName);
+      const selectedRules = getSelectedRules();
+
+      if (JSON.stringify(presetSelections) === JSON.stringify(selectedRules)) {
+        selection = [presetName];
+        break;
+      }
+    }
+
+    presetSelection = selection;
+  };
   
 </script>
 
 <Modal
   bind:show
   bind:loading={saving}
-  header="Enabled Rules:"
+  header="Enable/Disable Rules:"
   mainAction="Save"
   on:action={updateCustomHtmlRules}
   on:dismiss={dismiss}>
@@ -110,14 +174,24 @@
     <LoadingFlat />
   {:else}
     <!-- else content here -->
-    <label>
-      <input type="checkbox" bind:group={selectOption} value={true}/>
-      <p class="inline-block align-baseline">Select All</p>
-    </label>
+    <div class="option">
+      {#each rulePresets as presetOption, index}
+        <label class="inline-block mr-2">
+          <input type="checkbox"
+            name="presets"
+            value={presetOption.name}
+            id="option{index}"
+            on:input={handlePresetInput}
+            bind:group={presetSelection}
+          >
+          <p class="inline-block align-baseline">{presetOption.name}</p>
+        </label>
+      {/each}
+    </div>
     <h3 class="font-bold">HTML Hint Rules: </h3>
     {#each htmlHintSelectedRules as rule}
       <label>
-        <input type="checkbox" bind:group={selection} bind:checked={rule.isChecked} value={rule.rule} /> 
+        <input type="checkbox" bind:checked={rule.isChecked} value={rule.rule} /> 
           <a 
           class="inline-block align-baseline link" 
           href="https://htmlhint.com/docs/user-guide/rules/{rule.rule}">
@@ -130,7 +204,7 @@
     <h3 class="font-bold">Custom HTML Rules: </h3>
     {#each customHtmlHintSelectedRules as rule}
       <label>
-        <input type="checkbox" bind:group={selection} bind:checked={rule.isChecked} value={rule.rule} /> 
+        <input type="checkbox" bind:checked={rule.isChecked} value={rule.rule} /> 
           <a 
           class="{rule.ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline" 
           href={rule.ruleLink}>

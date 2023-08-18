@@ -43,10 +43,11 @@
 
     csvExporter.generateCsv(
       data.brokenLinks.map(x => {
-        delete x["odata.etag"];
-        delete x["PartitionKey"];
-        delete x["RowKey"];
-        delete x["Timestamp"];
+        delete x["etag"];
+        delete x["buildId"];
+        delete x["partitionKey"];
+        delete x["rowKey"];
+        delete x["timestamp"];
         return x;
       })
     );

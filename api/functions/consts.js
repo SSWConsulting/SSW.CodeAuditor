@@ -14,6 +14,7 @@ exports.TABLE = {
 	ScanResults: 'ScanResults',
 	htmlhintrules: 'htmlhintrules',
 	alertEmailAddresses: 'alertEmailAddresses',
+	UnscannableLinks: 'UnscannableLinks'
 };
 
 // blob storage names cannot have uppercase or numbers
@@ -30,7 +31,9 @@ exports.unscannableLinks = [
 	{url: "https://twitter.com/"},
 	{url: "https://marketplace.visualstudio.com/"},
 	{url: "https://www.nuget.org/"},
-	{url: "https://make.powerautomate.com/connectors"},
+	{url: "https://make.powerautomate.com"},
+	{url: "https://www.microsoft.com/"},
+	{url: "http://www.microsoft.com/"},
 	{url: "https://answers.microsoft.com/"},
 	{url: "https://admin.microsoft.com/"},
 	{url: "https://ngrx.io"},
