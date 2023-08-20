@@ -166,6 +166,21 @@
         CodeAuditor will automatically pick up and report issues which may exist in your website during the build process which enables you to catch any issues and fix them before they are published and cause bigger problems.
       </p>
     </article>
+    <article class="markdown-body mt-5">
+      <h3>What are the limitations?</h3>
+      <ul class="list-disc">
+        <li>CodeAuditor looks at the HTML browsers see, not the code developers write</li>
+        <li>Only works on static sites, not Angular SPA, React SPA or Blazor</li>
+        <li>To make it clear, this is not completely fixable, but we could improve it to make it less painful.</li>
+      </ul> 
+    </article>
+    <article class="markdown-body mt-5">
+      <h3>Upcoming features</h3>
+      <ul class="list-disc">
+        <li>Allow the integration of other tools like Resharper and SonarCube</li>
+        <li>Check out our [backlog](https://github.com/sswconsulting/ssw.codeauditor/issues)</li>
+      </ul> 
+    </article>
   </div>
   <div class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
       <article class="markdown-body">
