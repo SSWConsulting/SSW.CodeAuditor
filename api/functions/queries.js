@@ -1,7 +1,6 @@
 const slug = require('slug');
 const {
 	getService,
-	getTableRows
 } = require('./azurestorage');
 const {
 	getRun
@@ -9,7 +8,6 @@ const {
 const {
 	TABLE
 } = require('./consts');
-const azure = require('azure-storage');
 const { TableClient, AzureNamedKeyCredential, odata } = require('@azure/data-tables');
 
 const account = process.env.AZURE_STORAGE_ACCOUNT;
