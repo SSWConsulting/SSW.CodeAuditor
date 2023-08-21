@@ -53,7 +53,7 @@ exports.getIgnoredUrls = (api) =>
 		resolve(result)
 	})
 
-exports.getPerformanceThreshold = async (api, url) => {
+exports.getPerformanceThreshold = (api, url) => 
 	new Promise(async (resolve) => {
 		const entity = new TableClient(azureUrl, TABLE.PerformanceThreshold, credential).listEntities({
 			queryOptions: { filter: odata`PartitionKey eq ${api} and RowKey eq ${slug(url)}` }
@@ -64,9 +64,8 @@ exports.getPerformanceThreshold = async (api, url) => {
 		}
 		resolve(result)
 	})
-};
 
-exports.getLoadThreshold = async (api, url) => {
+exports.getLoadThreshold = (api, url) => 
 	new Promise(async (resolve) => {
 		const entity = new TableClient(azureUrl, TABLE.LoadThreshold, credential).listEntities({
 			queryOptions: { filter: odata`PartitionKey eq ${api} and RowKey eq ${slug(url)}` }
@@ -76,10 +75,9 @@ exports.getLoadThreshold = async (api, url) => {
 			result.push(item);
 		}
 		resolve(result)
-	})
-};
+	});
 
-exports.getHTMLHintRules = async (api, url) => {
+exports.getHTMLHintRules = (api, url) => 
 	new Promise(async (resolve) => {
 		const entity = new TableClient(azureUrl, TABLE.htmlhintrules, credential).listEntities({
 			queryOptions: { filter: odata`PartitionKey eq ${api} and RowKey eq ${slug(url)}` }
@@ -88,11 +86,11 @@ exports.getHTMLHintRules = async (api, url) => {
 		for await (const item of entity) {
 			result.push(item);
 		}
+		console.log(result)
 		resolve(result)
-	})
-};
+	});
 
-exports.getHTMLHintRulesByRunId = async (runId) => {
+exports.getHTMLHintRulesByRunId = (runId) => 
 	new Promise(async (resolve) => {
 		const entity = new TableClient(azureUrl, TABLE.htmlhintrules, credential).listEntities({
 			queryOptions: { filter: odata`RowKey eq ${runId}` }
@@ -102,8 +100,7 @@ exports.getHTMLHintRulesByRunId = async (runId) => {
 			result.push(item);
 		}
 		resolve(result)
-	})
-};
+	});
 
 exports.getPersonalSummary = (api, showAll) =>
 	new Promise(async (resolve) => {
@@ -159,7 +156,7 @@ exports.getAllPublicSummary = (showAll) =>
 		}
 	});
 
-exports.getSummaryById = async (runId) => 
+exports.getSummaryById = (runId) => 
 	getRun(runId).then((doc) =>
 		new Promise(async (resolve) => {
 			const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
