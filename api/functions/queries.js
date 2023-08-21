@@ -62,7 +62,7 @@ exports.getPerformanceThreshold = (api, url) =>
 		for await (const item of entity) {
 			result.push(item);
 		}
-		resolve(result)
+		resolve(result[0])
 	})
 
 exports.getLoadThreshold = (api, url) => 
@@ -74,7 +74,7 @@ exports.getLoadThreshold = (api, url) =>
 		for await (const item of entity) {
 			result.push(item);
 		}
-		resolve(result)
+		resolve(result[0])
 	});
 
 exports.getHTMLHintRules = (api, url) => 
@@ -86,8 +86,7 @@ exports.getHTMLHintRules = (api, url) =>
 		for await (const item of entity) {
 			result.push(item);
 		}
-		console.log(result)
-		resolve(result)
+		resolve(result[0])
 	});
 
 exports.getHTMLHintRulesByRunId = (runId) => 
@@ -99,7 +98,7 @@ exports.getHTMLHintRulesByRunId = (runId) =>
 		for await (const item of entity) {
 			result.push(item);
 		}
-		resolve(result)
+		resolve(result[0])
 	});
 
 exports.getPersonalSummary = (api, showAll) =>
