@@ -178,7 +178,7 @@
       <h3>Upcoming features</h3>
       <ul class="list-disc">
         <li>Allow the integration of other tools like Resharper and SonarCube</li>
-        <li>Check out our [backlog](https://github.com/sswconsulting/ssw.codeauditor/issues)</li>
+        <li>Check out our <a href="https://github.com/sswconsulting/ssw.codeauditor/issues">backlog</></li>
       </ul> 
     </article>
   </div>
