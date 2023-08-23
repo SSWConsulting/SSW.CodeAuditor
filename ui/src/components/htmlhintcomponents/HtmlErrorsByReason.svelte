@@ -149,7 +149,7 @@
               </div>
               {#if page.locations.length > 50 && currentlySelectedUrl !== page.url}
                 <a
-                  class="text-xs mr-2 my-1 tracking-wider px-2 cursor-pointer"
+                  class="text-xs mr-2 my-1 tracking-wider px-2 cursor-pointer link"
                   on:click={() => {showAllErrorLocations = true, currentlySelectedUrl = page.url}}
                   href="javascript:void(0)">
                   {page.locations.length - 50} more..

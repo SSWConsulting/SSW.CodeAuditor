@@ -345,7 +345,7 @@ const processAndUpload = async (
   );
 
   // Upload selected HTMLHint Rules to the scan
-  if (args.htmlhint && runId) {
+  if (args.htmlhint && args.token && runId) {
     const result = await getHTMLHintRules(args.token, args.url);
 
     if (result && result.selectedRules.length > 0) {
