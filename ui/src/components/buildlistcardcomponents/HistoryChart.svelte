@@ -23,13 +23,13 @@
     barColor = 'red'
   }
 
-  let dataToDisplay = allDataToDisplay.slice(0, 10);
+  // Show top 10 most recent scan in chart and filter undefined data
+  let dataToDisplay = allDataToDisplay.filter(x => x).slice(0, 10);
 
-  let maxBarHeight = [];
-  maxBarHeight = dataToDisplay.reduce(function (a, b) {
-    return Math.max(a, b);
-  });
+  // Calculate to get max bar height for certain group
+  let maxBarHeight = dataToDisplay.length > 0 ? dataToDisplay.reduce((a, b) => Math.max(a, b)) : 0;
 
+  // If a group has less than 10 scans, add the remaining props to populate the chart
   for (let i = 0; i < 10; i++) {
     if (dataToDisplay.length < 10) {
       dataToDisplay.push(maxBarHeight / 10);
