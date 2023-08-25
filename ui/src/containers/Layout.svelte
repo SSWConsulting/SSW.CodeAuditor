@@ -35,8 +35,8 @@
 </script>
 
 <body class="flex flex-col min-h-screen">
-  <main class="flex-grow mx-auto">
-    <nav class="flex items-center justify-between p-6 lg:h-24 bgdark">
+  <main class="flex-grow">
+    <nav class="flex items-center justify-between p-6 lg:h-24 bgdark mb-4">
       <div class="flex flex-wrap">
         <div class="w-full">
           <div class="w-full block md:flex md:justify-center md:flex-wrap lg:items-center">
