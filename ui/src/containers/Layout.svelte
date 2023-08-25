@@ -97,7 +97,7 @@
                   >
                     <div
                       class="inline-block text-l px-4 py-2 leading-none border rounded
-                    textdark borderdark hover:border-transparent header-item
+                    textdark borderdark header-item
                     hover:bg-white cursor-default"
                     >
                       {$userName}
