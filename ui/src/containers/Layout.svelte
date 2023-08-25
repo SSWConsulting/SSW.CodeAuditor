@@ -37,7 +37,7 @@
 <body class="flex flex-col min-h-screen">
   <main class="flex-grow">
     <nav class="flex items-center justify-between p-6 lg:h-24 bgdark mb-4">
-      <div class="flex flex-wrap">
+      <div class="flex flex-wrap mx-auto">
         <div class="w-full">
           <div class="w-full block md:flex md:justify-center md:flex-wrap lg:items-center">
             <Navigate to="/" styles="sm:w-4/4 md:w-1/7 lg:w-3/12">
@@ -88,7 +88,7 @@
               </span>
             </div>
             {#if $isLoggedIn}
-              <div class="text-right sm:w-4/4 lg:mt-0 lg:w-3/12 mx-4 lg:mx-0 mt-2">
+              <div class="text-right sm:w-4/4 lg:mt-1 lg:w-3/12 mx-4 lg:mx-0 mt-2">
                 <span class="text-white">
                   <div
                     class="relative"
@@ -145,7 +145,7 @@
                 </span>
               </div>
             {:else}
-              <div class="text-right sm:w-4/4 md:mt-0 lg:w-3/12 mx-4 lg:mx-0 mt-2">
+              <div class="text-right sm:w-4/4 md:mt-1 lg:w-3/12 mx-4 lg:mx-0 mt-2">
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <span
                   class="text-white mx-2 cursor-pointer"
