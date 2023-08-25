@@ -1,5 +1,6 @@
 <script>
   import { navigateTo } from "svelte-router-spa";
+  import { isLoggedIn } from "../stores.js";
 </script>
 
 <div class="container mx-auto">
@@ -24,6 +25,7 @@
     </div>
   </section>
 
+  {#if !$isLoggedIn}
   <section class="text-gray-700 body-font">
     <div
       class="container mx-auto flex px-5 pb-20 pt-15 items-center justify-center
@@ -53,6 +55,7 @@
       </div>
     </div>
   </section>
+  {/if}
 
   <section class="text-gray-700 body-font">
     <div
