@@ -263,8 +263,8 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 			R.prop('dst'),
 			badUrls.filter((x) => x.statuscode === '404' && !unscannableLinks.some(link => x.dst.includes(link.url)))
 		).length,
-		htmlWarnings,
-		htmlErrors,
+		htmlWarnings: htmlWarnings,
+		htmlErrors: htmlErrors,
 		codeIssues: getCodeErrorSummary(code),
 		htmlIssuesList,
 		isPrivate,
