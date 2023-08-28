@@ -88,7 +88,7 @@
               </span>
             </div>
             {#if $isLoggedIn}
-              <div class="sm:w-4/4 lg:mt-1 lg:w-3/12 mx-4 lg:mx-0 mt-2">
+              <div class="text-right sm:w-4/4 lg:mt-1 lg:w-3/12 mx-4 lg:mx-0 mt-2">
                 <span class="text-white">
                   <div
                     class="relative"
@@ -106,7 +106,7 @@
                       <span
                         in:scale={{ duration: 100, start: 0.95 }}
                         out:scale={{ duration: 75, start: 0.95 }}
-                        class="text-white origin-top-right absolute left-0 w-48 py-2 mt-8 rounded shadow-md"
+                        class="text-white origin-top-right absolute right-0 w-48 py-2 mt-8 rounded shadow-md"
                         style="background-color: #797979"
                       >
                         <!-- svelte-ignore a11y-click-events-have-key-events -->
