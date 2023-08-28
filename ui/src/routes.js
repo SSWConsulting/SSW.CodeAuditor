@@ -5,7 +5,6 @@ import Dashboard from './containers/Dashboard.svelte';
 import Settings from './containers/Settings.svelte';
 import HtmlHints from './containers/HtmlHints.svelte';
 import BuildDetails from './containers/BuildDetails.svelte';
-import Public from './containers/Public.svelte';
 import PublicBuilds from './containers/PublicBuilds.svelte';
 import Home from './containers/Home.svelte';
 import HowItWorks from './containers/HowItWorks.svelte';
@@ -94,8 +93,15 @@ const routes = [
 		layout: AppLayout
 	},
 	{
-		name: 'home',
-		component: AppLayout,
+		name: '/home',
+		redirectTo: '/',
+		component: Home,
+		layout: AppLayout,
+	},
+	{ 
+		name: 'settings',
+		component: Settings,
+		layout: AppLayout,
 		onlyIf: {
 			guard: () => {
 				console.log('checking if user is logged in', loggedIn);
@@ -103,10 +109,6 @@ const routes = [
 			},
 			redirect: '/login',
 		},
-		nestedRoutes: [
-			{ name: 'index', component: Home },
-			{ name: 'settings', component: Settings },
-		],
 	},
 ];
 

@@ -4,7 +4,7 @@
   import { navigateTo } from "svelte-router-spa";
   isLoggedIn.subscribe((x) => {
     if (x) {
-      navigateTo("/home");
+      navigateTo("/");
     }
   });
 

@@ -25,7 +25,7 @@ SSW CodeAuditor is a code and link analysis tool that allows users to identify b
 
 1. Sign up for free at https://codeauditor.com and get your token
 2. Make sure [Docker](https://docs.docker.com/desktop/) is installed and running on your local machine
-3. Use the token from step 1 and run a command from the [Homepage](https://codeauditor.com/home) 
+3. Use the token from step 1 and run a command from the [Homepage](https://codeauditor.com/) 
 
 <p align='center'>
 <img src='https://user-images.githubusercontent.com/67776356/90726194-aa9cd280-e304-11ea-805c-d8780088d691.gif' width='700' alt='npm start' />

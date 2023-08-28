@@ -11,7 +11,7 @@
     >
       <div class="text-center lg:w-2/3 w-full">
         <h1
-          class="title-font sm:text-4xl text-3xl mb-10 font-medium text-gray-900"
+          class="title-font leading-tight sm:text-4xl text-3xl mb-10 font-medium text-gray-900"
         >
           Check out our Github
         </h1>
@@ -33,7 +33,7 @@
     >
       <div class="text-center lg:w-2/3 w-full">
         <h1
-          class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
+          class="title-font leading-tight sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
         >
           Sign up now! It's free
         </h1>
@@ -66,7 +66,7 @@
         md:items-start md:text-left items-center text-center"
       >
         <h1
-          class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
+          class="title-font leading-tight sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
         >
           View prior scans history
         </h1>
@@ -102,7 +102,7 @@
         md:items-start md:text-left items-center text-center"
       >
         <h1
-          class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
+          class="title-font leading-tight sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
         >
           Export to CSV
         </h1>
@@ -122,7 +122,7 @@
         md:items-start md:text-left items-center text-center"
       >
         <h1
-          class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
+          class="title-font leading-tight sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
         >
           View Lighthouse Report
         </h1>
@@ -160,7 +160,7 @@
         md:items-start md:text-left items-center text-center"
       >
         <h1
-          class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
+          class="title-font leading-tight sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
         >
           Set Lighthouse Threshold
         </h1>
@@ -181,7 +181,7 @@
         md:items-start md:text-left items-center text-center"
       >
         <h1
-          class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
+          class="title-font leading-tight sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
         >
           Ignore broken Links
         </h1>
@@ -219,7 +219,7 @@
         md:items-start md:text-left items-center text-center"
       >
         <h1
-          class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
+          class="title-font leading-tight sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
         >
           View Code Errors
         </h1>
@@ -239,7 +239,7 @@
         md:items-start md:text-left items-center text-center"
       >
         <h1
-          class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
+          class="title-font leading-tight sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
         >
           View Artillery Load Test
         </h1>
