@@ -34,10 +34,12 @@
   onMount(async () => {
     // Check if scan has any previous scans
     userSession$.subscribe(async x => {
-      userApiKey = x.apiKey;
-      let fullUrl = convertSpecialCharUrl(value.url)
-      const res = await fetch(`${CONSTS.API}/api/scanSummaryFromUrl/${userApiKey}/${fullUrl}`);
-      previousScans = await res.json();
+      if (x) {
+        userApiKey = x.apiKey;
+        let fullUrl = convertSpecialCharUrl(value.url)
+        const res = await fetch(`${CONSTS.API}/api/scanSummaryFromUrl/${userApiKey}/${fullUrl}`);
+        previousScans = await res.json();
+      }
     });
   })
 
