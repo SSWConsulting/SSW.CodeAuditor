@@ -97,8 +97,7 @@
                   >
                     <div
                       class="inline-block text-l px-4 py-2 leading-none border rounded
-                    textdark borderdark header-item
-                    hover:bg-white cursor-default"
+                        textdark borderdark header-item hover:bg-white cursor-default"
                     >
                       {$userName}
                     </div>
@@ -147,16 +146,18 @@
             {:else}
               <div class="text-right sm:w-4/4 md:mt-1 lg:w-3/12 mx-4 lg:mx-0 mt-2">
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
-                <span
-                  class="textdark uppercase font-bold text-sm header-item mx-2 cursor-pointer"
-                  on:click={() => navigateTo("/login")}>Log In</span
+                <button
+                  class="inline-block text-sm px-4 py-2 leading-none border rounded
+                    uppercase borderdark font-bold text-sm header-item
+                    mt-2 lg:mt-0 cursor-pointer"
+                  on:click={() => navigateTo("/login")}>Log In</button
                 >
                 <button
                   on:click={() => navigateTo("/signup")}
                   type="button"
                   class="inline-block text-sm px-4 py-2 leading-none border rounded
-                text-white bgdark uppercase font-bold text-sm header-item
-                hover:bg-white mt-2 lg:mt-0 cursor-pointer"
+                    text-white borderdark bgdark uppercase font-bold text-sm header-item
+                    hover:bg-white mt-2 lg:mt-0 cursor-pointer"
                 >
                   Sign Up
                 </button>
