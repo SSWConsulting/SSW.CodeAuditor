@@ -33,20 +33,20 @@
   })
 
   const initSelectedRules = () => {
-    if (htmlRules) {
-      let selectedHTMLRules = htmlRules.selectedRules.split(/[,]+/)
-      htmlHintSelectedRules = htmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}))
-      customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}))
+    if (threshold?.selectedRules) {
+      setSelectedRules(threshold?.selectedRules);
+    } else if (htmlRules?.selectedRules) {
+      setSelectedRules(htmlRules?.selectedRules);
     } else {
-      if (threshold) {
-        let selectedHTMLRules = threshold.selectedRules.split(/[,]+/)
-        htmlHintSelectedRules = htmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}))
-        customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}))
-      } else {
-        htmlHintSelectedRules = htmlHintRules.map(htmlRule => ({...htmlRule, isChecked: true}))
-        customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => ({...htmlRule, isChecked: true}))
-      }
+      htmlHintSelectedRules = htmlHintRules.map(htmlRule => ({...htmlRule, isChecked: true}))
+      customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => ({...htmlRule, isChecked: true}))
     }
+  };
+
+  const setSelectedRules = (rulesString) => {
+    let selectedHTMLRules = rulesString.split(/[,]+/);
+    htmlHintSelectedRules = htmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}));
+    customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}));
   };
 
   const selectPreset = (presetName) => {
@@ -193,6 +193,7 @@
       <label>
         <input type="checkbox" bind:checked={rule.isChecked} value={rule.rule} /> 
           <a 
+          target="_blank"
           class="inline-block align-baseline link" 
           href="https://htmlhint.com/docs/user-guide/rules/{rule.rule}">
             <i class="{rule.type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}" style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"></i> 
@@ -206,6 +207,7 @@
       <label>
         <input type="checkbox" bind:checked={rule.isChecked} value={rule.rule} /> 
           <a 
+          target="_blank"
           class="{rule.ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline" 
           href={rule.ruleLink}>
             <i class="{rule.type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}" style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"></i> 

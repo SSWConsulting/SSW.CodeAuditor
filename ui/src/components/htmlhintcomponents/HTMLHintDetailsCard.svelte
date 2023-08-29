@@ -3,7 +3,7 @@
   import CodeSummary from "../summaryitemcomponents/CodeSummary.svelte";
   import LinkSummary from "../summaryitemcomponents/LinkSummary.svelte";
   import ArtillerySummary from "../summaryitemcomponents/ArtillerySummary.svelte";
-  import { htmlHintRules, customHtmlHintRules } from "../../utils/utils";
+  import { htmlHintRules, customHtmlHintRules, RuleType } from "../../utils/utils";
 
   export let build = {};
   export let htmlRules;
@@ -83,16 +83,26 @@
               <div class="ml-3">
                 {#if customHtmlHintRules.some(x => x.rule === rule)}
                   <a
+                    target="_blank"
                     class="{(customHtmlHintRules.find(x => x.rule === rule)).ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline"  
                     href="{(customHtmlHintRules.find(x => x.rule === rule)).ruleLink}"
                   >
+                    <i 
+                      class="{customHtmlHintRules.find(x => x.rule === rule).type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}"
+                      style="{customHtmlHintRules.find(x => x.rule === rule).type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"
+                    ></i> 
                     {customHtmlHintRules.find(x => x.rule === rule).displayName}
                   </a>
                 {:else if htmlHintRules.some(x => x.rule === rule)}
                   <a 
+                    target="_blank"
                     class="{(htmlHintRules.find(x => x.rule === rule)).ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline"  
                     href="{(htmlHintRules.find(x => x.rule === rule)).ruleLink}"
                   >
+                    <i
+                      class="{htmlHintRules.find(x => x.rule === rule).type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}"
+                      style="{htmlHintRules.find(x => x.rule === rule).type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"
+                    ></i>
                     {htmlHintRules.find(x => x.rule === rule).displayName}
                   </a>
                 {/if}

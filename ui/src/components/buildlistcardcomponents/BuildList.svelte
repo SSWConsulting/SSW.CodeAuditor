@@ -25,11 +25,14 @@
   function toggle(n) {
     currCard = n;
     showTotalBuild = !showTotalBuild;
-    var x = document.getElementById("detailCard");
-    if (x.style.display === "none") {
-      x.style.display = "block";
-    } else {
-      x.style.display = "none";
+    const x = document.getElementById("detailCard");
+
+    if (x) {
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
     }
   }
 </script>

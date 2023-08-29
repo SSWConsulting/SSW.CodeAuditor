@@ -82,7 +82,7 @@ export const loginCompleted = async (user) => {
 
 		// navigate to home
 		if (window.location.href.match(/(\/login|\/signup)$/)) {
-			navigateTo('/home');
+			navigateTo('/');
 		}
 	} catch (error) {
 		oauthLoginError.set(error);

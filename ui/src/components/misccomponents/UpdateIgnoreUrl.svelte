@@ -142,7 +142,7 @@
     <span
       class="inline-block align-baseline font-bold text-sm text-blue
       hover:text-blue-darker">
-      <Navigate to="/home/settings">View</Navigate>
+      <Navigate to="/settings">View</Navigate>
     </span>
   </p>
 </Toastr>

@@ -74,7 +74,7 @@ exports.getLoadThreshold = (api, url) =>
 		for await (const item of entity) {
 			result.push(item);
 		}
-		resolve(result[0])
+		resolve(result)
 	});
 
 exports.getHTMLHintRules = (api, url) => 
@@ -86,8 +86,8 @@ exports.getHTMLHintRules = (api, url) =>
 		for await (const item of entity) {
 			result.push(item);
 		}
-		resolve(result[0])
-	});
+		resolve(result)
+  });
 
 exports.getHTMLHintRulesByRunId = (runId) => 
 	new Promise(async (resolve) => {
@@ -98,7 +98,7 @@ exports.getHTMLHintRulesByRunId = (runId) =>
 		for await (const item of entity) {
 			result.push(item);
 		}
-		resolve(result[0])
+		resolve(result)
 	});
 
 exports.getPersonalSummary = (api, showAll) =>
