@@ -62,7 +62,7 @@ exports.getPerformanceThreshold = (api, url) =>
 		for await (const item of entity) {
 			result.push(item);
 		}
-		resolve(result)
+		resolve(result[0])
 	})
 
 exports.getLoadThreshold = (api, url) => 
@@ -86,9 +86,8 @@ exports.getHTMLHintRules = (api, url) =>
 		for await (const item of entity) {
 			result.push(item);
 		}
-		console.log(result)
 		resolve(result)
-	});
+  });
 
 exports.getHTMLHintRulesByRunId = (runId) => 
 	new Promise(async (resolve) => {
