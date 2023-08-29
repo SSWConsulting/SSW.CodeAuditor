@@ -24,7 +24,27 @@
   }
 
   // Show top 10 most recent scan in chart and filter undefined data
-  let dataToDisplay = allDataToDisplay.filter(x => x).slice(0, 10);
+  let dataToDisplay = allDataToDisplay.slice(0, 10);
+
+  let barColorArr = []
+  dataToDisplay = dataToDisplay.map(x => {
+    if (x === 0) {
+      // If a scan has 0 error then change bar color to green
+      barColorArr.push('green');
+      // Add max value so it will display at full height 
+      return x = Math.max(...dataToDisplay) + 10
+    } else {
+      barColorArr.push(barColor)
+      return x
+    }
+  })
+
+  let dataToDisplayLabel = []
+
+  dataToDisplayLabel = dataToDisplay.map(x => {
+      // Find scan with no error by finding number with max value 
+      return x === (Math.max(...dataToDisplay)) ? 0 : x
+  })
 
   // Calculate to get max bar height for certain group
   let maxBarHeight = dataToDisplay.length > 0 ? dataToDisplay.reduce((a, b) => Math.max(a, b)) : 0;
@@ -37,11 +57,11 @@
   }
 
   export let data = {
-    labels: dataToDisplay,
+    labels: dataToDisplayLabel,
     datasets: [
       {
         data: dataToDisplay,
-        backgroundColor: barColor,
+        backgroundColor: barColorArr,
         maxBarThickness: 5
       },
     ],
@@ -83,13 +103,8 @@
       callbacks: {
         //returns a empty string if the label is "No Data"
         label: function(items, data){
-          return `${items.value}`
+          return null
         },
-
-        //only returns something when at least one dataset yLabel is a valid number.
-        title: function(t, e) {
-          return 'Bad links'
-        }
       }
     },
   };
