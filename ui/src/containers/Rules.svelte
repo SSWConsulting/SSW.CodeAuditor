@@ -3,7 +3,8 @@
 </script>
 <style>
   .link, .text {
-    color: black
+    color: black;
+    text-decoration: underline;
   }
 </style>
 <div class="container mx-auto">
