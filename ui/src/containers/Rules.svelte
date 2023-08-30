@@ -17,10 +17,12 @@
       <ol class="list-decimal">
       {#each customHtmlHintRules as rule}
         <li>
-          <i class="{rule.type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}" style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"></i>
-          <a target="_blank" class="{rule.ruleLink ? 'link hover:text-red-600' : 'text cursor-text'} inline-block align-baseline" href={rule.ruleLink}>
-            {rule.displayName}
-          </a>
+          <span class="inline-flex items-baseline">
+            <i class="{rule.type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'} mr-1" style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"></i>
+            <a target="_blank" class="{rule.ruleLink ? 'link hover:text-red-600' : 'text cursor-text'} inline-block align-baseline" href={rule.ruleLink}>
+              {rule.displayName}
+            </a>
+          </span>
         </li>
       {/each}
       </ol>
@@ -30,10 +32,12 @@
       <ol class="list-decimal">
       {#each htmlHintRules as rule}
         <li>
-          <i class="{rule.type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}" style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"></i>
-          <a target="_blank" class="inline-block align-baseline link hover:text-red-600" href="https://htmlhint.com/docs/user-guide/rules/{rule.rule}">
-            {rule.displayName}
-          </a>
+          <span class="inline-flex items-baseline">
+            <i class="{rule.type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'} mr-1" style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"></i>
+            <a target="_blank" class="inline-block align-baseline link hover:text-red-600" href="https://htmlhint.com/docs/user-guide/rules/{rule.rule}">
+              {rule.displayName}
+            </a>
+          </span>
         </li>
       {/each}
       </ol>
