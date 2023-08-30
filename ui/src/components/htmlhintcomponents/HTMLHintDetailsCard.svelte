@@ -72,50 +72,50 @@
       <div></div>
     </div>
 
-    <span class="font-sans text-lg pt-2">
+    <div class="font-sans text-lg pt-2">
       {#if htmlRules}
         <p class="inline">HTML Rules Scanned: {htmlRules.selectedRules.split(/[,]+/).length}</p>
-        <span type="button" class="inline cursor-pointer" on:click={handleClick}>
+        <span type="button" class="inline cursor-pointer" on:click={handleClick} on:keydown={handleClick}>
           <i class="fas fa-angle-down"></i>
         </span>
-          {#if isCollapsedRules}
-            {#each htmlRules.selectedRules.split(/[,]+/) as rule}
-              <div class="ml-3">
-                {#if customHtmlHintRules.some(x => x.rule === rule)}
-                  <a
-                    target="_blank"
-                    class="{(customHtmlHintRules.find(x => x.rule === rule)).ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline"  
-                    href="{(customHtmlHintRules.find(x => x.rule === rule)).ruleLink}"
-                  >
-                    <i 
-                      class="{customHtmlHintRules.find(x => x.rule === rule).type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}"
-                      style="{customHtmlHintRules.find(x => x.rule === rule).type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"
-                    ></i> 
-                    {customHtmlHintRules.find(x => x.rule === rule).displayName}
-                  </a>
-                {:else if htmlHintRules.some(x => x.rule === rule)}
-                  <a 
-                    target="_blank"
-                    class="{(htmlHintRules.find(x => x.rule === rule)).ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline"  
-                    href="{(htmlHintRules.find(x => x.rule === rule)).ruleLink}"
-                  >
-                    <i
-                      class="{htmlHintRules.find(x => x.rule === rule).type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}"
-                      style="{htmlHintRules.find(x => x.rule === rule).type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"
-                    ></i>
-                    {htmlHintRules.find(x => x.rule === rule).displayName}
-                  </a>
-                {/if}
-              </div>
-            {/each}
+        {#if isCollapsedRules}
+        <ol class="ml-10 list-decimal">
+        {#each htmlRules.selectedRules.split(/[,]+/) as rule}
+          <li>
+          {#if customHtmlHintRules.some(x => x.rule === rule)}
+            <i 
+              class="{customHtmlHintRules.find(x => x.rule === rule).type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}"
+              style="{customHtmlHintRules.find(x => x.rule === rule).type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"
+            ></i>
+            <a
+              target="_blank"
+              class="{(customHtmlHintRules.find(x => x.rule === rule)).ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline"  
+              href="{(customHtmlHintRules.find(x => x.rule === rule)).ruleLink}"
+            >
+              {customHtmlHintRules.find(x => x.rule === rule).displayName}
+            </a>
+          {:else if htmlHintRules.some(x => x.rule === rule)}
+            <i
+              class="{htmlHintRules.find(x => x.rule === rule).type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}"
+              style="{htmlHintRules.find(x => x.rule === rule).type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"
+            ></i>
+            <a 
+              target="_blank"
+              class="{(htmlHintRules.find(x => x.rule === rule)).ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline"  
+              href="{(htmlHintRules.find(x => x.rule === rule)).ruleLink}"
+            >
+              {htmlHintRules.find(x => x.rule === rule).displayName}
+            </a>
           {/if}
+          </li>
+        {/each}
+        </ol>
+        {/if}
       {/if}
-    </span>
+    </div>
 
-    <div class="text-left">
-      <span class="font-sans text-lg pt-2">
-        Build Version: {val.buildVersion}
-      </span>
+    <div class="py-4">
+      <p>Build Version: {val.buildVersion}</p>
     </div>
 
   </div>
