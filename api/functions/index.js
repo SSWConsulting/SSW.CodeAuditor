@@ -39,6 +39,7 @@ const {
 	getAlertEmailAddressesFromTokenAndUrl,
 	getAllScanSummaryFromUrl,
 	getUnscannableLinks,
+	compareScans,
 } = require('./queries');
 const {
 	newGuid,
@@ -169,6 +170,10 @@ app.get('/latest/:api/:url', async (req, res) => {
 
 app.get('/scanSummaryFromUrl/:api/:url', async (req, res) => {
 	res.json(await getAllScanSummaryFromUrl(req.params.url, req.params.api));
+});
+
+app.get('/comparescanlatestandsecond/:api/:url', async (req, res) => {
+	res.json(await compareScans(req.params.api, req.params.url));
 });
 
 app.get('/unscannableLinks', async (req, res) => {
