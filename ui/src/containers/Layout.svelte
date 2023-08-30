@@ -35,21 +35,60 @@
 </script>
 
 <body class="flex flex-col min-h-screen">
-  <main class="flex-grow container mx-auto">
-    <nav class="flex items-center justify-between p-6 mt-4 bgdark">
-      <div class="flex flex-wrap">
+  <main class="flex-grow">
+    <nav class="flex items-center justify-between p-6 lg:h-24 bggrey mb-4">
+      <div class="flex flex-wrap mx-auto">
         <div class="w-full">
-          <div class="w-full block flex-grow lg:flex lg:items-center">
-            <a href="/" class="sm:w-4/4 lg:w-1/3 ml-2">
+          <div class="w-full block md:flex md:justify-center md:flex-wrap lg:items-center">
+            <Navigate to="/" styles="sm:w-4/4 md:w-1/7 lg:w-3/12">
               <img
-                class="h-7 object-cover"
-                src="https://github.com/SSWConsulting/SSW.Website/assets/67776356/f1467110-1677-4c76-a18e-3ffb6b3abcb9"
+                class="logo h-7 object-cover max-h-20"
+                src="/images/logo-dark.png"
                 alt="CodeAuditor"
               />
-            </a>
-            <div class="text-sm lg:flex-grow" />
+            </Navigate>
+            <div
+              class="mt-4 lg:mt-2 sm:w-4/4 lg:w-6/12 overflow-hidden text-center"
+            >
+              <span class="textdark text-sm uppercase font-bold pt-4 lg:pt-0 mx-4">
+                <span
+                  class="header-item {currentRoute.path === '/'
+                    ? 'textred'
+                    : 'textdark'}"
+                >
+                  <Navigate to="/" styles="hover:no-underline">Home</Navigate>
+                </span>
+              </span>
+              <span class="textdark text-sm uppercase font-bold pt-4 lg:pt-0 mx-4">
+                <span
+                  class="header-item {currentRoute.path === '/howitworks'
+                    ? 'textred'
+                    : 'textdark'}"
+                >
+                  <Navigate to="/howItWorks" styles="hover:no-underline">How It Works</Navigate>
+                </span>
+              </span>
+              <span class="textdark text-sm uppercase font-bold pt-4 lg:pt-0 mx-4">
+                <span
+                  class="header-item {currentRoute.path === '/explore'
+                    ? 'textred'
+                    : 'textdark'}"
+                >
+                  <Navigate to="/explore" styles="hover:no-underline">Explore</Navigate>
+                </span>
+              </span>
+              <span class="textdark text-sm uppercase font-bold pt-4 lg:pt-0 mx-4">
+                <span
+                  class="header-item {currentRoute.path === '/rules'
+                    ? 'textred'
+                    : 'textdark'}"
+                >
+                  <Navigate to="/rules" styles="hover:no-underline">Rules</Navigate>
+                </span>
+              </span>
+            </div>
             {#if $isLoggedIn}
-              <div>
+              <div class="text-right sm:w-4/4 lg:mt-1 lg:w-3/12 mx-4 lg:mx-0 mt-2">
                 <span class="text-white">
                   <div
                     class="relative"
@@ -58,8 +97,7 @@
                   >
                     <div
                       class="inline-block text-l px-4 py-2 leading-none border rounded
-                    text-white border-white hover:border-transparent hover:text-red-600
-                    hover:bg-white"
+                        textdark borderdark header-item hover:bg-white cursor-default"
                     >
                       {$userName}
                     </div>
@@ -67,7 +105,7 @@
                       <span
                         in:scale={{ duration: 100, start: 0.95 }}
                         out:scale={{ duration: 75, start: 0.95 }}
-                        class="origin-top-right absolute right-0 w-48 py-2 mt-8 rounded shadow-md"
+                        class="text-white origin-top-right absolute right-0 w-48 py-2 mt-8 rounded shadow-md"
                         style="background-color: #797979"
                       >
                         <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -85,7 +123,7 @@
                           class="{settingActive
                             ? 'bgred'
                             : '#797979'} block px-4 py-2 cursor-pointer"
-                          on:click={() => navigateTo("/home/settings")}
+                          on:click={() => navigateTo("/settings")}
                           on:mouseenter={() => (settingActive = true)}
                           on:mouseleave={() => (settingActive = false)}
                           >Ignored URLs</span
@@ -106,65 +144,26 @@
                 </span>
               </div>
             {:else}
-              <div>
+              <div class="text-right sm:w-4/4 md:mt-1 lg:w-3/12 mx-4 lg:mx-0 mt-2">
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
-                <span
-                  class="text-white mx-2 cursor-pointer"
-                  on:click={() => navigateTo("/login")}>Log In</span
+                <button
+                  class="inline-block text-sm px-4 py-2 leading-none border rounded
+                    uppercase borderdark font-bold text-sm header-item
+                    mt-2 lg:mt-0 cursor-pointer"
+                  on:click={() => navigateTo("/login")}>Log In</button
                 >
                 <button
                   on:click={() => navigateTo("/signup")}
                   type="button"
                   class="inline-block text-sm px-4 py-2 leading-none border rounded
-                text-white border-white hover:border-transparent hover:text-red-600
-                hover:bg-white mt-4 lg:mt-0 cursor-pointer"
+                    text-white borderdark bgdark uppercase font-bold text-sm header-item
+                    hover:bg-white mt-2 lg:mt-0 cursor-pointer"
                 >
                   Sign Up
                 </button>
               </div>
             {/if}
           </div>
-        </div>
-        <hr class="mt-4 bg-white w-full" />
-        <div
-          class="w-full grid grid-cols-1 md:grid-cols-4 overflow-hidden text-center mt-4"
-        >
-          <span class="text-white text-lg pt-4 lg:pt-0 lg:mx-4">
-            <span
-              class="hover:text-red-600 {currentRoute.path === '/home'
-                ? 'text-red-600'
-                : 'text-white'}"
-            >
-              <Navigate to="/home">Home</Navigate>
-            </span>
-          </span>
-          <span class="text-white text-lg pt-4 lg:pt-0 lg:mx-4">
-            <span
-              class="hover:text-red-600 {currentRoute.path === '/howitworks'
-                ? 'text-red-600'
-                : 'text-white'}"
-            >
-              <Navigate to="/howItWorks">How It Works</Navigate>
-            </span>
-          </span>
-          <span class="text-white text-lg pt-4 lg:pt-0 lg:mx-4">
-            <span
-              class="hover:text-red-600 {currentRoute.path === '/explore'
-                ? 'text-red-600'
-                : 'text-white'}"
-            >
-              <Navigate to="/explore">Explore</Navigate>
-            </span>
-          </span>
-          <span class="text-white text-lg pt-4 lg:pt-0 lg:mx-4">
-            <span
-              class="hover:text-red-600 {currentRoute.path === '/rules'
-                ? 'text-red-600'
-                : 'text-white'}"
-            >
-              <Navigate to="/rules">CodeAuditor Rules</Navigate>
-            </span>
-          </span>
         </div>
       </div>
     </nav>
@@ -392,5 +391,11 @@
     margin-left: 8px;
     height: 16px;
     width: 25px;
+  }
+  .logo {
+    max-height: 96px;
+  }
+  .header-item:hover {
+    color: #cc4141;
   }
 </style>

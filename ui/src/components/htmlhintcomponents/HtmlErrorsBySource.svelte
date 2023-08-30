@@ -140,7 +140,7 @@
               </div>
               {#if url.errors[key].length > 50 && key !== currentlySelectedKey}
                 <a
-                  class="text-xs mr-2 my-1 tracking-wider px-2 cursor-pointer"
+                  class="text-xs mr-2 my-1 tracking-wider px-2 cursor-pointer link"
                   on:click={() => {showAllErrorLocations = true, currentlySelectedUrl = url.url, currentlySelectedKey = key}}
                   href="javascript:void(0)">
                   {url.errors[key].length - 50} more..

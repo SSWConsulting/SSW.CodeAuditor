@@ -78,13 +78,21 @@ button:focus {
 .bgdark {
 	background-color: #414141;
 }
+.bggrey {
+	background-color: #e9e9e9;
+}
+.borderdark {
+	border-color: #414141;
+}
 .textred {
 	color: #cc4141;
 }
 .bgred {
 	background-color: #cc4141;
 }
-
+.textdark {
+	color: #333;
+}
 .link {
     text-decoration: underline;
     text-decoration-color: #aaa;

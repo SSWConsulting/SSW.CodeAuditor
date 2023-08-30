@@ -62,7 +62,7 @@ exports.getPerformanceThreshold = (api, url) =>
 		for await (const item of entity) {
 			result.push(item);
 		}
-		resolve(result)
+		resolve(result[0])
 	})
 
 exports.getLoadThreshold = (api, url) => 
@@ -74,7 +74,7 @@ exports.getLoadThreshold = (api, url) =>
 		for await (const item of entity) {
 			result.push(item);
 		}
-		resolve(result)
+		resolve(result[0])
 	});
 
 exports.getHTMLHintRules = (api, url) => 
@@ -86,9 +86,8 @@ exports.getHTMLHintRules = (api, url) =>
 		for await (const item of entity) {
 			result.push(item);
 		}
-		console.log(result)
-		resolve(result)
-	});
+		resolve(result[0])
+  });
 
 exports.getHTMLHintRulesByRunId = (runId) => 
 	new Promise(async (resolve) => {
@@ -99,7 +98,7 @@ exports.getHTMLHintRulesByRunId = (runId) =>
 		for await (const item of entity) {
 			result.push(item);
 		}
-		resolve(result)
+		resolve(result[0])
 	});
 
 exports.getPersonalSummary = (api, showAll) =>
@@ -213,4 +212,21 @@ exports.getUnscannableLinks = () =>
 			result.push(item.url);
 		}
 		resolve(result)
+	});
+
+exports.compareScans = (api, url) =>
+	new Promise(async (resolve) => {
+		const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
+			queryOptions: { filter: odata`PartitionKey eq ${api} and url eq ${url}` }
+		});
+		let result = [];
+		for await (const item of entity) {
+			result.push(item);
+		}
+		let isErrorUp = {
+			isHtmlWarningsUp: result[0].htmlWarnings > result[1].htmlWarnings,
+			isHtmlErrorsUp: result[0].htmlErrors > result[1].htmlErrors,
+			isBrokenLinksUp: result[0].totalUnique404 > result[1].totalUnique404,
+		} 
+		resolve(isErrorUp)
 	});
