@@ -36,7 +36,7 @@
 
 <body class="flex flex-col min-h-screen">
   <main class="flex-grow">
-    <nav class="flex items-center justify-between p-6 lg:h-24 bggrey mb-4">
+    <nav class="flex items-center justify-between p-4 lg:h-24 bggrey mb-4">
       <div class="flex flex-wrap mx-auto">
         <div class="w-full">
           <div class="w-full block md:flex md:justify-center md:flex-wrap lg:items-center">
@@ -48,9 +48,9 @@
               />
             </Navigate>
             <div
-              class="mt-4 lg:mt-2 sm:w-4/4 lg:w-6/12 overflow-hidden text-center"
+              class="flex text-center md:block justify-evenly pt-4 lg:pt-0 lg:mt-2 sm:w-4/4 lg:w-6/12 overflow-hidden"
             >
-              <span class="textdark text-sm uppercase font-bold pt-4 lg:pt-0 mx-4">
+              <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
                 <span
                   class="header-item {currentRoute.path === '/'
                     ? 'textred'
@@ -59,7 +59,7 @@
                   <Navigate to="/" styles="hover:no-underline">Home</Navigate>
                 </span>
               </span>
-              <span class="textdark text-sm uppercase font-bold pt-4 lg:pt-0 mx-4">
+              <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
                 <span
                   class="header-item {currentRoute.path === '/howitworks'
                     ? 'textred'
@@ -68,7 +68,7 @@
                   <Navigate to="/howItWorks" styles="hover:no-underline">How It Works</Navigate>
                 </span>
               </span>
-              <span class="textdark text-sm uppercase font-bold pt-4 lg:pt-0 mx-4">
+              <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
                 <span
                   class="header-item {currentRoute.path === '/explore'
                     ? 'textred'
@@ -77,7 +77,7 @@
                   <Navigate to="/explore" styles="hover:no-underline">Explore</Navigate>
                 </span>
               </span>
-              <span class="textdark text-sm uppercase font-bold pt-4 lg:pt-0 mx-4">
+              <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
                 <span
                   class="header-item {currentRoute.path === '/rules'
                     ? 'textred'
