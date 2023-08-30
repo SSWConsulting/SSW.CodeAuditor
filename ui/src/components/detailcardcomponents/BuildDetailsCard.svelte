@@ -1,5 +1,4 @@
 <script>
-  import { getCodeSummary } from "../../utils/utils";
   import { navigateTo } from "svelte-router-spa";
   import LighthouseSummary from "../summaryitemcomponents/LighthouseSummary.svelte";
   import CodeSummary from "../summaryitemcomponents/CodeSummary.svelte";
@@ -8,7 +7,6 @@
 
   export let build = {};
   let val = build.summary;
-  $: codeSummary = getCodeSummary(build);
 </script>
 
 <style>

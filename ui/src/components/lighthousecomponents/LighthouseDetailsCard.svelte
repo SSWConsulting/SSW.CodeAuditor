@@ -1,14 +1,11 @@
 <script>
   import LighthouseSummary from "../summaryitemcomponents/LighthouseSummary.svelte";
-  import { createEventDispatcher } from "svelte";
   import CodeSummary from "../summaryitemcomponents/CodeSummary.svelte";
   import LinkSummary from "../summaryitemcomponents/LinkSummary.svelte";
   import ArtillerySummary from "../summaryitemcomponents/ArtillerySummary.svelte";
 
   export let build = {};
   let val = build.summary;
-
-  const dispatch = createEventDispatcher();
 </script>
 
 <style>

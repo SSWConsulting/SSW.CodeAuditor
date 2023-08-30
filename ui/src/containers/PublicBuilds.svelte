@@ -7,7 +7,6 @@
   import { sort, descend, prop } from "ramda";
   import { CONSTS } from "../utils/utils.js";
 
-  let canClose;
   let lastBuild;
   let showAllScan = false;
 
