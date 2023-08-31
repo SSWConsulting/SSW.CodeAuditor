@@ -77,9 +77,12 @@
     {/if}
   </div>
   {#if !hiddenRows[url]}
-    <span class="font-bold text-red-600">
+    {#if destinations[url][0].daysUnfixed > -1}
+    <div class="font-bold textgrey ml-2">
+      <i class="fas fa-exclamation-triangle"></i>
       {formatDaysUnfixed(destinations[url][0].daysUnfixed)}
-    </span>
+    </div>
+    {/if}
     <table
       class="table-fixed w-full md:table-auto mb-8"
       in:fade={{ y: 100, duration: 400 }}
