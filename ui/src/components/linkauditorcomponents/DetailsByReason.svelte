@@ -29,7 +29,7 @@
     } else if (daysNum > 0) {
       return daysNum.toString();
     } else {
-      return 'New';
+      return '-';
     }
   };
 </script>
