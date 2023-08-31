@@ -1,5 +1,4 @@
 <script>
-  import { getCodeSummary } from "../../utils/utils";
   import { navigateTo } from "svelte-router-spa";
   import LighthouseSummary from "../summaryitemcomponents/LighthouseSummary.svelte";
   import CodeSummary from "../summaryitemcomponents/CodeSummary.svelte";
@@ -8,7 +7,6 @@
 
   export let build = {};
   let val = build.summary;
-  $: codeSummary = getCodeSummary(build);
 </script>
 
 <style>
@@ -39,7 +37,7 @@
     <div class="grid grid-cols-6">
       <div></div>
       <div
-        class="grid grid-rows-3 col-span-4"
+        class="grid grid-rows-3 col-span-6 md:col-span-4"
         on:click={() => navigateTo(`/build/${val.runId}`)}>
         <div
           class="md:row-span-1 text-sm my-2"

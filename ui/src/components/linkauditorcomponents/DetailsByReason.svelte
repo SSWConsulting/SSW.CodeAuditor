@@ -3,7 +3,7 @@
   import { isInIgnored } from "../../utils/utils.js";
   import { ignoredUrls$ } from "../../stores.js";
   import { createEventDispatcher } from "svelte";
-  import { fade, fly } from "svelte/transition";
+  import { fade } from "svelte/transition";
   import Icon from "../misccomponents/Icon.svelte";
   export let builds = [];
   const dispatch = createEventDispatcher();

@@ -7,7 +7,6 @@
   import {
     oauthLoginError,
     loginCompleted,
-    userSession$,
     performingLogin,
   } from "./stores.js";
 

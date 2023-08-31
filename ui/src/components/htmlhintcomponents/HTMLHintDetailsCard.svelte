@@ -42,7 +42,7 @@
   <div class="px-6 py-2">
     <div class="grid grid-cols-6">
       <div></div>
-      <div class="grid grid-rows-3 col-span-4">
+      <div class="grid grid-rows-3 col-span-6 md:col-span-4">
         <div class="md:row-span-1 text-sm my-2">
           <h2><span class="font-bold font-sans text-gray-600">LINKS</span></h2>
           <LinkSummary value={val} />
@@ -73,7 +73,7 @@
     </div>
 
     <div class="font-sans text-lg pt-2">
-      {#if htmlRules}
+      {#if htmlRules?.selectedRules}
         <p class="inline">HTML Rules Scanned: {htmlRules.selectedRules.split(/[,]+/).length}</p>
         <span type="button" class="inline cursor-pointer" on:click={handleClick} on:keydown={handleClick}>
           <i class="fas fa-angle-down"></i>

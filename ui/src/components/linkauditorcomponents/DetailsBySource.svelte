@@ -1,7 +1,7 @@
 <script>
   import { groupBy, props } from "ramda";
   import { isInIgnored } from "../../utils/utils.js";
-  import { fade, fly } from "svelte/transition";
+  import { fade } from "svelte/transition";
   import { ignoredUrls$ } from "../../stores.js";
   import { createEventDispatcher } from "svelte";
   import Icon from "../misccomponents/Icon.svelte";
