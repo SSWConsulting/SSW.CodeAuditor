@@ -15,6 +15,13 @@ const accountKey = process.env.AZURE_STORAGE_ACCESS_KEY;
 const credential = new AzureNamedKeyCredential(account, accountKey);
 const azureUrl = `https://${account}.table.core.windows.net`;
 
+const getDateDifference = (a, b) => {
+	const date1 = new Date(a);
+	const date2 = new Date(b);
+	const diff = Math.abs(date2 - date1);
+	return Math.floor(diff / 86400000); 
+};
+
 exports.getConfig = (api) =>
 	new Promise((resolve, reject) => {
 		getService().retrieveEntity(
@@ -28,18 +35,43 @@ exports.getConfig = (api) =>
 		);
 	});
 
-exports.getScanDetails = (runId) => 
-	getRun(runId).then((doc) =>
-		new Promise(async (resolve) => {
-			const entity = new TableClient(azureUrl, TABLE.ScanResults, credential).listEntities({
-				queryOptions: { filter: odata`PartitionKey eq ${doc.apikey} and runId eq ${doc.runId}` }
-			});
-			let result = []
-			for await (const item of entity) {
-				result.push(item);
-			}
-			resolve(result)
-		}));
+exports.getScanDetails = async (runId) => {
+    const doc = await getRun(runId);
+    const entity = new TableClient(azureUrl, TABLE.ScanResults, credential).listEntities({
+        queryOptions: { filter: odata`PartitionKey eq ${doc.apikey}` }
+    });
+    const result = [];
+    for await (const item of entity) {
+        result.push(item);
+    }
+    const previousFailures = new Map();
+
+    const filtered = result.reduce((acc, item) => {
+        if (item.runId === runId) {
+            let daysUnfixed = -1;
+
+            if (!previousFailures.has(item.dst)) {
+                previousFailures.set(item.dst, result.filter((i) => i.dst === item.dst && i.buildDate < item.buildDate));
+            }
+
+            const olderLinks = previousFailures.get(item.dst);
+            if (olderLinks.length) {
+                const firstUnfixed = olderLinks.reduce((previous, current) => {
+                    return current.buildDate < previous.buildDate ? current : previous;
+                });
+                daysUnfixed = getDateDifference(item.buildDate, firstUnfixed.buildDate);
+            }
+
+            acc.push({
+                ...item,
+                daysUnfixed,
+            });
+        }
+        return acc;
+    }, []);
+
+    return filtered;
+};
 
 exports.getIgnoredUrls = (api) =>
 	new Promise(async (resolve) => {

@@ -24,6 +24,16 @@
   let hiddenRows = {};
   const hideShow = key =>
     (hiddenRows[key] = key in hiddenRows ? !hiddenRows[key] : true);
+
+  const formatDaysUnfixed = (daysNum) => {
+    if (daysNum === 0) {
+      return 'Unfixed for <1 day';
+    } else if (daysNum > 0) {
+      return `Unfixed for ${daysNum} days`;
+    } else {
+      return '';
+    }
+  };
 </script>
 
 {#each destinationsKeys as url}
@@ -65,10 +75,11 @@
         </Icon>
       </button>
     {/if}
-
   </div>
-
   {#if !hiddenRows[url]}
+    <span class="font-bold text-red-600">
+      {formatDaysUnfixed(destinations[url][0].daysUnfixed)}
+    </span>
     <table
       class="table-fixed w-full md:table-auto mb-8"
       in:fade={{ y: 100, duration: 400 }}
