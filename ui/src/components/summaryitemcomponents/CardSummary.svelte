@@ -10,7 +10,8 @@
   import { onMount } from "svelte";
 
   export let value;
-  export let isHtmlHintComp;
+  export let isHtmlHintComp = false;
+  export let isLighthouseAudit = false;
 
   let showShareAlert;
   let previousScans = [];
@@ -19,6 +20,7 @@
 
   const dispatch = createEventDispatcher();
   
+  const perfThreshold = () => dispatch("perfThreshold");
   const htmlHintThreshold = () => dispatch("htmlHintThreshold");
 
   const emailAlertModal = () => {
@@ -34,16 +36,18 @@
   onMount(async () => {
     // Check if scan has any previous scans
     userSession$.subscribe(async x => {
-      userApiKey = x.apiKey;
-      let fullUrl = convertSpecialCharUrl(value.url)
-      const res = await fetch(`${CONSTS.API}/api/scanSummaryFromUrl/${userApiKey}/${fullUrl}`);
-      previousScans = await res.json();
+      if (x) {
+        userApiKey = x.apiKey;
+        let fullUrl = convertSpecialCharUrl(value.url)
+        const res = await fetch(`${CONSTS.API}/api/scanSummaryFromUrl/${userApiKey}/${fullUrl}`);
+        previousScans = await res.json();
+      }
     });
   })
 
 </script>
 
-<div class="hidden md:grid grid-cols">
+<div class="grid grid-cols">
   <div>
     <div class="text-center">
       <a
@@ -80,14 +84,24 @@
     >
       <i class="fas fa-paper-plane"></i> Send Email Alerts
     </button>
+    {#if value.buildDate && isLighthouseAudit}
+    <div class="text-center lg:text-right">
+      <button
+        on:click={perfThreshold}
+        class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
+          border hover:border-transparent rounded">
+        <span>Set Performance Threshold For Next Scan</span>
+      </button>
+    </div>
+    {/if}
   </div>
-  <div class="text-right">
+  <div class="text-center lg:text-right">
     {#if (value.buildDate && isHtmlHintComp)}
       <button
         on:click={htmlHintThreshold}
         class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
         border hover:border-transparent rounded">
-        <span class="ml-2">Enable/Disable Rules</span>
+        <span>Enable/Disable Rules</span>
       </button>
   {/if}
   </div>

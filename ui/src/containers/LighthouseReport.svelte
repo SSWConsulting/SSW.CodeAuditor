@@ -47,10 +47,10 @@
         `${CONSTS.API}/api/config/${user.apiKey}/perfthreshold/${slug(scanUrl)}`
       );
       const result = await res.json();
-      threshold = result || blank;
+      threshold = result || {};
     } catch (error) {
       console.error("error getting threshold", error);
-      threshold = blank;
+      threshold = {};
     } finally {
       loadingPerfSettings = false;
     }
@@ -87,11 +87,13 @@
           displayMode="Lighthouse Audit" />
         <br />
 
-        <CardSummary value={data.summary} />
+        <CardSummary 
+          value={data.summary}
+          isLighthouseAudit={true}
+          on:perfThreshold={() => showPerfThreshold(data.summary, $userSession$)}
+        />
 
-        <LighthouseDetailsCard
-          build={data ? data : {}}
-          on:perfThreshold={() => showPerfThreshold(data.summary, $userSession$)} />
+        <LighthouseDetailsCard build={data ? data : {}} />
 
         <Tabs build={data ? data : {}} displayMode="lighthouse" />
       {:catch error}
