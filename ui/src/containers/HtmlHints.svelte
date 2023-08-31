@@ -105,7 +105,7 @@
     await promise.then((data) => {
       userSession$.subscribe(async x => {
         const res = await fetch(`${CONSTS.API}/api/config/htmlhintrulesbyrunid/${runId}`);
-        htmlRules = await res.json()
+        htmlRules = await res.json();
       });
 	  });
   }

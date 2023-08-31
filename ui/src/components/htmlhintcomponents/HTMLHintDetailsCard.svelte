@@ -73,7 +73,7 @@
     </div>
 
     <div class="font-sans text-lg pt-2">
-      {#if htmlRules}
+      {#if htmlRules?.selectedRules}
         <p class="inline">HTML Rules Scanned: {htmlRules.selectedRules.split(/[,]+/).length}</p>
         <span type="button" class="inline cursor-pointer" on:click={handleClick} on:keydown={handleClick}>
           <i class="fas fa-angle-down"></i>
