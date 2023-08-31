@@ -145,7 +145,7 @@
                 </span>
               </div>
             {:else}
-              <div class="text-right sm:w-4/4 md:mt-1 lg:w-3/12 mx-4 lg:mx-0 mt-2">
+              <div class="text-center sm:w-4/4 md:mt-1 lg:w-3/12 mx-4 lg:mx-0 mt-2">
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <button
                   class="inline-block text-sm px-4 py-2 leading-none border rounded
