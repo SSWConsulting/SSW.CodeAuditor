@@ -90,7 +90,7 @@
         on:click={perfThreshold}
         class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
           border hover:border-transparent rounded">
-        <span class="ml-2">Set Performance Threshold For Next Scan</span>
+        <span>Set Performance Threshold For Next Scan</span>
       </button>
     </div>
     {/if}
@@ -101,7 +101,7 @@
         on:click={htmlHintThreshold}
         class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
         border hover:border-transparent rounded">
-        <span class="ml-2">Enable/Disable Rules</span>
+        <span>Enable/Disable Rules</span>
       </button>
   {/if}
   </div>
