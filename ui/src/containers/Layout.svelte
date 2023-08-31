@@ -88,7 +88,7 @@
               </span>
             </div>
             {#if $isLoggedIn}
-              <div class="text-center sm:w-4/4 lg:mt-1 lg:w-3/12 mx-4 lg:mx-0 mt-2">
+              <div class="text-center sm:w-4/4 lg:mt-1 lg:w-3/12 mx-4 lg:mx-0 mt-4 md:mt-2">
                 <span class="text-white">
                   <div
                     class="relative"
