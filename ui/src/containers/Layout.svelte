@@ -88,58 +88,59 @@
               </span>
             </div>
             {#if $isLoggedIn}
-              <div class="text-right sm:w-4/4 lg:mt-1 lg:w-3/12 mx-4 lg:mx-0 mt-2">
+              <div class="text-center sm:w-4/4 lg:mt-1 lg:w-3/12 mx-4 lg:mx-0 mt-2">
                 <span class="text-white">
                   <div
                     class="relative"
-                    on:mouseenter={() => (menu = true)}
-                    on:mouseleave={() => (menu = false)}
                   >
                     <div
-                      class="inline-block text-l px-4 py-2 leading-none border rounded
+                      on:mouseenter={() => (menu = true)}
+                      on:mouseleave={() => (menu = false)}
+                      class="inline-block relative text-l px-4 py-2 leading-none border rounded
                         textdark borderdark header-item hover:bg-white cursor-default"
                     >
                       {$userName}
+                      
+                      {#if menu}
+                        <span
+                          in:scale={{ duration: 100, start: 0.95 }}
+                          out:scale={{ duration: 75, start: 0.95 }}
+                          class="text-center w-full md:text-right text-white origin-top-right absolute right-0 w-48 py-2 mt-6 rounded shadow-md"
+                          style="background-color: #797979"
+                        >
+                          <!-- svelte-ignore a11y-click-events-have-key-events -->
+                          <span
+                            class="{scanActive
+                              ? 'bgred'
+                              : '#797979'} block px-4 py-2 cursor-pointer"
+                            on:click={() => navigateTo("/yourScan")}
+                            on:mouseenter={() => (scanActive = true)}
+                            on:mouseleave={() => (scanActive = false)}
+                            >Your Scans</span
+                          >
+                          <!-- svelte-ignore a11y-click-events-have-key-events -->
+                          <span
+                            class="{settingActive
+                              ? 'bgred'
+                              : '#797979'} block px-4 py-2 cursor-pointer"
+                            on:click={() => navigateTo("/settings")}
+                            on:mouseenter={() => (settingActive = true)}
+                            on:mouseleave={() => (settingActive = false)}
+                            >Ignored URLs</span
+                          >
+                          <!-- svelte-ignore a11y-click-events-have-key-events -->
+                          <span
+                            class="{signOutActive
+                              ? 'bgred'
+                              : '#797979'} block px-4 py-2 cursor-pointer"
+                            on:click={signOut}
+                            on:mouseenter={() => (signOutActive = true)}
+                            on:mouseleave={() => (signOutActive = false)}
+                            >Logout</span
+                          >
+                        </span>
+                      {/if}
                     </div>
-                    {#if menu}
-                      <span
-                        in:scale={{ duration: 100, start: 0.95 }}
-                        out:scale={{ duration: 75, start: 0.95 }}
-                        class="text-white origin-top-right absolute right-0 w-48 py-2 mt-8 rounded shadow-md"
-                        style="background-color: #797979"
-                      >
-                        <!-- svelte-ignore a11y-click-events-have-key-events -->
-                        <span
-                          class="{scanActive
-                            ? 'bgred'
-                            : '#797979'} block px-4 py-2 cursor-pointer"
-                          on:click={() => navigateTo("/yourScan")}
-                          on:mouseenter={() => (scanActive = true)}
-                          on:mouseleave={() => (scanActive = false)}
-                          >Your Scans</span
-                        >
-                        <!-- svelte-ignore a11y-click-events-have-key-events -->
-                        <span
-                          class="{settingActive
-                            ? 'bgred'
-                            : '#797979'} block px-4 py-2 cursor-pointer"
-                          on:click={() => navigateTo("/settings")}
-                          on:mouseenter={() => (settingActive = true)}
-                          on:mouseleave={() => (settingActive = false)}
-                          >Ignored URLs</span
-                        >
-                        <!-- svelte-ignore a11y-click-events-have-key-events -->
-                        <span
-                          class="{signOutActive
-                            ? 'bgred'
-                            : '#797979'} block px-4 py-2 cursor-pointer"
-                          on:click={signOut}
-                          on:mouseenter={() => (signOutActive = true)}
-                          on:mouseleave={() => (signOutActive = false)}
-                          >Logout</span
-                        >
-                      </span>
-                    {/if}
                   </div>
                 </span>
               </div>
