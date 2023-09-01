@@ -1,7 +1,6 @@
 <script>
   import { slice } from "ramda";
   import {
-    isInIgnored,
     HTMLERRORS,
     getHtmlHintIssues,
     getCodeErrorRules,

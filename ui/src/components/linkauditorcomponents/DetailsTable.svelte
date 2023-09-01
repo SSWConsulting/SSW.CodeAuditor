@@ -139,18 +139,18 @@
           out:fade={{ y: -100, duration: 200 }}>
           <tbody>
             <tr>
-              <th class="table-header md:table-cell w-2/12 px-4 py-2">Source</th>
+              <th class="table-header md:table-cell md:w-2/12 sm:px-4 py-2">Source</th>
               <td class="w-10/12 border px-4 py-2 break-all">
                 <a class="inline-block align-baseline link" target="_blank" href={url.src}>{url.src}</a>
               </td> 
             </tr>
           
             <tr>
-              <th class="table-header md:table-cell w-2/12 px-4 py-2">Anchor Text</th>
+              <th class="table-header md:table-cell w-2/12 sm:px-4 py-2">Anchor Text</th>
               <td class="md:table-cell w-10/12 border px-4 py-2 break-all">{url.link || ''}</td>
             </tr>
             <tr>
-              <th class="table-header w-2/12 px-4 py-2">Link</th> 
+              <th class="table-header w-2/12 sm:px-4 py-2">Link</th> 
               <td class="w-10/12 border px-4 py-2 break-all">
                 <a class="inline-block align-baseline link" target="_blank" href={url.dst}>{url.dst}</a>
               </td>    

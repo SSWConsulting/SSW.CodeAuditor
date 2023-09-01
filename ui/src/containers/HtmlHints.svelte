@@ -1,9 +1,7 @@
 <script>
   import {
     getBuildDetails,
-    userApi,
     userSession$,
-    getIgnoreList
   } from "../stores";
   import Tabs from "../components/misccomponents/Tabs.svelte";
   import { pipe, map, flatten } from "ramda";
@@ -45,11 +43,9 @@
 
   let userNotLoginToast;
   let ignoreUrlShown;
-  let perfThresholdShown;
   let urlToIgnore;
   let scanUrl;
   let lastBuild;
-  let loadingPerfSettings;
   let threshold = {};
   let htmlHintRulesShown;
   let loadingHtmlHintSettings;
@@ -109,7 +105,7 @@
     await promise.then((data) => {
       userSession$.subscribe(async x => {
         const res = await fetch(`${CONSTS.API}/api/config/htmlhintrulesbyrunid/${runId}`);
-        htmlRules = await res.json()
+        htmlRules = await res.json();
       });
 	  });
   }

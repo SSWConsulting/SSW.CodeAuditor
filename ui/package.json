@@ -27,11 +27,12 @@
     "export-to-csv": "^0.2.1",
     "firebase": "^9.22.1",
     "firebase-tools": "^12.4.0",
-    "query-string": "^6.14.1",
     "npm": "^9.6.7",
+    "query-string": "^6.14.1",
     "ramda": "^0.27.2",
     "sirv-cli": "^0.4.6",
     "slug": "^2.1.1",
+    "svelte-lighthouse-viewer": "^0.1.216",
     "svelte-preprocess": "^3.9.12",
     "svelte-router-spa": "^5.8.4"
   }
