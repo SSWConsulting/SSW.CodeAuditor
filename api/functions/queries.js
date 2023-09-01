@@ -46,7 +46,7 @@ exports.getScanDetails = async (runId) => {
     }
     const previousFailures = new Map();
 
-    const filtered = result.reduce((acc, item) => {
+    const filteredList = result.reduce((runLinks, item) => {
         if (item.runId === runId) {
             let daysUnfixed = -1;
 
@@ -62,15 +62,15 @@ exports.getScanDetails = async (runId) => {
                 daysUnfixed = getDateDifference(item.buildDate, firstUnfixed.buildDate);
             }
 
-            acc.push({
+            runLinks.push({
                 ...item,
                 daysUnfixed,
             });
         }
-        return acc;
+        return runLinks;
     }, []);
 
-    return filtered;
+    return filteredList;
 };
 
 exports.getIgnoredUrls = (api) =>
