@@ -15,6 +15,7 @@
   import UpdatePerfThreshold from "../components/lighthousecomponents/UpdatePerfThreshold.svelte";
   import { CONSTS } from "../utils/utils";
   import CardSummary from "../components/summaryitemcomponents/CardSummary.svelte";
+  import SvelteLighthouseViewer from 'svelte-lighthouse-viewer';
 
   export let currentRoute;
 
@@ -64,10 +65,15 @@
         .then((x) => x.json())
         .then((json) => {
           loading = false;
-          const dom = new DOM(document);
-          const renderer = new ReportRenderer(dom);
-          const container = document.querySelector("#report");
-          renderer.renderReport(json, container);
+          const svelteAppElement = document.getElementById('report');
+          if (svelteAppElement) {
+            new SvelteLighthouseViewer({
+              target: svelteAppElement,
+              props: {
+                json: json,
+              },
+            });
+          }
         });
     }
   });
