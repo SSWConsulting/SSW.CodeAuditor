@@ -22,6 +22,11 @@ const getDateDifference = (a, b) => {
 	return Math.floor(diff / 86400000); 
 };
 
+const incrementString = (str) => {
+	const incChar =  String.fromCharCode(str.charCodeAt(str.length - 1) + 1);
+	return str.replace(/.$/, incChar);
+};
+
 exports.getConfig = (api) =>
 	new Promise((resolve, reject) => {
 		getService().retrieveEntity(
@@ -36,9 +41,10 @@ exports.getConfig = (api) =>
 	});
 
 exports.getScanDetails = async (runId) => {
-    const doc = await getRun(runId);
+	const scan = await exports.getSummaryById(runId);
+	const filter = odata`PartitionKey eq ${scan.partitionKey} and src ge ${scan.url} and src le ${incrementString(scan.url)}`;
     const entity = new TableClient(azureUrl, TABLE.ScanResults, credential).listEntities({
-        queryOptions: { filter: odata`PartitionKey eq ${doc.apikey}` }
+        queryOptions: { filter }
     });
     const result = [];
     for await (const item of entity) {
