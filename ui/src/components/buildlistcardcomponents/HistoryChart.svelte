@@ -1,6 +1,6 @@
 <script>
-  import { onMount } from "svelte";
   import { historyChartType } from "../../utils/utils";
+  import Chart from 'chart.js/auto'
 
   export let value = [];
   export let dataType;
@@ -9,6 +9,7 @@
   let chartTitle;
   let barColor;
 
+  // Categorize and populate charts with data, title and color
   if (dataType === historyChartType.BadLinks) {
     chartTitle = historyChartType.BadLinks;
     allDataToDisplay = value.map((i) => i.totalUnique404);
@@ -23,99 +24,86 @@
     barColor = 'red'
   }
 
-  // Show top 10 most recent scan in chart and filter undefined data
-  let dataToDisplay = allDataToDisplay.slice(0, 10);
+  // Show top 8 most recent scan in chart
+  let dataToDisplay = allDataToDisplay.slice(0, 8);
 
-  let barColorArr = []
-  dataToDisplay = dataToDisplay.map(x => {
-    if (x === 0) {
-      // If a scan has 0 error then change bar color to green
-      barColorArr.push('green');
-      // Add max value so it will display at full height 
-      return x = Math.max(...dataToDisplay) + 10
-    } else {
-      barColorArr.push(barColor)
-      return x
-    }
-  })
-
-  let dataToDisplayLabel = []
-
-  dataToDisplayLabel = dataToDisplay.map(x => {
-      // Find scan with no error by finding number with max value 
-      return x === (Math.max(...dataToDisplay)) ? 0 : x
-  })
-
-  // Calculate to get max bar height for certain group
-  let maxBarHeight = dataToDisplay.length > 0 ? dataToDisplay.reduce((a, b) => Math.max(a, b)) : 0;
-
-  // If a group has less than 10 scans, add the remaining props to populate the chart
-  for (let i = 0; i < 10; i++) {
-    if (dataToDisplay.length < 10) {
-      dataToDisplay.push(maxBarHeight / 10);
+  // If a group has less than 8 scans, add the remaining props to populate the chart
+  for (let i = 0; i < 8; i++) {
+    if (dataToDisplay.length < 8) {
+      dataToDisplay.push(0);
     }
   }
 
-  export let data = {
-    labels: dataToDisplayLabel,
+  // Calculate to get max bar height for certain group
+  let maxBarHeight = dataToDisplay.length > 0 ? dataToDisplay.reduce((a, b) => Math.max(a, b)) : 0;
+  
+  let data = {
+    labels: dataToDisplay,
     datasets: [
       {
+        backgroundColor: barColor,
         data: dataToDisplay,
-        backgroundColor: barColorArr,
-        maxBarThickness: 5
+        tension: 0.32,
+        borderWidth: 0.1,
       },
+      {
+        backgroundColor: "#eeeeee",
+        data: Array(8).fill(Math.max(...dataToDisplay)),
+        tension: 0.32,
+        borderWidth: 0.1,
+        grouped: false
+      }
     ],
-  };
+  }
 
-  export let options = {
+  let type = 'bar'
+
+	let options = {
     responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [
-        {
-          ticks: {
-            display: false,
-            beginAtZero: true,
-            reverse: true,
-          },
-          gridLines: {
-            display: false,
-          },
-        },
-      ],
-      yAxes: [
-        {
-          ticks: {
-            display: false,
-            max: maxBarHeight,
-            beginAtZero: true,
-          },
-          gridLines: {
-            display: false,
-          },
-        },
-      ],
-    },
-    legend: {
-      display: false,
-    },
-    tooltips: {
-      callbacks: {
-        //returns a empty string if the label is "No Data"
-        label: function(items, data){
-          return null
-        },
+		plugins: {
+			legend: {
+				display: false
+			},
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return null;
+          }
+        }
       }
     },
-  };
+    scales: {
+			y: {
+        display: false,
+        max: maxBarHeight,
+      },
+			 x: {
+				 display: false,
+         reverse: true
+			 }
+    }
+  }
+	
+	$: config = {
+		type,
+		data,
+		options
+	}
 
-  let chartRef;
-  onMount(() => {
-    Chart.Bar(chartRef, {
-      options: options,
-      data: data,
-    });
-  });
+  const handleChart = (element, config) => {
+		let theChart = new Chart(element, config)
+		
+		return {
+			update(config) {
+				theChart.destroy()
+				theChart = new Chart(element, config)
+			},
+			destroy() {
+				theChart.destroy()
+			}
+		}
+	}
+
 </script>
 
 <div class="text-center whitespace-no-wrap">
@@ -132,4 +120,4 @@
       d="M17 8l4 4m0 0l-4 4m4-4H3" />
   </svg>
 </div>
-<canvas bind:this={chartRef} width="10px" />
+<canvas use:handleChart={config} />
