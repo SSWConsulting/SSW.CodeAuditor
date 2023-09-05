@@ -3,7 +3,7 @@
   import { isInIgnored } from "../../utils/utils.js";
   import { ignoredUrls$ } from "../../stores.js";
   import { createEventDispatcher } from "svelte";
-  import { fade, fly } from "svelte/transition";
+  import { fade } from "svelte/transition";
   import Icon from "../misccomponents/Icon.svelte";
   export let builds = [];
   const dispatch = createEventDispatcher();
@@ -22,6 +22,16 @@
 
   const hideShow = key =>
     (hiddenRows[key] = key in hiddenRows ? !hiddenRows[key] : true);
+
+  const formatDaysUnfixed = (daysNum) => {
+    if (daysNum === 0) {
+      return '<1';
+    } else if (daysNum > 0) {
+      return daysNum.toString();
+    } else {
+      return '-';
+    }
+  };
 </script>
 
 {#each reasonsKeys as reason}
@@ -43,15 +53,16 @@
 
   {#if !hiddenRows[reason]}
     <table
-      class="table-fixed w-full md:table-auto mb-8"
+      class="table-fixed w-full table-auto mb-8"
       in:fade={{ y: 100, duration: 400 }}
       out:fade={{ y: -100, duration: 200 }}>
       <thead>
         <tr>
           <th class="w-4/12 px-4 py-2">Source ({reasons[reason].length})</th>
-          <th class="w-5/12 px-4 py-2">Destination</th>
+          <th class="w-4/12 px-4 py-2">Destination</th>
           <th class="w-2/12 px-4 py-2">Anchor Text</th>
           <th class="w-1/12 px-4 py-2 text-right">Status</th>
+          <th class="w-1/12 px-4 py-2 text-right">Days Unfixed</th>
         </tr>
       </thead>
       <tbody>
@@ -65,7 +76,7 @@
                 {val.src}
               </a>
             </td>
-            <td class="w-5/12 border px-4 py-2">
+            <td class="w-4/12 border px-4 py-2 break-all">
               <a
                 class="inline-block align-baseline"
                 target="_blank"
@@ -100,6 +111,9 @@
             <td class="w-2/12 border px-4 py-2 break-all">{val.link || ''}</td>
             <td class="w-1/12 border px-4 py-2 text-right">
               {val.statuscode || '0'}
+            </td>
+            <td class="w-1/12 border px-4 py-2 text-right">
+              {formatDaysUnfixed(val.daysUnfixed)}
             </td>
           </tr>
         {/each}

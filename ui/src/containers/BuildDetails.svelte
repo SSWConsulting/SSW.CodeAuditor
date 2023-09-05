@@ -3,9 +3,7 @@
     getBuildDetails,
     userSession$,
     getIgnoreList,
-
     getLatestBuildDetails
-
   } from "../stores";
   import Tabs from "../components/misccomponents/Tabs.svelte";
   import Breadcrumbs from "../components/misccomponents/Breadcrumbs.svelte";

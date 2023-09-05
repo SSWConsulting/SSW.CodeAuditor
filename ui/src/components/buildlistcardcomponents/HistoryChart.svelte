@@ -118,7 +118,7 @@
   });
 </script>
 
-<div class="text-center">
+<div class="text-center whitespace-no-wrap">
   <span class="inline-block font-sans sm:text-sm">{chartTitle}</span>
   <svg
     class="inline-block w-6 h-6"

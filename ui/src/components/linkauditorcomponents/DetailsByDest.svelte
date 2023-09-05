@@ -1,8 +1,8 @@
 <script>
-  import { fade, fly } from "svelte/transition";
+  import { fade } from "svelte/transition";
   import Icon from "../misccomponents/Icon.svelte";
   import { groupBy, props } from "ramda";
-  import { ignoredUrls$, deleteIgnoreUrl } from "../../stores.js";
+  import { ignoredUrls$ } from "../../stores.js";
   import { isInIgnored } from "../../utils/utils.js";
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
@@ -24,6 +24,16 @@
   let hiddenRows = {};
   const hideShow = key =>
     (hiddenRows[key] = key in hiddenRows ? !hiddenRows[key] : true);
+
+  const formatDaysUnfixed = (daysNum) => {
+    if (daysNum === 0) {
+      return 'Unfixed for <1 day';
+    } else if (daysNum > 0) {
+      return `Unfixed for ${daysNum} days`;
+    } else {
+      return '';
+    }
+  };
 </script>
 
 {#each destinationsKeys as url}
@@ -65,10 +75,14 @@
         </Icon>
       </button>
     {/if}
-
   </div>
-
   {#if !hiddenRows[url]}
+    {#if destinations[url][0].daysUnfixed > -1}
+    <div class="font-bold textgrey ml-2">
+      <i class="fas fa-exclamation-triangle"></i>
+      {formatDaysUnfixed(destinations[url][0].daysUnfixed)}
+    </div>
+    {/if}
     <table
       class="table-fixed w-full md:table-auto mb-8"
       in:fade={{ y: 100, duration: 400 }}

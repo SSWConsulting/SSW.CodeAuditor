@@ -15,6 +15,18 @@ const accountKey = process.env.AZURE_STORAGE_ACCESS_KEY;
 const credential = new AzureNamedKeyCredential(account, accountKey);
 const azureUrl = `https://${account}.table.core.windows.net`;
 
+const getDateDifference = (a, b) => {
+	const date1 = new Date(a);
+	const date2 = new Date(b);
+	const diff = Math.abs(date2 - date1);
+	return Math.floor(diff / 86400000); 
+};
+
+const incrementString = (str) => {
+	const incChar =  String.fromCharCode(str.charCodeAt(str.length - 1) + 1);
+	return str.replace(/.$/, incChar);
+};
+
 exports.getConfig = (api) =>
 	new Promise((resolve, reject) => {
 		getService().retrieveEntity(
@@ -28,18 +40,44 @@ exports.getConfig = (api) =>
 		);
 	});
 
-exports.getScanDetails = (runId) => 
-	getRun(runId).then((doc) =>
-		new Promise(async (resolve) => {
-			const entity = new TableClient(azureUrl, TABLE.ScanResults, credential).listEntities({
-				queryOptions: { filter: odata`PartitionKey eq ${doc.apikey} and runId eq ${doc.runId}` }
-			});
-			let result = []
-			for await (const item of entity) {
-				result.push(item);
-			}
-			resolve(result)
-		}));
+exports.getScanDetails = async (runId) => {
+	const scan = await exports.getSummaryById(runId);
+	const filter = odata`PartitionKey eq ${scan.partitionKey} and src ge ${scan.url} and src le ${incrementString(scan.url)}`;
+    const entity = new TableClient(azureUrl, TABLE.ScanResults, credential).listEntities({
+        queryOptions: { filter }
+    });
+    const result = [];
+    for await (const item of entity) {
+        result.push(item);
+    }
+    const previousFailures = new Map();
+
+    const filteredList = result.reduce((runLinks, item) => {
+        if (item.runId === runId) {
+            let daysUnfixed = -1;
+
+            if (!previousFailures.has(item.dst)) {
+                previousFailures.set(item.dst, result.filter((i) => i.dst === item.dst && i.buildDate < item.buildDate));
+            }
+
+            const olderLinks = previousFailures.get(item.dst);
+            if (olderLinks.length) {
+                const firstUnfixed = olderLinks.reduce((previous, current) => {
+                    return current.buildDate < previous.buildDate ? current : previous;
+                });
+                daysUnfixed = getDateDifference(item.buildDate, firstUnfixed.buildDate);
+            }
+
+            runLinks.push({
+                ...item,
+                daysUnfixed,
+            });
+        }
+        return runLinks;
+    }, []);
+
+    return filteredList;
+};
 
 exports.getIgnoredUrls = (api) =>
 	new Promise(async (resolve) => {
@@ -62,7 +100,7 @@ exports.getPerformanceThreshold = (api, url) =>
 		for await (const item of entity) {
 			result.push(item);
 		}
-		resolve(result)
+		resolve(result[0] || {})
 	})
 
 exports.getLoadThreshold = (api, url) => 
@@ -74,7 +112,7 @@ exports.getLoadThreshold = (api, url) =>
 		for await (const item of entity) {
 			result.push(item);
 		}
-		resolve(result)
+		resolve(result[0] || {})
 	});
 
 exports.getHTMLHintRules = (api, url) => 
@@ -86,9 +124,8 @@ exports.getHTMLHintRules = (api, url) =>
 		for await (const item of entity) {
 			result.push(item);
 		}
-		console.log(result)
-		resolve(result)
-	});
+		resolve(result[0] || {})
+  });
 
 exports.getHTMLHintRulesByRunId = (runId) => 
 	new Promise(async (resolve) => {
@@ -99,7 +136,7 @@ exports.getHTMLHintRulesByRunId = (runId) =>
 		for await (const item of entity) {
 			result.push(item);
 		}
-		resolve(result)
+		resolve(result[0] || {})
 	});
 
 exports.getPersonalSummary = (api, showAll) =>
@@ -166,7 +203,7 @@ exports.getSummaryById = (runId) =>
 			for await (const item of entity) {
 				result.push(item);
 			}
-			resolve(result[0])
+			resolve(result[0] || {})
 		}));
 
 exports.getLatestSummaryFromUrlAndApi = (url, api) => 
@@ -213,4 +250,21 @@ exports.getUnscannableLinks = () =>
 			result.push(item.url);
 		}
 		resolve(result)
+	});
+
+exports.compareScans = (api, url) =>
+	new Promise(async (resolve) => {
+		const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
+			queryOptions: { filter: odata`PartitionKey eq ${api} and url eq ${url}` }
+		});
+		let result = [];
+		for await (const item of entity) {
+			result.push(item);
+		}
+		let isErrorUp = {
+			isHtmlWarningsUp: result[0].htmlWarnings > result[1].htmlWarnings,
+			isHtmlErrorsUp: result[0].htmlErrors > result[1].htmlErrors,
+			isBrokenLinksUp: result[0].totalUnique404 > result[1].totalUnique404,
+		} 
+		resolve(isErrorUp)
 	});

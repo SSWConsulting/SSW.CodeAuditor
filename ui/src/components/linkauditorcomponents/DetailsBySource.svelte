@@ -1,7 +1,7 @@
 <script>
   import { groupBy, props } from "ramda";
   import { isInIgnored } from "../../utils/utils.js";
-  import { fade, fly } from "svelte/transition";
+  import { fade } from "svelte/transition";
   import { ignoredUrls$ } from "../../stores.js";
   import { createEventDispatcher } from "svelte";
   import Icon from "../misccomponents/Icon.svelte";
@@ -23,10 +23,20 @@
   let hiddenRows = {};
   const hideShow = key =>
     (hiddenRows[key] = key in hiddenRows ? !hiddenRows[key] : true);
+
+  const formatDaysUnfixed = (daysNum) => {
+    if (daysNum === 0) {
+      return '<1';
+    } else if (daysNum > 0) {
+      return daysNum.toString();
+    } else {
+      return '-';
+    }
+  };
 </script>
 
 <style>
-  .truncate {
+  .truncate-link {
     width: 400px;
     white-space: nowrap;
     overflow: hidden;
@@ -54,15 +64,16 @@
   </div>
   {#if !hiddenRows[url]}
     <table
-      class="table-fixed w-full md:table-auto mb-8"
+      class="table-fixed w-full table-auto mb-8"
       in:fade={{ y: 100, duration: 400 }}
       out:fade={{ y: -100, duration: 200 }}>
       <thead>
         <tr>
           <th class="w-6/12 px-4 py-2">Broken Link ({sources[url].length})</th>
-          <th class="hidden md:table-cell w-3/12 px-4 py-2">Anchor Text</th>
+          <th class="hidden md:table-cell w-2/12 px-4 py-2">Anchor Text</th>
           <th class="w-1/12 px-4 py-2 text-right">Status</th>
           <th class="hidden md:table-cell w-2/12 px-4 py-2 text-right">Message</th>
+          <th class="hidden md:table-cell w-1/12 px-4 py-2 text-right">Days Unfixed</th>
         </tr>
       </thead>
       <tbody>
@@ -93,19 +104,22 @@
                 </button>
               {/if}
               <a
-                class="inline-block align-baseline link md:truncate"
+                class="inline-block align-baseline link md:truncate-link"
                 target="_blank"
                 href={val.dst}>
                 {val.dst.length < 70 ? val.dst : val.dst.substring(0, 70) + '...'}
               </a>
 
             </td>
-            <td class="hidden md:table-cell w-3/12 border px-4 py-2 break-all">{val.link || ''}</td>
+            <td class="hidden md:table-cell w-2/12 border px-4 py-2 break-all">{val.link || ''}</td>
             <td class="w-1/12 border px-4 py-2 text-right">
               {val.statuscode || '0'}
             </td>
             <td class="hidden md:table-cell w-2/12 border px-4 py-2 text-right">
               {val.statusmsg || ''}
+            </td>
+            <td class="hidden md:table-cell w-1/12 border px-4 py-2 text-right">
+              {formatDaysUnfixed(val.daysUnfixed)}
             </td>
           </tr>
         {/each}

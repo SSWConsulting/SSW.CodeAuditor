@@ -1,7 +1,6 @@
 <script>
   import LoadingCirle from "./LoadingCircle.svelte";
   import { createEventDispatcher } from "svelte";
-  import Icon from "./Icon.svelte";
   export let show;
   export let header;
   export let loading;
