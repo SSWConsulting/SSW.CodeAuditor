@@ -9,6 +9,7 @@
     loginCompleted,
     performingLogin,
   } from "./stores.js";
+  import 'pace-js';
 
   firebase.initializeApp({
     apiKey: "AIzaSyCHljUPnjRcaQt7lGRDPtZsYWIj3eP4Pok",
