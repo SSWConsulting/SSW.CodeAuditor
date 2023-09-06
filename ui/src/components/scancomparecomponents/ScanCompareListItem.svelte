@@ -24,7 +24,7 @@
     <span class="textgrey">{numberWithCommas(Math.abs(comparisonDifferences.brokenLinksDifference))}</span>
     {/if}
   </div>
-  <h3 class="col-span-2 font-bold font-sans textgrey">Broken Links {value.totalUnique404Existing !== undefined ? `(${value.totalUnique404Existing || 0} existing)` : ''}</h3>
+  <h3 class="col-span-2 font-bold font-sans textgrey">Broken Links {value.totalUnique404Existing !== undefined ? `(${value.totalUnique404Existing || 0} Existing)` : ''}</h3>
 </div>
 
 <div class="grid grid-cols-2 grid-rows-2 text-start font-sans font-bold mt-8 mb-2">
