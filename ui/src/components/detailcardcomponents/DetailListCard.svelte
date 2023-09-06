@@ -79,7 +79,7 @@
         </div>
 
         <div
-          class="row-span-1 col-span-4 text-sm my-2"
+          class="row-span-1 col-span-4 text-sm mt-2"
           on:click={() => navigateTo(`/build/${val.runId}`)}>
           <h2>
             <span class="font-bold font-sans text-gray-600">LINKS</span>
@@ -88,7 +88,7 @@
         </div>
 
         <div
-          class="row-span-1 col-span-4 text-sm my-2"
+          class="row-span-1 col-span-4 text-sm mt-2"
           on:click={() => navigateTo(`/build/${val.runId}`)}>
           <h2>
             <span class="font-bold font-sans text-gray-600">CODE</span>
@@ -97,7 +97,7 @@
         </div>
 
         <div
-          class="row-span-1 col-span-4 text-sm my-2"
+          class="row-span-1 col-span-4 text-sm mt-2"
           on:click={() => navigateTo(`/build/${val.runId}`)}>
           <h2>
             <span class="font-bold font-sans text-gray-600">LOAD TEST</span>
@@ -107,7 +107,7 @@
 
         {#if val.performanceScore}
           <div
-            class="row-span-1 col-span-4 text-sm my-2"
+            class="row-span-1 col-span-4 text-sm mt-2"
             on:click={() => navigateTo(`/build/${val.runId}`)}>
             <h2>
               <span class="font-bold font-sans text-gray-600">LIGHTHOUSE</span>
