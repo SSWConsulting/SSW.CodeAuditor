@@ -34,11 +34,20 @@
     }
   }
 
+  // Populate data label for each column
+  let dataToDisplayLabel = dataToDisplay;
+  
+  // if a group does not have any error at all, prepopulate with a value (1) and re-label as 0
+  if (dataToDisplay.every(x => x === 0 || x === undefined)) {
+    dataToDisplay = Array(8).fill(1);
+    dataToDisplayLabel = Array(8).fill(0);
+    barColor = "#eeeeee"
+  }
+
   // Calculate to get max bar height for certain group
   let maxBarHeight = dataToDisplay.length > 0 ? dataToDisplay.reduce((a, b) => Math.max(a, b)) : 0;
-  
   let data = {
-    labels: dataToDisplay,
+    labels: dataToDisplayLabel,
     datasets: [
       {
         backgroundColor: barColor,
@@ -60,11 +69,17 @@
 
 	let options = {
     responsive: true,
+    animation: {
+        duration: 0
+    },
 		plugins: {
 			legend: {
 				display: false
 			},
       tooltip: {
+        filter: function (tooltipItem) {
+          return tooltipItem.datasetIndex === 0;
+        },
         callbacks: {
           label: function(context) {
             return null;
@@ -106,7 +121,7 @@
 
 </script>
 
-<div class="text-center whitespace-no-wrap">
+<div class="text-left whitespace-no-wrap mb-3">
   <span class="inline-block font-sans sm:text-sm">{chartTitle}</span>
   <svg
     class="inline-block w-6 h-6"
