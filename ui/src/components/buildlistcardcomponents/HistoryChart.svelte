@@ -69,11 +69,17 @@
 
 	let options = {
     responsive: true,
+    animation: {
+        duration: 0
+    },
 		plugins: {
 			legend: {
 				display: false
 			},
       tooltip: {
+        filter: function (tooltipItem) {
+          return tooltipItem.datasetIndex === 0;
+        },
         callbacks: {
           label: function(context) {
             return null;
