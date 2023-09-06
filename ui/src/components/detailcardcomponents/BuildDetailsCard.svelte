@@ -37,17 +37,17 @@
     <div class="grid grid-cols-6">
       <div></div>
       <div
-        class="grid grid-rows-3 col-span-6 md:col-span-4"
+        class="grid auto-rows-auto col-span-6 md:col-span-4"
         on:click={() => navigateTo(`/build/${val.runId}`)}>
         <div
-          class="md:row-span-1 text-sm mt-2"
+          class="md:row-span-1 text-sm my-2"
           on:click={() => navigateTo(`/build/${val.runId}`)}>
           <h2><span class="font-bold font-sans text-gray-600">LINKS</span></h2>
           <LinkSummary value={val} />
         </div>
   
         <div
-          class="md:row-span-1 text-sm mt-2"
+          class="md:row-span-1 text-sm my-2"
           on:click={() => navigateTo(`/build/${val.runId}`)}>
           <h2><span class="font-bold font-sans text-gray-600">CODE</span></h2>
           <CodeSummary value={val} />
@@ -55,7 +55,7 @@
   
         {#if val.performanceScore}
           <div
-            class="md:row-span-1 text-sm mt-2"
+            class="md:row-span-1 text-sm my-2"
             on:click={() => navigateTo(`/build/${val.runId}`)}>
             <h2>
               <span class="font-bold font-sans text-gray-600">LIGHTHOUSE</span>
@@ -65,7 +65,7 @@
         {/if}
   
         <div
-          class="md:row-span-1 text-sm mt-2"
+          class="md:row-span-1 text-sm my-2"
           on:click={() => navigateTo(`/build/${val.runId}`)}>
           <h2>
             <span class="font-bold font-sans text-gray-600">LOAD TEST</span>
