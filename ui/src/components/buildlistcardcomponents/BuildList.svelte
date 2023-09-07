@@ -84,8 +84,27 @@
           <div
             class="sm:flex-1 md:flex-1 lg:flex xl:flex content-center mb-4 px-6
             py-4">
-            <div class="xl:w-4/6 lg:w-5/6">
-              <UrlSummaryCard value={groupUrl[url]} {url} />
+            <div class="xl:w-3/6 lg:w-4/6 text-center">
+              <div>
+                <UrlSummaryCard value={groupUrl[url]} {url} />
+              </div>
+              <div>
+                <span
+                type="button"
+                class="hover:bg-gray-300 border-0 rounded-md px-3 py-1"
+                on:click={() => toggle(i)}
+                on:keydown>
+                {#if showTotalBuild}
+                  <i class="fas fa-angle-up"></i>
+                {:else}
+                  <i class="fas fa-angle-down"></i>
+                {/if}
+              </span>
+              <p class="truncate font-sans font-bold text-xs">
+                Scan History:
+                {groupUrl[url].length}
+              </p>
+              </div>
             </div>
 
             <div
@@ -104,23 +123,6 @@
               class="xl:w-1/4 lg:w-1/4 h-20 hidden sm:hidden md:hidden lg:block
               xl:block ml-5 mr-5">
               <HistoryChart value={groupUrl[url]} dataType={historyChartType.ErrorCode} />
-            </div>
-
-            <div class="xl:w-1/6 lg:w-1/6 text-center">
-              <span
-                type="button"
-                class="hover:bg-gray-300 border-0 rounded-md px-3 py-1"
-                on:click={() => toggle(i)}>
-                {#if showTotalBuild}
-                  <i class="fas fa-angle-up"></i>
-                {:else}
-                  <i class="fas fa-angle-down"></i>
-                {/if}
-              </span>
-              <p class="truncate font-sans font-bold text-xs">
-                Scan History:
-                {groupUrl[url].length}
-              </p>
             </div>
           </div>
         </div>

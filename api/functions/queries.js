@@ -22,6 +22,41 @@ const getDateDifference = (a, b) => {
 	return Math.floor(diff / 86400000); 
 };
 
+const incrementString = (str) => {
+	const incChar =  String.fromCharCode(str.charCodeAt(str.length - 1) + 1);
+	return str.replace(/.$/, incChar);
+};
+
+const getExistingBrokenLinkCount = async (runId) => {
+	const unscannableLinks = await exports.getUnscannableLinks();
+	const scan = await exports.getSummaryById(runId);
+	const filter = odata`PartitionKey eq ${scan.partitionKey} and src ge ${scan.url} and src le ${incrementString(scan.url)}`;
+    const entity = new TableClient(azureUrl, TABLE.ScanResults, credential).listEntities({
+        queryOptions: { filter }
+    });
+    const result = [];
+    for await (const item of entity) {
+        result.push(item);
+    }
+	const previousFailures = new Map();
+
+    const existingCount = result.reduce((count, item) => {
+        if (item.runId === runId) {
+            if (!previousFailures.has(item.dst) && !unscannableLinks.find((i) => item.dst.startsWith(i))) {
+				const hasPrevious = result.find((i) => i.dst === item.dst && i.buildDate < item.buildDate);
+				previousFailures.set(item.dst, hasPrevious);
+                
+				if (hasPrevious) {
+					count++;
+				}
+            }
+        }
+        return count;
+    }, 0);
+
+    return existingCount;
+};
+
 exports.getConfig = (api) =>
 	new Promise((resolve, reject) => {
 		getService().retrieveEntity(
@@ -36,9 +71,10 @@ exports.getConfig = (api) =>
 	});
 
 exports.getScanDetails = async (runId) => {
-    const doc = await getRun(runId);
+	const scan = await exports.getSummaryById(runId);
+	const filter = odata`PartitionKey eq ${scan.partitionKey} and src ge ${scan.url} and src le ${incrementString(scan.url)}`;
     const entity = new TableClient(azureUrl, TABLE.ScanResults, credential).listEntities({
-        queryOptions: { filter: odata`PartitionKey eq ${doc.apikey}` }
+        queryOptions: { filter }
     });
     const result = [];
     for await (const item of entity) {
@@ -231,7 +267,12 @@ exports.getAllScanSummaryFromUrl = (url, api) =>
 		});
 		const iterator = entity.byPage({ maxPageSize: 10 });
 		for await (const item of iterator) {
-			resolve(item)
+			if (item[0]) {
+				const existing = await getExistingBrokenLinkCount(item[0].runId);
+				item[0].totalUnique404Existing = existing;
+			}
+			
+			resolve(item);
 			break;
 		}
 	});
@@ -257,8 +298,15 @@ exports.compareScans = (api, url) =>
 		}
 		let isErrorUp = {
 			isHtmlWarningsUp: result[0].htmlWarnings > result[1].htmlWarnings,
+			prevHtmlWarnings: result[1].htmlWarnings,
+			currHtmlWarnings: result[0].htmlWarnings,
 			isHtmlErrorsUp: result[0].htmlErrors > result[1].htmlErrors,
+			prevHtmlErrors: result[1].htmlErrors,
+			currHtmlErrors: result[0].htmlErrors,
 			isBrokenLinksUp: result[0].totalUnique404 > result[1].totalUnique404,
+			prevBrokenLinks: result[1].totalUnique404,
+			currBrokenLinks: result[0].totalUnique404,
+			latestRunId: result[0].runId
 		} 
 		resolve(isErrorUp)
 	});

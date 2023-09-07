@@ -48,7 +48,7 @@
 {#if loading}
   <LoadingFlat />
 {:else}
-  <div class="container mx-auto mt-2">
+  <div class="container mx-auto px-8 pt-6">
     <Breadcrumbs displayMode="Scan Compare" />
     <br>
     <div class="text-center text-3xl font-sans font-bold mb-2">
@@ -62,7 +62,7 @@
         >{allScans[0]?.url}
       </a>
     </div>
-    <div class="grid grid-cols-7 text-left mt-8">
+    <div class="grid grid-cols-7 text-left my-8">
       <div class="col-start-2 col-span-2 border-black border border-opacity-25 hover:border-opacity-50 rounded px-4">
         <div class="text-lg textgrey mb-2 mt-4">Select past scan to compare:</div>
         <div>

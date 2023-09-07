@@ -23,6 +23,7 @@
     "svelte": "^3.59.1"
   },
   "dependencies": {
+    "chart.js": "^4.4.0",
     "date-fns": "^2.30.0",
     "export-to-csv": "^0.2.1",
     "firebase": "^9.22.1",

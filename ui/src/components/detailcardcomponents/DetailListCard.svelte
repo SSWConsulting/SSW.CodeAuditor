@@ -52,7 +52,7 @@
 
     <div class="px-6 py-2">
       <div
-        class="grid grid-rows-2 sm:gap-auto lg:grid-flow-col sm:grid-cols-3 ml-4"
+        class="grid auto-rows-auto sm:gap-auto lg:grid-flow-col sm:grid-cols-3 ml-4"
         on:click={() => navigateTo(`/build/${val.runId}`)}>
         <div class="row-span-1 lg:row-span-4 col-span-4">
           <span class="font-sans text-base font-bold text-gray-800 underline text-lg">

@@ -37,7 +37,7 @@
     <div class="grid grid-cols-6">
       <div></div>
       <div
-        class="grid grid-rows-3 col-span-6 md:col-span-4"
+        class="grid auto-rows-auto col-span-6 md:col-span-4"
         on:click={() => navigateTo(`/build/${val.runId}`)}>
         <div
           class="md:row-span-1 text-sm my-2"
