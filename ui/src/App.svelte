@@ -34,10 +34,8 @@
 </script>
 
 <style lang="scss" global>
-  @import './global';
-  @import '../node_modules/github-markdown-css/github-markdown';
-  @import '../node_modules/codemirror/lib/codemirror';
-  @import "../node_modules/tailwindcss/dist/tailwind";
+  @import './variables.scss';
+  @import './global.scss';
 </style>
 
 {#if $performingLogin}

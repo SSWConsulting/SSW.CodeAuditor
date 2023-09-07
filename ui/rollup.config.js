@@ -6,6 +6,7 @@ import livereload from "rollup-plugin-livereload";
 import { terser } from "rollup-plugin-terser";
 import { config } from "dotenv";
 import replace from "@rollup/plugin-replace";
+import copy from 'rollup-plugin-copy'
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -57,6 +58,11 @@ export default {
         // of a module in node_modules
         "./node_modules/export-to-csv/build/index.js": ["ExportToCsv"],
       },
+    }),
+    copy({
+      targets: [
+        { src: './node_modules/@fortawesome/fontawesome-free/webfonts/**/*', dest: 'public/build/webfonts' },
+      ]
     }),
 
     // In dev mode, call `npm run start` once

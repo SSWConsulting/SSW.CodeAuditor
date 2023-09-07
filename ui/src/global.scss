@@ -1,3 +1,9 @@
+@import '../node_modules/github-markdown-css/github-markdown';
+@import '../node_modules/codemirror/lib/codemirror';
+@import '../node_modules/tailwindcss/dist/tailwind';
+@import '../node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import '../node_modules/@fortawesome/fontawesome-free/scss/solid.scss';
+
 html,
 body {
 	position: relative;
