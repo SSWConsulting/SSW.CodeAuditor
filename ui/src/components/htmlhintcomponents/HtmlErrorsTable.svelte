@@ -15,8 +15,6 @@
   import 'codemirror/mode/xml/xml.js';
   import 'codemirror/mode/css/css.js';
 
-  import 'codemirror/lib/codemirror.css';
-
   export let errors = [];
   export let codeIssues = [];
   export let currentRoute;

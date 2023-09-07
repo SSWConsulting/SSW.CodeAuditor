@@ -11,6 +11,9 @@
   } from "./stores.js";
   import 'pace-js';
 
+  import 'github-markdown-css/github-markdown.css';
+  import 'codemirror/lib/codemirror.css';
+
   firebase.initializeApp({
     apiKey: "AIzaSyCHljUPnjRcaQt7lGRDPtZsYWIj3eP4Pok",
     authDomain: "sswlinkauditor-c1131.firebaseapp.com",
