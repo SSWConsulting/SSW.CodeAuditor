@@ -27,6 +27,36 @@ const incrementString = (str) => {
 	return str.replace(/.$/, incChar);
 };
 
+const getExistingBrokenLinkCount = async (runId) => {
+	const unscannableLinks = await exports.getUnscannableLinks();
+	const scan = await exports.getSummaryById(runId);
+	const filter = odata`PartitionKey eq ${scan.partitionKey} and src ge ${scan.url} and src le ${incrementString(scan.url)}`;
+    const entity = new TableClient(azureUrl, TABLE.ScanResults, credential).listEntities({
+        queryOptions: { filter }
+    });
+    const result = [];
+    for await (const item of entity) {
+        result.push(item);
+    }
+	const previousFailures = new Map();
+
+    const existingCount = result.reduce((count, item) => {
+        if (item.runId === runId) {
+            if (!previousFailures.has(item.dst) && !unscannableLinks.find((i) => item.dst.startsWith(i))) {
+				const hasPrevious = result.find((i) => i.dst === item.dst && i.buildDate < item.buildDate);
+				previousFailures.set(item.dst, hasPrevious);
+                
+				if (hasPrevious) {
+					count++;
+				}
+            }
+        }
+        return count;
+    }, 0);
+
+    return existingCount;
+};
+
 exports.getConfig = (api) =>
 	new Promise((resolve, reject) => {
 		getService().retrieveEntity(
@@ -237,7 +267,12 @@ exports.getAllScanSummaryFromUrl = (url, api) =>
 		});
 		const iterator = entity.byPage({ maxPageSize: 10 });
 		for await (const item of iterator) {
-			resolve(item)
+			if (item[0]) {
+				const existing = await getExistingBrokenLinkCount(item[0].runId);
+				item[0].totalUnique404Existing = existing;
+			}
+			
+			resolve(item);
 			break;
 		}
 	});

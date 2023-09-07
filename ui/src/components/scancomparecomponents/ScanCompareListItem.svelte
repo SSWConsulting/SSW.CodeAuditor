@@ -24,7 +24,7 @@
     <span class="textgrey">{numberWithCommas(Math.abs(comparisonDifferences.brokenLinksDifference))}</span>
     {/if}
   </div>
-  <h3 class="font-bold font-sans textgrey">Broken Links</h3>
+  <h3 class="col-span-2 font-bold font-sans textgrey">Broken Links {value.totalUnique404Existing !== undefined ? `(${value.totalUnique404Existing || 0} Existing)` : ''}</h3>
 </div>
 
 <div class="grid grid-cols-2 grid-rows-2 text-start font-sans font-bold">
@@ -38,7 +38,7 @@
     <span class="textgrey">{numberWithCommas(Math.abs(comparisonDifferences.codeErrorDifference))}</span>
     {/if}
   </div>
-  <h3 class="font-bold font-sans textgrey">HTML Errors</h3>
+  <h3 class="col-span-2 font-bold font-sans textgrey">HTML Errors</h3>
 </div>
 
 <div class="grid grid-cols-2 grid-rows-2 text-start font-sans font-bold">
@@ -52,5 +52,5 @@
       <span class="textgrey">{numberWithCommas(Math.abs(comparisonDifferences.codeWarningDifference))}</span>
     {/if}
   </div>
-  <h3 class="font-bold font-sans textgrey">HTML Warnings</h3>
+  <h3 class="col-span-2 font-bold font-sans textgrey">HTML Warnings</h3>
 </div>
