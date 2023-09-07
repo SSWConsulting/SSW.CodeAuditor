@@ -2,9 +2,9 @@
   "name": "svelte-app",
   "version": "1.0.0",
   "scripts": {
-    "build": "rollup -c && cp public/index.html public/200.html",
+    "build": "rollup -c && cp public/index.html",
     "dev": "rollup -c -w",
-    "predeploy": "npm run build && cp public/index.html public/200.html",
+    "predeploy": "npm run build && cp public/index.html",
     "deploy": "firebase deploy --token $FIREBASETOKEN --only hosting",
     "login:ci": "firebase login:ci",
     "count": "npx cloc --force-lang=\"HTML\",svelte src",
