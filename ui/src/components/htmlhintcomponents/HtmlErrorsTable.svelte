@@ -8,6 +8,7 @@
   import HtmlErrorsByReason from "./HtmlErrorsByReason.svelte";
   import { onMount } from "svelte";
   import { createEventDispatcher } from "svelte";
+  import beautify from "js-beautify";
   import CodeMirror from 'codemirror/lib/codemirror.js';
   import 'codemirror/mode/htmlmixed/htmlmixed.js';
   import 'codemirror/mode/javascript/javascript.js';
@@ -83,7 +84,7 @@
 
     const options = { indent_size: 2, space_in_empty_paren: true }
 
-    source = html_beautify(source, options)
+    source = beautify.html(source, options)
 
     loading = false;
     showSourceWindow();
