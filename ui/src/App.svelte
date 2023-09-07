@@ -37,6 +37,7 @@
   @import './global';
   @import '../node_modules/github-markdown-css/github-markdown';
   @import '../node_modules/codemirror/lib/codemirror';
+  @import "../node_modules/tailwindcss/dist/tailwind.min";
 </style>
 
 {#if $performingLogin}

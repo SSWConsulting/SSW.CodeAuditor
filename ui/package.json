@@ -39,6 +39,7 @@
     "slug": "^2.1.1",
     "svelte-lighthouse-viewer": "^0.1.216",
     "svelte-preprocess": "^3.9.12",
-    "svelte-router-spa": "^5.8.4"
+    "svelte-router-spa": "^5.8.4",
+    "tailwindcss": "^1.9.6"
   }
 }
