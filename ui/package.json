@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "chart.js": "^4.4.0",
+    "codemirror": "^5.65.15",
     "date-fns": "^2.30.0",
     "export-to-csv": "^0.2.1",
     "firebase": "^9.22.1",
@@ -32,6 +33,7 @@
     "pace-js": "^1.0.2",
     "query-string": "^6.14.1",
     "ramda": "^0.27.2",
+    "rollup-plugin-css-only": "^4.3.0",
     "sirv-cli": "^0.4.6",
     "slug": "^2.1.1",
     "svelte-lighthouse-viewer": "^0.1.216",

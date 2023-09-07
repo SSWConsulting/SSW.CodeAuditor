@@ -8,6 +8,13 @@
   import HtmlErrorsByReason from "./HtmlErrorsByReason.svelte";
   import { onMount } from "svelte";
   import { createEventDispatcher } from "svelte";
+  import CodeMirror from 'codemirror/lib/codemirror.js';
+  import 'codemirror/mode/htmlmixed/htmlmixed.js';
+  import 'codemirror/mode/javascript/javascript.js';
+  import 'codemirror/mode/xml/xml.js';
+  import 'codemirror/mode/css/css.js';
+
+  import 'codemirror/lib/codemirror.css';
 
   export let errors = [];
   export let codeIssues = [];
@@ -37,7 +44,7 @@
     setTimeout(() => {
       const element = document.getElementById("codeEditor");
       console.log("element", element);
-      codeViewer = window.CodeMirror(element, {
+      codeViewer = CodeMirror(element, {
         value: source,
         mode: "htmlmixed",
         lineNumbers: true,
