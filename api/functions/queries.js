@@ -263,8 +263,15 @@ exports.compareScans = (api, url) =>
 		}
 		let isErrorUp = {
 			isHtmlWarningsUp: result[0].htmlWarnings > result[1].htmlWarnings,
+			prevHtmlWarnings: result[1].htmlWarnings,
+			currHtmlWarnings: result[0].htmlWarnings,
 			isHtmlErrorsUp: result[0].htmlErrors > result[1].htmlErrors,
+			prevHtmlErrors: result[1].htmlErrors,
+			currHtmlErrors: result[0].htmlErrors,
 			isBrokenLinksUp: result[0].totalUnique404 > result[1].totalUnique404,
+			prevBrokenLinks: result[1].totalUnique404,
+			currBrokenLinks: result[0].totalUnique404,
+			latestRunId: result[0].runId
 		} 
 		resolve(isErrorUp)
 	});
