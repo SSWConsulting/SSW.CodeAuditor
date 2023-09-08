@@ -1,6 +1,7 @@
 <script>
     import {onMount} from 'svelte';
     import { format } from 'date-fns';
+    import Chart from 'chart.js/auto';
 
     export let value;
   
@@ -48,25 +49,26 @@
         responsive: true, 
         maintainAspectRatio: false,
         scales: {
-            yAxes: [{
-            scaleLabel: {
-                display: true,
-                labelString: 'Millisecond (ms)'
+            y: {
+                title: {
+                    display: true,
+                    text: 'Millisecond (ms)',
+                }
+            },
+            x: {
+                title: {
+                    display: true,
+                    text: 'Time (hh:mm:ss)',
+                }
             }
-            }],
-            xAxes: [{
-            scaleLabel: {
-                display: true,
-                labelString: 'Time (hh:mm:ss)'
-            }
-            }]
         },};
 
     let chartRef;
     onMount(() => {
-        Chart.Line(chartRef, {
-        options: options,
-        data: data
+        new Chart(chartRef, {
+            type: 'line',
+            options: options,
+            data: data
         });
     });
     

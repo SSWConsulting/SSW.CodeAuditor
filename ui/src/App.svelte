@@ -9,6 +9,7 @@
     loginCompleted,
     performingLogin,
   } from "./stores.js";
+  import 'pace-js';
 
   firebase.initializeApp({
     apiKey: "AIzaSyCHljUPnjRcaQt7lGRDPtZsYWIj3eP4Pok",
@@ -31,6 +32,11 @@
     .getRedirectResult()
     .catch((error) => oauthLoginError.set(error));
 </script>
+
+<style lang="scss" global>
+  @import './variables.scss';
+  @import './global.scss';
+</style>
 
 {#if $performingLogin}
   <div class="h-full flex items-center container mx-auto">

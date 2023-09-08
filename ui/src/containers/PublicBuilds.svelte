@@ -3,7 +3,6 @@
   import marked from "marked";
   import BuildList from "../components/buildlistcardcomponents/BuildList.svelte";
   import LoadingFlat from "../components/misccomponents/LoadingFlat.svelte";
-
   import { sort, descend, prop } from "ramda";
   import { CONSTS } from "../utils/utils.js";
 
