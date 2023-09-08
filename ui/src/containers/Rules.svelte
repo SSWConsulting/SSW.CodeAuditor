@@ -4,9 +4,7 @@
 <style>
   .link, .text {
     color: black;
-    text-decoration: underline;
-    text-decoration-style: solid;
-    text-decoration-thickness: 1px;
+    text-decoration: solid underline 1px #aaa;
   }
 </style>
 <div class="container mx-auto">
