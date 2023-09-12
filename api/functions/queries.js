@@ -289,6 +289,17 @@ exports.getUnscannableLinks = () =>
 
 exports.compareScans = (api, url) =>
 	new Promise(async (resolve) => {
+		// Standardize url string
+		if (!url.startsWith("https://")) {
+			url = "https://" + url;
+		}  
+		if (!url.includes("www.")) {
+			url = url.replace('https://', 'https://www.');
+		} 
+		if (!url.endsWith("/")) {
+			url = url + '/';
+		}
+
 		const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
 			queryOptions: { filter: odata`PartitionKey eq ${api} and url eq ${url}` }
 		});
