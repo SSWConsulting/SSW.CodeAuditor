@@ -112,7 +112,7 @@
               class="whitespace-no-wrap break-all w-2/12 border px-4 py-2
               break-all"
               title={page.url}>
-              {truncate(80)(page.url)}
+              <a class="link" href={page.url}>{truncate(80)(page.url)}</a>
             </td>
             <td class="w-10/12 border px-4 py-2 break-all">
               <div class="flex flex-wrap">

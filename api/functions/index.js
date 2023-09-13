@@ -172,8 +172,8 @@ app.get('/scanSummaryFromUrl/:api/:url', async (req, res) => {
 	res.json(await getAllScanSummaryFromUrl(req.params.url, req.params.api));
 });
 
-app.get('/comparescanlatestandsecond/:api/:url', async (req, res) => {
-	res.json(await compareScans(req.params.api, req.params.url));
+app.post('/comparescanlatestandsecond/:api', async (req, res) => {
+	res.json(await compareScans(req.params.api, req.body.url));
 });
 
 app.get('/unscannableLinks', async (req, res) => {
