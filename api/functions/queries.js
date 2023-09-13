@@ -292,6 +292,9 @@ exports.compareScans = (api, url) =>
 		// Standardize url string
 		if (!url.startsWith("https://")) {
 			url = "https://" + url;
+		}
+		if (!url.startsWith("http://")) {
+			url = "http://" + url;
 		}  
 		if (!url.includes("www.")) {
 			url = url.replace('https://', 'https://www.');
