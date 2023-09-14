@@ -11,6 +11,7 @@
   class={cssClass}
   stroke-linecap="round"
   on:click
+  on:keydown={undefined}
   stroke-linejoin="round"
   stroke-width="2"
   stroke="currentColor"

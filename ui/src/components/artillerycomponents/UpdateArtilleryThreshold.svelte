@@ -61,10 +61,12 @@
     <!-- else content here -->
     <div class="ml-5">
       <label
+        for="median-latency"
         class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-3">
         Median latency (ms) is &lt {threshold.latencyMedian}
       </label>
       <input
+        id="median-latency"
         class="shadow appearance-none border rounded w-full py-2 px-3
         text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         type="number"
@@ -72,10 +74,12 @@
         required={false} />
 
       <label
+        for="p95-latency"
         class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-3">
         P95 latency (ms) is &lt {threshold.latencyP95}
       </label>
       <input
+        id="p95-latency"
         class="shadow appearance-none border rounded w-full py-2 px-3
         text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         type="number"
@@ -83,10 +87,12 @@
         required={false} />
 
       <label
+        for="p99-latency"
         class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-3">
         P99 latency (ms) is &lt {threshold.latencyP99}
       </label>
       <input
+        id="p99-latency"
         class="shadow appearance-none border rounded w-full py-2 px-3
         text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         type="number"
@@ -94,10 +100,12 @@
         required={false} />
 
         <label
-        class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-3">
-        Number of errors &lt {threshold.errors}
+          for="errors-count"
+          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-3">
+          Number of errors &lt {threshold.errors}
       </label>
       <input
+        id="errors-count"
         class="shadow appearance-none border rounded w-full py-2 px-3
         text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         type="number"

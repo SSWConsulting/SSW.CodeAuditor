@@ -92,6 +92,7 @@
         <div class="text-lg textgrey mb-2 mt-4">Latest scan</div>
         <div
           on:click={() => navigateTo(`/build/${allScans[0].runId}`)}
+          on:keydown={undefined}
           class="font-sans font-bold text-lg textgrey mb-4 cursor-pointer">
           {
             allScans.length > 0

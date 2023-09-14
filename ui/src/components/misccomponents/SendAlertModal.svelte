@@ -81,6 +81,7 @@
   <div
     class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"
     on:click={dismiss}
+    on:keydown={undefined}
   />
 
   <div
@@ -129,11 +130,12 @@
             <li 
               class="cursor-pointer"
               on:mouseover={() => {item = { ...item, showDeleteIcon: true } }}
+              on:focus={() => {item = { ...item, showDeleteIcon: true } }}
               on:mouseleave={()=> {item = { ...item, showDeleteIcon: false } }}
             >
               {item.emailAddress}
               {#if item.showDeleteIcon}
-                <i class="fas fa-trash-can fa-sm text-red-600 ml-1 cursor-pointer" on:click={() => removeAlertEmail(item)}/>
+                <i class="fas fa-trash-can fa-sm text-red-600 ml-1 cursor-pointer" on:click={() => removeAlertEmail(item)} on:keydown={undefined}/>
               {/if}
             </li>
           {/each}

@@ -89,7 +89,7 @@
       To see more supported Glob patterns, check out 
       <a class="link hover:text-red-600" href="https://github.com/SSWConsulting/SSW.CodeAuditor/wiki/SSW-CodeAuditor-Knowledge-Base-(KB)#supported-glob-patterns-when-adding-ignored-urls">CodeAuditor KB</a>
     </div>
-    <label class="block uppercase text-xs mb-2 py-2">For</label>
+    <label for="radio1" class="block uppercase text-xs mb-2 py-2">For</label>
     <ul>
       <li class="pb-3">
         <div class="flex items-center mr-4 mb-4">
