@@ -41,7 +41,7 @@
 <form class="container mx-auto max-w-sm py-12">
   <div class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
     <div class="mb-6 mx-auto">
-      <span on:click={() => navigateTo('/')} class="align-middle ml-2">
+      <span on:click={() => navigateTo('/')} on:keydown={undefined} class="align-middle ml-2">
         <img
           class="h-7 object-cover"
           src="https://github.com/SSWConsulting/SSW.CodeAuditor/assets/67776356/6c8b11a5-35cf-469e-a945-57186d0270ef"

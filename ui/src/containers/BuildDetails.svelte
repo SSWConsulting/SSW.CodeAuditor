@@ -76,8 +76,6 @@
     {:then data}
 
     <Breadcrumbs
-      build={data ? data.summary : {}}
-      runId={currentRoute.namedParams.id}
       displayMode="Links" />
     <br>
       

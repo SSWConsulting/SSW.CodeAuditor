@@ -13,6 +13,7 @@
 {#if show}
   <div
     on:click={() => (show = false)}
+    on:keydown={undefined}
     in:fly={{ y: 100, duration: 400 }}
     out:fade={{ y: -100, duration: 250 }}
     class:bg-teal-100={mode === 'success'}

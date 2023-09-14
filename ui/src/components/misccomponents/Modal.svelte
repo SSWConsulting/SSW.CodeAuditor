@@ -38,7 +38,8 @@
   flex items-center justify-center">
   <div
     class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"
-    on:click={dismiss} />
+    on:click={dismiss}
+    on:keydown={undefined} />
 
   <div
     class={`modal-container bg-white w-11/12 md:${full ? 'max-w-6xl' : 'max-w-xl'} mx-auto rounded

@@ -62,7 +62,7 @@
     {#if !showAllScan}
       <span class="text-right">
         <a
-          href="javascript:void(0)"
+          href={'#'}
           on:click={() => toggleShowAllScan()}
           class="cursor-pointer underline text-sm text-blue font-bold
         pb-6 hover:text-red-600">

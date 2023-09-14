@@ -113,7 +113,7 @@
                     cursor-default whitespace-no-wrap">
                     <a
                       on:click={() => viewSource(url.url, item, key)}
-                      href="javascript:void(0)"
+                      href={'#'}
                       title="View source">
                       {item}
                     </a>
@@ -128,7 +128,7 @@
                         cursor-default whitespace-no-wrap">
                         <a
                           on:click={() => viewSource(url.url, item, key)}
-                          href="javascript:void(0)"
+                          href={'#'}
                           title="View source">
                           {item}
                         </a>
@@ -141,7 +141,7 @@
                 <a
                   class="text-xs mr-2 my-1 tracking-wider px-2 cursor-pointer link"
                   on:click={() => {showAllErrorLocations = true, currentlySelectedUrl = url.url, currentlySelectedKey = key}}
-                  href="javascript:void(0)">
+                  href={'#'}>
                   {url.errors[key].length - 50} more..
                 </a>
               {/if}
