@@ -86,8 +86,6 @@
         <LoadingFlat />
       {:then data}
         <Breadcrumbs
-          build={data ? data.summary : {}}
-          runId={currentRoute.namedParams.id}
           displayMode="Lighthouse Audit" />
         <br />
 

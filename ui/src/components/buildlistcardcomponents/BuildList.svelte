@@ -38,17 +38,6 @@
 </script>
 
 <style>
-  .btn {
-    border: none;
-    color: black;
-    padding: 5px 10px;
-    transition: 0.3s;
-  }
-
-  .btn:hover {
-    background-color: #d5d5d5;
-    color: white;
-  }
   .container {
     transition: 0.3s;
   }

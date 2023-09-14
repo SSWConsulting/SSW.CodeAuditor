@@ -20,6 +20,7 @@ export default {
   },
   plugins: [
     replace({
+      preventAssignment: true,
       // stringify the object
       __myapp: JSON.stringify({
         env: {
