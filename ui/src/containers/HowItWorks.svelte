@@ -8,16 +8,16 @@
   const unsubscribe = userSession$.subscribe((x) => {
     if (x) {
       const tokenText = '--token ' + x.apiKey;
-      updateInstructions(tokenText);
+      updateDockerInstructions(tokenText);
     }
     else {
-      updateInstructions('');
+      updateDockerInstructions('');
     }
   });
 
   onDestroy(unsubscribe);
 
-  function updateInstructions(tokenText) {
+  function updateDockerInstructions(tokenText) {
     instruction = `
 ## How to Use CodeAuditor
 Scan any website for broken links, [HTML Issues](https://htmlhint.com), [Google Lighthouse Audit](https://developers.google.com/web/tools/lighthouse) and [Artillery Load Test](https://artillery.io/) by running the following command:
