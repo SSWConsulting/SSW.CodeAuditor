@@ -104,14 +104,14 @@
 
             <div
               class="xl:w-1/4 lg:w-1/4 h-20 hidden sm:hidden md:hidden lg:block
-              xl:block ml-5">
-              <HistoryChart value={groupUrl[url]} dataType={historyChartType.WarningCode} />
+              xl:block ml-5 mr-5">
+              <HistoryChart value={groupUrl[url]} dataType={historyChartType.ErrorCode} />
             </div>
 
             <div
               class="xl:w-1/4 lg:w-1/4 h-20 hidden sm:hidden md:hidden lg:block
-              xl:block ml-5 mr-5">
-              <HistoryChart value={groupUrl[url]} dataType={historyChartType.ErrorCode} />
+              xl:block ml-5">
+              <HistoryChart value={groupUrl[url]} dataType={historyChartType.WarningCode} />
             </div>
           </div>
         </div>
