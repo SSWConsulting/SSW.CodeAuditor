@@ -1,13 +1,19 @@
 <script>
   import { historyChartType } from "../../utils/utils";
-  import Chart from 'chart.js/auto'
+  import Chart from 'chart.js/auto';
+  import ChartDataLabels from 'chartjs-plugin-datalabels';
 
   export let value = [];
   export let dataType;
 
+  Chart.register(ChartDataLabels);
+
   let allDataToDisplay = [];
   let chartTitle;
   let barColor;
+  let datalabels = {
+    color: 'black'
+  };
 
   // Categorize and populate charts with data, title and color
   if (dataType === historyChartType.BadLinks) {
@@ -41,7 +47,12 @@
   if (dataToDisplay.every(x => x === 0 || x === undefined)) {
     dataToDisplay = Array(8).fill(1);
     dataToDisplayLabel = Array(8).fill(0);
-    barColor = "#eeeeee"
+    barColor = "#eeeeee";
+    datalabels = {
+      labels: {
+        title: null
+      }
+    };
   }
 
   // Calculate to get max bar height for certain group
@@ -54,13 +65,19 @@
         data: dataToDisplay,
         tension: 0.32,
         borderWidth: 0.1,
+        datalabels
       },
       {
         backgroundColor: "#eeeeee",
         data: Array(8).fill(Math.max(...dataToDisplay)),
         tension: 0.32,
         borderWidth: 0.1,
-        grouped: false
+        grouped: false,
+        datalabels: {
+          labels: {
+            title: null
+          }
+        }
       }
     ],
   }
@@ -78,12 +95,28 @@
 			},
       tooltip: {
         filter: function (tooltipItem) {
-          return tooltipItem.datasetIndex === 0;
+          return tooltipItem.datasetIndex === 0 && tooltipItem.label !== '0';
         },
         callbacks: {
           label: function(context) {
             return null;
           }
+        }
+      },
+      datalabels: {
+        clip: false,
+        font: {
+          size: 8,
+        },
+        formatter: function(value, context) {
+          if (value === 0) {
+            return null;
+          }
+
+          return Intl.NumberFormat('en-US', {
+            notation: "compact",
+            maximumFractionDigits: 0
+          }).format(value);
         }
       }
     },
