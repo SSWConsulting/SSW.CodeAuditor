@@ -106,7 +106,7 @@
       datalabels: {
         clip: false,
         font: {
-          size: 8,
+          size: 10,
         },
         formatter: function(value, context) {
           if (value === 0) {
