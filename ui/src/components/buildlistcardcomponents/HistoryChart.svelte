@@ -12,7 +12,7 @@
   let chartTitle;
   let barColor;
   let datalabels = {
-    color: 'black'
+    color: '#333'
   };
 
   // Categorize and populate charts with data, title and color
