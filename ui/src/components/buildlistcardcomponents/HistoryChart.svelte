@@ -1,19 +1,13 @@
 <script>
   import { historyChartType } from "../../utils/utils";
   import Chart from 'chart.js/auto';
-  import ChartDataLabels from 'chartjs-plugin-datalabels';
 
   export let value = [];
   export let dataType;
 
-  Chart.register(ChartDataLabels);
-
   let allDataToDisplay = [];
   let chartTitle;
   let barColor;
-  let datalabels = {
-    color: '#333'
-  };
 
   // Categorize and populate charts with data, title and color
   if (dataType === historyChartType.BadLinks) {
@@ -48,36 +42,26 @@
     dataToDisplay = Array(8).fill(1);
     dataToDisplayLabel = Array(8).fill(0);
     barColor = "#eeeeee";
-    datalabels = {
-      labels: {
-        title: null
-      }
-    };
   }
 
   // Calculate to get max bar height for certain group
   let maxBarHeight = dataToDisplay.length > 0 ? dataToDisplay.reduce((a, b) => Math.max(a, b)) : 0;
   let data = {
-    labels: dataToDisplayLabel,
+    labels: dataToDisplayLabel.map((value) => {
+      return Intl.NumberFormat('en-US', {
+        notation: "compact",
+        maximumFractionDigits: 0
+      }).format(value);
+    }),
     datasets: [
       {
         backgroundColor: barColor,
         data: dataToDisplay,
-        tension: 0.32,
-        borderWidth: 0.1,
-        datalabels
       },
       {
         backgroundColor: "#eeeeee",
         data: Array(8).fill(Math.max(...dataToDisplay)),
-        tension: 0.32,
-        borderWidth: 0.1,
         grouped: false,
-        datalabels: {
-          labels: {
-            title: null
-          }
-        }
       }
     ],
   }
@@ -94,42 +78,24 @@
 				display: false
 			},
       tooltip: {
-        filter: function (tooltipItem) {
-          return tooltipItem.datasetIndex === 0 && tooltipItem.label !== '0';
-        },
-        callbacks: {
-          label: function(context) {
-            return null;
-          }
-        }
+        enabled: false,
       },
-      datalabels: {
-        clip: false,
-        font: {
-          size: 10,
-        },
-        formatter: function(value, context) {
-          if (value === 0) {
-            return null;
-          }
-
-          return Intl.NumberFormat('en-US', {
-            notation: "compact",
-            maximumFractionDigits: 0
-          }).format(value);
-        }
-      }
     },
     scales: {
-			y: {
+      y: {
         display: false,
         max: maxBarHeight,
       },
-			 x: {
-				 display: false,
-         reverse: true
-			 }
-    }
+      x: {
+        display: true,
+        reverse: true,
+        ticks: {
+          font: {
+            size: 10,
+          },
+        },
+      },
+    },
   }
 	
 	$: config = {
