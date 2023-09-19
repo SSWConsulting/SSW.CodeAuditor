@@ -25,7 +25,7 @@
   }
 
   // Show top 8 most recent scan in chart
-  let dataToDisplay = allDataToDisplay.slice(0, 8);
+  let dataToDisplay = allDataToDisplay.slice(0, 8).map((data) => data || 0);
 
   // If a group has less than 8 scans, add the remaining props to populate the chart
   for (let i = 0; i < 8; i++) {
@@ -48,14 +48,10 @@
   let maxBarHeight = dataToDisplay.length > 0 ? dataToDisplay.reduce((a, b) => Math.max(a, b)) : 0;
   let data = {
     labels: dataToDisplayLabel.map((value) => {
-      if (value) {
-        return Intl.NumberFormat('en-US', {
-          notation: "compact",
-          maximumFractionDigits: 0
-        }).format(value);
-      } else {
-        return '0';
-      }
+      return Intl.NumberFormat('en-US', {
+        notation: "compact",
+        maximumFractionDigits: 0
+      }).format(value);
     }),
     datasets: [
       {
