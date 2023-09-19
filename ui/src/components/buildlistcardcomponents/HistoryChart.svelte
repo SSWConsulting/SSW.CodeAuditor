@@ -48,10 +48,14 @@
   let maxBarHeight = dataToDisplay.length > 0 ? dataToDisplay.reduce((a, b) => Math.max(a, b)) : 0;
   let data = {
     labels: dataToDisplayLabel.map((value) => {
-      return Intl.NumberFormat('en-US', {
-        notation: "compact",
-        maximumFractionDigits: 0
-      }).format(value);
+      if (value) {
+        return Intl.NumberFormat('en-US', {
+          notation: "compact",
+          maximumFractionDigits: 0
+        }).format(value);
+      } else {
+        return '0';
+      }
     }),
     datasets: [
       {
