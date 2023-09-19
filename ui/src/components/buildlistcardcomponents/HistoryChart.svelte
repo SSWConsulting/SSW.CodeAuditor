@@ -1,6 +1,6 @@
 <script>
   import { historyChartType } from "../../utils/utils";
-  import Chart from 'chart.js/auto'
+  import Chart from 'chart.js/auto';
 
   export let value = [];
   export let dataType;
@@ -25,7 +25,7 @@
   }
 
   // Show top 8 most recent scan in chart
-  let dataToDisplay = allDataToDisplay.slice(0, 8);
+  let dataToDisplay = allDataToDisplay.slice(0, 8).map((data) => data || 0);
 
   // If a group has less than 8 scans, add the remaining props to populate the chart
   for (let i = 0; i < 8; i++) {
@@ -41,26 +41,27 @@
   if (dataToDisplay.every(x => x === 0 || x === undefined)) {
     dataToDisplay = Array(8).fill(1);
     dataToDisplayLabel = Array(8).fill(0);
-    barColor = "#eeeeee"
+    barColor = "#eeeeee";
   }
 
   // Calculate to get max bar height for certain group
   let maxBarHeight = dataToDisplay.length > 0 ? dataToDisplay.reduce((a, b) => Math.max(a, b)) : 0;
   let data = {
-    labels: dataToDisplayLabel,
+    labels: dataToDisplayLabel.map((value) => {
+      return Intl.NumberFormat('en-US', {
+        notation: "compact",
+        maximumFractionDigits: 0
+      }).format(value);
+    }),
     datasets: [
       {
         backgroundColor: barColor,
         data: dataToDisplay,
-        tension: 0.32,
-        borderWidth: 0.1,
       },
       {
         backgroundColor: "#eeeeee",
         data: Array(8).fill(Math.max(...dataToDisplay)),
-        tension: 0.32,
-        borderWidth: 0.1,
-        grouped: false
+        grouped: false,
       }
     ],
   }
@@ -77,26 +78,24 @@
 				display: false
 			},
       tooltip: {
-        filter: function (tooltipItem) {
-          return tooltipItem.datasetIndex === 0;
-        },
-        callbacks: {
-          label: function(context) {
-            return null;
-          }
-        }
-      }
+        enabled: false,
+      },
     },
     scales: {
-			y: {
+      y: {
         display: false,
         max: maxBarHeight,
       },
-			 x: {
-				 display: false,
-         reverse: true
-			 }
-    }
+      x: {
+        display: true,
+        reverse: true,
+        ticks: {
+          font: {
+            size: 10,
+          },
+        },
+      },
+    },
   }
 	
 	$: config = {
