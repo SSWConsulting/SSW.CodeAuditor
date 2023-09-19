@@ -40,12 +40,12 @@
           cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite;
       }
       rect {
-        stroke-dasharray: (256 / 4 * 3) (256 / 4) (256 / 4 * 3) (256 / 4);
+        stroke-dasharray: (calc(256 / 4) * 3) calc(256 / 4) (calc(256 / 4) * 3) calc(256 / 4);
         stroke-dashoffset: 0;
         animation: pathRect 3s cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite;
       }
       circle {
-        stroke-dasharray: (200 / 4 * 3) (200 / 4) (200 / 4 * 3) (200 / 4);
+        stroke-dasharray: (calc(200 / 4) * 3) calc(200 / 4) (calc(200 / 4) * 3) calc(200 / 4);
         stroke-dashoffset: 75;
         animation: pathCircle var(--duration)
           cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite;
@@ -136,10 +136,6 @@
     margin: 0 16px;
   }
 
-  html {
-    -webkit-font-smoothing: antialiased;
-  }
-
   * {
     box-sizing: border-box;
     &:before,
@@ -153,16 +149,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    .dribbble {
-      position: fixed;
-      display: block;
-      right: 20px;
-      bottom: 20px;
-      img {
-        display: block;
-        height: 28px;
-      }
-    }
   }
 </style>
 

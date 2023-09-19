@@ -38,17 +38,6 @@
 </script>
 
 <style>
-  .btn {
-    border: none;
-    color: black;
-    padding: 5px 10px;
-    transition: 0.3s;
-  }
-
-  .btn:hover {
-    background-color: #d5d5d5;
-    color: white;
-  }
   .container {
     transition: 0.3s;
   }
@@ -108,21 +97,21 @@
             </div>
 
             <div
-              class="xl:w-1/4 lg:w-1/4 h-20 hidden sm:hidden md:hidden lg:block
+              class="xl:w-1/4 lg:w-1/4 h-24 hidden sm:hidden md:hidden lg:block
               xl:block">
               <HistoryChart value={groupUrl[url]} dataType={historyChartType.BadLinks} />
             </div>
 
             <div
-              class="xl:w-1/4 lg:w-1/4 h-20 hidden sm:hidden md:hidden lg:block
-              xl:block ml-5">
-              <HistoryChart value={groupUrl[url]} dataType={historyChartType.WarningCode} />
+              class="xl:w-1/4 lg:w-1/4 h-24 hidden sm:hidden md:hidden lg:block
+              xl:block ml-5 mr-5">
+              <HistoryChart value={groupUrl[url]} dataType={historyChartType.ErrorCode} />
             </div>
 
             <div
-              class="xl:w-1/4 lg:w-1/4 h-20 hidden sm:hidden md:hidden lg:block
-              xl:block ml-5 mr-5">
-              <HistoryChart value={groupUrl[url]} dataType={historyChartType.ErrorCode} />
+              class="xl:w-1/4 lg:w-1/4 h-24 hidden sm:hidden md:hidden lg:block
+              xl:block ml-5">
+              <HistoryChart value={groupUrl[url]} dataType={historyChartType.WarningCode} />
             </div>
           </div>
         </div>

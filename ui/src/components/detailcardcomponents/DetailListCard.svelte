@@ -53,7 +53,8 @@
     <div class="px-6 py-2">
       <div
         class="grid auto-rows-auto sm:gap-auto lg:grid-flow-col sm:grid-cols-3 ml-4"
-        on:click={() => navigateTo(`/build/${val.runId}`)}>
+        on:click={() => navigateTo(`/build/${val.runId}`)}
+        on:keydown={undefined}>
         <div class="row-span-1 lg:row-span-4 col-span-4">
           <span class="font-sans text-base font-bold text-gray-800 underline text-lg">
             {format(new Date(val.buildDate), 'dd MMM yyyy')}
@@ -79,8 +80,7 @@
         </div>
 
         <div
-          class="row-span-1 col-span-4 text-sm my-2"
-          on:click={() => navigateTo(`/build/${val.runId}`)}>
+          class="row-span-1 col-span-4 text-sm my-2">
           <h2>
             <span class="font-bold font-sans text-gray-600">LINKS</span>
           </h2>
@@ -88,8 +88,7 @@
         </div>
 
         <div
-          class="row-span-1 col-span-4 text-sm my-2"
-          on:click={() => navigateTo(`/build/${val.runId}`)}>
+          class="row-span-1 col-span-4 text-sm my-2">
           <h2>
             <span class="font-bold font-sans text-gray-600">CODE</span>
           </h2>
@@ -97,8 +96,7 @@
         </div>
 
         <div
-          class="row-span-1 col-span-4 text-sm my-2"
-          on:click={() => navigateTo(`/build/${val.runId}`)}>
+          class="row-span-1 col-span-4 text-sm my-2">
           <h2>
             <span class="font-bold font-sans text-gray-600">LOAD TEST</span>
           </h2>
@@ -107,8 +105,7 @@
 
         {#if val.performanceScore}
           <div
-            class="row-span-1 col-span-4 text-sm my-2"
-            on:click={() => navigateTo(`/build/${val.runId}`)}>
+            class="row-span-1 col-span-4 text-sm my-2">
             <h2>
               <span class="font-bold font-sans text-gray-600">LIGHTHOUSE</span>
             </h2>

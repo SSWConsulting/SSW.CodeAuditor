@@ -76,9 +76,7 @@
   <div class="bg-white shadow-lg rounded px-8 pt-6 mb-6 flex flex-col">
     {#if !showAllScan}
       <span class="text-right">
-        <a
-          href="javascript:void(0)"
-          on:click={() => toggleShowAllScan()}
+        <a href={'#'} on:click={() => toggleShowAllScan()}
           class="cursor-pointer underline text-sm text-blue font-bold
         pb-6 hover:text-red-600">
           Show all personal scans

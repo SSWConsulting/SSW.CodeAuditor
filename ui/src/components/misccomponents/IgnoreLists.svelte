@@ -77,7 +77,7 @@
               <LoadingCirle />
             {:else}
               <a
-                href="javascript:void(0)"
+                href={'#'}
                 on:click={() => deleteIgnore(val, $userSession$)}>
                 <Icon>
                   <path

@@ -1,7 +1,5 @@
 <script>
   import Icon from "./Icon.svelte";
-  export let build = {};
-  export let runId;
   export let displayMode = "";
 </script>
 

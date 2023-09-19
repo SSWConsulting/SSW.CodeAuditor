@@ -35,15 +35,6 @@
   };
 </script>
 
-<style>
-  .truncate-link {
-    width: 400px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-</style>
-
 {#each sourcesKeys as url}
   <div class="mb-3">
     <span class="font-bold mr-2">
@@ -104,7 +95,7 @@
                 </button>
               {/if}
               <a
-                class="inline-block align-baseline link md:truncate-link"
+                class="inline-block align-baseline link"
                 target="_blank"
                 href={val.dst}>
                 {val.dst.length < 70 ? val.dst : val.dst.substring(0, 70) + '...'}
