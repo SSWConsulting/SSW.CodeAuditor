@@ -4,6 +4,7 @@
   import Modal from "../misccomponents//Modal.svelte";
   import LoadingFlat from "../misccomponents/LoadingFlat.svelte";
   import { onMount, createEventDispatcher } from "svelte";
+  import slug from "slug";
 
   export let url;
   export let show;
@@ -21,6 +22,9 @@
   // Check all selected htmlhint rules
   let htmlHintSelectedRules = []
   let customHtmlHintSelectedRules = []
+
+  let showHistory = false;
+  let historyLog = [];
 
   $: htmlHintSelectedRules, handleSelectionChange();
   $: customHtmlHintSelectedRules, handleSelectionChange();
@@ -109,7 +113,7 @@
       const res = await fetch(
         `${CONSTS.API}/api/config/${user.apiKey}/htmlhintrules`,
         {
-          method: "PUT",
+          method: "POST",
           body: JSON.stringify({
             url,
             selectedRules,
@@ -160,6 +164,17 @@
 
     presetSelection = selection;
   };
+
+  const showHistoryLog = async () => {
+    showHistory = !showHistory
+    // Get all change records
+    if (showHistory) {
+      const res = await fetch(
+          `${CONSTS.API}/api/config/${user.apiKey}/htmlhintrules/${slug(url)}?isGetAllRecords=true`
+        );
+      historyLog = await res.json();
+    }
+  };
   
 </script>
 
@@ -174,47 +189,70 @@
     <LoadingFlat />
   {:else}
     <!-- else content here -->
-    <div class="option">
-      {#each rulePresets as presetOption, index}
-        <label class="inline-block mr-2">
-          <input type="checkbox"
-            name="presets"
-            value={presetOption.name}
-            id="option{index}"
-            on:input={handlePresetInput}
-            bind:group={presetSelection}
-          >
-          <p class="inline-block align-baseline">{presetOption.name}</p>
+    {#if showHistory}
+      <div class="mb-4 link cursor-pointer" on:click={() => showHistoryLog()} on:keypress>
+        <i class="fas fa-arrow-left"></i>
+        Back
+      </div>
+      {#each historyLog as log}
+        <div class="mb-4 overflow-hidden border">
+          <div class="content-center px-6 py-4">
+            <div class="font-sans font-bold">
+              {new Date(log.timestamp).toLocaleString()}
+            </div>
+            <div>
+              Selected Rules: {log.selectedRules}
+            </div>
+          </div>
+        </div>
+      {/each}
+    {:else}
+      <div class="mb-4 link cursor-pointer" on:click={() => showHistoryLog()} on:keypress>
+        <i class="fas fa-history"></i>
+        History
+      </div>
+      <div class="option">
+        {#each rulePresets as presetOption, index}
+          <label class="inline-block mr-2">
+            <input type="checkbox"
+              name="presets"
+              value={presetOption.name}
+              id="option{index}"
+              on:input={handlePresetInput}
+              bind:group={presetSelection}
+            >
+            <p class="inline-block align-baseline">{presetOption.name}</p>
+          </label>
+        {/each}
+      </div>
+      <h3 class="font-bold">HTML Hint Rules: </h3>
+      {#each htmlHintSelectedRules as rule}
+        <label>
+          <input type="checkbox" bind:checked={rule.isChecked} value={rule.rule} /> 
+            <i class="{rule.type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}" style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"></i> 
+            <a 
+            target="_blank"
+            class="inline-block align-baseline link" 
+            href="https://htmlhint.com/docs/user-guide/rules/{rule.rule}">
+              {rule.displayName}
+            </a>
         </label>
       {/each}
-    </div>
-    <h3 class="font-bold">HTML Hint Rules: </h3>
-    {#each htmlHintSelectedRules as rule}
-      <label>
-        <input type="checkbox" bind:checked={rule.isChecked} value={rule.rule} /> 
-          <i class="{rule.type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}" style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"></i> 
-          <a 
-          target="_blank"
-          class="inline-block align-baseline link" 
-          href="https://htmlhint.com/docs/user-guide/rules/{rule.rule}">
-            {rule.displayName}
-          </a>
-      </label>
-    {/each}
-    <br />
-    <h3 class="font-bold">Custom HTML Rules: </h3>
-    {#each customHtmlHintSelectedRules as rule}
-      <label>
-        <input type="checkbox" bind:checked={rule.isChecked} value={rule.rule} /> 
-          <i class="{rule.type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}" style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"></i> 
-          <a 
-          target="_blank"
-          class="{rule.ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline" 
-          href={rule.ruleLink}>
-            {rule.displayName}
-          </a>
-      </label>
-    {/each}
+      <br />
+      <h3 class="font-bold">Custom HTML Rules: </h3>
+      {#each customHtmlHintSelectedRules as rule}
+        <label>
+          <input type="checkbox" bind:checked={rule.isChecked} value={rule.rule} /> 
+            <i class="{rule.type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}" style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"></i> 
+            <a 
+            target="_blank"
+            class="{rule.ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline" 
+            href={rule.ruleLink}>
+              {rule.displayName}
+            </a>
+        </label>
+      {/each}
+    {/if}
   {/if}
 </Modal>
 

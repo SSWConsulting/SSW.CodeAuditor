@@ -49,12 +49,12 @@
       class="modal-content py-4 text-left px-6"
       class:fullheight={full === true}>
       <!--Title-->
-      <div class="flex justify-between items-center pb-3">
+      <div class="flex justify-between items-center">
         <p class="text-2xl font-bold">{header}</p>
       </div>
 
       <!--Body-->
-      <div class="modal-body py-5 overflow-y-auto">
+      <div class="modal-body overflow-y-auto">
         <slot />
       </div>
 

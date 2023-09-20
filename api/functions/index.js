@@ -98,17 +98,17 @@ app.put('/config/:api/loadthreshold', async (req, res) =>
 app.get('/config/:api/loadthreshold/:url', async (req, res) =>
 	res.json(await getLoadThreshold(req.params.api, req.params.url)));
 
-app.put('/config/:api/htmlhintrules', async (req, res) =>
+app.post('/config/:api/htmlhintrules', async (req, res) =>
 	res.json(await addHTMLHintRules(req.params.api, req.body)));
 
-app.put('/config/:api/addhtmlhintruleseachrun', async (req, res) =>
+app.post('/config/:api/addhtmlhintruleseachrun', async (req, res) =>
 	res.json(await addHTMLHintRulesForEachRun(req.params.api, req.body)));
 
 app.get('/config/:api/htmlhintrules/:url', async (req, res) =>
-	res.json(await getHTMLHintRules(req.params.api, req.params.url)));
+	res.json(await getHTMLHintRules(req.params.api, req.params.url, req.query.isGetAllRecords)));
 
-app.get('/config/htmlhintrulesbyrunid/:runId', async (req, res) =>
-	res.json(await getHTMLHintRulesByRunId(req.params.runId)));
+app.get('/config/:api/htmlhintrulesbyrunid/:runId', async (req, res) =>
+	res.json(await getHTMLHintRulesByRunId(req.params.api, req.params.runId)));
 
 app.post('/config/:api/ignore', async (req, res) => {
 	const {
