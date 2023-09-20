@@ -126,6 +126,10 @@ export const getLoadThresholdResult = (value) => ({
 });
 
 export const isInIgnored = (url, list) => {
+  return getMatchingIgnoredRules(url, list).length > 0;
+};
+
+export const getMatchingIgnoredRules = (url, list) => {
   function glob(pattern, input) {
     var re = new RegExp(
       pattern.replace(/([.?+^$[\]\\(){}|\/-])/g, "\\$1").replace(/\*/g, ".*")
@@ -133,22 +137,14 @@ export const isInIgnored = (url, list) => {
     return re.test(input);
   }
   const date = new Date();
-  for (let index = 0; index < list.length; index++) {
-    const item = list[index];
+  return list.filter((item) => {
     const pattern = item.urlToIgnore;
     if (glob(pattern, url)) {
       const effectiveFrom = new Date(item.effectiveFrom);
-      const timelapsed = (date - effectiveFrom) / 86400000;
-      if (
-        (item.ignoreDuration > 0 && timelapsed < item.ignoreDuration) ||
-        item.ignoreDuration === -1
-      ) {
-        console.log("Remaing days", item.ignoreDuration - timelapsed);
-        return true;
-      }
+      const timeElapsed = (date - effectiveFrom) / 86400000;
+      return (item.ignoreDuration > 0 && timeElapsed < item.ignoreDuration) || item.ignoreDuration === -1;
     }
-  }
-  return null;
+  });
 };
 
 export const getHtmlIssuesDescriptions = pipe(
