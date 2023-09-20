@@ -92,18 +92,18 @@
       out:fade={{ y: -100, duration: 200 }}>
       <thead>
         <tr>
-          <th class="w-6/12 px-4 py-2">Broken Link ({sources[url].length})</th>
-          <th class="hidden md:table-cell w-2/12 px-4 py-2">Anchor Text</th>
-          <th class="w-1/12 px-4 py-2 text-right">Status</th>
-          <th class="hidden md:table-cell w-2/12 px-4 py-2 text-right">Message</th>
-          <th class="hidden md:table-cell w-1/12 px-4 py-2 text-right">Days Unfixed</th>
-          <th class="hidden md:table-cell w-1/12 px-4 py-2">Ignore</th>
+          <th class="w-6/12 px-2 py-2">Broken Link ({sources[url].length})</th>
+          <th class="hidden md:table-cell w-2/12 px-2 py-2">Anchor Text</th>
+          <th class="w-1/12 px-2 py-2 text-right">Status</th>
+          <th class="hidden md:table-cell w-2/12 px-2 py-2 text-right">Message</th>
+          <th class="hidden md:table-cell w-1/12 px-2 py-2 text-right">Days Unfixed</th>
+          <th class="hidden md:table-cell w-1/12 px-2 py-2">Ignore</th>
         </tr>
       </thead>
       <tbody>
         {#each sources[url] as val}
           <tr>
-            <td class="w-6/12 border px-4 py-2 break-all">
+            <td class="w-6/12 border px-2 py-2 break-all">
               <a
                 class="inline-block align-baseline link"
                 target="_blank"
@@ -112,17 +112,17 @@
               </a>
 
             </td>
-            <td class="hidden md:table-cell w-2/12 border px-4 py-2 break-all">{val.link || ''}</td>
-            <td class="w-1/12 border px-4 py-2 text-right">
+            <td class="hidden md:table-cell w-2/12 border px-2 py-2 break-all">{val.link || ''}</td>
+            <td class="w-1/12 border px-2 py-2 text-right">
               {val.statuscode || '0'}
             </td>
-            <td class="hidden md:table-cell w-2/12 border px-4 py-2 text-right">
+            <td class="hidden md:table-cell w-2/12 border px-2 py-2 text-right">
               {val.statusmsg || ''}
             </td>
-            <td class="hidden md:table-cell w-1/12 border px-4 py-2 text-right">
+            <td class="hidden md:table-cell w-1/12 border px-2 py-2 text-right">
               {formatDaysUnfixed(val.daysUnfixed)}
             </td>
-            <td class="hidden md:table-cell w-1/12 border px-4 py-2 text-center">
+            <td class="hidden md:table-cell w-1/12 border px-2 py-2 text-center">
               {#if loadingChecks[val.dst]}
                 <LoadingCircle />
               {:else}
