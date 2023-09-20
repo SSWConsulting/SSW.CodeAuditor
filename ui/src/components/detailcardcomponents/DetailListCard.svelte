@@ -43,7 +43,7 @@
 {#each value as val}
   <div class="container overflow-hidden shadow-lg my-2">
     {#if val.finalEval === 'FAIL'}
-      <div class="bg-red-500 h-2" />
+      <div class="bgred h-2" />
     {:else if val.finalEval === 'PASS'}
       <div class="bg-green-500 h-2" />
     {:else}
@@ -56,7 +56,7 @@
         on:click={() => navigateTo(`/build/${val.runId}`)}
         on:keydown={undefined}>
         <div class="row-span-1 lg:row-span-4 col-span-4">
-          <span class="font-sans text-base font-bold text-gray-800 underline text-lg">
+          <span class="font-sans text-base font-bold textdark underline text-lg">
             {format(new Date(val.buildDate), 'dd MMM yyyy')}
           </span>
           <br />
@@ -82,7 +82,7 @@
         <div
           class="row-span-1 col-span-4 text-sm my-2">
           <h2>
-            <span class="font-bold font-sans text-gray-600">LINKS</span>
+            <span class="font-bold font-sans textgrey">LINKS</span>
           </h2>
           <LinkSummary value={val}/>
         </div>
@@ -90,7 +90,7 @@
         <div
           class="row-span-1 col-span-4 text-sm my-2">
           <h2>
-            <span class="font-bold font-sans text-gray-600">CODE</span>
+            <span class="font-bold font-sans textgrey">CODE</span>
           </h2>
           <CodeSummary value={val} />
         </div>
@@ -98,7 +98,7 @@
         <div
           class="row-span-1 col-span-4 text-sm my-2">
           <h2>
-            <span class="font-bold font-sans text-gray-600">LOAD TEST</span>
+            <span class="font-bold font-sans textgrey">LOAD TEST</span>
           </h2>
           <ArtillerySummary value={val} />
         </div>
@@ -107,7 +107,7 @@
           <div
             class="row-span-1 col-span-4 text-sm my-2">
             <h2>
-              <span class="font-bold font-sans text-gray-600">LIGHTHOUSE</span>
+              <span class="font-bold font-sans textgrey">LIGHTHOUSE</span>
             </h2>
             <LighthouseSummary value={val} />
           </div>

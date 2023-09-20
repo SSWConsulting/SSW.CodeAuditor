@@ -1,10 +1,12 @@
 <script>
   import { groupBy, props } from "ramda";
-  import { isInIgnored } from "../../utils/utils.js";
-  import { ignoredUrls$ } from "../../stores.js";
+  import { isInIgnored, getMatchingIgnoredRules } from "../../utils/utils.js";
+  import { ignoredUrls$, deleteIgnoreUrl, userSession$ } from "../../stores.js";
   import { createEventDispatcher } from "svelte";
   import { fade } from "svelte/transition";
   import Icon from "../misccomponents/Icon.svelte";
+  import LoadingCircle from "../misccomponents/LoadingCircle.svelte";
+  import Toastr from "../misccomponents/Toastr.svelte";
   export let builds = [];
   const dispatch = createEventDispatcher();
   const ignore = url => dispatch("ignore", url);
@@ -12,10 +14,19 @@
   let reasons;
   let reasonsKeys = [];
   let hiddenRows = {};
+  let ignoredChecks = [];
+  let loadingChecks = [];
+  let deleteUrl = '';
+  let addedFailedToast = false;
 
   $: if (builds.length > 0) {
     reasons = groupBy(props(["statusmsg"]))(builds);
     reasonsKeys = Object.keys(reasons);
+
+    ignoredChecks = builds.reduce((acc, val) => {
+      acc[val.dst] = isInIgnored(val.dst, ignoredPatterns);
+      return acc;
+    }, {});
   }
   let ignoredPatterns = [];
   ignoredUrls$.subscribe(x => (ignoredPatterns = x));
@@ -30,6 +41,29 @@
       return daysNum.toString();
     } else {
       return '-';
+    }
+  };
+
+  const deleteIgnore = async (url) => {
+    deleteUrl = url;
+    loadingChecks[url] = true;
+    const rules = getMatchingIgnoredRules(url, ignoredPatterns);
+    try {
+      for await (const rule of rules) {
+        await deleteIgnoreUrl(rule, $userSession$);
+      }
+    } catch (error) {
+      addedFailedToast = true;
+    } finally {
+      loadingChecks[url] = false;
+    }
+  };
+
+  const toggleIgnore = async (url) => {
+    if (ignoredChecks[url]) {
+      await deleteIgnore(url);
+    } else {
+      ignore(url);
     }
   };
 </script>
@@ -58,17 +92,18 @@
       out:fade={{ y: -100, duration: 200 }}>
       <thead>
         <tr>
-          <th class="w-4/12 px-4 py-2">Source ({reasons[reason].length})</th>
-          <th class="w-4/12 px-4 py-2">Destination</th>
-          <th class="w-2/12 px-4 py-2">Anchor Text</th>
-          <th class="w-1/12 px-4 py-2 text-right">Status</th>
-          <th class="w-1/12 px-4 py-2 text-right">Days Unfixed</th>
+          <th class="w-4/12 px-2 py-2">Source ({reasons[reason].length})</th>
+          <th class="w-3/12 px-2 py-2">Destination</th>
+          <th class="w-2/12 px-2 py-2">Anchor Text</th>
+          <th class="w-1/12 px-2 py-2 text-right">Status</th>
+          <th class="w-1/12 px-2 py-2 text-right">Days Unfixed</th>
+          <th class="hidden md:table-cell w-1/12 px-2 py-2">Ignore</th>
         </tr>
       </thead>
       <tbody>
         {#each reasons[reason] as val}
           <tr>
-            <td class="w-4/12 border px-4 py-2 break-all">
+            <td class="w-4/12 border px-2 py-2 break-all">
               <a
                 class="inline-block align-baseline link"
                 target="_blank"
@@ -76,44 +111,27 @@
                 {val.src}
               </a>
             </td>
-            <td class="w-4/12 border px-4 py-2 break-all">
+            <td class="w-3/12 border px-2 py-2 break-all">
               <a
                 class="inline-block align-baseline"
                 target="_blank"
                 href={val.dst}>
                 {val.dst.length < 70 ? val.dst : val.dst.substring(0, 70) + '...'}
               </a>
-              {#if isInIgnored(val.dst, ignoredPatterns)}
-                <span
-                  class="inline-block align-middle"
-                  title="This is URL is in the ignored lists. Go to Settings to
-                  remove it">
-                  <Icon cssClass="textred">
-                    <path
-                      d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0
-                      015.636 5.636m12.728 12.728L5.636 5.636" />
-                  </Icon>
-                </span>
-              {:else}
-                <button
-                  title="Ignore this broken link in the next scan"
-                  on:click={() => ignore(val.dst)}
-                  class="bg-gray-200 hover:bg-gray-400 rounded inline-flex
-                  align-middle mr-3">
-                  <Icon>
-                    <path
-                      d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0
-                      015.636 5.636m12.728 12.728L5.636 5.636" />
-                  </Icon>
-                </button>
-              {/if}
             </td>
-            <td class="w-2/12 border px-4 py-2 break-all">{val.link || ''}</td>
-            <td class="w-1/12 border px-4 py-2 text-right">
+            <td class="w-2/12 border px-2 py-2 break-all">{val.link || ''}</td>
+            <td class="w-1/12 border px-2 py-2 text-right">
               {val.statuscode || '0'}
             </td>
-            <td class="w-1/12 border px-4 py-2 text-right">
+            <td class="w-1/12 border px-2 py-2 text-right">
               {formatDaysUnfixed(val.daysUnfixed)}
+            </td>
+            <td class="hidden md:table-cell w-1/12 border px-2 py-2 text-center">
+              {#if loadingChecks[val.dst]}
+                <LoadingCircle />
+              {:else}
+                <input type="checkbox" on:click={() => toggleIgnore(val.dst)} bind:checked={ignoredChecks[val.dst]} />
+              {/if}
             </td>
           </tr>
         {/each}
@@ -121,3 +139,11 @@
     </table>
   {/if}
 {/each}
+
+<Toastr bind:show={addedFailedToast} mode="error">
+  <p class="font-bold">Failure</p>
+  <p class="text-sm">
+    Failed to remove
+    <span class="font-bold">{deleteUrl}</span>
+  </p>
+</Toastr>

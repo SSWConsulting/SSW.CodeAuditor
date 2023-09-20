@@ -3,7 +3,7 @@
   export let displayMode = "";
 </script>
 
-<p class="hidden md:block text-sm text-gray-800 pb-3 pt-4">
+<p class="hidden md:block text-sm textdark pb-3 pt-4">
   <a
     class="inline-block align-baseline text-blue hover:text-blue-darker"
     href="/">
