@@ -93,7 +93,7 @@
       <thead>
         <tr>
           <th class="w-4/12 px-2 py-2">Source ({reasons[reason].length})</th>
-          <th class="w-4/12 px-2 py-2">Destination</th>
+          <th class="w-3/12 px-2 py-2">Destination</th>
           <th class="w-2/12 px-2 py-2">Anchor Text</th>
           <th class="w-1/12 px-2 py-2 text-right">Status</th>
           <th class="w-1/12 px-2 py-2 text-right">Days Unfixed</th>
@@ -111,7 +111,7 @@
                 {val.src}
               </a>
             </td>
-            <td class="w-4/12 border px-2 py-2 break-all">
+            <td class="w-3/12 border px-2 py-2 break-all">
               <a
                 class="inline-block align-baseline"
                 target="_blank"
