@@ -1,7 +1,7 @@
 <script>
   import format from "date-fns/format";
   import Toastr from "./Toastr.svelte";
-  import LoadingCirle from "./LoadingCircle.svelte";
+  import LoadingCircle from "./LoadingCircle.svelte";
   import Icon from "./Icon.svelte";
   import { userSession$, deleteIgnoreUrl } from "../../stores";
 
@@ -74,7 +74,7 @@
           </td>
           <td class="border px-4 py-2">
             {#if loading && val.urlToIgnore === deleteUrl}
-              <LoadingCirle />
+              <LoadingCircle />
             {:else}
               <a
                 href={'#'}
@@ -94,7 +94,7 @@
   </table>
 {/if}
 
-<Toastr bind:show={addedFailedToast}>
+<Toastr bind:show={addedFailedToast} mode="error">
   <p class="font-bold">Failure</p>
   <p class="text-sm">
     Failed to remove
