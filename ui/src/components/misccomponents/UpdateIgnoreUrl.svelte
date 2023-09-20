@@ -50,6 +50,11 @@
       throw new Error("Failed to load");
     }
   };
+
+  $: if (show) {
+    ignoreOn = "all";
+    ignoreDuration = 3;
+  }
 </script>
 
 <style>
