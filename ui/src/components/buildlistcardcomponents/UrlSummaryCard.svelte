@@ -12,7 +12,7 @@
 </script>
 
 <div on:click={() => navigateTo(`/build/${value[0].runId}`)} on:keypress>
-  <p title={url} class="font-sans font-bold text-gray-800 underline">{url}</p>
+  <p title={url} class="font-sans font-bold textdark underline">{url}</p>
   <div class="font-sans text-sm py-4">
     Last scanned
     {formatDistanceToNow(new Date(value[0].buildDate), { addSuffix: true })}

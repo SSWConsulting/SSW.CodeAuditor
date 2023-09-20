@@ -53,17 +53,17 @@
       <a
         href={value.url}
         target="_blank"
-        class="underline text-xl font-sans font-bold text-gray-800 hover:text-red-600">{value.url}</a>
+        class="underline text-xl font-sans font-bold textdark hover:text-red-600">{value.url}</a>
     </div>
     <div class="text-center">
-      <span class="text-xl font-sans block lg:inline-block text-gray-600">Last
+      <span class="text-xl font-sans block lg:inline-block textgrey">Last
         scanned: 
         <strong>{format(new Date(value.buildDate), 'dd MMM yyyy')}</strong>
         ({formatDistanceToNow(new Date(value.buildDate), { addSuffix: true })} at {format(new Date(value.buildDate), 'hh:mmaaa')})
       </span>
     </div>
     <div class="text-center">
-      <span class="text-xl font-sans block lg:inline-block text-gray-600">
+      <span class="text-xl font-sans block lg:inline-block textgrey">
         Duration: {printTimeDiff(+value.scanDuration)}
       </span>
     </div>
