@@ -479,12 +479,13 @@ export const htmlHintRules = [
     ruleLink: "https://htmlhint.com/docs/user-guide/rules/alt-require",
     type: RuleType.Warning
   },
-  {
-    rule: "href-abs-or-rel",
-    displayName: "Links - Href attribute must be either absolute or relative",
-    ruleLink: "https://htmlhint.com/docs/user-guide/rules/href-abs-or-rel",
-    type: RuleType.Warning
-  },
+  // Disabled on 20/09/2023
+  // {
+  //   rule: "href-abs-or-rel",
+  //   displayName: "Links - Href attribute must be either absolute or relative",
+  //   ruleLink: "https://htmlhint.com/docs/user-guide/rules/href-abs-or-rel",
+  //   type: RuleType.Warning
+  // },
   {
     rule: "src-not-empty",
     displayName: "Content - The image src attribute must have a value",
