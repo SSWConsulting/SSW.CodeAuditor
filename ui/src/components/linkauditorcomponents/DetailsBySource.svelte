@@ -37,7 +37,7 @@
 
 {#each sourcesKeys as url}
   <div class="mb-3">
-    <span class="font-bold mr-2">
+    <span class="font-bold">
       <Icon
         on:click={() => hideShow(url)}
         cssClass="inline-block cursor-pointer">
@@ -49,9 +49,7 @@
       </Icon>
       Broken links on:
     </span>
-    <a class="inline-block align-baseline link" target="_blank" href={url}>
-      {url}
-    </a>
+    <a class="inline-block align-baseline link" target="_blank" href={url}>{url}</a>
   </div>
   {#if !hiddenRows[url]}
     <table
