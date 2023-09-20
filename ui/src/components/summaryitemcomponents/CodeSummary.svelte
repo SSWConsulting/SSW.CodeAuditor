@@ -41,7 +41,7 @@
     <span
       class="font-sans font-bold block lg:inline-block"
       class:text-yellow-600={codeSummary.htmlWarnings > 0}
-      class:text-gray-600={codeSummary.htmlWarnings == 0}
+      class:textgrey={codeSummary.htmlWarnings == 0}
       title={(codeSummary.codeIssueList || '') + '\n\n\n' + (codeSummary.htmlIssueList || '')}>
       {numberWithCommas((codeSummary.htmlWarnings || 0) + (codeSummary.codeWarnings || 0))}
       {#if codeSummary.htmlWarnings == 0}
@@ -57,7 +57,7 @@
       <span
         class="font-sans font-bold block lg:inline-block"
         class:text-red-600={codeSummary.htmlErrors > 0}
-        class:text-gray-600={codeSummary.htmlErrors === 0}
+        class:textgrey={codeSummary.htmlErrors === 0}
         title={(codeSummary.codeIssueList || '') + '\n\n\n' + (codeSummary.htmlIssueList || '')}>
         {numberWithCommas((codeSummary.htmlErrors || 0) + (codeSummary.codeErrors || 0))}
         {#if codeSummary.htmlErrors == 0}

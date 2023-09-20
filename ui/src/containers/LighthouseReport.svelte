@@ -108,7 +108,7 @@
         <button
           on:click={download}
           title="Download JSON"
-          class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-1
+          class="bg-gray-300 hover:bg-gray-400 textdark font-bold py-1 px-1
           rounded-lg inline-flex items-center">
           <Icon cssClass="">
             <path
