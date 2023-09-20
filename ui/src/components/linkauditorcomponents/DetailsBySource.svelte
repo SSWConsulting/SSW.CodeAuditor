@@ -92,7 +92,7 @@
       out:fade={{ y: -100, duration: 200 }}>
       <thead>
         <tr>
-          <th class="w-6/12 px-2 py-2">Broken Link ({sources[url].length})</th>
+          <th class="w-5/12 px-2 py-2">Broken Link ({sources[url].length})</th>
           <th class="hidden md:table-cell w-2/12 px-2 py-2">Anchor Text</th>
           <th class="w-1/12 px-2 py-2 text-right">Status</th>
           <th class="hidden md:table-cell w-2/12 px-2 py-2 text-right">Message</th>
@@ -103,7 +103,7 @@
       <tbody>
         {#each sources[url] as val}
           <tr>
-            <td class="w-6/12 border px-2 py-2 break-all">
+            <td class="w-5/12 border px-2 py-2 break-all">
               <a
                 class="inline-block align-baseline link"
                 target="_blank"
