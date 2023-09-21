@@ -10,7 +10,6 @@
   export let builds = [];
   export let lastBuild;
 
-  let showTotalBuild = false;
   let groupUrlKey = [];
   let groupUrl;
   groupUrl = groupBy(props(["url"]))(builds);
@@ -23,16 +22,10 @@
 
   let currCard;
   function toggle(n) {
-    currCard = n;
-    showTotalBuild = !showTotalBuild;
-    const x = document.getElementById("detailCard");
-
-    if (x) {
-      if (x.style.display === "none") {
-        x.style.display = "block";
-      } else {
-        x.style.display = "none";
-      }
+    if (currCard === n) {
+      currCard = -1;
+    } else {
+      currCard = n;
     }
   }
 </script>
@@ -83,7 +76,7 @@
                 class="hover:bg-gray-300 border-0 rounded-md px-3 py-1"
                 on:click={() => toggle(i)}
                 on:keydown>
-                {#if showTotalBuild}
+                {#if currCard === i}
                   <i class="fas fa-angle-up"></i>
                 {:else}
                   <i class="fas fa-angle-down"></i>
