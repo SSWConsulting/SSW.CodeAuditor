@@ -10,13 +10,14 @@
   import UpdateIgnoreUrl from "../components/misccomponents/UpdateIgnoreUrl.svelte";
 
   let ignoreUrlShown;
-  let loading = true;
+  let loading = false;
 
   $: if ($userSession$) {
     load();
   }
 
   const load = () => {
+    loading = true;
     setTimeout(async () => {
       await getIgnoreList($userSession$);
       loading = false;
