@@ -10,21 +10,26 @@
   import UpdateIgnoreUrl from "../components/misccomponents/UpdateIgnoreUrl.svelte";
 
   let ignoreUrlShown;
+  let loading = true;
 
-  userSession$.subscribe(x => {
-    if (x) {
-      getIgnoreList(x);
-    }
-  });
+  $: if ($userSession$) {
+    load();
+  }
 
+  const load = () => {
+    setTimeout(async () => {
+      await getIgnoreList($userSession$);
+      loading = false;
+    }, 300);
+  };
 </script>
 
 <div class="container mx-auto">
   <div class="bg-white shadow-lg rounded px-8 mb-6 flex flex-col">
-    {#if $loadingIgnored$}
+    <div class="text-3xl text-center pt-8 pb-6">Ignored URLs</div>
+    {#if loading || $loadingIgnored$}
       <LoadingFlat />
-    {:else}
-      <div class="text-3xl text-center pt-8 pb-6">Ignored URLs</div>
+    {:else if $userSession$}
       <div class="grid grid-cols-3 gap-4">
         <div>
           <button 
@@ -36,6 +41,8 @@
         </div>
       </div>
       <IgnoreLists builds={$ignoredUrls$} />
+    {:else}
+      <div class="text-xl text-center pt-8 pb-6">You must be logged in to use this feature</div>
     {/if}
   </div>
 </div>
