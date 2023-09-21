@@ -20,7 +20,7 @@
     x => new Date(x.buildDate) > addDays(new Date(), -30)
   ).length;
 
-  let currCard;
+  let currCard = -1;
   function toggle(n) {
     if (currCard === n) {
       currCard = -1;
