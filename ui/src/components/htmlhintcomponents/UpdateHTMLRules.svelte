@@ -178,7 +178,7 @@
     }
   };
 
-  let currSelectedLog
+  let currSelectedLog = -1;
   const toggleViewChanges = (index) => {
     currSelectedLog = index;
   }
@@ -219,7 +219,7 @@
               <div class="link cursor-pointer" on:click={() => toggleViewChanges(index)} on:keypress>View Changes</div>
             {/if}
             {#if currSelectedLog === index}
-              <div class="link cursor-pointer" on:click={() => currSelectedLog = null} on:keypress>Hide Changes</div>
+              <div class="link cursor-pointer" on:click={() => currSelectedLog = -1 } on:keypress>Hide Changes</div>
               <div>
                 {#each formatHtmlRule(log.selectedRules.split(/[,]+/)) as rule}
                   <div class="{rule.isRuleEnabled ? 'text-green-600' : 'textred'}">
