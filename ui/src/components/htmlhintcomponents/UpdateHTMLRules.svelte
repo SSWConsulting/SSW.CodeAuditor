@@ -173,7 +173,22 @@
           `${CONSTS.API}/api/config/${user.apiKey}/htmlhintrules/${slug(url)}?isGetAllRecords=true`
         );
       historyLog = await res.json();
+      // Reverse array order so latest date comes first
+      historyLog.reverse();
     }
+  };
+
+  let currSelectedLog
+  const toggleViewChanges = (index) => {
+    currSelectedLog = index;
+  }
+
+  const formatHtmlRule = (rules) => {
+    let selectedHtmlHintRules = rules.map(rule => htmlHintRules.find(x => x.rule === rule));
+    let selectedCustomHtmlHintRules = rules.map(rule => customHtmlHintRules.find(x => x.rule === rule));
+    let allSelectedRuleLog = selectedHtmlHintRules.concat(selectedCustomHtmlHintRules).filter(x => x);
+    let allHtmlRules = htmlHintRules.concat(customHtmlHintRules)
+    return allHtmlRules = allHtmlRules.map(rule => ({...rule, isRuleEnabled: allSelectedRuleLog.includes(rule)}))
   };
   
 </script>
@@ -194,15 +209,26 @@
         <i class="fas fa-arrow-left"></i>
         Back
       </div>
-      {#each historyLog as log}
+      {#each historyLog as log, index}
         <div class="mb-4 overflow-hidden border">
           <div class="content-center px-6 py-4">
             <div class="font-sans font-bold">
-              {new Date(log.timestamp).toLocaleString()}
+              Changes made on {new Date(log.timestamp).toLocaleString()}
             </div>
-            <div>
-              Selected Rules: {log.selectedRules}
-            </div>
+            {#if currSelectedLog !== index}
+              <div class="link cursor-pointer" on:click={() => toggleViewChanges(index)} on:keypress>View Changes</div>
+            {/if}
+            {#if currSelectedLog === index}
+              <div class="link cursor-pointer" on:click={() => currSelectedLog = null} on:keypress>Hide Changes</div>
+              <div>
+                {#each formatHtmlRule(log.selectedRules.split(/[,]+/)) as rule}
+                  <div class="{rule.isRuleEnabled ? 'text-green-600' : 'textred'}">
+                    <i class="{rule.isRuleEnabled ? 'fas fa-plus' : 'fas fa-minus'}"></i>
+                    {rule.displayName}
+                  </div>
+                {/each}
+              </div>
+            {/if}
           </div>
         </div>
       {/each}
