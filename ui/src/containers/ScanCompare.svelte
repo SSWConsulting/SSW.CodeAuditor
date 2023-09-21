@@ -45,6 +45,13 @@
   }
 </script>
 
+<style>
+  .select-scan {
+    border: none;
+    height: 27px;
+  }
+</style>
+
 {#if loading}
   <LoadingFlat />
 {:else}
@@ -65,12 +72,11 @@
     <div class="grid grid-cols-7 text-left my-8">
       <div class="col-start-2 col-span-2 border-black border border-opacity-25 hover:border-opacity-50 rounded px-4">
         <div class="text-lg textgrey mb-2 mt-4">Select past scan to compare:</div>
-        <div>
+        <div class="text-lg">
           <select
             bind:value={selectedScan}
             on:change={() => getDifferences()}
-            class="mb-4 textgrey text-lg font-sans font-bold cursor-pointer"
-            style="border: none"
+            class="mb-4 p-0 textgrey text-lg font-sans font-bold cursor-pointer select-scan"
           >
             {#each allScans.slice(1) as scan}
               <option value={scan}>
@@ -93,7 +99,7 @@
         <div
           on:click={() => navigateTo(`/build/${allScans[0].runId}`)}
           on:keydown={undefined}
-          class="font-sans font-bold text-lg textgrey mb-4 cursor-pointer">
+          class="font-sans font-bold text-lg textgrey mb-4 p-0 cursor-pointer">
           {
             allScans.length > 0
             ? `${format(new Date(allScans[0].buildDate), "dd LLL y")} at ${format(new Date(allScans[0].buildDate), "h:mm bbb")}`
