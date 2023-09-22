@@ -73,7 +73,7 @@ exports.getHTMLHintRules = (api, url) => {
 
 exports.addHTMLHintRulesForScan = (api, url, runId, selectedRules) => {
   return fetch(`${endpoint}/api/config/${api}/addhtmlhintruleseachrun`, {
-    method: "PUT",
+    method: "POST",
     body: JSON.stringify({
       url,
       runId,

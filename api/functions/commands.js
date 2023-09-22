@@ -83,18 +83,20 @@ exports.addLoadThreshold = (api, data) => {
 
 exports.addHTMLHintRules = (api, data) => {
 	const entGen = azure.TableUtilities.entityGenerator;
-	return updateEntity(
+	const timeStamp = new Date().toISOString().toString();
+	return insertEntity(
 		TABLE.htmlhintrules,
 		replaceProp(data, {
 			PartitionKey: entGen.String(api),
-			RowKey: entGen.String(slug(data.url)),
+			RowKey: entGen.String(timeStamp),
+			slugUrl: slug(data.url)
 		})
 	);
 };
 
 exports.addHTMLHintRulesForEachRun = (api, data) => {
 	const entGen = azure.TableUtilities.entityGenerator;
-	return updateEntity(
+	return insertEntity(
 		TABLE.htmlhintrules,
 		replaceProp(data, {
 			PartitionKey: entGen.String(api),
