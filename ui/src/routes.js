@@ -14,10 +14,6 @@ import ArtilleryReport from './containers/ArtilleryReport.svelte';
 import AppLayout from './containers/Layout.svelte';
 import ScanCompare from './containers/ScanCompare.svelte';
 import ErrorPage from './containers/ErrorPage.svelte';
-import { isLoggedIn } from './stores.js';
-
-let loggedIn = false;
-isLoggedIn.subscribe((x) => (loggedIn = x));
 
 const routes = [
 	{
@@ -99,16 +95,9 @@ const routes = [
 		layout: AppLayout,
 	},
 	{ 
-		name: 'settings',
+		name: '/settings',
 		component: Settings,
 		layout: AppLayout,
-		onlyIf: {
-			guard: () => {
-				console.log('checking if user is logged in', loggedIn);
-				return loggedIn;
-			},
-			redirect: '/login',
-		},
 	},
 ];
 
