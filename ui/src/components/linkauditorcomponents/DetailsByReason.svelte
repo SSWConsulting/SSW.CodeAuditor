@@ -14,8 +14,8 @@
   let reasons;
   let reasonsKeys = [];
   let hiddenRows = {};
-  let ignoredChecks = [];
-  let loadingChecks = [];
+  let ignoredChecks = {};
+  let loadingChecks = {};
   let deleteUrl = '';
   let addedFailedToast = false;
 
@@ -24,12 +24,10 @@
     reasonsKeys = Object.keys(reasons);
 
     ignoredChecks = builds.reduce((acc, val) => {
-      acc[val.dst] = isInIgnored(val.dst, ignoredPatterns);
+      acc[val.dst] = isInIgnored(val.dst, $ignoredUrls$);
       return acc;
     }, {});
   }
-  let ignoredPatterns = [];
-  ignoredUrls$.subscribe(x => (ignoredPatterns = x));
 
   const hideShow = key =>
     (hiddenRows[key] = key in hiddenRows ? !hiddenRows[key] : true);
@@ -47,7 +45,7 @@
   const deleteIgnore = async (url) => {
     deleteUrl = url;
     loadingChecks[url] = true;
-    const rules = getMatchingIgnoredRules(url, ignoredPatterns);
+    const rules = getMatchingIgnoredRules(url, $ignoredUrls$);
     try {
       for await (const rule of rules) {
         await deleteIgnoreUrl(rule, $userSession$);

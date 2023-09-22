@@ -13,8 +13,8 @@
 
   let sources;
   let sourcesKeys = [];
-  let ignoredChecks = [];
-  let loadingChecks = [];
+  let ignoredChecks = {};
+  let loadingChecks = {};
   let deleteUrl = '';
   let addedFailedToast = false;
 
@@ -23,13 +23,10 @@
     sourcesKeys = Object.keys(sources);
 
     ignoredChecks = builds.reduce((acc, val) => {
-      acc[val.dst] = isInIgnored(val.dst, ignoredPatterns);
+      acc[val.dst] = isInIgnored(val.dst, $ignoredUrls$);
       return acc;
     }, {});
   }
-
-  let ignoredPatterns = [];
-  ignoredUrls$.subscribe(x => (ignoredPatterns = x));
 
   let hiddenRows = {};
   const hideShow = key =>
@@ -48,7 +45,7 @@
   const deleteIgnore = async (url) => {
     deleteUrl = url;
     loadingChecks[url] = true;
-    const rules = getMatchingIgnoredRules(url, ignoredPatterns);
+    const rules = getMatchingIgnoredRules(url, $ignoredUrls$);
     try {
       for await (const rule of rules) {
         await deleteIgnoreUrl(rule, $userSession$);

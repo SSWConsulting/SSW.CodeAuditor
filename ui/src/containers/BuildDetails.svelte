@@ -61,11 +61,9 @@
     ignoreUrlShown = true;
   };
 
-  userSession$.subscribe(x => {
-    if (x) {
-      getIgnoreList(x);
-    }
-  });
+  $: if ($userSession$) {
+    getIgnoreList($userSession$);
+  }
 </script>
 
 <div class="container mx-auto">
