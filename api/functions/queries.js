@@ -145,22 +145,24 @@ exports.getLoadThreshold = (api, url) =>
 		resolve(result[0] || {})
 	});
 
-exports.getHTMLHintRules = (api, url) => 
+exports.getHTMLHintRules = (api, url, isGetAllRecords) => 
 	new Promise(async (resolve) => {
 		const entity = new TableClient(azureUrl, TABLE.htmlhintrules, credential).listEntities({
-			queryOptions: { filter: odata`PartitionKey eq ${api} and RowKey eq ${slug(url)}` }
+			queryOptions: { filter: odata`PartitionKey eq ${api} and slugUrl eq ${url}` }
 		});
 		let result = []
 		for await (const item of entity) {
 			result.push(item);
 		}
-		resolve(result[0] || {})
+		// By default Azure Table returns record from earliest to latest
+		// Hence taking the last item in the returned array gives us the latest record
+		resolve(isGetAllRecords ? result : result[result.length - 1] || {})
   });
 
-exports.getHTMLHintRulesByRunId = (runId) => 
+exports.getHTMLHintRulesByRunId = (api, runId) => 
 	new Promise(async (resolve) => {
 		const entity = new TableClient(azureUrl, TABLE.htmlhintrules, credential).listEntities({
-			queryOptions: { filter: odata`RowKey eq ${runId}` }
+			queryOptions: { filter: odata`PartitionKey eq ${api} and RowKey eq ${runId}` }
 		});
 		let result = []
 		for await (const item of entity) {

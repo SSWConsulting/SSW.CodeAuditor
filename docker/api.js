@@ -73,7 +73,7 @@ exports.getHTMLHintRules = (api, url) => {
 
 exports.addHTMLHintRulesForScan = (api, url, runId, selectedRules) => {
   return fetch(`${endpoint}/api/config/${api}/addhtmlhintruleseachrun`, {
-    method: "PUT",
+    method: "POST",
     body: JSON.stringify({
       url,
       runId,
@@ -146,7 +146,8 @@ exports.htmlHintConfig = {
   "inline-style-disabled": true,
   "inline-script-disabled": true,
   "id-class-ad-disabled": true,
-  "href-abs-or-rel": true,
+  // Disabled on 20/09/2023
+  // "href-abs-or-rel": true,
   "attr-unsafe-chars": true,
   "head-script-disabled": true,
   "anchor-names-must-be-valid": true,

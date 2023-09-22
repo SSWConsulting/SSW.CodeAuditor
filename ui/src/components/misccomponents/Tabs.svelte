@@ -4,7 +4,7 @@
   export let build = {};
   export let displayMode = "";
 
-  let baseClass = "bg-white inline-block py-2 px-4 text-gray-600 font-semibold";
+  let baseClass = "bg-white inline-block py-2 px-4 textgrey font-semibold";
   let active = " textgrey border-l border-t border-r rounded-t";
   $: codeSummary = getCodeSummary(build.summary);
 
