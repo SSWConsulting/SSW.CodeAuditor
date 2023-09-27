@@ -31,7 +31,7 @@
     "export-to-csv": "^1.0.0",
     "firebase": "^10.4.0",
     "firebase-tools": "^12.4.0",
-    "github-markdown-css": "^4.0.0",
+    "github-markdown-css": "^5.2.0",
     "js-beautify": "^1.14.9",
     "lighthouse-viewer": "^0.1.216",
     "pace-js": "^1.0.2",
