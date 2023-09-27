@@ -9,7 +9,7 @@
   import Breadcrumbs from "../components/misccomponents/Breadcrumbs.svelte";
   import Toastr from "../components/misccomponents/Toastr.svelte";
   import { CONSTS, HTMLERRORS } from "../utils/utils.js";
-  import { ExportToCsv } from "export-to-csv";
+  import { mkConfig, generateCsv, download } from "export-to-csv";
   import { Navigate } from "svelte-router-spa";
   import LoadingFlat from "../components/misccomponents/LoadingFlat.svelte";
   import UpdateIgnoreUrl from "../components/misccomponents/UpdateIgnoreUrl.svelte";
@@ -51,7 +51,7 @@
   let loadingHtmlHintSettings;
 
   const onDownload = data => {
-    const csvExporter = new ExportToCsv({
+    const csvConfig = mkConfig({
       useKeysAsHeaders: true
     });
 
@@ -74,7 +74,8 @@
       flatten
     );
 
-    csvExporter.generateCsv(exportToflat(data.htmlHint));
+    const csv = generateCsv(csvConfig)(exportToflat(data.htmlHint));
+    download(csvConfig)(csv);
   };
 
   const showHtmlHintThreshold = async (summary, user) => {
