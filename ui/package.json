@@ -29,7 +29,7 @@
     "codemirror": "^5.65.15",
     "date-fns": "^2.30.0",
     "export-to-csv": "^1.0.0",
-    "firebase": "^9.22.1",
+    "firebase": "^10.4.0",
     "firebase-tools": "^12.4.0",
     "github-markdown-css": "^4.0.0",
     "js-beautify": "^1.14.9",
