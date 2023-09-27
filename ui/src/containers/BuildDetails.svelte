@@ -10,7 +10,7 @@
   import DetailsTable from "../components/linkauditorcomponents/DetailsTable.svelte";
   import Toastr from "../components/misccomponents/Toastr.svelte";
   import BuildDetailsCard from "../components/detailcardcomponents/BuildDetailsCard.svelte";
-  import { ExportToCsv } from "export-to-csv";
+  import { mkConfig, generateCsv, download } from "export-to-csv";
   import { Navigate } from "svelte-router-spa";
   import LoadingFlat from "../components/misccomponents/LoadingFlat.svelte";
   import UpdateIgnoreUrl from "../components/misccomponents/UpdateIgnoreUrl.svelte";
@@ -32,15 +32,14 @@
   }
 
   const onDownload = data => {
-    const csvExporter = new ExportToCsv({
+    const csvConfig = mkConfig({
       showLabels: true,
       showTitle: true,
       title: `URL:,${data.summary.url},Duration:,${data.summary.scanDuration},URL Scanned:,${data.summary.totalScanned}`,
       useKeysAsHeaders: true
     });
 
-    csvExporter.generateCsv(
-      data.brokenLinks.map(x => {
+    const csv = generateCsv(csvConfig)(data.brokenLinks.map(x => {
         delete x["etag"];
         delete x["buildId"];
         delete x["partitionKey"];
@@ -49,6 +48,8 @@
         return x;
       })
     );
+
+    download(csvConfig)(csv);
   };
 
   const showIgnore = (mainUrl, url, user) => {
