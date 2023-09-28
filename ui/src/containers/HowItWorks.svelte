@@ -1,6 +1,6 @@
 <script>
   import { userSession$ } from "../stores";
-  import marked from "marked";
+  import * as marked from "marked";
   import { onDestroy } from "svelte";
 
   let instruction, instructionSteps;

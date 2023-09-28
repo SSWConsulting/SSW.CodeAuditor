@@ -54,17 +54,11 @@ export default {
     // consult the documentation for details:
     // https://github.com/rollup/plugins/tree/master/packages/commonjs
     resolve({
+      exportConditions: ['svelte'],
       browser: true,
       dedupe: ["svelte"],
     }),
-    commonjs({
-      namedExports: {
-        // left-hand side can be an absolute path, a path
-        // relative to the current directory, or the name
-        // of a module in node_modules
-        "./node_modules/export-to-csv/build/index.js": ["ExportToCsv"],
-      },
-    }),
+    commonjs(),
     copy({
       targets: [
         { src: './node_modules/@fortawesome/fontawesome-free/webfonts/**/*', dest: 'public/build/webfonts' },
