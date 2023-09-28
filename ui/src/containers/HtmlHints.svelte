@@ -91,7 +91,7 @@
       {data}
       {htmlRules}
       user={$userSession$}
-      componentType="code"
+      componentType="Code"
     >
       <HtmlErrorsTable
         on:download={() => onDownload(data)}

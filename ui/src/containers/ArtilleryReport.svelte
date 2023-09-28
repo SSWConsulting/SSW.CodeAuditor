@@ -4,14 +4,11 @@
   import LoadingFlat from "../components/misccomponents/LoadingFlat.svelte";
   import Icon from "../components/misccomponents/Icon.svelte";
   import Toastr from "../components/misccomponents/Toastr.svelte";
-  import slug from "slug";
   import ArtilleryChart from "../components/artillerycomponents/ArtilleryChart.svelte";
   import {
-    getBuildDetails,
-    userSession$,
+    getBuildDetails
   } from "../stores";
   import { CONSTS } from "../utils/utils";
-  import UpdateArtilleryThreshold from "../components/artillerycomponents/UpdateArtilleryThreshold.svelte";
   import BuildDetailsSlot from "../components/detailslotcomponents/BuildDetailsSlot.svelte";
 
   export let currentRoute;
@@ -20,37 +17,9 @@
 
   let promise = getBuildDetails(currentRoute.namedParams.id);
   let userNotLoginToast;
-  let artilleryThresholdShown;
-  let scanUrl;
-  let loadingArtillerySettings;
-  let lastBuild;
-  let threshold;
 
   const download = () => {
     window.location.href = `${CONSTS.BlobURL}/atr/${currentRoute.namedParams.run}.json`;
-  };
-
-  const showArtilleryThreshold = async (summary, user) => {
-    if (!user) {
-      userNotLoginToast = true;
-      return;
-    }
-    scanUrl = summary.url;
-    lastBuild = summary;
-    artilleryThresholdShown = true;
-    loadingArtillerySettings = true;
-    try {
-      const res = await fetch(
-        `${CONSTS.API}/api/config/${user.apiKey}/loadthreshold/${slug(scanUrl)}`
-      );
-      const result = await res.json();
-      threshold = result || blank;
-    } catch (error) {
-      console.error("error getting threshold", error);
-      threshold = blank;
-    } finally {
-      loadingArtillerySettings = false;
-    }
   };
 
   let atrFull = [];
@@ -83,7 +52,7 @@
       {:then data}
         <BuildDetailsSlot
           {data}
-          componentType="artillery"
+          componentType="Artillery"
         >
           {#if data.summary.latencyP95 !== undefined}
             <div class="my-4">
@@ -134,14 +103,6 @@
     {/if}
   </div>
 </div>
-
-<UpdateArtilleryThreshold
-  url={scanUrl}
-  loading={loadingArtillerySettings}
-  bind:show={artilleryThresholdShown}
-  {lastBuild}
-  {threshold}
-  user={$userSession$} />
 
 <Toastr bind:show={userNotLoginToast} timeout={10000} mode="warn">
   <p>Sign in to unlock this feature!</p>

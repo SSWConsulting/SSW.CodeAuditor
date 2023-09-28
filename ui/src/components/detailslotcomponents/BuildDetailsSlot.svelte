@@ -5,7 +5,6 @@
   import CardSummary from "../summaryitemcomponents/CardSummary.svelte";
   import slug from "slug";
   import UpdateHtmlRules from "../htmlhintcomponents/UpdateHTMLRules.svelte"
-  import { createEventDispatcher } from "svelte";
   import { CONSTS } from "../../utils/utils";
   import UpdatePerfThreshold from "../lighthousecomponents/UpdatePerfThreshold.svelte";
 
@@ -72,15 +71,15 @@
     
     <CardSummary 
       value={data.summary} 
-      isHtmlHintComp={componentType === 'code'}
-      isLighthouseAudit={componentType === 'lighthouse'}
+      isHtmlHintComp={componentType === 'Code'}
+      isLighthouseAudit={componentType === 'Lighthouse'}
       on:htmlHintThreshold={() => showHtmlHintThreshold(data.summary, user)}
       on:perfThreshold={() => showPerfThreshold(data.summary, user)}
     />
     
     <DetailsCard
       build={data ? data : {}} 
-      htmlRules={componentType === 'code' ? htmlRules : {}} 
+      htmlRules={componentType === 'Code' ? htmlRules : {}} 
     />
     
     <Tabs build={data ? data : {}} displayMode={componentType} />

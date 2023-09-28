@@ -73,7 +73,7 @@
 
     <BuildDetailsSlot
       {data}
-      componentType="url"
+      componentType="Links"
     >
       <DetailsTable
         on:download={() => onDownload(data)}

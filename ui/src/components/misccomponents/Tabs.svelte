@@ -45,30 +45,30 @@
 </script>
 
 <ul class="flex border-b">
-  <li class="mr-1" class:-mb-px={displayMode === 'url'}>
-    <span class={baseClass + (displayMode === 'url' ? active : '')}>
+  <li class="mr-1" class:-mb-px={displayMode === 'Links'}>
+    <span class={baseClass + (displayMode === 'Links' ? active : '')}>
       <Navigate to={'/build/' + build.summary.runId}>
         Links{build.summary ? ` (${build.summary.totalUnique404})` : ''}
       </Navigate>
     </span>
   </li>
-  <li class="mr-1" class:-mb-px={displayMode === 'code'}>
-    <span class={baseClass + (displayMode === 'code' ? active : '')}>
+  <li class="mr-1" class:-mb-px={displayMode === 'Code'}>
+    <span class={baseClass + (displayMode === 'Code' ? active : '')}>
       <Navigate to={'/htmlhint/' + build.summary.runId}>
         Code{totalHtmlIssues ? ` (${totalHtmlIssues})` : ''}
       </Navigate>
     </span>
   </li>
-  <li class="mr-1" class:-mb-px={displayMode === 'artillery'}>
-    <span class={baseClass + (displayMode === 'artillery' ? active : '')}>
+  <li class="mr-1" class:-mb-px={displayMode === 'Artillery'}>
+    <span class={baseClass + (displayMode === 'Artillery' ? active : '')}>
       <Navigate to={'/artillery/' + build.summary.runId}>
         Artillery Load Test{artilleryLoadTest.length ? ` (${artilleryLoadTest.length})` : ''}
       </Navigate>
     </span>
   </li>
   {#if build.summary.performanceScore}
-    <li class="mr-1" class:-mb-px={displayMode === 'lighthouse'}>
-      <span class={baseClass + (displayMode === 'lighthouse' ? active : '')}>
+    <li class="mr-1" class:-mb-px={displayMode === 'Lighthouse'}>
+      <span class={baseClass + (displayMode === 'Lighthouse' ? active : '')}>
         <Navigate to={'/lighthouse/' + build.summary.runId}>
           Lighthouse Audit{lhWarning.length ? ` (${lhWarning.length})` : ''}
         </Navigate>

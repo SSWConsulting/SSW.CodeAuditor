@@ -54,7 +54,7 @@
       <BuildDetailsSlot
         {data}
         user={$userSession$}
-        componentType="lighthouse"
+        componentType="Lighthouse"
       >
       </BuildDetailsSlot>
       {:catch error}
