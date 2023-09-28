@@ -3,13 +3,23 @@ import sveltePreprocess from "svelte-preprocess";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import livereload from "rollup-plugin-livereload";
-import { terser } from "rollup-plugin-terser";
+import terser from "@rollup/plugin-terser";
 import { config } from "dotenv";
 import replace from "@rollup/plugin-replace";
 import copy from 'rollup-plugin-copy';
 import css from 'rollup-plugin-css-only';
+import tailwindcss from 'tailwindcss';
+import * as child from 'child_process';
 
 const production = !process.env.ROLLUP_WATCH;
+const env = {
+  isProd: production,
+  ...config().parsed,
+  API: process.env.API,
+  API2: process.env.API2,
+  MAX_SCAN_SIZE: process.env.MAX_SCAN_SIZE,
+  DEPLOYMENTS_URL: process.env.DEPLOYMENTS_URL
+};
 
 export default {
   input: "src/main.js",
@@ -19,20 +29,16 @@ export default {
     name: "app",
     file: "public/build/bundle.js",
   },
+  strictDeprecations: true,
   plugins: [
     replace({
       preventAssignment: true,
-      // stringify the object
-      __myapp: JSON.stringify({
-        env: {
-          isProd: production,
-          ...config().parsed,
-          API: process.env.API,
-          API2: process.env.API2,
-          MAX_SCAN_SIZE: process.env.MAX_SCAN_SIZE,
-          DEPLOYMENTS_URL: process.env.DEPLOYMENTS_URL
-        },
-      }),
+      values: {
+        // stringify the object
+        "__myapp.env.API": JSON.stringify(env.API),
+        "__myapp.env.API2": JSON.stringify(env.API2),
+        "__myapp.env.DEPLOYMENTS_URL": JSON.stringify(env.DEPLOYMENTS_URL),
+      }
     }),
     svelte({
       compilerOptions: {
@@ -42,7 +48,7 @@ export default {
       preprocess: sveltePreprocess({
         postcss: {
           plugins: [
-            require('tailwindcss'),
+            tailwindcss,
           ],
         }
       }),
@@ -62,7 +68,8 @@ export default {
     copy({
       targets: [
         { src: './node_modules/@fortawesome/fontawesome-free/webfonts/**/*', dest: 'public/build/webfonts' },
-      ]
+      ],
+      hook: "writeBundle",
     }),
 
     // In dev mode, call `npm run start` once
@@ -93,7 +100,7 @@ function serve() {
       if (!started) {
         started = true;
 
-        require("child_process").spawn("npm", ["run", "start", "--", "--dev"], {
+        child.spawn("npm", ["run", "start", "--", "--dev"], {
           stdio: ["ignore", "inherit", "inherit"],
           shell: true,
         });
