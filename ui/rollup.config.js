@@ -29,7 +29,6 @@ export default {
     name: "app",
     file: "public/build/bundle.js",
   },
-  strictDeprecations: true,
   plugins: [
     replace({
       preventAssignment: true,
@@ -48,7 +47,7 @@ export default {
       preprocess: sveltePreprocess({
         postcss: {
           plugins: [
-            tailwindcss,
+            tailwindcss(),
           ],
         }
       }),
@@ -68,8 +67,7 @@ export default {
     copy({
       targets: [
         { src: './node_modules/@fortawesome/fontawesome-free/webfonts/**/*', dest: 'public/build/webfonts' },
-      ],
-      hook: "writeBundle",
+      ]
     }),
 
     // In dev mode, call `npm run start` once
