@@ -14,16 +14,16 @@
 
 <div class="grid grid-cols-2 lg:grid-cols-3 gap-x-5 text-center text-lg">
   {#if codeSummary.cloc}
-    <div class="col-span-1 text-start">
-      <span class="block whitespace-no-wrap font-sans">Total Files</span>
+    <div class="col-span-1">
+      <span class="block whitespace-nowrap font-sans">Total Files</span>
       <span
         class="font-sans font-bold block lg:inline-block"
         title="Number of files">
         {codeSummary.totalFiles}
       </span>
     </div>
-    <div class="col-span-1 text-start">
-      <span class="block whitespace-no-wrap font-sans">Total Lines</span>
+    <div class="col-span-1">
+      <span class="block whitespace-nowrap font-sans">Total Lines</span>
       <span
         class="font-sans font-bold block lg:inline-block"
         title="Number of lines of codes">
@@ -33,8 +33,8 @@
   {/if}
 
   {#if codeSummary.htmlWarnings || codeSummary.htmlErrors}
-  <div class="col-span-1 text-start">
-    <span class="block whitespace-no-wrap font-sans">
+  <div class="col-span-1">
+    <span class="block whitespace-nowrap font-sans">
       <i class="fas fa-exclamation-triangle" style="color: #d69e2e"></i>
       Warnings
     </span>
@@ -49,8 +49,8 @@
       {/if}
     </span>
   </div>
-    <div class="col-span-1 text-start">
-      <span class="block whitespace-no-wrap font-sans">
+    <div class="col-span-1">
+      <span class="block whitespace-nowrap font-sans">
         <i class="textred fas fa-exclamation-circle"></i>
         Errors
       </span>
@@ -66,8 +66,8 @@
       </span>
     </div>
     {:else}
-    <div class="col-span-1 text-start">
-      <span class="block whitespace-no-wrap font-sans">Warnings
+    <div class="col-span-1">
+      <span class="block whitespace-nowrap font-sans">Warnings
         <i class="fas fa-info-circle" title="😵" use:tooltip></i>
       </span>
       <span
@@ -75,8 +75,8 @@
         N/A
       </span>
     </div>
-    <div class="col-span-1 text-start">
-      <span class="block whitespace-no-wrap font-sans">Errors
+    <div class="col-span-1">
+      <span class="block whitespace-nowrap font-sans">Errors
         <i class="fas fa-info-circle" title="😡" use:tooltip></i>
       </span>
       <span

@@ -42,7 +42,7 @@
     on:keydown={undefined} />
 
   <div
-    class={`modal-container bg-white w-11/12 md:${full ? 'max-w-6xl' : 'max-w-xl'} mx-auto rounded
+    class={`modal-container bg-white w-11/12 ${full ? 'max-w-6xl' : 'max-w-xl'} mx-auto rounded
     shadow-lg z-50 overflow-y-auto`}>
     <!-- Add margin if you want to see some of the overlay behind the modal-->
     <div

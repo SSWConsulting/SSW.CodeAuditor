@@ -1,8 +1,11 @@
 @import '../node_modules/github-markdown-css/github-markdown-light';
 @import '../node_modules/codemirror/lib/codemirror';
-@import '../node_modules/tailwindcss/dist/tailwind';
 @import '../node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss';
 @import '../node_modules/@fortawesome/fontawesome-free/scss/solid.scss';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 html,
 body {

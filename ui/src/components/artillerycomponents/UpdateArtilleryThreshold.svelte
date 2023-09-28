@@ -68,7 +68,7 @@
       <input
         id="median-latency"
         class="shadow appearance-none border rounded w-full py-2 px-3
-        text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        text-gray-700 leading-tight focus:outline-none focus:ring"
         type="number"
         bind:value={threshold.latencyMedian}
         required={false} />
@@ -81,7 +81,7 @@
       <input
         id="p95-latency"
         class="shadow appearance-none border rounded w-full py-2 px-3
-        text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        text-gray-700 leading-tight focus:outline-none focus:ring"
         type="number"
         bind:value={threshold.latencyP95}
         required={false} />
@@ -94,7 +94,7 @@
       <input
         id="p99-latency"
         class="shadow appearance-none border rounded w-full py-2 px-3
-        text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        text-gray-700 leading-tight focus:outline-none focus:ring"
         type="number"
         bind:value={threshold.latencyP99}
         required={false} />
@@ -107,7 +107,7 @@
       <input
         id="errors-count"
         class="shadow appearance-none border rounded w-full py-2 px-3
-        text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        text-gray-700 leading-tight focus:outline-none focus:ring"
         type="number"
         bind:value={threshold.errors}
         required={false} />

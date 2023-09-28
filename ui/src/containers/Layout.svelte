@@ -35,7 +35,7 @@
 </script>
 
 <body class="flex flex-col min-h-screen">
-  <main class="flex-grow">
+  <main class="grow">
     <nav class="flex items-center justify-between p-4 lg:h-24 bggrey mb-4">
       <div class="flex flex-wrap mx-auto">
         <div class="w-full">

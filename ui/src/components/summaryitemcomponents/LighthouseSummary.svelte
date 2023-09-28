@@ -8,7 +8,7 @@
   <!-- content here -->
   <div>
     <div class="grid grid-cols-2 lg:grid-cols-3 gap-x-5 text-center text-lg">
-      <div class="col-span-1 text-start">
+      <div class="col-span-1">
         <span class="block font-sans">Performance</span>
         <span
           title="Performance"
@@ -17,7 +17,7 @@
           {perf.performanceScore}
         </span>
       </div>
-      <div class="col-span-1 text-start">
+      <div class="col-span-1">
         <span class="block font-sans">Accessibility</span>
         <span
           class="font-bold block lg:inline-block textgrey"
@@ -27,7 +27,7 @@
         </span>
       </div>
 
-      <div class="col-span-1 text-start">
+      <div class="col-span-1">
         <span class="block font-sans">SEO</span>
         <span
           title="SEO"
@@ -36,7 +36,7 @@
           {perf.seoScore}
         </span>
       </div>
-      <div class="text-start">
+      <div>
         <span class="block font-sans">Best Practice</span>
         <span
           class="font-bold block lg:inline-block textgrey"

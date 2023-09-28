@@ -1,4 +1,4 @@
-<style type="text/scss">
+<style lang="scss">
   .loader {
     --path: #2f3545;
     --dot: #cc4141;

@@ -85,7 +85,7 @@
   />
 
   <div
-    class={`modal-container bg-white w-11/12 md:max-w-lg mx-auto rounded shadow-lg z-50 overflow-y-auto`}
+    class={`modal-container bg-white md:max-w-lg mx-auto rounded shadow-lg z-50 overflow-y-auto`}
   >
     <!-- Add margin if you want to see some of the overlay behind the modal-->
     <div class="modal-content py-4 text-left px-6">
