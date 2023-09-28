@@ -5,17 +5,14 @@
     getIgnoreList,
     getLatestBuildDetails
   } from "../stores";
-  import Tabs from "../components/misccomponents/Tabs.svelte";
-  import Breadcrumbs from "../components/misccomponents/Breadcrumbs.svelte";
   import DetailsTable from "../components/linkauditorcomponents/DetailsTable.svelte";
   import Toastr from "../components/misccomponents/Toastr.svelte";
-  import BuildDetailsCard from "../components/detailcardcomponents/BuildDetailsCard.svelte";
   import { mkConfig, generateCsv, download } from "export-to-csv";
   import { Navigate } from "svelte-router-spa";
   import LoadingFlat from "../components/misccomponents/LoadingFlat.svelte";
   import UpdateIgnoreUrl from "../components/misccomponents/UpdateIgnoreUrl.svelte";
-  import CardSummary from "../components/summaryitemcomponents/CardSummary.svelte";
   import { unscannableLinks } from "../../../api/functions/consts";
+  import BuildDetailsSlot from "../components/detailslotcomponents/BuildDetailsSlot.svelte";
 
   export let currentRoute;
 
@@ -74,22 +71,18 @@
       <LoadingFlat />
     {:then data}
 
-    <Breadcrumbs
-      displayMode="Links" />
-    <br>
-      
-      <CardSummary value={data.summary} />
-
-      <BuildDetailsCard build={data ? data : {}} />
-      
-      <Tabs build={data ? data : {}} displayMode="url" />
-
+    <BuildDetailsSlot
+      {data}
+      componentType="Links"
+    >
       <DetailsTable
         on:download={() => onDownload(data)}
         on:ignore={url => showIgnore(data.summary.url, url, $userSession$)}
         builds={data ? data.brokenLinks : []}
         {currentRoute}
-        {unscannableLinks} />
+        {unscannableLinks} 
+      />
+    </BuildDetailsSlot>
     {:catch error}
       <p class="text-red-600 mx-auto text-2xl py-8">{error.message}</p>
     {/await}
