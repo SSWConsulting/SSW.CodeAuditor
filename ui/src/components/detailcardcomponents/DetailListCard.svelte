@@ -112,14 +112,7 @@
             <LighthouseSummary value={val} />
           </div>
         {/if}
-      </div>
-
-      <div class="text-left">
-        <span class="font-sans text-lg pt-2">
-          Build Version: {val.buildVersion}
-        </span>
-      </div>
-      
+      </div>      
     </div>
   </div>
 {/each}
