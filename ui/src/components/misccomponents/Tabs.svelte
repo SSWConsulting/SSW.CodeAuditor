@@ -59,20 +59,18 @@
       </Navigate>
     </span>
   </li>
-  <li class="mr-1" class:-mb-px={displayMode === 'Artillery'}>
-    <span class={baseClass + (displayMode === 'Artillery' ? active : '')}>
-      <Navigate to={'/artillery/' + build.summary.runId}>
-        Artillery Load Test{artilleryLoadTest.length ? ` (${artilleryLoadTest.length})` : ''}
+  <li class="mr-1" class:-mb-px={displayMode === 'Lighthouse'}>
+    <span class={baseClass + (displayMode === 'Lighthouse' ? active : '')}>
+      <Navigate to={'/lighthouse/' + build.summary.runId}>
+        Lighthouse Audit
       </Navigate>
     </span>
   </li>
-  {#if build.summary.performanceScore}
-    <li class="mr-1" class:-mb-px={displayMode === 'Lighthouse'}>
-      <span class={baseClass + (displayMode === 'Lighthouse' ? active : '')}>
-        <Navigate to={'/lighthouse/' + build.summary.runId}>
-          Lighthouse Audit{lhWarning.length ? ` (${lhWarning.length})` : ''}
-        </Navigate>
-      </span>
-    </li>
-  {/if}
+  <li class="mr-1" class:-mb-px={displayMode === 'Artillery'}>
+    <span class={baseClass + (displayMode === 'Artillery' ? active : '')}>
+      <Navigate to={'/artillery/' + build.summary.runId}>
+        Artillery Load Test
+      </Navigate>
+    </span>
+  </li>
 </ul>

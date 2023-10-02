@@ -88,7 +88,7 @@
     
     <div class="text-left text-xs mt-3 mb-3">
         <span class="font-sans">
-        Build Version: {data.summary.buildVersion}
+          CodeAuditor Version: {data.summary.buildVersion}
         </span>
     </div>
 </div>
