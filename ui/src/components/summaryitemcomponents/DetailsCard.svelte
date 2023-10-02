@@ -56,7 +56,7 @@
         {#if val.performanceScore}
           <div class="md:row-span-1 text-sm my-2">
             <h2>
-              <span class="font-bold font-sans textgrey">LIGHTHOUSE</span>
+              <span class="font-bold font-sans textgrey">LIGHTHOUSE AUDIT</span>
             </h2>
             <LighthouseSummary value={val} />
           </div>
@@ -64,7 +64,7 @@
   
         <div class="md:row-span-1 text-sm my-2">
           <h2>
-            <span class="font-bold font-sans textgrey">LOAD TEST</span>
+            <span class="font-bold font-sans textgrey">ARTILLERY LOAD TEST</span>
           </h2>
           <ArtillerySummary value={val} />
         </div>
