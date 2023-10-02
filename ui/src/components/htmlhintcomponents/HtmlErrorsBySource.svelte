@@ -93,7 +93,7 @@
         {#each Object.keys(url.errors) as key}
           <tr>
             <td
-              class="whitespace-no-wrap break-all w-2/12 border px-4 py-2
+              class="whitespace-nowrap break-all w-2/12 border px-4 py-2
               break-all">
               <i class="{ERRORS.indexOf(key) >= 0 ? 'fas fa-exclamation-circle fa-lg' : 'fas fa-exclamation-triangle fa-lg'}" style="{ERRORS.indexOf(key) >= 0 ? 'color: red' : 'color: #d69e2e'}"></i> 
               <a
@@ -110,7 +110,7 @@
                   <div
                     class="text-xs mr-2 my-1 uppercase tracking-wider border
                     px-2 border-red-600 hover:bg-red-600 hover:text-white
-                    cursor-default whitespace-no-wrap">
+                    cursor-default whitespace-nowrap">
                     <a
                       on:click={() => viewSource(url.url, item, key)}
                       href={'#'}
@@ -125,7 +125,7 @@
                       <div
                         class="text-xs mr-2 my-1 uppercase tracking-wider border
                         px-2 border-red-600 hover:bg-red-600 hover:text-white
-                        cursor-default whitespace-no-wrap">
+                        cursor-default whitespace-nowrap">
                         <a
                           on:click={() => viewSource(url.url, item, key)}
                           href={'#'}

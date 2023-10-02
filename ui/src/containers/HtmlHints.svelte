@@ -69,8 +69,10 @@
   const getSelectedHtmlRules = async () => {
     await promise.then((data) => {
       userSession$.subscribe(async user => {
-        const res = await fetch(`${CONSTS.API}/api/config/${user.apiKey}/htmlhintrulesbyrunid/${runId}`);
-        htmlRules = await res.json();
+        if (user) {
+          const res = await fetch(`${CONSTS.API}/api/config/${user.apiKey}/htmlhintrulesbyrunid/${runId}`);
+          htmlRules = await res.json();
+        }
       });
 	  });
   }

@@ -1,7 +1,7 @@
 <script>
   import { userSession$ } from "../stores";
   import { onDestroy } from "svelte";
-  import marked from "marked";
+  import * as marked from "marked";
   import BuildList from "../components/buildlistcardcomponents/BuildList.svelte";
   import LoadingFlat from "../components/misccomponents/LoadingFlat.svelte";
   import { getFirestore, collection, getDoc, doc } from "firebase/firestore";

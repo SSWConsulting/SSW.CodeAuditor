@@ -120,7 +120,7 @@
 
 </script>
 
-<div class="text-left whitespace-no-wrap mb-3">
+<div class="text-left whitespace-nowrap mb-3">
   <span class="inline-block font-sans sm:text-sm">{chartTitle}</span>
   <svg
     class="inline-block w-6 h-6"
