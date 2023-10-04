@@ -84,20 +84,24 @@
   mainAction="Save"
   on:action={updateIgnore}
   on:dismiss={dismiss}>
-  <div class="ml-5">
+  <div>
+    <div class="text-md text-grey-400 mb-4">
+      Ignoring a URL here will prevent CodeAuditor from scanning it for future scans. A URL can be ignored
+      for a specified period of time, for either all sites or just the current site.
+    </div>
     <TextField bind:value={url} placeholder="" label="URL" type="text" />
-    <div class="text-sm text-grey-400 py-3">
+    <div class="text-sm text-grey-400 mb-2">
       You can use glob matching, e.g. https://twitter.com/** will match with
       https://twitter.com/users/john or https://twitter.com/login
     </div>
-    <div class="text-sm text-grey-400">
+    <div class="text-sm text-grey-400 mb-4">
       To see more supported Glob patterns, check out 
       <a class="link hover:text-red-600" href="https://github.com/SSWConsulting/SSW.CodeAuditor/wiki/SSW-CodeAuditor-Knowledge-Base-(KB)#supported-glob-patterns-when-adding-ignored-urls">CodeAuditor KB</a>
     </div>
-    <label for="radio1" class="block uppercase text-xs mb-2 py-2">For</label>
-    <ul>
+    <label for="radio1" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">For</label>
+    <ul class="mb-4">
       <li class="pb-3">
-        <div class="flex items-center mr-4 mb-4">
+        <div class="flex items-center ml-2 mr-4">
           <input
             id="radio1"
             type="radio"
@@ -115,7 +119,7 @@
       </li>
       {#if scanUrl}
         <li>
-          <div class="flex items-center mr-4 mb-4">
+          <div class="flex items-center ml-2 mr-4">
             <input
               type="radio"
               class="hidden"
