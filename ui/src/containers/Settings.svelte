@@ -14,6 +14,7 @@
   let ignoreDuration;
   let scanUrl;
   let loading = false;
+  let editing = false;
 
   $: if ($userSession$) {
     load();
@@ -27,7 +28,16 @@
     }, 300);
   };
 
+  const addIgnore = () => {
+    editing = false;
+    urlToIgnore = "https://";
+    ignoreDuration = null;
+    scanUrl = null;
+    ignoreUrlShown = true;
+  };
+
   const editIgnore = (e) => {
+    editing = true;
     urlToIgnore = e.detail.urlToIgnore;
     ignoreDuration = e.detail.ignoreDuration;
     scanUrl = e.detail.ignoreOn;
@@ -44,7 +54,7 @@
       <div class="grid grid-cols-3 gap-4">
         <div>
           <button 
-            on:click={() => ignoreUrlShown = true}
+            on:click={addIgnore}
             class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
             border hover:border-transparent rounded">
             <span class="ml-2">Add URLs to Ignore List</span>
@@ -63,7 +73,7 @@
 
 <UpdateIgnoreUrl
   bind:show={ignoreUrlShown}
-  editing={true}
+  {editing}
   url={urlToIgnore}
   {scanUrl}
   duration={ignoreDuration}
