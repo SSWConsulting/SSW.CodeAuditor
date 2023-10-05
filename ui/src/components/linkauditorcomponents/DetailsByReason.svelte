@@ -7,6 +7,7 @@
   import Icon from "../misccomponents/Icon.svelte";
   import LoadingCircle from "../misccomponents/LoadingCircle.svelte";
   import Toastr from "../misccomponents/Toastr.svelte";
+  import { tooltip } from '../misccomponents/tooltip';
   export let builds = [];
   const dispatch = createEventDispatcher();
   const ignore = url => dispatch("ignore", url);
@@ -95,7 +96,7 @@
           <th class="w-2/12 px-2 py-2">Anchor Text</th>
           <th class="w-1/12 px-2 py-2 text-right">Status</th>
           <th class="w-1/12 px-2 py-2 text-right">Days Unfixed</th>
-          <th class="hidden md:table-cell w-1/12 px-2 py-2">Ignore</th>
+          <th class="hidden md:table-cell w-1/12 px-2 py-2" title="Ignore URL in future scans" use:tooltip>Ignore</th>
         </tr>
       </thead>
       <tbody>

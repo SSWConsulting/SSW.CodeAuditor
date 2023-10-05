@@ -7,6 +7,7 @@
   import { createEventDispatcher } from "svelte";
   import LoadingCircle from "../misccomponents/LoadingCircle.svelte";
   import Toastr from "../misccomponents/Toastr.svelte";
+  import { tooltip } from '../misccomponents/tooltip';
   const dispatch = createEventDispatcher();
 
   export let builds = [];
@@ -89,7 +90,7 @@
   {#if !hiddenRows[url]}
     <div class="font-bold textgrey ml-2">
       <i class="fas fa-ban"></i>
-      Ignore: 
+      <span title="Ignore URL in future scans" use:tooltip>Ignore: </span>
       {#if loadingChecks[url]}
         <LoadingCircle />
       {:else}
