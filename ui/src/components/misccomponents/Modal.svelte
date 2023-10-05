@@ -1,5 +1,5 @@
 <script>
-  import LoadingCirle from "./LoadingCircle.svelte";
+  import LoadingCircle from "./LoadingCircle.svelte";
   import { createEventDispatcher } from "svelte";
   export let show;
   export let header;
@@ -69,7 +69,7 @@
             border hover:border-transparent rounded">
             {mainAction}
             {#if loading}
-              <LoadingCirle />
+              <LoadingCircle />
             {/if}
           </button>
         {/if}

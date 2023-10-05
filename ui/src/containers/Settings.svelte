@@ -10,6 +10,9 @@
   import UpdateIgnoreUrl from "../components/misccomponents/UpdateIgnoreUrl.svelte";
 
   let ignoreUrlShown;
+  let urlToIgnore;
+  let ignoreDuration;
+  let scanUrl;
   let loading = false;
 
   $: if ($userSession$) {
@@ -22,6 +25,13 @@
       await getIgnoreList($userSession$);
       loading = false;
     }, 300);
+  };
+
+  const editIgnore = (e) => {
+    urlToIgnore = e.detail.urlToIgnore;
+    ignoreDuration = e.detail.ignoreDuration;
+    scanUrl = e.detail.ignoreOn;
+    ignoreUrlShown = true;
   };
 </script>
 
@@ -41,7 +51,10 @@
           </button>
         </div>
       </div>
-      <IgnoreLists builds={$ignoredUrls$} />
+      <IgnoreLists
+        on:editIgnore={editIgnore}
+        builds={$ignoredUrls$}
+      />
     {:else}
       <div class="text-xl text-center pt-8 pb-6">You must be logged in to use this feature</div>
     {/if}
@@ -50,4 +63,8 @@
 
 <UpdateIgnoreUrl
   bind:show={ignoreUrlShown}
+  editing={true}
+  url={urlToIgnore}
+  {scanUrl}
+  duration={ignoreDuration}
   user={$userSession$} />

@@ -9,6 +9,7 @@
   export let autocomplete = "";
   export let required = true;
   export let placeholder = "";
+  export let disabled = false;
 
   const enterKey = key => key.code === "Enter" && dispatch("enterKey");
   const handleInput = e => {
@@ -117,6 +118,7 @@
   {placeholder}
   {autocomplete}
   {value}
+  {disabled}
   class:border-red-300={(required && !value) || errorMsg}
   class:focus:border-red-500={(required && !value) || errorMsg}
   on:input={handleInput}
