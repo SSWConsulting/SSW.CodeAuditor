@@ -11,6 +11,8 @@
   export let scanUrl;
   export let show;
   export let user;
+  export let duration;
+  export let editing = false;
 
   let ignoredUrls = [];
 
@@ -52,8 +54,12 @@
   };
 
   $: if (show) {
-    ignoreOn = "all";
-    ignoreDuration = 3;
+    if (scanUrl === "all") {
+      scanUrl = null;
+    }
+
+    ignoreOn = editing && scanUrl ? scanUrl : "all";
+    ignoreDuration = duration ||  3;
   }
 </script>
 
@@ -62,9 +68,14 @@
     transition: background 0.2s, transform 0.2s;
   }
 
-  input[type="radio"] + label span:hover,
-  input[type="radio"] + label:hover span {
+  input[type="radio"] + label:not(.disabled) span:hover,
+  input[type="radio"] + label:hover:not(.disabled) span {
     transform: scale(1.2);
+    cursor: pointer;
+  }
+
+  input[type="radio"] + label:hover:not(.disabled) {
+    cursor: pointer;
   }
 
   input[type="radio"]:checked + label span {
@@ -72,8 +83,22 @@
     box-shadow: 0px 0px 0px 2px white inset;
   }
 
+  input[type="radio"]:checked + label.disabled span {
+    background-color: #ccc;
+    border-color: #ccc;
+  }
+
+  input[type="radio"] + label.disabled span {
+    background-color: white;
+    border-color: #ccc;
+  }
+
   input[type="radio"]:checked + label {
     color: #414141;
+  }
+
+  input[type="radio"] + label.disabled {
+    color: #ccc;
   }
 </style>
 
@@ -84,48 +109,56 @@
   mainAction="Save"
   on:action={updateIgnore}
   on:dismiss={dismiss}>
-  <div class="ml-5">
-    <TextField bind:value={url} placeholder="" label="URL" type="text" />
-    <div class="text-sm text-grey-400 py-3">
+  <div>
+    <div class="text-md text-grey-400 mb-4">
+      Ignoring a URL here will prevent CodeAuditor from scanning it for future scans. A URL can be ignored
+      for a specified period of time, for either all sites or just the current site.
+    </div>
+    <TextField bind:value={url} disabled={editing} placeholder="" label="URL" type="text" />
+    <div class="text-sm text-grey-400 mb-2">
       You can use glob matching, e.g. https://twitter.com/** will match with
       https://twitter.com/users/john or https://twitter.com/login
     </div>
-    <div class="text-sm text-grey-400">
+    <div class="text-sm text-grey-400 mb-4">
       To see more supported Glob patterns, check out 
       <a class="link hover:text-red-600" href="https://github.com/SSWConsulting/SSW.CodeAuditor/wiki/SSW-CodeAuditor-Knowledge-Base-(KB)#supported-glob-patterns-when-adding-ignored-urls">CodeAuditor KB</a>
     </div>
-    <label for="radio1" class="block uppercase text-xs mb-2 py-2">For</label>
-    <ul>
+    <label for="radio1" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">For</label>
+    <ul class="mb-4">
       <li class="pb-3">
-        <div class="flex items-center mr-4 mb-4">
+        <div class="flex items-center ml-2 mr-4">
           <input
             id="radio1"
             type="radio"
             class="hidden"
             value={'all'}
-            bind:group={ignoreOn} />
+            bind:group={ignoreOn}
+            disabled={editing}
+          />
 
-          <label for="radio1" class="flex items-center cursor-pointer">
+          <label for="radio1" class:disabled={editing} class="flex items-center">
             <span
               class="w-5 h-5 inline-block mr-2 rounded-full border-black
-              border-solid border flex-no-shrink" />
+              border-solid border shrink-0" />
             All new builds
           </label>
         </div>
       </li>
       {#if scanUrl}
         <li>
-          <div class="flex items-center mr-4 mb-4">
+          <div class="flex items-center ml-2 mr-4">
             <input
               type="radio"
               class="hidden"
               id="radio2"
               bind:group={ignoreOn}
-              value={url} />
-            <label for="radio2" class="flex items-center cursor-pointer">
+              value={url}
+              disabled={editing}
+            />
+            <label for="radio2" class:disabled={editing} class="flex items-center">
               <span
                 class="w-5 h-5 inline-block mr-2 rounded-full border-black
-                border-solid border flex-no-shrink" />
+                border-solid border shrink-0" />
               Only when {scanUrl} is scanned
             </label>
           </div>
