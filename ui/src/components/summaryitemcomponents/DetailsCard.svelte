@@ -1,8 +1,8 @@
 <script>
-  import LighthouseSummary from "../summaryitemcomponents/LighthouseSummary.svelte";
-  import CodeSummary from "../summaryitemcomponents/CodeSummary.svelte";
-  import LinkSummary from "../summaryitemcomponents/LinkSummary.svelte";
-  import ArtillerySummary from "../summaryitemcomponents/ArtillerySummary.svelte";
+  import LighthouseSummary from "./LighthouseSummary.svelte";
+  import CodeSummary from "./CodeSummary.svelte";
+  import LinkSummary from "./LinkSummary.svelte";
+  import ArtillerySummary from "./ArtillerySummary.svelte";
   import { htmlHintRules, customHtmlHintRules, RuleType } from "../../utils/utils";
 
   export let build = {};
@@ -56,7 +56,7 @@
         {#if val.performanceScore}
           <div class="md:row-span-1 text-sm my-2">
             <h2>
-              <span class="font-bold font-sans textgrey">LIGHTHOUSE</span>
+              <span class="font-bold font-sans textgrey">LIGHTHOUSE AUDIT</span>
             </h2>
             <LighthouseSummary value={val} />
           </div>
@@ -64,7 +64,7 @@
   
         <div class="md:row-span-1 text-sm my-2">
           <h2>
-            <span class="font-bold font-sans textgrey">LOAD TEST</span>
+            <span class="font-bold font-sans textgrey">ARTILLERY LOAD TEST</span>
           </h2>
           <ArtillerySummary value={val} />
         </div>
@@ -72,7 +72,7 @@
       <div></div>
     </div>
 
-    <div class="font-sans text-lg pt-2">
+    <div class="font-sans text-lg pt-3 pb-3">
       {#if htmlRules?.selectedRules}
         <p class="inline">HTML Rules Scanned: {htmlRules.selectedRules.split(/[,]+/).length}</p>
         <span type="button" class="inline cursor-pointer" on:click={handleClick} on:keydown={handleClick}>
@@ -113,10 +113,5 @@
         {/if}
       {/if}
     </div>
-
-    <div class="py-4">
-      <p>Build Version: {val.buildVersion}</p>
-    </div>
-
   </div>
 </div>

@@ -4,8 +4,11 @@
   import LoadingCircle from "./LoadingCircle.svelte";
   import Icon from "./Icon.svelte";
   import { userSession$, deleteIgnoreUrl } from "../../stores";
+  import { createEventDispatcher } from 'svelte';
 
   export let builds = [];
+
+  const dispatch = createEventDispatcher();
 
   $: numberOfIgnored = builds.length;
 
@@ -76,16 +79,22 @@
             {#if loading && val.urlToIgnore === deleteUrl}
               <LoadingCircle />
             {:else}
-              <a
-                href={'#'}
-                on:click={() => deleteIgnore(val, $userSession$)}>
-                <Icon>
-                  <path
-                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0
-                    01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0
-                    00-1 1v3M4 7h16" />
-                </Icon>
-              </a>
+              <div class="flex gap-2">
+                <a href={null} on:click={() => dispatch('editIgnore', val)}>
+                  <i class="fa-solid fa-pen-to-square fa-lg cursor-pointer"></i>
+                </a>
+                <a
+                  href={null}
+                  class="cursor-pointer"
+                  on:click={() => deleteIgnore(val, $userSession$)}>
+                  <Icon>
+                    <path
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0
+                      01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0
+                      00-1 1v3M4 7h16" />
+                  </Icon>
+                </a>
+              </div>
             {/if}
           </td>
         </tr>

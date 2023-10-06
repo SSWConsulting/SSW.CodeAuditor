@@ -159,8 +159,8 @@ app.get('/run/:runId', async (req, res) => {
 	});
 });
 
-app.get('/latest/:api/:url', async (req, res) => {
-	const summary = await getLatestSummaryFromUrlAndApi(req.params.url, req.params.api);
+app.post('/latest/:api', async (req, res) => {
+	const summary = await getLatestSummaryFromUrlAndApi(req.body.url, req.params.api);
 	const brokenLinks = await getScanDetails(summary[0].runId);
 	res.json({
 		summary,

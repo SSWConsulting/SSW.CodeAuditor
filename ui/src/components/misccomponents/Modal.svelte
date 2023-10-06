@@ -1,5 +1,5 @@
 <script>
-  import LoadingCirle from "./LoadingCircle.svelte";
+  import LoadingCircle from "./LoadingCircle.svelte";
   import { createEventDispatcher } from "svelte";
   export let show;
   export let header;
@@ -21,6 +21,7 @@
 <style>
   .modal {
     transition: opacity 0.2s ease;
+    z-index: 3000;
   }
   .fullheight {
     height: 90vh;
@@ -42,14 +43,14 @@
     on:keydown={undefined} />
 
   <div
-    class={`modal-container bg-white w-11/12 md:${full ? 'max-w-6xl' : 'max-w-xl'} mx-auto rounded
+    class={`modal-container bg-white w-11/12 ${full ? 'max-w-6xl' : 'max-w-xl'} mx-auto rounded
     shadow-lg z-50 overflow-y-auto`}>
     <!-- Add margin if you want to see some of the overlay behind the modal-->
     <div
       class="modal-content py-4 text-left px-6"
       class:fullheight={full === true}>
       <!--Title-->
-      <div class="flex justify-between items-center">
+      <div class="flex justify-between items-center mb-4">
         <p class="text-2xl font-bold">{header}</p>
       </div>
 
@@ -68,7 +69,7 @@
             border hover:border-transparent rounded">
             {mainAction}
             {#if loading}
-              <LoadingCirle />
+              <LoadingCircle />
             {/if}
           </button>
         {/if}

@@ -35,7 +35,7 @@
 </script>
 
 <body class="flex flex-col min-h-screen">
-  <main class="flex-grow">
+  <main class="grow">
     <nav class="flex items-center justify-between p-4 lg:h-24 bggrey mb-4">
       <div class="flex flex-wrap mx-auto">
         <div class="w-full">
@@ -205,8 +205,7 @@
       <div class="xl:mx-6">
         <div class="mx-6 flex flex-col-reverse md:flex-row justify-between">
           <div class="py-2">
-            Copyright © SSW 1990 - {new Date().getFullYear()}. All Rights
-            Reserved.
+            © 1990 - {new Date().getFullYear()} SSW. All rights reserved.
           </div>
           <div class="w-full md:w-3/5 md:text-right py-2">
             <a
@@ -326,7 +325,7 @@
         <hr class="border-gray-800 my-2" />
         <div class="flex flex-col md:flex-row justify-between mx-6">
           <div class="py-2">
-            Our website is under
+            This website is under
             <a
               class="footer-link"
               href="https://www.ssw.com.au/rules/rules-to-better-continuous-deployment-with-tfs"

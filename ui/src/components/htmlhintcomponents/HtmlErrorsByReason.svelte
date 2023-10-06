@@ -109,7 +109,7 @@
         {#each error.pages as page}
           <tr>
             <td
-              class="whitespace-no-wrap break-all w-2/12 border px-4 py-2
+              class="whitespace-nowrap break-all w-2/12 border px-4 py-2
               break-all"
               title={page.url}>
               <a class="link" href={page.url}>{truncate(80)(page.url)}</a>
@@ -120,7 +120,7 @@
                   <div
                     class="text-xs mr-2 my-1 uppercase tracking-wider border
                     px-2 border-red-600 hover:bg-red-600 hover:text-white
-                    cursor-default whitespace-no-wrap">
+                    cursor-default whitespace-nowrap">
                     <a
                       on:click={() => viewSource(page.url, item, error.error)}
                       href={'#'}
@@ -135,7 +135,7 @@
                       <div
                         class="text-xs mr-2 my-1 uppercase tracking-wider border
                         px-2 border-red-600 hover:bg-red-600 hover:text-white
-                        cursor-default whitespace-no-wrap">
+                        cursor-default whitespace-nowrap">
                         <a
                           on:click={() => viewSource(page.url, item, error.error)}
                           href={'#'}

@@ -240,6 +240,14 @@ exports.getSummaryById = (runId) =>
 
 exports.getLatestSummaryFromUrlAndApi = (url, api) => 
 	new Promise(async (resolve) => {
+		// Standardize url string
+		if (!url.startsWith("https://")) {
+			url = "https://" + url;
+		}
+		if (!url.endsWith("/")) {
+			url = url + '/';
+		}
+		
 		const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
 			queryOptions: { filter: odata`url eq ${url} and PartitionKey eq ${api}` }
 		});
@@ -295,12 +303,6 @@ exports.compareScans = (api, url) =>
 		if (!url.startsWith("https://")) {
 			url = "https://" + url;
 		}
-		if (!url.startsWith("http://")) {
-			url = "http://" + url;
-		}  
-		if (!url.includes("www.")) {
-			url = url.replace('https://', 'https://www.');
-		} 
 		if (!url.endsWith("/")) {
 			url = url + '/';
 		}

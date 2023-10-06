@@ -4,7 +4,7 @@ import ForgetPassword from './containers/ForgetPassword.svelte';
 import Dashboard from './containers/Dashboard.svelte';
 import Settings from './containers/Settings.svelte';
 import HtmlHints from './containers/HtmlHints.svelte';
-import BuildDetails from './containers/BuildDetails.svelte';
+import LinkReport from './containers/LinkReport.svelte';
 import PublicBuilds from './containers/PublicBuilds.svelte';
 import Home from './containers/Home.svelte';
 import HowItWorks from './containers/HowItWorks.svelte';
@@ -45,7 +45,7 @@ const routes = [
 	},
 	{
 		name: '/build/:id',
-		component: BuildDetails,
+		component: LinkReport,
 		layout: AppLayout
 	},
 	{
@@ -65,7 +65,7 @@ const routes = [
 	},
 	{
 		name: '/latest/:api/:url',
-		component: BuildDetails,
+		component: LinkReport,
 		layout: AppLayout
 	},
 	{
