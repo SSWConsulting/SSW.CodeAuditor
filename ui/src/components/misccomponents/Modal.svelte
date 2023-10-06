@@ -1,5 +1,5 @@
 <script>
-  import LoadingCirle from "./LoadingCircle.svelte";
+  import LoadingCircle from "./LoadingCircle.svelte";
   import { createEventDispatcher } from "svelte";
   export let show;
   export let header;
@@ -50,7 +50,7 @@
       class="modal-content py-4 text-left px-6"
       class:fullheight={full === true}>
       <!--Title-->
-      <div class="flex justify-between items-center">
+      <div class="flex justify-between items-center mb-4">
         <p class="text-2xl font-bold">{header}</p>
       </div>
 
@@ -69,7 +69,7 @@
             border hover:border-transparent rounded">
             {mainAction}
             {#if loading}
-              <LoadingCirle />
+              <LoadingCircle />
             {/if}
           </button>
         {/if}
