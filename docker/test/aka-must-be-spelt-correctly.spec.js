@@ -24,7 +24,7 @@ describe(`Rules: ${ruleId}`, () => {
   });
 
   ["meta", "link", "script", "svg"].forEach((tag) => {
-    it(`aka in an <${tag}> tag should not result in an error`, () => {
+    it(`aka in a <${tag}> tag should not result in an error`, () => {
       const code = `<${tag}>a.k.a A.K.A AKA</${tag}>`;
       const messages = HTMLHint.verify(code, ruleOptions);
       expect(messages.length).to.be(0);
