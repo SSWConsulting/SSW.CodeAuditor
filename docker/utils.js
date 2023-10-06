@@ -147,7 +147,7 @@ const runHtmlHint = async (url, startUrl, tokenApi) => {
   if (tokenApi) {
     const result = await getHTMLHintRules(tokenApi, startUrl);
   
-    if (result && result.selectedRules.length > 0) {
+    if (result && result.selectedRules?.split(",").length > 0) {
       const selectedHtmlConfig = result.selectedRules.split(",");
   
       const htmlRulesConfig = Object.keys(htmlHintConfig);

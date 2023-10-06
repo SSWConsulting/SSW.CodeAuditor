@@ -132,9 +132,6 @@ const main = async () => {
     if (!options.url.startsWith("https://")) {
       options.url = "https://" + options.url;
     }  
-    if (!options.url.includes("www.")) {
-      options.url = options.url.replace('https://', 'https://www.');
-    } 
     if (!options.url.endsWith("/")) {
       options.url = options.url + '/';
     }
@@ -348,11 +345,11 @@ const processAndUpload = async (
   if (args.htmlhint && args.token && runId) {
     const result = await getHTMLHintRules(args.token, args.url);
 
-    if (result && result.selectedRules.length > 0) {
+    if (result && result.selectedRules?.split(",").length > 0) {
       const selectedRules = result.selectedRules;
       const res = await addHTMLHintRulesForScan(args.token, args.url, runId, selectedRules)
   
-      if (res.ok) {
+      if (res) {
         console.log('Upload selected HTMLHint Rules successfully')
       } else {
         throw new Error("Failed to add custom html rules for each scan");
@@ -375,8 +372,6 @@ const processAndUpload = async (
   
       if (alertEmails && alertEmails.length > 0) {
         alertEmails.forEach(item => sendAlertEmail(item.emailAddress, emailConfig, scanSummary))
-      } else {
-        throw new Error("Fail to fetch alert email addresses")
       }
     } else {
       throw new Error("Fail to fetch alert email config")
