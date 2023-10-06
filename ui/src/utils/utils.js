@@ -545,6 +545,12 @@ export const customHtmlHintRules = [
     type: RuleType.Error
   },
   {
+    rule: "aka-must-be-spelt-correctly",
+    displayName: "Content - Must use correct spelling of \"aka\"",
+    ruleLink: "TODO",
+    type: RuleType.Warning
+  },
+  {
     rule: "anchor-names-must-be-valid",
     displayName: "Links - Anchor links’ names must be valid",
     ruleLink: "https://www.ssw.com.au/rules/chose-efficient-anchor-names",

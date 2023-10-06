@@ -401,5 +401,46 @@ exports.addCustomHtmlRule = () => {
       })
     },
   });
+
+  HTMLHint.addRule({
+    id: "aka-must-be-spelt-correctly",
+    description:
+      "Checks that \"aka\" is spelt correctly.",
+    init: function (parser, reporter) {
+      var self = this;
+
+      parser.addListener("all", (event) => {
+        var spellings = [
+          "a.k.a",
+          "A.K.A",
+          "AKA",
+        ];
+
+        if (event.tagName) {
+          if (event.tagName !== "meta" && event.tagName !== "link" && event.tagName !== "script" && event.tagName !== "svg") { 
+            if (event.lastEvent) {
+              let pageContent = event.lastEvent.raw;
+              if (pageContent) {
+                spellings.forEach((i) => {
+                  var contentIndex = pageContent.indexOf(i);
+                  var col = event.lastEvent.col;
+
+                  if (contentIndex >= 0) {
+                    reporter.warn(
+                      "Incorrect spelling of \"aka\": '" + i + "'.",
+                      event.line,
+                      col,
+                      self,
+                      event.raw
+                    );
+                  }
+                });
+              }
+            }    
+          }
+        }
+      });
+    },
+  });
   // Add new custom rule below
 };

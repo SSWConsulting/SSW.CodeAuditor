@@ -161,5 +161,6 @@ exports.htmlHintConfig = {
   "youtube-url-must-be-used-correctly": false,
   "figure-must-use-the-right-code": true,
   "detect-absolute-references-url-path-correctly": true,
-  "use-unicode-hex-code-for-special-html-characters": true
+  "use-unicode-hex-code-for-special-html-characters": true,
+  "aka-must-be-spelt-correctly": true,
 };
