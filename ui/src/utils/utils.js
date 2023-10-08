@@ -533,15 +533,15 @@ export const customHtmlHintRules = [
     type: RuleType.Warning
   },
   {
-    rule: "page-must-not-show-email-addresses",
-    displayName: "Content - Text must not display any email addresses",
-    ruleLink:"https://www.ssw.com.au/rules/avoid-clear-text-email-addresses-in-web-pages",
+    rule: "aka-must-be-spelt-correctly",
+    displayName: "Content - Use the correct spelling of \"aka\"",
+    ruleLink: "https://www.ssw.com.au/rules/avoid-common-mistakes",
     type: RuleType.Warning
   },
   {
-    rule: "aka-must-be-spelt-correctly",
-    displayName: "Content - Must use correct spelling of \"aka\"",
-    ruleLink: "https://www.ssw.com.au/rules/avoid-common-mistakes",
+    rule: "page-must-not-show-email-addresses",
+    displayName: "Content - Text must not display any email addresses",
+    ruleLink:"https://www.ssw.com.au/rules/avoid-clear-text-email-addresses-in-web-pages",
     type: RuleType.Warning
   },
   {
