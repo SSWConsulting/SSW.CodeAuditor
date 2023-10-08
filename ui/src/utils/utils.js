@@ -539,16 +539,16 @@ export const customHtmlHintRules = [
     type: RuleType.Warning
   },
   {
+    rule: "aka-must-be-spelt-correctly",
+    displayName: "Content - Must use correct spelling of \"aka\"",
+    ruleLink: "https://www.ssw.com.au/rules/avoid-common-mistakes",
+    type: RuleType.Warning
+  },
+  {
     rule: "use-unicode-hex-code-for-special-html-characters",
     displayName: "Content - Use Unicode Hex code for special HTML characters",
     ruleLink: "https://ssw.com.au/rules/html-unicode-hex-codes/",
     type: RuleType.Error
-  },
-  {
-    rule: "aka-must-be-spelt-correctly",
-    displayName: "Content - Must use correct spelling of \"aka\"",
-    ruleLink: "TODO",
-    type: RuleType.Warning
   },
   {
     rule: "anchor-names-must-be-valid",
