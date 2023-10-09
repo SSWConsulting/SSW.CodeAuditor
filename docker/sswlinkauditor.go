@@ -49,7 +49,9 @@ func getHref(t html.Token) (ok bool, href string) {
 func check(link Link, linkch chan LinkStatus, number int) {
 	fmt.Println("CHEC", number, link.url)
 
-	client := &http.Client{}
+	client := &http.Client{
+		Timeout: 1 * time.Minute,
+	}
 	method := "HEAD"
 
 	if isLinkUnscannable(link.url) {
@@ -74,7 +76,11 @@ func check(link Link, linkch chan LinkStatus, number int) {
 
 func crawl(link Link, ch chan Link, linkch chan LinkStatus, number int) {
 	fmt.Println("CRAW", number, link.url)
-	resp, err := http.Get(link.url)
+
+	client := &http.Client{
+		Timeout: 1 * time.Minute,
+	}
+	resp, err := client.Get(link.url)
 
 	defer func() {
 		if err != nil {
