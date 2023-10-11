@@ -70,7 +70,7 @@
     await promise.then((data) => {
       userSession$.subscribe(async user => {
         if (user) {
-          const res = await fetch(`${CONSTS.API}/api/config/${user.apiKey}/htmlhintrulesbyrunid/${runId}`);
+          const res = await fetch(`${CONSTS.API}/api/config/htmlhintrulesbyrunid/${runId}`);
           htmlRules = await res.json();
         }
       });
