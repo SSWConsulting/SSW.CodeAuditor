@@ -87,33 +87,37 @@
 
     <div class="font-sans text-lg pt-3 pb-3">
       {#if htmlRules?.selectedRules}
-        <p class="inline">HTML Rules Scanned: {htmlRules.selectedRules.split(/[,]+/).length}</p>
-        <span type="button" class="inline cursor-pointer" on:click={handleClick} on:keydown={handleClick}>
+        <div class="mb-2">
+          <span class="cursor-pointer" on:click={handleClick} on:keydown={handleClick}>
+            <p class="inline">HTML Rules Scanned: {htmlRules.selectedRules.split(/[,]+/).length}</p>
+            <span type="button" class="inline" >
+            {#if isCollapsedRules}
+              <i class="fas fa-angle-up"></i>
+            {:else}
+              <i class="fas fa-angle-down"></i>
+            {/if}
+            </span>
+          </span>
+        </div>
         {#if isCollapsedRules}
-          <i class="fas fa-angle-up"></i>
-        {:else}
-          <i class="fas fa-angle-down"></i>
-        {/if}
-        </span>
-        {#if isCollapsedRules}
-        <ul>
-        {#each formatHtmlRule(htmlRules.selectedRules.split(/[,]+/)) as rule}
-          <li>
-            <i class="status-icon {rule.isRuleEnabled ? 'fas fa-check' : 'fas fa-xmark'}" style="{!rule.isRuleEnabled ? 'color: red' : ''}"></i>
-            <i 
-              class="fas fa-md {rule.type === RuleType.Error ? 'fa-exclamation-circle' : 'fa-exclamation-triangle'}"
-              style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"
-            ></i>
-            <a
-              target="_blank"
-              class="{rule.ruleLink ? 'link' : 'hover:no-underline cursor-text'} {!rule.isRuleEnabled ? 'textred' : ''} inline-block align-baseline"  
-              href="{rule.ruleLink}"
-            >
-              {rule.displayName}
-            </a>
-          </li>
-        {/each}
-        </ul>
+          <ul>
+          {#each formatHtmlRule(htmlRules.selectedRules.split(/[,]+/)) as rule}
+            <li>
+              <i class="status-icon {rule.isRuleEnabled ? 'fas fa-check' : 'fas fa-xmark'}" style="{!rule.isRuleEnabled ? 'color: red' : ''}"></i>
+              <i 
+                class="fas fa-md {rule.type === RuleType.Error ? 'fa-exclamation-circle' : 'fa-exclamation-triangle'}"
+                style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"
+              ></i>
+              <a
+                target="_blank"
+                class="{rule.ruleLink ? 'link' : 'hover:no-underline cursor-text'} {!rule.isRuleEnabled ? 'textred' : ''} inline-block align-baseline"  
+                href="{rule.ruleLink}"
+              >
+                {rule.displayName}
+              </a>
+            </li>
+          {/each}
+          </ul>
         {/if}
       {/if}
     </div>
