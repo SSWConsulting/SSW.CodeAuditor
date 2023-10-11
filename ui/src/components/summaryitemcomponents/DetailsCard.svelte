@@ -41,6 +41,14 @@
   .status-icon {
     width: 15px;
   }
+
+  .disabled-link {
+    text-decoration-color: rgb(204 141 141);
+  }
+  
+  .disabled-link:hover {
+    text-decoration-color: #cc4141;
+  }
 </style>
 
 <div class="overflow-hidden shadow-lg my-5">
@@ -110,7 +118,7 @@
               ></i>
               <a
                 target="_blank"
-                class="{rule.ruleLink ? 'link' : 'hover:no-underline cursor-text'} {!rule.isRuleEnabled ? 'textred' : ''} inline-block align-baseline"  
+                class="{rule.ruleLink ? 'link' : 'hover:no-underline cursor-text'} {!rule.isRuleEnabled ? 'textred disabled-link' : ''} inline-block align-baseline"  
                 href="{rule.ruleLink}"
               >
                 {rule.displayName}
