@@ -159,10 +159,10 @@ exports.getHTMLHintRules = (api, url, isGetAllRecords) =>
 		resolve(isGetAllRecords ? result : result[result.length - 1] || {})
   });
 
-exports.getHTMLHintRulesByRunId = (api, runId) => 
+exports.getHTMLHintRulesByRunId = (runId) => 
 	new Promise(async (resolve) => {
 		const entity = new TableClient(azureUrl, TABLE.htmlhintrules, credential).listEntities({
-			queryOptions: { filter: odata`PartitionKey eq ${api} and RowKey eq ${runId}` }
+			queryOptions: { filter: odata`RowKey eq ${runId}` }
 		});
 		let result = []
 		for await (const item of entity) {

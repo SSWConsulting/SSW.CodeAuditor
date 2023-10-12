@@ -10,9 +10,18 @@
   let val = build.summary;
 
   let isCollapsedRules = false
+
   function handleClick() {
     isCollapsedRules = !isCollapsedRules
 	}
+
+  const formatHtmlRule = (rules) => {
+    let selectedHtmlHintRules = rules.map(rule => htmlHintRules.find(x => x.rule === rule));
+    let selectedCustomHtmlHintRules = rules.map(rule => customHtmlHintRules.find(x => x.rule === rule));
+    let allSelectedRuleLog = selectedHtmlHintRules.concat(selectedCustomHtmlHintRules).filter(x => x);
+    let allHtmlRules = htmlHintRules.concat(customHtmlHintRules)
+    return allHtmlRules.map(rule => ({...rule, isRuleEnabled: allSelectedRuleLog.includes(rule)})).sort((a) => a.isRuleEnabled ? -1 : 1);
+  };
 </script>
 
 <style>
@@ -27,6 +36,18 @@
     background: #fff;
     padding-left: 0px;
     padding-right: 10px;
+  }
+
+  .status-icon {
+    width: 15px;
+  }
+
+  .disabled-link {
+    text-decoration-color: rgb(218 187 187);
+  }
+  
+  .disabled-link:hover {
+    text-decoration-color: #cc4141;
   }
 </style>
 
@@ -74,42 +95,37 @@
 
     <div class="font-sans text-lg pt-3 pb-3">
       {#if htmlRules?.selectedRules}
-        <p class="inline">HTML Rules Scanned: {htmlRules.selectedRules.split(/[,]+/).length}</p>
-        <span type="button" class="inline cursor-pointer" on:click={handleClick} on:keydown={handleClick}>
-          <i class="fas fa-angle-down"></i>
-        </span>
+        <div class="mb-2">
+          <span class="cursor-pointer" on:click={handleClick} on:keydown={handleClick}>
+            <p class="inline">HTML Rules Scanned: {htmlRules.selectedRules.split(/[,]+/).length}</p>
+            <span type="button" class="inline" >
+            {#if isCollapsedRules}
+              <i class="fas fa-angle-up"></i>
+            {:else}
+              <i class="fas fa-angle-down"></i>
+            {/if}
+            </span>
+          </span>
+        </div>
         {#if isCollapsedRules}
-        <ol class="ml-10 list-decimal">
-        {#each htmlRules.selectedRules.split(/[,]+/) as rule}
-          <li>
-          {#if customHtmlHintRules.some(x => x.rule === rule)}
-            <i 
-              class="{customHtmlHintRules.find(x => x.rule === rule).type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}"
-              style="{customHtmlHintRules.find(x => x.rule === rule).type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"
-            ></i>
-            <a
-              target="_blank"
-              class="{(customHtmlHintRules.find(x => x.rule === rule)).ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline"  
-              href="{(customHtmlHintRules.find(x => x.rule === rule)).ruleLink}"
-            >
-              {customHtmlHintRules.find(x => x.rule === rule).displayName}
-            </a>
-          {:else if htmlHintRules.some(x => x.rule === rule)}
-            <i
-              class="{htmlHintRules.find(x => x.rule === rule).type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}"
-              style="{htmlHintRules.find(x => x.rule === rule).type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"
-            ></i>
-            <a 
-              target="_blank"
-              class="{(htmlHintRules.find(x => x.rule === rule)).ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline"  
-              href="{(htmlHintRules.find(x => x.rule === rule)).ruleLink}"
-            >
-              {htmlHintRules.find(x => x.rule === rule).displayName}
-            </a>
-          {/if}
-          </li>
-        {/each}
-        </ol>
+          <ul>
+          {#each formatHtmlRule(htmlRules.selectedRules.split(/[,]+/)) as rule}
+            <li>
+              <i class="status-icon {rule.isRuleEnabled ? 'fas fa-check' : 'fas fa-xmark'}" style="{!rule.isRuleEnabled ? 'color: red' : ''}"></i>
+              <i 
+                class="fas fa-md {rule.type === RuleType.Error ? 'fa-exclamation-circle' : 'fa-exclamation-triangle'}"
+                style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"
+              ></i>
+              <a
+                target="_blank"
+                class="{rule.ruleLink ? 'link' : 'hover:no-underline cursor-text'} {!rule.isRuleEnabled ? 'textred disabled-link' : ''} inline-block align-baseline"  
+                href="{rule.ruleLink}"
+              >
+                {rule.displayName}
+              </a>
+            </li>
+          {/each}
+          </ul>
         {/if}
       {/if}
     </div>
