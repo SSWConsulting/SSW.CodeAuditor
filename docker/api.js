@@ -162,5 +162,5 @@ exports.htmlHintConfig = {
   "figure-must-use-the-right-code": true,
   "detect-absolute-references-url-path-correctly": true,
   "use-unicode-hex-code-for-special-html-characters": true,
-  "aka-must-be-spelt-correctly": true,
+  "common-spelling-mistakes": true
 };
