@@ -43,7 +43,7 @@
   }
 
   .disabled-link {
-    text-decoration-color: rgb(204 141 141);
+    text-decoration-color: rgb(218 187 187);
   }
   
   .disabled-link:hover {
