@@ -418,7 +418,8 @@ exports.processBrokenLinks = (
 ) => {
   const __getBadResults = (allUrls) =>
     allUrls
-      .filter((url) => url["StatusCode"] === "404")
+      // Allow successful 2xx status code range (200-299)
+      .filter((url) => url["StatusCode"].startsWith('2') && url["StatusCode"].length === 3)
       .map((x) => ({
         src: x.Source || "",
         dst: x.Destination || "",
