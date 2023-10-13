@@ -1,7 +1,7 @@
 const expect = require("expect.js");
 const HTMLHint = require("htmlhint").default;
 
-const ruleId = "aka-must-be-spelt-correctly";
+const ruleId = "common-spelling-mistakes";
 
 const ruleOptions = {};
 
@@ -11,21 +11,21 @@ ruleOptions[ruleId] = true;
 
 describe(`Rules: ${ruleId}`, () => {
   addCustomHtmlRule();
-  it("aka used correctly should not result in an error", () => {
-    const code = "<p>aka</p>";
+  it("terms used correctly should not result in an error", () => {
+    const code = "<p>aka email cannot website username taskbar</p>";
     const messages = HTMLHint.verify(code, ruleOptions);
     expect(messages.length).to.be(0);
   });
 
-  it("aka used incorrectly should result in an error", () => {
-    const code = "<p>a.k.a A.K.A AKA</p>";
+  it("terms used incorrectly should result in an error", () => {
+    const code = "<p>a.k.a A.K.A AKA e-mail EMail can not web site user name task bar</p>";
     const messages = HTMLHint.verify(code, ruleOptions);
-    expect(messages.length).to.be(3);
+    expect(messages.length).to.be(9);
   });
 
   ["meta", "link", "script", "svg"].forEach((tag) => {
-    it(`aka in a <${tag}> tag should not result in an error`, () => {
-      const code = `<${tag}>a.k.a A.K.A AKA</${tag}>`;
+    it(`incorrect terms in a <${tag}> tag should not result in an error`, () => {
+      const code = `<${tag}>a.k.a A.K.A AKA e-mail EMail can not web site user name task bar</${tag}>`;
       const messages = HTMLHint.verify(code, ruleOptions);
       expect(messages.length).to.be(0);
     });

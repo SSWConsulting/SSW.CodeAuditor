@@ -419,9 +419,9 @@ exports.addCustomHtmlRule = () => {
   });
 
   HTMLHint.addRule({
-    id: "aka-must-be-spelt-correctly",
+    id: "common-spelling-mistakes",
     description:
-      "Checks that \"aka\" is spelt correctly.",
+      "Checks common spelling mistakes.",
     init: function (parser, reporter) {
       var self = this;
 
@@ -430,10 +430,16 @@ exports.addCustomHtmlRule = () => {
           "a.k.a",
           "A.K.A",
           "AKA",
+          "e-mail",
+          "EMail",
+          "can not",
+          "web site",
+          "user name",
+          "task bar"
         ];
 
         if (event.tagName) {
-          if (event.tagName !== "meta" && event.tagName !== "link" && event.tagName !== "script" && event.tagName !== "svg") { 
+          if (event.tagName !== "a" && event.tagName !== "meta" && event.tagName !== "link" && event.tagName !== "script" && event.tagName !== "svg") { 
             if (event.lastEvent) {
               let pageContent = event.lastEvent.raw;
               if (pageContent) {
@@ -443,7 +449,7 @@ exports.addCustomHtmlRule = () => {
 
                   if (contentIndex >= 0) {
                     reporter.warn(
-                      "Incorrect spelling of \"aka\": '" + i + "'.",
+                      "Incorrect spellings: '" + i + "'.",
                       event.line,
                       col,
                       self,

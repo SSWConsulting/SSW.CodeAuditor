@@ -533,8 +533,8 @@ export const customHtmlHintRules = [
     type: RuleType.Warning
   },
   {
-    rule: "aka-must-be-spelt-correctly",
-    displayName: "Content - Use the correct spelling of \"aka\"",
+    rule: "common-spelling-mistakes",
+    displayName: "Content - Avoid common spelling and syntax mistakes",
     ruleLink: "https://www.ssw.com.au/rules/avoid-common-mistakes",
     type: RuleType.Warning
   },
