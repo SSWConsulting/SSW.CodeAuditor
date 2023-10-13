@@ -533,9 +533,21 @@ export const customHtmlHintRules = [
     type: RuleType.Warning
   },
   {
+    rule: "common-spelling-mistakes",
+    displayName: "Content - Avoid common spelling and syntax mistakes",
+    ruleLink: "https://www.ssw.com.au/rules/avoid-common-mistakes",
+    type: RuleType.Warning
+  },
+  {
     rule: "page-must-not-show-email-addresses",
     displayName: "Content - Text must not display any email addresses",
     ruleLink:"https://www.ssw.com.au/rules/avoid-clear-text-email-addresses-in-web-pages",
+    type: RuleType.Warning
+  },
+  {
+    rule: "phone-numbers-without-links",
+    displayName: "Content - Phone numbers must be in hyperlinks",
+    ruleLink: "https://www.ssw.com.au/rules/do-you-know-to-hyperlink-your-phone-numbers",
     type: RuleType.Warning
   },
   {

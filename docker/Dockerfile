@@ -1,12 +1,12 @@
 ############################
 # STEP 1 build executable binary
 ############################
-FROM golang:1.14.15-alpine3.12 AS builder
+FROM golang:1.16.15-alpine AS builder
 # Install git.
 # Git is required for fetching the dependencies.
 RUN apk update && apk add --no-cache git
 WORKDIR $GOPATH/src/mypackage/myapp/
-COPY *.go .
+COPY *.go *.mod *.sum ./
 # Fetch dependencies.
 # Using go get.
 RUN go get -d -v

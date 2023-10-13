@@ -1,4 +1,5 @@
 const HTMLHint = require("htmlhint").default;
+const findPhoneNumbersInText = require('libphonenumber-js').findPhoneNumbersInText;
 
 exports.addCustomHtmlRule = () => {
   HTMLHint.addRule({
@@ -416,6 +417,81 @@ exports.addCustomHtmlRule = () => {
         }
       })
     },
+  });
+
+  HTMLHint.addRule({
+    id: "common-spelling-mistakes",
+    description:
+      "Checks common spelling mistakes.",
+    init: function (parser, reporter) {
+      var self = this;
+
+      parser.addListener("all", (event) => {
+        var spellings = [
+          "a.k.a",
+          "A.K.A",
+          "AKA",
+          "e-mail",
+          "EMail",
+          "can not",
+          "web site",
+          "user name",
+          "task bar"
+        ];
+
+        if (event.tagName) {
+          if (event.tagName !== "a" && event.tagName !== "meta" && event.tagName !== "link" && event.tagName !== "script" && event.tagName !== "svg") { 
+            if (event.lastEvent) {
+              let pageContent = event.lastEvent.raw;
+              if (pageContent) {
+                spellings.forEach((i) => {
+                  var contentIndex = pageContent.indexOf(i);
+                  var col = event.lastEvent.col;
+
+                  if (contentIndex >= 0) {
+                    reporter.warn(
+                      "Incorrect spellings: '" + i + "'.",
+                      event.line,
+                      col,
+                      self,
+                      event.raw
+                    );
+                  }
+                });
+              }
+            }    
+          }
+        }
+      });
+    },
+  });
+
+  HTMLHint.addRule({
+    id: "phone-numbers-without-links",
+    description:
+      "Checks for phone numbers that aren't in hyperlinks with a \"tel:\" prefix.",
+      init: function (parser, reporter) {
+        const self = this;
+        parser.addListener("all", (event) => {
+          if (event.raw && event.lastEvent && findPhoneNumbersInText(event.raw, "US").length) {
+            const pageContent = event.lastEvent.raw;
+            if (pageContent && event.lastEvent.tagName) {
+              const tagName = event.lastEvent.tagName.toLowerCase();
+              const mapAttrs = parser.getMapAttrs(event.lastEvent.attrs);
+              const href = mapAttrs["href"];
+              if (!(tagName === "a" && href && href.startsWith("tel:"))) {
+                reporter.warn(
+                  "Phone number must be in a hyperlink.",
+                  event.line,
+                  event.col,
+                  self,
+                  event.raw
+                );
+              }
+            }
+          }
+        });
+      },
   });
   // Add new custom rule below
 };
