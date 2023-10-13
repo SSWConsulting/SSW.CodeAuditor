@@ -545,6 +545,12 @@ export const customHtmlHintRules = [
     type: RuleType.Warning
   },
   {
+    rule: "phone-numbers-without-links",
+    displayName: "Content - Phone numbers must be in hyperlinks",
+    ruleLink: "https://www.ssw.com.au/rules/do-you-know-to-hyperlink-your-phone-numbers",
+    type: RuleType.Warning
+  },
+  {
     rule: "use-unicode-hex-code-for-special-html-characters",
     displayName: "Content - Use Unicode Hex code for special HTML characters",
     ruleLink: "https://ssw.com.au/rules/html-unicode-hex-codes/",

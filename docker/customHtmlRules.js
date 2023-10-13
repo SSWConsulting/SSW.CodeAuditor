@@ -1,4 +1,5 @@
 const HTMLHint = require("htmlhint").default;
+const findPhoneNumbersInText = require('libphonenumber-js').findPhoneNumbersInText;
 
 exports.addCustomHtmlRule = () => {
   HTMLHint.addRule({
@@ -457,6 +458,34 @@ exports.addCustomHtmlRule = () => {
         }
       });
     },
+  });
+
+  HTMLHint.addRule({
+    id: "phone-numbers-without-links",
+    description:
+      "Checks for phone numbers that aren't in hyperlinks with a \"tel:\" prefix.",
+      init: function (parser, reporter) {
+        const self = this;
+        parser.addListener("all", (event) => {
+          if (event.raw && event.lastEvent && findPhoneNumbersInText(event.raw, "US").length) {
+            const pageContent = event.lastEvent.raw;
+            if (pageContent && event.lastEvent.tagName) {
+              const tagName = event.lastEvent.tagName.toLowerCase();
+              const mapAttrs = parser.getMapAttrs(event.lastEvent.attrs);
+              const href = mapAttrs["href"];
+              if (!(tagName === "a" && href && href.startsWith("tel:"))) {
+                reporter.warn(
+                  "Phone number must be in a hyperlink.",
+                  event.line,
+                  event.col,
+                  self,
+                  event.raw
+                );
+              }
+            }
+          }
+        });
+      },
   });
   // Add new custom rule below
 };

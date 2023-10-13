@@ -163,4 +163,5 @@ exports.htmlHintConfig = {
   "detect-absolute-references-url-path-correctly": true,
   "use-unicode-hex-code-for-special-html-characters": true,
   "aka-must-be-spelt-correctly": true,
+  "phone-numbers-without-links": true,
 };
