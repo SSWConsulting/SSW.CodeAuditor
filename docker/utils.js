@@ -7,7 +7,6 @@ const boxen = require("boxen");
 const { htmlHintConfig, fetchHtml, getHTMLHintRules } = require("./api");
 const R = require("ramda");
 const { execSync } = require("child_process");
-const slug = require("slug");
 const nodemailer = require("nodemailer");
 const fns = require('date-fns');
 const fetch = require('node-fetch');
