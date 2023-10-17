@@ -46,7 +46,7 @@ func getHref(t html.Token) (ok bool, href string) {
 	return
 }
 
-func check(link Link, linkch chan LinkStatus, number int) {
+func check(link Link, linkch chan LinkStatus, number int, unscannableLinks []string) {
 	fmt.Println("CHEC", number, link.url)
 
 	client := &http.Client{
@@ -54,7 +54,7 @@ func check(link Link, linkch chan LinkStatus, number int) {
 	}
 	method := "HEAD"
 
-	if isLinkUnscannable(link.url) {
+	if isLinkUnscannable(link.url, unscannableLinks) {
 		method = "GET"
 	}
 
@@ -214,8 +214,7 @@ func writeResultFile(allUrls map[string]LinkStatus) {
 	f.Close()
 }
 
-func isLinkUnscannable(a string) bool {
-	unscannableLinks := getUnscannableLinks();
+func isLinkUnscannable(a string, unscannableLinks []string) bool {
 	for _, b := range unscannableLinks {
 		if strings.HasPrefix(strings.ToLower(a), strings.ToLower(b)) {
 			return true
@@ -236,7 +235,6 @@ func getUnscannableLinks() []string {
 
 	var linksList []string
 	json.Unmarshal(respBody, &linksList)
-
 	return linksList
 }
 
@@ -254,6 +252,8 @@ func main() {
 	var wg sync.WaitGroup
 
 	start := time.Now()
+
+	unscannableLinks := getUnscannableLinks();
 
 	chUrls := make(chan Link)
 	chAllUrls := make(chan LinkStatus)
@@ -292,7 +292,7 @@ func main() {
 						if strings.Index(link.url, startUrl.url) == 0 && link.linkType == "a" && !isResourceFile(link.url) {
 							crawl(link, chUrls, chAllUrls, crawling)
 						} else {
-							check(link, chAllUrls, crawling)
+							check(link, chAllUrls, crawling, unscannableLinks)
 						}
 
 						<-concurrentGoroutines
@@ -302,7 +302,7 @@ func main() {
 					if strings.Index(link.url, startUrl.url) == 0 && link.linkType == "a" && !isResourceFile(link.url) {
 						go crawl(link, chUrls, chAllUrls, crawling)
 					} else {
-						go check(link, chAllUrls, crawling)
+						go check(link, chAllUrls, crawling, unscannableLinks)
 					}
 				}
 
