@@ -1,5 +1,3 @@
-const fs = require("fs");
-const { execSync } = require("child_process");
 const chalk = require("chalk");
 const yargs = require("yargs");
 const fetch = require("node-fetch");
@@ -21,8 +19,6 @@ const {
   consoleBox,
   readCsv,
   printResultsToConsole,
-  runCodeAuditor,
-  countLineOfCodes,
   runBrokenLinkCheck,
   runHtmlHint,
   processBrokenLinks,
@@ -32,8 +28,6 @@ const {
   runLighthouseReport,
   runArtilleryLoadTest
 } = require("./utils");
-
-const { readGithubSuperLinter } = require("./parseSuperLinter");
 
 const LIGHTHOUSEFOLDER = "./lhr.json";
 const ARTILLERYFOLDER = "./artilleryOut.json";
@@ -125,7 +119,6 @@ const main = async () => {
 
   let _cloc;
   let _codeAuditor = [];
-  let _superlinter = [];
 
   // Standardize url string
   if (!options.disableUrlFormatter) {
@@ -179,7 +172,7 @@ const main = async () => {
   const [result, error] = runBrokenLinkCheck(options.url, options.maxthread);
   writeLog(`scan finished`, result);
   if (error) {
-    writeLog(`Error running command: ${error}`);
+    console.error(`Error scanning broken links: ${error}`);
     process.exit(1);
   }
 
@@ -189,8 +182,7 @@ const main = async () => {
     startTime,
     "./all_links.csv",
     _cloc,
-    _codeAuditor,
-    _superlinter
+    _codeAuditor
   );
 };
 
@@ -201,15 +193,13 @@ const main = async () => {
  * @param {string} file - file containing all scanned URLs
  * @param {*} cloc - Count Line of Code output
  * @param {*} codeAuditor - Static Code Analysis output
- * @param {*} superLinter - Super linter output
  */
 const processAndUpload = async (
   args,
   startTime,
   file,
   cloc,
-  codeAuditor,
-  superLinter
+  codeAuditor
 ) => {
   let ignoredUrls;
   let perfThreshold;
