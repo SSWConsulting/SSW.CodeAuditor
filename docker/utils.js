@@ -7,7 +7,6 @@ const boxen = require("boxen");
 const { htmlHintConfig, fetchHtml, getHTMLHintRules } = require("./api");
 const R = require("ramda");
 const { execSync } = require("child_process");
-const slug = require("slug");
 const nodemailer = require("nodemailer");
 const fns = require('date-fns');
 const fetch = require('node-fetch');
@@ -419,7 +418,7 @@ exports.processBrokenLinks = (
   const __getBadResults = (allUrls) =>
     allUrls
       // Allow successful 2xx status code range (200-299)
-      .filter((url) => url["StatusCode"].startsWith('2') && url["StatusCode"].length === 3)
+      .filter((url) => url["StatusCode"]?.startsWith('2') && url["StatusCode"]?.length === 3)
       .map((x) => ({
         src: x.Source || "",
         dst: x.Destination || "",
