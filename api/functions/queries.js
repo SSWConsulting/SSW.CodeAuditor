@@ -279,7 +279,7 @@ exports.getAllScanSummaryFromUrl = (url, api) =>
 		for await (const item of iterator) {
 			if (item[0]) {
 				const existing = await getExistingBrokenLinkCount(item[0].runId);
-				item[0].totalUnique404Existing = existing;
+				item[0].totalUniqueBrokenLinksExisting = existing;
 			}
 			
 			resolve(item);
@@ -321,9 +321,9 @@ exports.compareScans = (api, url) =>
 			isHtmlErrorsUp: result[0].htmlErrors > result[1].htmlErrors,
 			prevHtmlErrors: result[1].htmlErrors,
 			currHtmlErrors: result[0].htmlErrors,
-			isBrokenLinksUp: result[0].totalUnique404 > result[1].totalUnique404,
-			prevBrokenLinks: result[1].totalUnique404,
-			currBrokenLinks: result[0].totalUnique404,
+			isBrokenLinksUp: result[0].uniqueBrokenLinks > result[1].uniqueBrokenLinks,
+			prevBrokenLinks: result[1].uniqueBrokenLinks,
+			currBrokenLinks: result[0].uniqueBrokenLinks,
 			latestRunId: result[0].runId
 		} 
 		resolve(isErrorUp)

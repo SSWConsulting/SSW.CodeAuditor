@@ -48,7 +48,7 @@
   <li class="mr-1" class:-mb-px={displayMode === 'Links'}>
     <span class={baseClass + (displayMode === 'Links' ? active : '')}>
       <Navigate to={'/build/' + build.summary.runId}>
-        Links{build.summary ? ` (${build.summary.totalUnique404})` : ''}
+        Links{build.summary ? ` (${build.summary.uniqueBrokenLinks})` : ''}
       </Navigate>
     </span>
   </li>
