@@ -15,7 +15,7 @@
   <div class="col-span-1">
     <span class="block whitespace-nowrap font-sans">
       <i class="textred fas fa-link-slash"></i>
-      404 Errors
+      Broken Links
     </span>
     <span
       class="font-sans font-bold block lg:inline-block"
