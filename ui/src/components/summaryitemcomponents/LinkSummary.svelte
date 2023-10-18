@@ -21,7 +21,7 @@
       class="font-sans font-bold block lg:inline-block"
       class:text-red-600={value.uniqueBrokenLinks > 0}
       class:textgrey={value.uniqueBrokenLinks === 0}>
-      {value.uniqueBrokenLinks}
+      {numberWithCommas(value.uniqueBrokenLinks)}
       {#if value.uniqueBrokenLinks === 0}
         <i class="fas fa-check"></i>
       {/if}
