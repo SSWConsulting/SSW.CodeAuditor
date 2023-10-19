@@ -208,10 +208,21 @@ func writeResultFile(allUrls map[string]LinkStatus) {
 
 	f.WriteString("Source" + "\t" + "Destination" + "\t" + "Status" + "\t" + "StatusCode" + "\t" + "Anchor" + "\n")
 	for _, v := range allUrls {
-		f.WriteString(v.srcUrl + "\t" + v.url + "\t" + v.status + "\t" + strconv.Itoa(v.statusCode) + "\t" + strings.ReplaceAll(v.anchor,"\"","") + "\n")
+		f.WriteString(sanitizeString(v.srcUrl) + "\t" + sanitizeString(v.url) + "\t" + sanitizeString(v.status) + "\t" + strconv.Itoa(v.statusCode) + "\t" + sanitizeString(v.anchor) + "\n")
 	}
 
 	f.Close()
+}
+
+func sanitizeString(s string) string {
+	replacer := strings.NewReplacer(
+		"\"", "",
+		"\t", " ",
+		"\r\n", "",
+		"\n", "",
+	);
+
+	return replacer.Replace(s);
 }
 
 func isLinkUnscannable(a string, unscannableLinks []string) bool {
