@@ -28,6 +28,7 @@ const {
   runLighthouseReport,
   runArtilleryLoadTest
 } = require("./utils");
+const { htmlHintConfig } = require("./api");
 
 const LIGHTHOUSEFOLDER = "./lhr.json";
 const ARTILLERYFOLDER = "./artilleryOut.json";
@@ -315,7 +316,7 @@ const processAndUpload = async (
       });
     } catch (error) {
       console.error(
-        `Error: Unabled to push data to dashboard service => ${error.message}`
+        `Error: Unable to push data to dashboard service => ${error.message}`
       );
     }
   }
@@ -334,13 +335,13 @@ const processAndUpload = async (
   // Upload selected HTMLHint Rules to the scan
   if (args.htmlhint && args.token && runId) {
     const result = await getHTMLHintRules(args.token, args.url);
+    const selectedRules = result?.selectedRules ?? Object.keys(htmlHintConfig).join(",");
 
-    if (result && result.selectedRules?.split(",").length > 0) {
-      const selectedRules = result.selectedRules;
+    if (selectedRules?.length > 0) {
       const res = await addHTMLHintRulesForScan(args.token, args.url, runId, selectedRules)
   
       if (res) {
-        console.log('Upload selected HTMLHint Rules successfully')
+        console.log('Uploaded selected HTMLHint Rules successfully');
       } else {
         throw new Error("Failed to add custom html rules for each scan");
       }
