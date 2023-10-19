@@ -23,10 +23,13 @@
   };
 
   let atrFull = [];
+  let atrError;
   const getAtrFull = async (path) => {
     await fetch(`${CONSTS.BlobURL}/atr/${path}.json`)
       .then((x) => x.json())
       .then((res) => {
+        atrError = res.aggregate.errors;
+
         res.intermediate.forEach((i) => {
           atrFull.push({
             fullTimestamp: i.timestamp,
@@ -36,7 +39,7 @@
           });
         });
       });
-    return atrFull;
+    return {atrFull, atrError};
   };
 
   let getAtrData = getAtrFull(currentRoute.namedParams.id);
@@ -76,11 +79,26 @@
 
             {#await getAtrData}
               <LoadingFlat />
-            {:then atrFull}
-              <ArtilleryChart value={atrFull} />
-            {/await}
+            {:then atrData}
+              <ArtilleryChart value={atrData.atrFull} />
 
-            <ArtilleryDetailTable value={data} />
+              <ArtilleryDetailTable value={data} />
+
+              <div class="font-bold">
+                Errors
+              </div>
+              {#if Object.keys(atrData.atrError).length > 0}
+                <div class="textred">
+                  <i class="fas fa-x"></i>
+                  {`${Object.keys(atrData.atrError)} : ${Object.values(atrData.atrError)}`}
+                </div>
+              {:else}
+                <div class="text-green-500">
+                  <i class="fas fa-check"></i>
+                  Test completed without network or OS errors
+                </div>
+              {/if}
+            {/await}
           {:else}
             <div class="mb-6 text-center text-xl py-8">
               <Icon cssClass="text-yellow-800 inline-block">
