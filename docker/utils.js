@@ -29,7 +29,7 @@ exports.sendAlertEmail = async (email, emailConfig, scanSummary) => {
     from: 'foo@example.com', // sender address
     to: email, // list of receivers
     subject: `SSW CodeAuditor Scan Result - ${scanSummary.url}`, // Subject line
-    html: `<h2 style="color: red">Hi there,</h2><p>This is the result from SSW CodeAuditor scan on ${scanSummary.url} on ${fns.format(new Date(scanSummary.buildDate), 'dd MMM yyyy, hh:mm aaaa')}</p><p>⏳ Duration: ${scanSummary.scanDuration} seconds</p><p>🚨 Broken Links: ${scanSummary.totalUnique404} / ${scanSummary.totalScanned} Bad links</p><p>⚠️ HTML Warnings: ${scanSummary.htmlWarnings}</p><p>❌ HTML Errors: ${scanSummary.htmlErrors}</p><p>See https://codeauditor.com/build/${scanSummary.runId} for full scan result</p><p>&#60;This is the automated alert email from SSW CodeAuditor&#62;</p>`, 
+    html: `<h2 style="color: red">Hi there,</h2><p>This is the result from SSW CodeAuditor scan on ${scanSummary.url} on ${fns.format(new Date(scanSummary.buildDate), 'dd MMM yyyy, hh:mm aaaa')}</p><p>⏳ Duration: ${scanSummary.scanDuration} seconds</p><p>🚨 Broken Links: ${scanSummary.uniqueBrokenLinks} / ${scanSummary.totalScanned} Bad links</p><p>⚠️ HTML Warnings: ${scanSummary.htmlWarnings}</p><p>❌ HTML Errors: ${scanSummary.htmlErrors}</p><p>See https://codeauditor.com/build/${scanSummary.runId} for full scan result</p><p>&#60;This is the automated alert email from SSW CodeAuditor&#62;</p>`, 
   });
 }
 
@@ -418,7 +418,7 @@ exports.processBrokenLinks = (
   const __getBadResults = (allUrls) =>
     allUrls
       // Allow successful 2xx status code range (200-299)
-      .filter((url) => !(url["StatusCode"]?.startsWith('2') && url["StatusCode"]?.length === 3))
+      .filter((url) => !((url["StatusCode"]?.startsWith('2') || url["StatusCode"]?.startsWith('3')) && url["StatusCode"]?.length === 3))
       .map((x) => ({
         src: x.Source || "",
         dst: x.Destination || "",

@@ -12,11 +12,11 @@
 
 <div class="grid grid-cols-2 grid-rows-2 text-start font-sans font-bold my-4">
   <div
-    class:textred={value.totalUnique404 > 0}
-    class:textgrey={value.totalUnique404 === 0}
+    class:textred={value.uniqueBrokenLinks > 0}
+    class:textgrey={value.uniqueBrokenLinks === 0}
   >
     <i class="fas fa-link-slash textred text-3xl"/>
-    <span class="text-4xl">{value.totalUnique404}</span>
+    <span class="text-4xl">{value.uniqueBrokenLinks}</span>
   </div>
   <div class="text-right my-auto">
     {#if Object.keys(comparisonDifferences).length > 0}
@@ -24,7 +24,7 @@
     <span class="textgrey">{numberWithCommas(Math.abs(comparisonDifferences.brokenLinksDifference))}</span>
     {/if}
   </div>
-  <h3 class="col-span-2 font-bold font-sans textgrey">Broken Links {value.totalUnique404Existing !== undefined ? `(${value.totalUnique404Existing || 0} Existing)` : ''}</h3>
+  <h3 class="col-span-2 font-bold font-sans textgrey">Broken Links {value.totalUniqueBrokenLinksExisting !== undefined ? `(${value.totalUniqueBrokenLinksExisting || 0} Existing)` : ''}</h3>
 </div>
 
 <div class="grid grid-cols-2 grid-rows-2 text-start font-sans font-bold my-4">

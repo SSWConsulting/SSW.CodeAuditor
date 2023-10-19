@@ -12,7 +12,7 @@
   // Categorize and populate charts with data, title and color
   if (dataType === historyChartType.BadLinks) {
     chartTitle = historyChartType.BadLinks;
-    allDataToDisplay = value.map((i) => i.totalUnique404);
+    allDataToDisplay = value.map((i) => i.uniqueBrokenLinks);
     barColor = 'red'
   } else if (dataType === historyChartType.WarningCode) {
     chartTitle = historyChartType.WarningCode;

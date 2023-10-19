@@ -15,14 +15,14 @@
   <div class="col-span-1">
     <span class="block whitespace-nowrap font-sans">
       <i class="textred fas fa-link-slash"></i>
-      404 Errors
+      Broken Links
     </span>
     <span
       class="font-sans font-bold block lg:inline-block"
-      class:text-red-600={value.totalUnique404 > 0}
-      class:textgrey={value.totalUnique404 === 0}>
-      {value.totalUnique404}
-      {#if value.totalUnique404 === 0}
+      class:text-red-600={value.uniqueBrokenLinks > 0}
+      class:textgrey={value.uniqueBrokenLinks === 0}>
+      {numberWithCommas(value.uniqueBrokenLinks)}
+      {#if value.uniqueBrokenLinks === 0}
         <i class="fas fa-check"></i>
       {/if}
     </span>

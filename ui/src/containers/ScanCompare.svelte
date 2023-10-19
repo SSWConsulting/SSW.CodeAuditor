@@ -36,7 +36,7 @@
     if (allScans.length > 0 && selectedScan) {
       comparisonDifferences = {
         brokenLinksDifference:
-          allScans[0].totalUnique404 - selectedScan.totalUnique404,
+          allScans[0].uniqueBrokenLinks - selectedScan.uniqueBrokenLinks,
         codeWarningDifference:
           allScans[0].htmlWarnings - selectedScan.htmlWarnings,
         codeErrorDifference: allScans[0].htmlErrors - selectedScan.htmlErrors,
