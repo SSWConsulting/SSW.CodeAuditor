@@ -4,7 +4,6 @@ const admin = require('firebase-admin');
 const R = require('ramda');
 const fetch = require('node-fetch');
 const Queue = require('better-queue');
-const { unscannableLinks } = require('./consts');
 require('dotenv').config();
 
 const {
@@ -231,6 +230,7 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 	const buildId = req.params.buildId;
 	const runId = newGuid();
 	const buildDate = new Date();
+	const unscannableLinks = await getUnscannableLinks();
 
 	const uid = await getUserIdFromApiKey(apikey);
 	if (!uid) {
@@ -262,11 +262,11 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		url,
 		cloc,
 		totalBrokenLinks: badUrls.length,
-		uniqueBrokenLinks: R.uniqBy(R.prop('dst'), badUrls.filter((x) => !unscannableLinks.some(link => x.dst.includes(link.url)))).length,
-		pagesWithBrokenLink: R.uniqBy(R.prop('src'), badUrls.filter((x) => !unscannableLinks.some(link => x.dst.includes(link.url)))).length,
+		uniqueBrokenLinks: R.uniqBy(R.prop('dst'), badUrls.filter((x) => !unscannableLinks.some(link => x.dst.includes(link)))).length,
+		pagesWithBrokenLink: R.uniqBy(R.prop('src'), badUrls.filter((x) => !unscannableLinks.some(link => x.dst.includes(link)))).length,
 		totalUnique404: R.uniqBy(
 			R.prop('dst'),
-			badUrls.filter((x) => x.statuscode === '404' && !unscannableLinks.some(link => x.dst.includes(link.url)))
+			badUrls.filter((x) => x.statuscode === '404' && !unscannableLinks.some(link => x.dst.includes(link)))
 		).length,
 		htmlWarnings: htmlWarnings ? htmlWarnings : 0,
 		htmlErrors: htmlErrors ? htmlErrors : 0,

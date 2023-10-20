@@ -14,10 +14,10 @@
   export let unscannableLinks;
   
   let foundUnscannableLinks = [];
-  foundUnscannableLinks = builds.filter(build => unscannableLinks.some(link => build.dst.includes(link.url)));
+  foundUnscannableLinks = builds.filter(build => unscannableLinks.some(link => build.dst.includes(link)));
   
   // Filter out unscannable links
-  builds = builds.filter(build => !unscannableLinks.some(link => build.dst.includes(link.url)));
+  builds = builds.filter(build => !unscannableLinks.some(link => build.dst.includes(link)));
 
   let displayMode = 0;
 
@@ -61,21 +61,7 @@
   }
 </style>
 
-{#if builds.length === 0}
-  <div class="mb-6 text-center text-xl py-8">
-    <Icon cssClass="inline-block">
-      <path
-        d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13
-        21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-    </Icon>
-    No broken links in this build!
-    <Icon cssClass="inline-block">
-      <path
-        d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13
-        21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-    </Icon>
-  </div>
-{:else}
+{#if builds.length}
   <div class="my-4">
     <div
       class="bggrey text-sm textgrey leading-none border-2 border-gray-200
@@ -115,7 +101,9 @@
       </button>
     </div>
   </div>
-  {#if foundUnscannableLinks.length > 0}
+{/if}
+{#if foundUnscannableLinks.length > 0}
+  <div class="my-4">
     <span class="font-bold mb-3">
       <Icon
           on:click={() => hideShow()}
@@ -128,39 +116,56 @@
         </Icon>
       Unscannable Links ({foundUnscannableLinks.length}):
     </span>
-    {#if !hiddenRows}
-      <span class="mb-3">
-        Some working links are reported as broken by CodeAuditor. They're marked as "unscannable". <a class="link hover:text-red-600" href="https://github.com/SSWConsulting/SSW.CodeAuditor/wiki/SSW-CodeAuditor-Knowledge-Base-(KB)#known-websites-that-has-anti-web-scraping-measures">Learn more on our KB.</a>
-      </span>
-      {#each foundUnscannableLinks as url}
-        <table 
-          class="table-fixed w-full md:table-auto mb-8"
-          in:fade={{ y: 100, duration: 400 }}
-          out:fade={{ y: -100, duration: 200 }}>
-          <tbody>
-            <tr>
-              <th class="table-header md:table-cell md:w-2/12 sm:px-4 py-2">Source</th>
-              <td class="w-10/12 border px-4 py-2 break-all">
-                <a class="inline-block align-baseline link" target="_blank" href={url.src}>{url.src}</a>
-              </td> 
-            </tr>
-          
-            <tr>
-              <th class="table-header md:table-cell w-2/12 sm:px-4 py-2">Anchor Text</th>
-              <td class="md:table-cell w-10/12 border px-4 py-2 break-all">{url.link || ''}</td>
-            </tr>
-            <tr>
-              <th class="table-header w-2/12 sm:px-4 py-2">Link</th> 
-              <td class="w-10/12 border px-4 py-2 break-all">
-                <a class="inline-block align-baseline link" target="_blank" href={url.dst}>{url.dst}</a>
-              </td>    
-            </tr>
-          </tbody>
-        </table>
-      {/each}
-    {/if}
+  </div>
+  {#if !hiddenRows}
+    <span class="mb-3">
+      Some working links are reported as broken by CodeAuditor. They're marked as "unscannable". <a class="link hover:text-red-600" href="https://github.com/SSWConsulting/SSW.CodeAuditor/wiki/SSW-CodeAuditor-Knowledge-Base-(KB)#known-websites-that-has-anti-web-scraping-measures">Learn more on our KB.</a>
+    </span>
+    {#each foundUnscannableLinks as url}
+      <table 
+        class="table-fixed w-full md:table-auto mb-8"
+        in:fade={{ y: 100, duration: 400 }}
+        out:fade={{ y: -100, duration: 200 }}>
+        <tbody>
+          <tr>
+            <th class="table-header md:table-cell md:w-2/12 sm:px-4 py-2">Source</th>
+            <td class="w-10/12 border px-4 py-2 break-all">
+              <a class="inline-block align-baseline link" target="_blank" href={url.src}>{url.src}</a>
+            </td> 
+          </tr>
+        
+          <tr>
+            <th class="table-header md:table-cell w-2/12 sm:px-4 py-2">Anchor Text</th>
+            <td class="md:table-cell w-10/12 border px-4 py-2 break-all">{url.link || ''}</td>
+          </tr>
+          <tr>
+            <th class="table-header w-2/12 sm:px-4 py-2">Link</th> 
+            <td class="w-10/12 border px-4 py-2 break-all">
+              <a class="inline-block align-baseline link" target="_blank" href={url.dst}>{url.dst}</a>
+            </td>    
+          </tr>
+        </tbody>
+      </table>
+    {/each}
   {/if}
+{/if}
+{#if !builds.length}
+  <div class="mb-6 text-center text-xl py-8">
+    <Icon cssClass="inline-block">
+      <path
+        d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13
+        21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+    </Icon>
+    No broken links in this build!
+    <Icon cssClass="inline-block">
+      <path
+        d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13
+        21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+    </Icon>
+  </div>
+{/if}
 
+{#if builds.length}
   {#if displayMode === 0}
     <DetailsBySource {builds} on:ignore />
   {:else if displayMode === 1}
