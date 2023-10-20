@@ -314,17 +314,21 @@ exports.compareScans = (api, url) =>
 		for await (const item of entity) {
 			result.push(item);
 		}
+
+		const latestResult = result[0] || {};
+		const prevResult = result[1] || {};
+
 		let isErrorUp = {
-			isHtmlWarningsUp: result[0].htmlWarnings > result[1].htmlWarnings,
-			prevHtmlWarnings: result[1].htmlWarnings,
-			currHtmlWarnings: result[0].htmlWarnings,
-			isHtmlErrorsUp: result[0].htmlErrors > result[1].htmlErrors,
-			prevHtmlErrors: result[1].htmlErrors,
-			currHtmlErrors: result[0].htmlErrors,
-			isBrokenLinksUp: result[0].uniqueBrokenLinks > result[1].uniqueBrokenLinks,
-			prevBrokenLinks: result[1].uniqueBrokenLinks,
-			currBrokenLinks: result[0].uniqueBrokenLinks,
-			latestRunId: result[0].runId
+			isHtmlWarningsUp: latestResult.htmlWarnings > prevResult.htmlWarnings,
+			prevHtmlWarnings: prevResult.htmlWarnings || 0,
+			currHtmlWarnings: latestResult.htmlWarnings || 0,
+			isHtmlErrorsUp: latestResult.htmlErrors > prevResult.htmlErrors,
+			prevHtmlErrors: prevResult.htmlErrors || 0,
+			currHtmlErrors: latestResult.htmlErrors || 0,
+			isBrokenLinksUp: latestResult.uniqueBrokenLinks > prevResult.uniqueBrokenLinks,
+			prevBrokenLinks: prevResult.uniqueBrokenLinks || 0,
+			currBrokenLinks: latestResult.uniqueBrokenLinks || 0,
+			latestRunId: latestResult.runId
 		} 
 		resolve(isErrorUp)
 	});
