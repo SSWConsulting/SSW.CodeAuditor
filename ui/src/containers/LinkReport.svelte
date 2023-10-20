@@ -11,21 +11,31 @@
   import { Navigate } from "svelte-router-spa";
   import LoadingFlat from "../components/misccomponents/LoadingFlat.svelte";
   import UpdateIgnoreUrl from "../components/misccomponents/UpdateIgnoreUrl.svelte";
-  import { unscannableLinks } from "../../../api/functions/consts";
   import BuildDetailsSlot from "../components/detailslotcomponents/BuildDetailsSlot.svelte";
+  import { CONSTS } from "../utils/utils";
 
   export let currentRoute;
 
-  let promise
+  let promise;
   let userNotLoginToast;
   let ignoreUrlShown;
   let urlToIgnore;
   let scanUrl;
 
   if (currentRoute.namedParams.id) {
-    promise = getBuildDetails(currentRoute.namedParams.id);
+    promise = new Promise(async (resolve) => {
+      const buildDetails = await getBuildDetails(currentRoute.namedParams.id);
+      const resp = await fetch(`${CONSTS.API}/api/unscannablelinks`);
+      const unscannableLinks = await resp.json();
+      resolve({ buildDetails, unscannableLinks });
+    });
   } else {
-    promise = getLatestBuildDetails(currentRoute.namedParams.api, currentRoute.namedParams.url)
+    promise = new Promise(async (resolve) => {
+      const buildDetails = await getLatestBuildDetails(currentRoute.namedParams.api, currentRoute.namedParams.url);
+      const resp = await fetch(`${CONSTS.API}/api/unscannablelinks`);
+      const unscannableLinks = await resp.json();
+      resolve({ buildDetails, unscannableLinks });
+    });
   }
 
   const onDownload = data => {
@@ -72,15 +82,15 @@
     {:then data}
 
     <BuildDetailsSlot
-      {data}
+      data={data.buildDetails}
       componentType="Links"
     >
       <DetailsTable
-        on:download={() => onDownload(data)}
-        on:ignore={url => showIgnore(data.summary.url, url, $userSession$)}
-        builds={data ? data.brokenLinks : []}
+        on:download={() => onDownload(data.buildDetails)}
+        on:ignore={url => showIgnore(data.buildDetails.summary.url, url, $userSession$)}
+        builds={data.buildDetails ? data.buildDetails.brokenLinks : []}
         {currentRoute}
-        {unscannableLinks} 
+        unscannableLinks={data.unscannableLinks} 
       />
     </BuildDetailsSlot>
     {:catch error}

@@ -14,10 +14,10 @@
   export let unscannableLinks;
   
   let foundUnscannableLinks = [];
-  foundUnscannableLinks = builds.filter(build => unscannableLinks.some(link => build.dst.includes(link.url)));
+  foundUnscannableLinks = builds.filter(build => unscannableLinks.some(link => build.dst.includes(link)));
   
   // Filter out unscannable links
-  builds = builds.filter(build => !unscannableLinks.some(link => build.dst.includes(link.url)));
+  builds = builds.filter(build => !unscannableLinks.some(link => build.dst.includes(link)));
 
   let displayMode = 0;
 
