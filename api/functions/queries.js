@@ -42,8 +42,8 @@ const getExistingBrokenLinkCount = async (runId) => {
 
     const existingCount = result.reduce((count, item) => {
         if (item.runId === runId) {
-            if (!previousFailures.has(item.dst) && !unscannableLinks.find((i) => item.dst.startsWith(i))) {
-				const hasPrevious = result.find((i) => i.dst === item.dst && i.buildDate < item.buildDate);
+            if (!previousFailures.has(item.dst) && !unscannableLinks.some((i) => item.dst.includes(i))) {
+				const hasPrevious = result.some((i) => i.dst === item.dst && i.buildDate < item.buildDate);
 				previousFailures.set(item.dst, hasPrevious);
                 
 				if (hasPrevious) {
