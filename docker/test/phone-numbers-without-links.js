@@ -10,16 +10,19 @@ const { addCustomHtmlRule } = require("../customHtmlRules");
 ruleOptions[ruleId] = true;
 
 const phoneNumbers = [
-  "(213) 373-4253",
-  "(213)373-4253",
-  "213-373-4253",
-  "213.373.4253",
-  "2133734253",
-  "+12133734253",
-  "121-33734253",
   "+61 2 9953 3000",
   "+61299533000",
-  "+61 402 123 456"
+  "+61 402 123 456",
+  "13 00 00",
+  "1800 160 401",
+  "02 5550 4321",
+  "+33 3 67 39 05 39"
+];
+
+const nonPhoneNumbers = [
+  "2023.05.31.02",
+  "123.456.7890",
+  "1234.567.890"
 ];
 
 describe(`Rules: ${ruleId}`, () => {
@@ -34,6 +37,17 @@ describe(`Rules: ${ruleId}`, () => {
       const messages = HTMLHint.verify(code, ruleOptions);
       expect(messages.length).to.be(1);
       expect(messages[0].line).to.be(2);
+    });
+  });
+
+  nonPhoneNumbers.forEach((phone) => {
+    it(`text containing non-phone number "${phone}" without hyperlink should not error`, () => {
+      const code =
+      `<div>
+        <p>${phone}</p>
+      </div>`;
+      const messages = HTMLHint.verify(code, ruleOptions);
+      expect(messages.length).to.be(0);
     });
   });
 

@@ -473,7 +473,7 @@ exports.addCustomHtmlRule = () => {
       init: function (parser, reporter) {
         const self = this;
         parser.addListener("all", (event) => {
-          if (event.raw && event.lastEvent && findPhoneNumbersInText(event.raw, "US").length) {
+          if (event.raw && event.lastEvent && findPhoneNumbersInText(event.raw, "AU").length) {
             const pageContent = event.lastEvent.raw;
             if (pageContent && event.lastEvent.tagName) {
               const tagName = event.lastEvent.tagName.toLowerCase();
