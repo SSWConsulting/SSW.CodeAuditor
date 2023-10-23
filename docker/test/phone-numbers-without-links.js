@@ -22,7 +22,8 @@ const phoneNumbers = [
 const nonPhoneNumbers = [
   "2023.05.31.02",
   "123.456.7890",
-  "1234.567.890"
+  "1234.567.890",
+  "20231024.16"
 ];
 
 describe(`Rules: ${ruleId}`, () => {
@@ -40,12 +41,28 @@ describe(`Rules: ${ruleId}`, () => {
     });
   });
 
+  phoneNumbers.forEach((phone) => {
+    it(`text containing "${phone}" in a non-text tag should not error`, () => {
+      const code = `<style>${phone}</style><script>${phone}</script>`;
+      const messages = HTMLHint.verify(code, ruleOptions);
+      expect(messages.length).to.be(0);
+    });
+  });
+
   nonPhoneNumbers.forEach((phone) => {
     it(`text containing non-phone number "${phone}" without hyperlink should not error`, () => {
       const code =
       `<div>
         <p>${phone}</p>
       </div>`;
+      const messages = HTMLHint.verify(code, ruleOptions);
+      expect(messages.length).to.be(0);
+    });
+  });
+
+  nonPhoneNumbers.forEach((phone) => {
+    it(`text containing non-phone number "${phone}" in a non-text tag should not error`, () => {
+      const code = `<style>${phone}</style><script>${phone}</script>`;
       const messages = HTMLHint.verify(code, ruleOptions);
       expect(messages.length).to.be(0);
     });
