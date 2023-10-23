@@ -23,6 +23,12 @@ describe(`Rules: ${ruleId}`, () => {
     expect(messages.length).to.be(9);
   });
 
+  it("long string contains the character should not result in an error", () => {
+    const code = `<div>wgARCAAKABQDASIAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAAAAIDBAX/xAAUAQE</div>`;
+    const messages = HTMLHint.verify(code, ruleOptions);
+    expect(messages.length).to.be(0);
+  });
+
   ["meta", "link", "script", "svg"].forEach((tag) => {
     it(`incorrect terms in a <${tag}> tag should not result in an error`, () => {
       const code = `<${tag}>a.k.a A.K.A AKA e-mail EMail can not web site user name task bar</${tag}>`;
