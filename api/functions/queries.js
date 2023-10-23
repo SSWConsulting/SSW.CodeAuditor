@@ -42,8 +42,8 @@ const getExistingBrokenLinkCount = async (runId) => {
 
     const existingCount = result.reduce((count, item) => {
         if (item.runId === runId) {
-            if (!previousFailures.has(item.dst) && !unscannableLinks.find((i) => item.dst.startsWith(i))) {
-				const hasPrevious = result.find((i) => i.dst === item.dst && i.buildDate < item.buildDate);
+            if (!previousFailures.has(item.dst) && !unscannableLinks.some((i) => item.dst.includes(i))) {
+				const hasPrevious = result.some((i) => i.dst === item.dst && i.buildDate < item.buildDate);
 				previousFailures.set(item.dst, hasPrevious);
                 
 				if (hasPrevious) {
@@ -279,7 +279,7 @@ exports.getAllScanSummaryFromUrl = (url, api) =>
 		for await (const item of iterator) {
 			if (item[0]) {
 				const existing = await getExistingBrokenLinkCount(item[0].runId);
-				item[0].totalUnique404Existing = existing;
+				item[0].totalUniqueBrokenLinksExisting = existing;
 			}
 			
 			resolve(item);
@@ -314,17 +314,21 @@ exports.compareScans = (api, url) =>
 		for await (const item of entity) {
 			result.push(item);
 		}
+
+		const latestResult = result[0] || {};
+		const prevResult = result[1] || {};
+
 		let isErrorUp = {
-			isHtmlWarningsUp: result[0].htmlWarnings > result[1].htmlWarnings,
-			prevHtmlWarnings: result[1].htmlWarnings,
-			currHtmlWarnings: result[0].htmlWarnings,
-			isHtmlErrorsUp: result[0].htmlErrors > result[1].htmlErrors,
-			prevHtmlErrors: result[1].htmlErrors,
-			currHtmlErrors: result[0].htmlErrors,
-			isBrokenLinksUp: result[0].totalUnique404 > result[1].totalUnique404,
-			prevBrokenLinks: result[1].totalUnique404,
-			currBrokenLinks: result[0].totalUnique404,
-			latestRunId: result[0].runId
+			isHtmlWarningsUp: latestResult.htmlWarnings > prevResult.htmlWarnings,
+			prevHtmlWarnings: prevResult.htmlWarnings || 0,
+			currHtmlWarnings: latestResult.htmlWarnings || 0,
+			isHtmlErrorsUp: latestResult.htmlErrors > prevResult.htmlErrors,
+			prevHtmlErrors: prevResult.htmlErrors || 0,
+			currHtmlErrors: latestResult.htmlErrors || 0,
+			isBrokenLinksUp: latestResult.uniqueBrokenLinks > prevResult.uniqueBrokenLinks,
+			prevBrokenLinks: prevResult.uniqueBrokenLinks || 0,
+			currBrokenLinks: latestResult.uniqueBrokenLinks || 0,
+			latestRunId: latestResult.runId
 		} 
 		resolve(isErrorUp)
 	});

@@ -123,22 +123,24 @@
               <div class="text-red-700 font-sans">Invalid email input</div>
             {/if}
           </div>
-          <div class="font-sans font-bold mt-5">
-            Currently receiving alerts:
-          </div>
-          {#each sharedEmailAddresses as item}
-            <li 
-              class="cursor-pointer"
-              on:mouseover={() => {item = { ...item, showDeleteIcon: true } }}
-              on:focus={() => {item = { ...item, showDeleteIcon: true } }}
-              on:mouseleave={()=> {item = { ...item, showDeleteIcon: false } }}
-            >
-              {item.emailAddress}
-              {#if item.showDeleteIcon}
-                <i class="fas fa-trash-can fa-sm text-red-600 ml-1 cursor-pointer" on:click={() => removeAlertEmail(item)} on:keydown={undefined}/>
-              {/if}
-            </li>
-          {/each}
+          {#if sharedEmailAddresses.length > 0}
+            <div class="font-sans font-bold mt-5">
+              Currently receiving alerts:
+            </div>
+            {#each sharedEmailAddresses as item}
+              <li 
+                class="cursor-pointer"
+                on:mouseover={() => {item = { ...item, showDeleteIcon: true } }}
+                on:focus={() => {item = { ...item, showDeleteIcon: true } }}
+                on:mouseleave={()=> {item = { ...item, showDeleteIcon: false } }}
+              >
+                {item.emailAddress}
+                {#if item.showDeleteIcon}
+                  <i class="fas fa-trash-can fa-sm text-red-600 ml-1 cursor-pointer" on:click={() => removeAlertEmail(item)} on:keydown={undefined}/>
+                {/if}
+              </li>
+            {/each}
+          {/if}
         </div>
       {/if}
       <!--Footer-->

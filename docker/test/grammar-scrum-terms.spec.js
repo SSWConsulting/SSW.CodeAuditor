@@ -25,6 +25,12 @@ describe(`Rules: ${ruldId}`, () => {
     expect(messages.length).to.be(11);
   });
 
+  it("long string contains the character should not result in an error", () => {
+    const code = `<div>blahblahsprintblahblah</div>`;
+    const messages = HTMLHint.verify(code, ruleOptions);
+    expect(messages.length).to.be(0);
+  });
+
   it("Incorrect Scrum terms in <a> tag should not result in an error", () => {
     const code =
       "<a href='sprint'>scrum, sprint, product owner</a>";

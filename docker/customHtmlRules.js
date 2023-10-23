@@ -61,15 +61,18 @@ exports.addCustomHtmlRule = () => {
                 scrumTerms.forEach((i) => {
                   var contentIndex = pageContent.indexOf(i);
                   var col = event.lastEvent.col;
-
-                  if (contentIndex >= 0) {
-                    reporter.warn(
-                      "Incorrect Scrum term: '" + i + "'.",
-                      event.line,
-                      col,
-                      self,
-                      event.raw
-                    );
+                  
+                  // Make sure the character has space and is not part of a long single string 
+                  if (pageContent.indexOf(' ') >= 0) {
+                    if (contentIndex >= 0) {
+                      reporter.warn(
+                        "Incorrect Scrum term: '" + i + "'.",
+                        event.line,
+                        col,
+                        self,
+                        event.raw
+                      );
+                    }
                   }
                 });
               }
@@ -445,17 +448,19 @@ exports.addCustomHtmlRule = () => {
               let pageContent = event.lastEvent.raw;
               if (pageContent) {
                 spellings.forEach((i) => {
-                  var contentIndex = pageContent.indexOf(i);
+                  var contentIndex = pageContent.indexOf(i) >= 0;
                   var col = event.lastEvent.col;
-
-                  if (contentIndex >= 0) {
-                    reporter.warn(
-                      "Incorrect spellings: '" + i + "'.",
-                      event.line,
-                      col,
-                      self,
-                      event.raw
-                    );
+                  // Make sure the character has space and is not part of a long single string 
+                  if (pageContent.indexOf(' ') >= 0) {
+                    if (contentIndex) {
+                      reporter.warn(
+                        "Incorrect spellings: '" + i + "'.",
+                        event.line,
+                        col,
+                        self,
+                        event.raw
+                      );
+                    }
                   }
                 });
               }
@@ -473,7 +478,7 @@ exports.addCustomHtmlRule = () => {
       init: function (parser, reporter) {
         const self = this;
         parser.addListener("all", (event) => {
-          if (event.raw && event.lastEvent && findPhoneNumbersInText(event.raw, "US").length) {
+          if (event.raw && event.lastEvent && findPhoneNumbersInText(event.raw, "AU").length) {
             const pageContent = event.lastEvent.raw;
             if (pageContent && event.lastEvent.tagName) {
               const tagName = event.lastEvent.tagName.toLowerCase();
