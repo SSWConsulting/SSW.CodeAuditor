@@ -113,7 +113,7 @@
                     cursor-default whitespace-nowrap">
                     <a
                       on:click={() => viewSource(url.url, item, key)}
-                      href={'#'}
+                      href={"javascript:void(0)"}
                       title="View source">
                       {item}
                     </a>
@@ -128,7 +128,7 @@
                         cursor-default whitespace-nowrap">
                         <a
                           on:click={() => viewSource(url.url, item, key)}
-                          href={'#'}
+    s                      href={"javascript:void(0)"}
                           title="View source">
                           {item}
                         </a>
