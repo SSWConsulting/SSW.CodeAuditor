@@ -72,7 +72,7 @@
       </span>
     </div>
   </div>
-  <div class="text-center mt-3">
+  <div class="text-center my-3">
     {#if previousScans.length > 1}
       {#if previousScans[0].runId !== value.runId}
         <button 
@@ -100,18 +100,8 @@
         <i class="fas fa-paper-plane"></i> Send Email Alerts
       </button>
     {/if}
-    {#if value.buildDate && isLighthouseAudit && $isLoggedIn}
-    <div class="text-center lg:text-right mt-3">
-      <button
-        on:click={perfThreshold}
-        class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
-          border hover:border-transparent rounded">
-        <span>Set Performance Threshold For Next Scan</span>
-      </button>
-    </div>
-    {/if}
   </div>
-  <div class="text-center lg:text-right mt-3">
+  <div class="text-center lg:text-right">
     {#if (value.buildDate && isHtmlHintComp && $isLoggedIn)}
       <button
         on:click={htmlHintThreshold}
@@ -119,7 +109,15 @@
         border hover:border-transparent rounded">
         <span>Enable/Disable Rules</span>
       </button>
-  {/if}
+    {/if}
+    {#if value.buildDate && isLighthouseAudit && $isLoggedIn}
+      <button
+        on:click={perfThreshold}
+        class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
+          border hover:border-transparent rounded">
+        <span>Set Performance Threshold For Next Scan</span>
+      </button>
+    {/if}
   </div>
 </div>
 
