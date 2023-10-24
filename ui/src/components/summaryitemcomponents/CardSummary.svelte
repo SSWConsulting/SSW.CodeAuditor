@@ -111,7 +111,7 @@
     </div>
     {/if}
   </div>
-  <div class="text-center lg:text-right">
+  <div class="text-center lg:text-right mt-3">
     {#if (value.buildDate && isHtmlHintComp && $isLoggedIn)}
       <button
         on:click={htmlHintThreshold}
