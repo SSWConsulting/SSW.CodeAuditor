@@ -4,10 +4,10 @@
   import { createEventDispatcher } from "svelte";
   import { printTimeDiff, convertSpecialCharUrl } from "../../utils/utils";
   import SendAlertModal from "../misccomponents/SendAlertModal.svelte";
-  import { userSession$ } from "../../stores";
+  import { userSession$, isLoggedIn } from "../../stores";
   import { CONSTS } from "../../utils/utils";
   import { navigateTo } from "svelte-router-spa";
-  import { onMount } from "svelte";
+  import { onDestroy } from "svelte";
 
   export let value;
   export let isHtmlHintComp = false;
@@ -23,14 +23,11 @@
   const perfThreshold = () => dispatch("perfThreshold");
   const htmlHintThreshold = () => dispatch("htmlHintThreshold");
 
-  const emailAlertModal = () => {
-    userSession$.subscribe(async x => {
-      userApiKey = x.apiKey;
-      let fullUrl = convertSpecialCharUrl(value.url)
-      const res = await fetch(`${CONSTS.API}/api/getalertemailaddresses/${userApiKey}/${fullUrl}`);
-      sharedEmailAddresses = await res.json();
-      showShareAlert = true;
-    });
+  const emailAlertModal = async () => {
+    let fullUrl = convertSpecialCharUrl(value.url)
+    const res = await fetch(`${CONSTS.API}/api/getalertemailaddresses/${userApiKey}/${fullUrl}`);
+    sharedEmailAddresses = await res.json();
+    showShareAlert = true;
   };
 
   const navigateToLatestScan = () => {
@@ -38,19 +35,21 @@
     // Force reload page otherwise Svelte would not refresh the content
     location.reload(true);
   }
-  
-  onMount(async () => {
-    // Check if scan has any previous scans
-    userSession$.subscribe(async x => {
-      if (x) {
-        userApiKey = x.apiKey;
-        let fullUrl = convertSpecialCharUrl(value.url)
-        const res = await fetch(`${CONSTS.API}/api/scanSummaryFromUrl/${userApiKey}/${fullUrl}`);
-        previousScans = await res.json();
-      }
-    });
-  })
 
+  const getPreviousScans = async () => {
+    let fullUrl = convertSpecialCharUrl(value.url)
+    const res = await fetch(`${CONSTS.API}/api/scanSummaryFromUrl/${userApiKey}/${fullUrl}`);
+    previousScans = await res.json();
+  };
+
+  const userSubscriber = userSession$.subscribe(x => {
+    if (x) {
+      userApiKey = x.apiKey;
+      getPreviousScans();
+    }
+  });
+
+  onDestroy(userSubscriber);
 </script>
 
 <div class="grid grid-cols">
@@ -93,14 +92,16 @@
         {previousScans[0].runId !== value.runId ? "Compare to latest scan" : "Compare to previous scan"}
       </button>
     {/if}
-    <button
-      on:click={emailAlertModal} 
-      class="bg-white hover:bg-gray-800 hover:text-white font-semibold py-2 px-4 border rounded"
-    >
-      <i class="fas fa-paper-plane"></i> Send Email Alerts
-    </button>
-    {#if value.buildDate && isLighthouseAudit}
-    <div class="text-center lg:text-right">
+    {#if $isLoggedIn}
+      <button
+        on:click={emailAlertModal} 
+        class="bg-white hover:bg-gray-800 hover:text-white font-semibold py-2 px-4 border rounded"
+      >
+        <i class="fas fa-paper-plane"></i> Send Email Alerts
+      </button>
+    {/if}
+    {#if value.buildDate && isLighthouseAudit && $isLoggedIn}
+    <div class="text-center lg:text-right mt-3">
       <button
         on:click={perfThreshold}
         class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
@@ -111,7 +112,7 @@
     {/if}
   </div>
   <div class="text-center lg:text-right">
-    {#if (value.buildDate && isHtmlHintComp)}
+    {#if (value.buildDate && isHtmlHintComp && $isLoggedIn)}
       <button
         on:click={htmlHintThreshold}
         class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
