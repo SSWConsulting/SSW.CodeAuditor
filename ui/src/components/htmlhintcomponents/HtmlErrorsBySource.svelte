@@ -128,7 +128,7 @@
                         cursor-default whitespace-nowrap">
                         <a
                           on:click={() => viewSource(url.url, item, key)}
-    s                      href={"javascript:void(0)"}
+                          href={"javascript:void(0)"}
                           title="View source">
                           {item}
                         </a>
