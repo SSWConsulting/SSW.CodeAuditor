@@ -12,7 +12,6 @@
   import LoadingFlat from "../components/misccomponents/LoadingFlat.svelte";
   import UpdateIgnoreUrl from "../components/misccomponents/UpdateIgnoreUrl.svelte";
   import BuildDetailsSlot from "../components/detailslotcomponents/BuildDetailsSlot.svelte";
-  import { CONSTS } from "../utils/utils";
 
   export let currentRoute;
 
