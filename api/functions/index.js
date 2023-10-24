@@ -262,11 +262,11 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		url,
 		cloc,
 		totalBrokenLinks: badUrls.length,
-		uniqueBrokenLinks: R.uniqBy(R.prop('dst'), badUrls.filter((x) => !unscannableLinks.some(link => x.dst.includes(link)))).length,
-		pagesWithBrokenLink: R.uniqBy(R.prop('src'), badUrls.filter((x) => !unscannableLinks.some(link => x.dst.includes(link)))).length,
+		uniqueBrokenLinks: R.uniqBy(R.prop('dst'), badUrls).length,
+		pagesWithBrokenLink: R.uniqBy(R.prop('src'), badUrls).length,
 		totalUnique404: R.uniqBy(
 			R.prop('dst'),
-			badUrls.filter((x) => x.statuscode === '404' && !unscannableLinks.some(link => x.dst.includes(link)))
+			badUrls.filter((x) => x.statuscode === '404')
 		).length,
 		htmlWarnings: htmlWarnings ? htmlWarnings : 0,
 		htmlErrors: htmlErrors ? htmlErrors : 0,
