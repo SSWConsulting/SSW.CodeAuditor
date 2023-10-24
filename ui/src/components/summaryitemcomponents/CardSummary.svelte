@@ -32,6 +32,12 @@
       showShareAlert = true;
     });
   };
+
+  const navigateToLatestScan = () => {
+    navigateTo(`/build/${previousScans[0].runId}`);
+    // Force reload page otherwise Svelte would not refresh the content
+    location.reload(true);
+  }
   
   onMount(async () => {
     // Check if scan has any previous scans
@@ -56,8 +62,7 @@
         class="underline text-xl font-sans font-bold textdark hover:text-red-600">{value.url}</a>
     </div>
     <div class="text-center">
-      <span class="text-xl font-sans block lg:inline-block textgrey">Last
-        scanned: 
+      <span class="text-xl font-sans block lg:inline-block textgrey"> Scanned on:
         <strong>{format(new Date(value.buildDate), 'dd MMM yyyy')}</strong>
         ({formatDistanceToNow(new Date(value.buildDate), { addSuffix: true })} at {format(new Date(value.buildDate), 'hh:mmaaa')})
       </span>
@@ -70,17 +75,27 @@
   </div>
   <div class="text-center mt-3">
     {#if previousScans.length > 1}
+      {#if previousScans[0].runId !== value.runId}
+        <button 
+          type="button"
+          class="bg-black hover:bg-gray-800 text-white font-semibold py-2 px-4 border rounded"
+          on:click={() => navigateToLatestScan()}
+        >
+          <i class="fas fa-rocket"></i> Go to latest scan
+        </button>
+      {/if}
       <button 
         type="button"
-        class="bg-black hover:bg-gray-800 text-white font-semibold py-2 px-4 border rounded"
+        class="bg-white hover:bg-gray-800 hover:text-white font-semibold py-2 px-4 border rounded"
         on:click={navigateTo(`/scanCompare/${value.partitionKey}/${convertSpecialCharUrl(value.url.slice(12))}/${value.buildDate}`)}
       >
-        <i class="fas fa-code-compare"></i> Compare to latest scan
+        <i class="fas fa-code-compare"></i> 
+        {previousScans[0].runId !== value.runId ? "Compare to latest scan" : "Compare to previous scan"}
       </button>
     {/if}
     <button
       on:click={emailAlertModal} 
-      class="bg-black hover:bg-gray-800 text-white font-semibold py-2 px-4 border rounded"
+      class="bg-white hover:bg-gray-800 hover:text-white font-semibold py-2 px-4 border rounded"
     >
       <i class="fas fa-paper-plane"></i> Send Email Alerts
     </button>

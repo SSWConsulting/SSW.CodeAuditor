@@ -12,10 +12,7 @@
 
   let groupUrlKey = [];
   let groupUrl;
-  
-  // Remove 'www.' before grouping the scans by the Urls
-  builds = builds.map(item => ({...item, url: item.url.replace('www.', '')}))
-  
+    
   groupUrl = groupBy(props(["url"]))(builds);
   groupUrlKey = Object.keys(groupUrl);
 
