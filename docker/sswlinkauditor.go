@@ -54,6 +54,7 @@ func check(link Link, linkch chan LinkStatus, number int, unscannableLinks []str
 	}
 	method := "HEAD"
 
+	// get list of links we consider unscannable and use a GET request to get a more accurate result
 	if isLinkUnscannable(link.url, unscannableLinks) {
 		method = "GET"
 	}
