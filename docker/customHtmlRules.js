@@ -477,7 +477,7 @@ exports.addCustomHtmlRule = () => {
       "Checks for phone numbers that aren't in hyperlinks with a \"tel:\" prefix.",
       init: function (parser, reporter) {
         const self = this;
-        parser.addListener("all", (event) => {
+        parser.addListener("text", (event) => {
           if (event.raw && event.lastEvent && findPhoneNumbersInText(event.raw, "AU").length) {
             const pageContent = event.lastEvent.raw;
             if (pageContent && event.lastEvent.tagName) {
