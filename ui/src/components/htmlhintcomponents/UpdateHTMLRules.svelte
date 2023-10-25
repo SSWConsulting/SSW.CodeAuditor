@@ -3,7 +3,7 @@
   import { CONSTS, htmlHintRules, customHtmlHintRules, RuleType, rulePresets, PresetType } from "../../utils/utils";
   import Modal from "../misccomponents//Modal.svelte";
   import LoadingFlat from "../misccomponents/LoadingFlat.svelte";
-  import { onMount, createEventDispatcher } from "svelte";
+  import { createEventDispatcher, beforeUpdate } from "svelte";
   import slug from "slug";
 
   export let url;
@@ -12,6 +12,7 @@
   export let user;
   export let htmlRules;
   export let threshold;
+  export let customHtmlRuleOptions = [];
 
   let saving;
   let addedSuccess;
@@ -34,8 +35,8 @@
   const dispatch = createEventDispatcher();
   const updateHtmlRules = () => dispatch("updateHtmlRules");
   
-  onMount(() => {
-    initSelectedRules();
+  beforeUpdate(() => {
+    initSelectedRules()
   })
 
   const initSelectedRules = () => {
@@ -52,7 +53,13 @@
   const setSelectedRules = (rulesString) => {
     let selectedHTMLRules = rulesString.split(/[,]+/);
     htmlHintSelectedRules = htmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}));
-    customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}));
+    customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => (
+      {
+        ...htmlRule, 
+        isChecked: selectedHTMLRules.includes(htmlRule.rule),
+        customOptionValue: customHtmlRuleOptions.find(option => option.ruleId === htmlRule.rule)?.optionValue
+      }
+    ));
   };
 
   const selectPreset = (presetName) => {
@@ -305,23 +312,33 @@
             {rule.displayName}
           </a>
           {#if rule.isEnableCustomOptions}
+            {#if rule.customOptionValue && rule.customOptionValue.length > 0}
+              <div class="ml-5">
+                <span class="font-sans font-bold">
+                  Applied custom option value: 
+                </span>
+                <span class="textred">
+                  {rule.customOptionValue}
+                </span>
+              </div>
+            {/if}
             {#if currSelectedCustomOption !== index}
-              <span class="cursor-pointer">
+              <div class="cursor-pointer ml-5 mb-3">
                 <button 
                   class="bgred text-white rounded px-2 py-1"
                   on:click={() => toggleCustomOption(index)} 
                   on:keypress={undefined}
-                ><i class="fas fa-pen-to-square"></i></button>
-              </span>
+                ><i class="fas fa-pen-to-square"></i> Edit Custom Rule</button>
+              </div>
             {:else}
-              <span class="cursor-pointer">
+              <div class="cursor-pointer ml-5">
                 <button 
                   class="bgred text-white rounded px-2 py-1"
                   on:click={() => toggleCustomOption(-1)} 
                   on:keypress={undefined}
-                ><i class="fas fa-pen-to-square"></i></button>
-              </span>
-              <div>
+                ><i class="fas fa-pen-to-square"></i> Collapse</button>
+              </div>
+              <div class="ml-5 mb-3">
                 <div>
                   {rule.customOptionsMessage}
                 </div>
