@@ -3,7 +3,7 @@
   import { CONSTS, htmlHintRules, customHtmlHintRules, RuleType, rulePresets, PresetType } from "../../utils/utils";
   import Modal from "../misccomponents//Modal.svelte";
   import LoadingFlat from "../misccomponents/LoadingFlat.svelte";
-  import { createEventDispatcher, beforeUpdate } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   import slug from "slug";
 
   export let url;
@@ -35,8 +35,8 @@
   const dispatch = createEventDispatcher();
   const updateHtmlRules = () => dispatch("updateHtmlRules");
   
-  beforeUpdate(() => {
-    initSelectedRules()
+  onMount(() => {
+    initSelectedRules();
   })
 
   const initSelectedRules = () => {

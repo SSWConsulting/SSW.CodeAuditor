@@ -30,13 +30,6 @@
     htmlHintRulesShown = true;
     loadingHtmlHintSettings = true;
     try {
-      // Retrieve selected custom HTML Rules 
-      const res = await fetch(
-        `${CONSTS.API}/api/config/${user.apiKey}/htmlhintrules/${slug(scanUrl)}`
-      );
-      const result = await res.json();
-      threshold = result || {};
-
       // Retrieve custom HTML Rules input options
       const optionRes = await fetch(`${CONSTS.API}/api/config/getCustomHtmlRuleOptions/${user.apiKey}`, {
         method: "POST",
@@ -45,6 +38,13 @@
       })
       const optionResult = await optionRes.json();
       customHtmlRuleOptions = optionResult || [];
+
+      // Retrieve selected custom HTML Rules 
+      const res = await fetch(
+        `${CONSTS.API}/api/config/${user.apiKey}/htmlhintrules/${slug(scanUrl)}`
+      );
+      const result = await res.json();
+      threshold = result || {};
     } catch (error) {
       console.error("error getting threshold", error);
       threshold = {};
