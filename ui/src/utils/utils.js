@@ -548,7 +548,9 @@ export const customHtmlHintRules = [
     rule: "phone-numbers-without-links",
     displayName: "Content - Phone numbers must be in hyperlinks",
     ruleLink: "https://www.ssw.com.au/rules/do-you-know-to-hyperlink-your-phone-numbers",
-    type: RuleType.Warning
+    type: RuleType.Warning,
+    isEnableCustomOptions: true,
+    customOptionsMessage: 'Please enter your phone country code in 2 DIGIT ISO (e.g. AU):',
   },
   {
     rule: "use-unicode-hex-code-for-special-html-characters",
@@ -572,7 +574,9 @@ export const customHtmlHintRules = [
     rule: "detect-absolute-references-url-path-correctly",
     displayName: "Links - Avoid absolute internal URLs",
     ruleLink: "https://ssw.com.au/rules/avoid-absolute-internal-links/",
-    type: RuleType.Warning
+    type: RuleType.Warning,
+    isEnableCustomOptions: true,
+    customOptionsMessage: 'Please enter your website internal URL:',
   },
   {
     rule: "url-must-not-have-space",

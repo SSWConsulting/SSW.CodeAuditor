@@ -20,11 +20,13 @@
   let presetSelection = [];
   
   // Check all selected htmlhint rules
-  let htmlHintSelectedRules = []
-  let customHtmlHintSelectedRules = []
+  let htmlHintSelectedRules = [];
+  let customHtmlHintSelectedRules = [];
 
   let showHistory = false;
   let historyLog = [];
+
+  let customOptionInput = '';
 
   $: htmlHintSelectedRules, handleSelectionChange();
   $: customHtmlHintSelectedRules, handleSelectionChange();
@@ -183,6 +185,11 @@
     currSelectedLog = index;
   }
 
+  let currSelectedCustomOption = -1;
+  const toggleCustomOption = (index) => {
+    currSelectedCustomOption = index;
+  }
+
   const formatHtmlRule = (rules) => {
     let selectedHtmlHintRules = rules.map(rule => htmlHintRules.find(x => x.rule === rule));
     let selectedCustomHtmlHintRules = rules.map(rule => customHtmlHintRules.find(x => x.rule === rule));
@@ -190,6 +197,27 @@
     let allHtmlRules = htmlHintRules.concat(customHtmlHintRules)
     return allHtmlRules.map(rule => ({...rule, isRuleEnabled: allSelectedRuleLog.includes(rule)}))
   };
+
+  const addCustomRuleOptions = async (optionValue, ruleId) => {
+    const res = await fetch(
+      `${CONSTS.API}/api/config/addCustomHtmlRuleOptions/${user.apiKey}`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          ruleId, 
+          url, 
+          optionValue
+        }),
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    if (res.ok) {
+      console.log('Upload custom HTML rule option successfully')
+    } else {
+      throw new Error("Failed to load");
+    } 
+  }
   
 </script>
 
@@ -266,17 +294,47 @@
       {/each}
       <br />
       <h3 class="font-bold">Custom HTML Rules: </h3>
-      {#each customHtmlHintSelectedRules as rule}
-        <label>
+      {#each customHtmlHintSelectedRules as rule, index}
+        <div>
           <input type="checkbox" bind:checked={rule.isChecked} value={rule.rule} /> 
-            <i class="{rule.type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}" style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"></i> 
-            <a 
-            target="_blank"
-            class="{rule.ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline" 
-            href={rule.ruleLink}>
-              {rule.displayName}
-            </a>
-        </label>
+          <i class="{rule.type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}" style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"></i> 
+          <a 
+          target="_blank"
+          class="{rule.ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline" 
+          href={rule.ruleLink}>
+            {rule.displayName}
+          </a>
+          {#if rule.isEnableCustomOptions}
+            {#if currSelectedCustomOption !== index}
+              <span class="cursor-pointer">
+                <button 
+                  class="bgred text-white rounded px-2 py-1"
+                  on:click={() => toggleCustomOption(index)} 
+                  on:keypress={undefined}
+                ><i class="fas fa-pen-to-square"></i></button>
+              </span>
+            {:else}
+              <span class="cursor-pointer">
+                <button 
+                  class="bgred text-white rounded px-2 py-1"
+                  on:click={() => toggleCustomOption(-1)} 
+                  on:keypress={undefined}
+                ><i class="fas fa-pen-to-square"></i></button>
+              </span>
+              <div>
+                <div>
+                  {rule.customOptionsMessage}
+                </div>
+                <input bind:value={customOptionInput}/>
+                <button
+                  class="bgred text-white rounded px-2 py-1"
+                  on:click={() => {addCustomRuleOptions(customOptionInput, rule.rule)}}
+                  on:keypress={undefined}
+                >Save</button>
+              </div>
+            {/if}
+          {/if}
+        </div>
       {/each}
     {/if}
   {/if}

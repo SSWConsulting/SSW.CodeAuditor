@@ -1,7 +1,10 @@
+const { getCustomHtmlRuleOptions } = require("./api");
 const HTMLHint = require("htmlhint").default;
 const findPhoneNumbersInText = require('libphonenumber-js').findPhoneNumbersInText;
 
-exports.addCustomHtmlRule = () => {
+exports.addCustomHtmlRule = async (apiToken, url) => {
+  const customRuleOptions = await getCustomHtmlRuleOptions(apiToken, url)
+
   HTMLHint.addRule({
     id: "code-block-missing-language",
     description: "Code blocks must contain a language specifier.",
@@ -377,9 +380,15 @@ exports.addCustomHtmlRule = () => {
       parser.addListener("tagstart", (event) => {
         var tagName = event.tagName.toLowerCase(),
         mapAttrs = parser.getMapAttrs(event.attrs);
+        const ruleId = "detect-absolute-references-url-path-correctly";
         if (tagName === "a") {
           if (mapAttrs["href"]) {
-            if (mapAttrs["href"].startsWith("https://ssw.com.au/rules")) {
+            // Check if custom options exist in this rule
+            let optionValue = '';
+            if (customRuleOptions && customRuleOptions.length > 0 && customRuleOptions.filter(option => option.ruleId === ruleId).length > 0) {
+              optionValue = customRuleOptions.find(option => option.ruleId === ruleId).optionValue
+            }
+            if (mapAttrs["href"].startsWith(optionValue.length > 0 ? optionValue : "https://ssw.com.au/rules")) {
               if (!mapAttrs["href"].startsWith("/")) {
               reporter.warn(
                 "URLs must be formatted to direct to a url path correctly.",
@@ -477,21 +486,29 @@ exports.addCustomHtmlRule = () => {
       "Checks for phone numbers that aren't in hyperlinks with a \"tel:\" prefix.",
       init: function (parser, reporter) {
         const self = this;
+        const ruleId = "phone-numbers-without-links";
         parser.addListener("text", (event) => {
-          if (event.raw && event.lastEvent && findPhoneNumbersInText(event.raw, "AU").length) {
-            const pageContent = event.lastEvent.raw;
-            if (pageContent && event.lastEvent.tagName) {
-              const tagName = event.lastEvent.tagName.toLowerCase();
-              const mapAttrs = parser.getMapAttrs(event.lastEvent.attrs);
-              const href = mapAttrs["href"];
-              if (!(tagName === "a" && href && href.startsWith("tel:"))) {
-                reporter.warn(
-                  "Phone number must be in a hyperlink.",
-                  event.line,
-                  event.col,
-                  self,
-                  event.raw
-                );
+          if (event.raw && event.lastEvent) {
+            // Check if custom options exist in this rule
+            let optionValue = '';
+            if (customRuleOptions && customRuleOptions.length > 0 && customRuleOptions.filter(option => option.ruleId === ruleId).length > 0) {
+              optionValue = customRuleOptions.find(option => option.ruleId === ruleId).optionValue
+            }
+            if (findPhoneNumbersInText(event.raw, optionValue.length > 0 ? optionValue : 'AU').length) {
+              const pageContent = event.lastEvent.raw;
+              if (pageContent && event.lastEvent.tagName) {
+                const tagName = event.lastEvent.tagName.toLowerCase();
+                const mapAttrs = parser.getMapAttrs(event.lastEvent.attrs);
+                const href = mapAttrs["href"];
+                if (!(tagName === "a" && href && href.startsWith("tel:"))) {
+                  reporter.warn(
+                    "Phone number must be in a hyperlink.",
+                    event.line,
+                    event.col,
+                    self,
+                    event.raw
+                  );
+                }
               }
             }
           }

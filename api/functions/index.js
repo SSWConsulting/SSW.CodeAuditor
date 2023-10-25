@@ -22,6 +22,7 @@ const {
 	addHTMLHintRulesForEachRun,
 	addAlertEmailAddresses,
 	removeAlertEmailAddress,
+	addCustomHtmlRuleOptions,
 } = require('./commands');
 const {
 	getPersonalSummary,
@@ -39,6 +40,7 @@ const {
 	getAllScanSummaryFromUrl,
 	getUnscannableLinks,
 	compareScans,
+	getCustomHtmlRuleOptions,
 } = require('./queries');
 const {
 	newGuid,
@@ -177,6 +179,14 @@ app.post('/comparescanlatestandsecond/:api', async (req, res) => {
 
 app.get('/unscannableLinks', async (req, res) => {
 	res.json(await getUnscannableLinks());
+});
+
+app.post('/config/getCustomHtmlRuleOptions/:api', async (req, res) => {
+	res.json(await getCustomHtmlRuleOptions(req.params.api, req.body.url));
+});
+
+app.post('/config/addCustomHtmlRuleOptions/:api', async (req, res) => {
+	res.json(await addCustomHtmlRuleOptions(req.params.api, req.body));
 });
 
 app.post('/scanresult/:api/:buildId', async (req, res) => {
