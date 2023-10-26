@@ -1,10 +1,12 @@
 package main
 
 import (
-	"encoding/json"
+	"context"
+	"crypto/tls"
+	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
+	"net"
 	"net/http"
 
 	urlP "net/url"
@@ -34,8 +36,6 @@ type Link struct {
 	anchor   string
 }
 
-const unscannableLinksEndpoint = "https://asia-east2-sswlinkauditor-c1131.cloudfunctions.net/api/unscannableLinks";
-
 func getHref(t html.Token) (ok bool, href string) {
 	for _, a := range t.Attr {
 		if a.Key == "href" || a.Key == "src" {
@@ -46,31 +46,58 @@ func getHref(t html.Token) (ok bool, href string) {
 	return
 }
 
-func check(link Link, linkch chan LinkStatus, number int, unscannableLinks []string) {
+func getClient() *http.Client {
+	return &http.Client{
+		Timeout: 1 * time.Minute,
+		Transport: &http.Transport{
+			TLSNextProto: map[string]func(authority string, c *tls.Conn) http.RoundTripper{},
+			Dial: (&net.Dialer{
+                Timeout:   30 * time.Second,
+                KeepAlive: 30 * time.Second,
+        	}).Dial,
+			TLSHandshakeTimeout:   10 * time.Second,
+			ResponseHeaderTimeout: 10 * time.Second,
+			ExpectContinueTimeout: 1 * time.Second,
+		},
+	}
+}
+
+func addClientHeaders(r *http.Request) {
+    r.Header.Add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36")
+	r.Header.Set("Cache-Control", "no-cache")
+	r.Header.Set("Connection", "keep-alive")
+	r.Header.Set("Accept-Encoding", "*")
+}
+
+func check(link Link, linkch chan LinkStatus, number int) {
 	fmt.Println("CHEC", number, link.url)
 
-	client := &http.Client{
-		Timeout: 1 * time.Minute,
-	}
-	method := "HEAD"
+	client := getClient()
+	defer client.CloseIdleConnections()
 
-	// get list of links we consider unscannable and use a GET request to get a more accurate result
-	if isLinkUnscannable(link.url, unscannableLinks) {
-		method = "GET"
-	}
-
-	r, e := http.NewRequest(method, link.url, nil)
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	r, e := http.NewRequestWithContext(ctx, "GET", link.url, nil)
+	addClientHeaders(r)
+	r.Header.Add("Accept", "*/*")
+	dnsErr := new(net.DNSError)
 
 	if e != nil {
 		linkch <- LinkStatus{link.url, link.srcUrl, "Link Invalid", 0, link.anchor}
 		return
 	}
 
-	resp, error := client.Do(r)
+	resp, err := client.Do(r)
 
-	if error != nil {
-		linkch <- LinkStatus{link.url, link.srcUrl, "Empty Response", 0, link.anchor}
+	if err != nil {
+		fmt.Println("error: ", err)
+		if errors.As(err, &dnsErr) {
+			linkch <- LinkStatus{link.url, link.srcUrl, "Host error", 0, link.anchor}
+		} else {
+			linkch <- LinkStatus{link.url, link.srcUrl, "Unknown error", -1, link.anchor}
+		}
 	} else {
+		defer resp.Body.Close()
 		linkch <- LinkStatus{link.url, link.srcUrl, resp.Status, resp.StatusCode, link.anchor}
 	}
 }
@@ -82,11 +109,16 @@ func crawl(link Link, ch chan Link, linkch chan LinkStatus, number int) {
 		Timeout: 1 * time.Minute,
 	}
 	resp, err := client.Get(link.url)
+	dnsErr := new(net.DNSError)
 
 	defer func() {
 		if err != nil {
-			fmt.Println("error:", err)
-			linkch <- LinkStatus{link.url, link.srcUrl, "Empty Response", 0, link.anchor}
+			fmt.Println("error: ", err)
+			if errors.As(err, &dnsErr) {
+				linkch <- LinkStatus{link.url, link.srcUrl, "Host error", 0, link.anchor}
+			} else {
+				linkch <- LinkStatus{link.url, link.srcUrl, "Unknown error", -1, link.anchor}
+			}
 		} else {
 			linkch <- LinkStatus{link.url, link.srcUrl, resp.Status, resp.StatusCode, link.anchor}
 		}
@@ -209,7 +241,9 @@ func writeResultFile(allUrls map[string]LinkStatus) {
 
 	f.WriteString("Source" + "\t" + "Destination" + "\t" + "Status" + "\t" + "StatusCode" + "\t" + "Anchor" + "\n")
 	for _, v := range allUrls {
-		f.WriteString(sanitizeString(v.srcUrl) + "\t" + sanitizeString(v.url) + "\t" + sanitizeString(v.status) + "\t" + strconv.Itoa(v.statusCode) + "\t" + sanitizeString(v.anchor) + "\n")
+		if (v.statusCode > -1 && v.statusCode != 429) {
+			f.WriteString(sanitizeString(v.srcUrl) + "\t" + sanitizeString(v.url) + "\t" + sanitizeString(v.status) + "\t" + strconv.Itoa(v.statusCode) + "\t" + sanitizeString(v.anchor) + "\n")
+		}
 	}
 
 	f.Close()
@@ -226,30 +260,6 @@ func sanitizeString(s string) string {
 	return replacer.Replace(s);
 }
 
-func isLinkUnscannable(a string, unscannableLinks []string) bool {
-	for _, b := range unscannableLinks {
-		if strings.HasPrefix(strings.ToLower(a), strings.ToLower(b)) {
-			return true
-		}
-	}
-	return false
-}
-
-func getUnscannableLinks() []string {
-	resp, err := http.Get(unscannableLinksEndpoint)
-	if err != nil { 
-		fmt.Println("Error getting unscannable links", err)
-		return []string{}
-	}
-	
-	defer resp.Body.Close()
-	respBody, _ := ioutil.ReadAll(resp.Body)
-
-	var linksList []string
-	json.Unmarshal(respBody, &linksList)
-	return linksList
-}
-
 func main() {
 	allUrls := make(map[string]LinkStatus)
 	startUrl := Link{os.Args[1], "", "a", ""}
@@ -264,8 +274,6 @@ func main() {
 	var wg sync.WaitGroup
 
 	start := time.Now()
-
-	unscannableLinks := getUnscannableLinks();
 
 	chUrls := make(chan Link)
 	chAllUrls := make(chan LinkStatus)
@@ -304,7 +312,7 @@ func main() {
 						if strings.Index(link.url, startUrl.url) == 0 && link.linkType == "a" && !isResourceFile(link.url) {
 							crawl(link, chUrls, chAllUrls, crawling)
 						} else {
-							check(link, chAllUrls, crawling, unscannableLinks)
+							check(link, chAllUrls, crawling)
 						}
 
 						<-concurrentGoroutines
@@ -314,7 +322,7 @@ func main() {
 					if strings.Index(link.url, startUrl.url) == 0 && link.linkType == "a" && !isResourceFile(link.url) {
 						go crawl(link, chUrls, chAllUrls, crawling)
 					} else {
-						go check(link, chAllUrls, crawling, unscannableLinks)
+						go check(link, chAllUrls, crawling)
 					}
 				}
 
