@@ -241,9 +241,7 @@ func writeResultFile(allUrls map[string]LinkStatus) {
 
 	f.WriteString("Source" + "\t" + "Destination" + "\t" + "Status" + "\t" + "StatusCode" + "\t" + "Anchor" + "\n")
 	for _, v := range allUrls {
-		if (v.statusCode > -1 && v.statusCode != 429) {
-			f.WriteString(sanitizeString(v.srcUrl) + "\t" + sanitizeString(v.url) + "\t" + sanitizeString(v.status) + "\t" + strconv.Itoa(v.statusCode) + "\t" + sanitizeString(v.anchor) + "\n")
-		}
+		f.WriteString(sanitizeString(v.srcUrl) + "\t" + sanitizeString(v.url) + "\t" + sanitizeString(v.status) + "\t" + strconv.Itoa(v.statusCode) + "\t" + sanitizeString(v.anchor) + "\n")
 	}
 
 	f.Close()
