@@ -230,7 +230,6 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 	const buildId = req.params.buildId;
 	const runId = newGuid();
 	const buildDate = new Date();
-	const unscannableLinks = await getUnscannableLinks();
 
 	const uid = await getUserIdFromApiKey(apikey);
 	if (!uid) {
@@ -314,7 +313,8 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 						buildId,
 						runId,
 						brokenLinkData,
-						buildDate
+						buildDate,
+						url
 					);
 					cb(data);
 				}, {
