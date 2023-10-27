@@ -18,7 +18,7 @@ describe(`Rules: ${ruldId}`, () => {
     expect(messages.length).to.be(0);
   });
 
-  it("Scrum terms that are cased correctly should result in an error", () => {
+  it("Scrum terms that are cased incorrectly should result in an error", () => {
     const code =
       "<p>scrum, sprint, product owner, scrum master, product backlog, sprint review, sprint planning, sprint retrospective, sprint retro, specification review, spec review</p>";
     const messages = HTMLHint.verify(code, ruleOptions);
@@ -36,5 +36,13 @@ describe(`Rules: ${ruldId}`, () => {
       "<a href='sprint'>scrum, sprint, product owner</a>";
     const messages = HTMLHint.verify(code, ruleOptions);
     expect(messages.length).to.be(0);
+  });
+
+  ["a", "meta", "link", "script", "svg"].forEach((tag) => {
+    it(`incorrect terms in a <${tag}> tag should not result in an error`, () => {
+      const code = `<${tag}>scrum, sprint, product owner, scrum master, product backlog, sprint review, sprint planning, sprint retrospective, sprint retro, specification review, spec review</${tag}>`;
+      const messages = HTMLHint.verify(code, ruleOptions);
+      expect(messages.length).to.be(0);
+    });
   });
 });
