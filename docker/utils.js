@@ -417,8 +417,11 @@ exports.processBrokenLinks = (
 ) => {
   const __getBadResults = (allUrls) =>
     allUrls
-      // Allow successful 2xx status code range (200-299)
-      .filter((url) => !((url["StatusCode"]?.startsWith('2') || url["StatusCode"]?.startsWith('3')) && url["StatusCode"]?.length === 3))
+      // Filter out successful 2xx status code range (200-299) and 429
+      .filter((url) => {
+        const code = parseInt(url?.StatusCode);
+        return code >= 0 && code !== 429 && (code < 200 || code > 399);
+      })
       .map((x) => ({
         src: x.Source || "",
         dst: x.Destination || "",
