@@ -31,6 +31,7 @@
 
   $: htmlHintSelectedRules, handleSelectionChange();
   $: customHtmlHintSelectedRules, handleSelectionChange();
+  $: customHtmlRuleOptions;
 
   const dispatch = createEventDispatcher();
   const updateHtmlRules = () => dispatch("updateHtmlRules");
@@ -53,13 +54,7 @@
   const setSelectedRules = (rulesString) => {
     let selectedHTMLRules = rulesString.split(/[,]+/);
     htmlHintSelectedRules = htmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}));
-    customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => (
-      {
-        ...htmlRule, 
-        isChecked: selectedHTMLRules.includes(htmlRule.rule),
-        customOptionValue: customHtmlRuleOptions.find(option => option.ruleId === htmlRule.rule)?.optionValue
-      }
-    ));
+    customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}));
   };
 
   const selectPreset = (presetName) => {
@@ -206,6 +201,7 @@
   };
 
   const addCustomRuleOptions = async (optionValue, ruleId) => {
+    saving = true;
     const res = await fetch(
       `${CONSTS.API}/api/config/addCustomHtmlRuleOptions/${user.apiKey}`,
       {
@@ -220,12 +216,21 @@
     );
 
     if (res.ok) {
-      console.log('Upload custom HTML rule option successfully')
+      saving = false;
+      addedSuccess = true;
+      customOptionInput = null;
+      toggleCustomOption(-1);
+      customHtmlRuleOptions = customHtmlRuleOptions.map(rule => {
+        if (rule.ruleId === ruleId) {
+          return ({...rule, optionValue: optionValue})
+        } else {
+          return rule
+        }
+      });
     } else {
       throw new Error("Failed to load");
     } 
   }
-  
 </script>
 
 <Modal
@@ -286,9 +291,9 @@
           </label>
         {/each}
       </div>
-      <h3 class="font-bold">HTML Hint Rules: </h3>
+      <h3 class="font-bold mb-2">HTML Hint Rules: </h3>
       {#each htmlHintSelectedRules as rule}
-        <label>
+        <div class="mb-2">
           <input type="checkbox" bind:checked={rule.isChecked} value={rule.rule} /> 
             <i class="{rule.type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}" style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"></i> 
             <a 
@@ -297,12 +302,12 @@
             href="https://htmlhint.com/docs/user-guide/rules/{rule.rule}">
               {rule.displayName}
             </a>
-        </label>
+        </div>
       {/each}
       <br />
-      <h3 class="font-bold">Custom HTML Rules: </h3>
+      <h3 class="font-bold mb-2">Custom HTML Rules: </h3>
       {#each customHtmlHintSelectedRules as rule, index}
-        <div>
+        <div class="mb-2">
           <input type="checkbox" bind:checked={rule.isChecked} value={rule.rule} /> 
           <i class="{rule.type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}" style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"></i> 
           <a 
@@ -312,44 +317,53 @@
             {rule.displayName}
           </a>
           {#if rule.isEnableCustomOptions}
-            {#if rule.customOptionValue && rule.customOptionValue.length > 0}
-              <div class="ml-5">
-                <span class="font-sans font-bold">
-                  Applied custom option value: 
-                </span>
-                <span class="textred">
-                  {rule.customOptionValue}
-                </span>
-              </div>
-            {/if}
-            {#if currSelectedCustomOption !== index}
-              <div class="cursor-pointer ml-5 mb-3">
-                <button 
-                  class="bgred text-white rounded px-2 py-1"
-                  on:click={() => toggleCustomOption(index)} 
-                  on:keypress={undefined}
-                ><i class="fas fa-pen-to-square"></i> Edit Custom Rule</button>
-              </div>
-            {:else}
-              <div class="cursor-pointer ml-5">
-                <button 
-                  class="bgred text-white rounded px-2 py-1"
-                  on:click={() => toggleCustomOption(-1)} 
-                  on:keypress={undefined}
-                ><i class="fas fa-pen-to-square"></i> Collapse</button>
-              </div>
-              <div class="ml-5 mb-3">
-                <div>
-                  {rule.customOptionsMessage}
+            <span class="cursor-pointer">
+              <button 
+                class="textred px-2 py-1"
+                style="border: none"
+                on:click={() => toggleCustomOption(index)} 
+                on:keypress={undefined}
+              ><i class="fas fa-pen-to-square"></i> Edit</button>
+            </span>
+            <div class="bggrey mt-2">
+              {#if customHtmlRuleOptions && customHtmlRuleOptions.length > 0}
+                <div class="ml-5">
+                  <span class="font-sans font-bold">
+                    Applied custom option value: 
+                  </span>
+                  <span class="textred">
+                    {customHtmlRuleOptions.find(x => x.ruleId === rule.rule)?.optionValue}
+                  </span>
                 </div>
-                <input bind:value={customOptionInput}/>
-                <button
-                  class="bgred text-white rounded px-2 py-1"
-                  on:click={() => {addCustomRuleOptions(customOptionInput, rule.rule)}}
-                  on:keypress={undefined}
-                >Save</button>
-              </div>
-            {/if}
+              {/if}
+              {#if currSelectedCustomOption === index}
+                <div class="ml-5 mb-3">
+                  <div>
+                    {rule.customOptionsMessage}
+                  </div>
+                  <input bind:value={customOptionInput} 
+                  />
+                  <button
+                    class="textred px-2 py-1"
+                    style="border: none"
+                    on:click={() => {addCustomRuleOptions(customOptionInput, rule.rule)}}
+                    on:keypress={undefined}
+                  >Save</button>
+                  <button
+                    class="textred px-2 py-1"
+                    style="border: none"
+                    on:click={() => {addCustomRuleOptions(rule.defaultOptionValue, rule.rule)}}
+                    on:keypress={undefined}
+                  >Reset</button>
+                  <button
+                    class="px-2 py-1"
+                    style="border: none"
+                    on:click={() => {toggleCustomOption(-1)}}
+                    on:keypress={undefined}
+                  >Cancel</button>
+                </div>
+              {/if}
+            </div>
           {/if}
         </div>
       {/each}

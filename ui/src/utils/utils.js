@@ -551,6 +551,7 @@ export const customHtmlHintRules = [
     type: RuleType.Warning,
     isEnableCustomOptions: true,
     customOptionsMessage: 'Please enter your phone country code in 2 DIGIT ISO (e.g. AU):',
+    defaultOptionValue: 'AU'
   },
   {
     rule: "use-unicode-hex-code-for-special-html-characters",
@@ -577,6 +578,7 @@ export const customHtmlHintRules = [
     type: RuleType.Warning,
     isEnableCustomOptions: true,
     customOptionsMessage: 'Please enter your website internal URL:',
+    defaultOptionValue: 'https://ssw.com.au/rules'
   },
   {
     rule: "url-must-not-have-space",
