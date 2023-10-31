@@ -484,6 +484,19 @@ exports.addCustomHtmlRule = () => {
       "Checks for phone numbers that aren't in hyperlinks with a \"tel:\" prefix.",
       init: function (parser, reporter) {
         const self = this;
+        let isInCodeBlock = false;
+        parser.addListener("tagstart", (event) => {
+          const tagName = event.tagName.toLowerCase();
+          if (tagName === "code") {
+            isInCodeBlock = true;
+          }
+        });
+        parser.addListener("tagend", (event) => {
+          const tagName = event.tagName.toLowerCase();
+          if (tagName === "code") {
+            isInCodeBlock = false;
+          }
+        });
         parser.addListener("text", (event) => {
           if (event.raw && event.lastEvent && findPhoneNumbersInText(event.raw, "AU").length) {
             const pageContent = event.lastEvent.raw;
@@ -491,7 +504,10 @@ exports.addCustomHtmlRule = () => {
               const tagName = event.lastEvent.tagName.toLowerCase();
               const mapAttrs = parser.getMapAttrs(event.lastEvent.attrs);
               const href = mapAttrs["href"];
-              if (!(tagName === "a" && href && href.startsWith("tel:"))) {
+              const isLink = tagName === "a";
+              const isTelLink = isLink && href && href.startsWith("tel:");
+              
+              if (!(isTelLink || isInCodeBlock)) {
                 reporter.warn(
                   "Phone number must be in a hyperlink.",
                   event.line,
