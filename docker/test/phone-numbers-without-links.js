@@ -84,4 +84,10 @@ describe(`Rules: ${ruleId}`, () => {
       expect(messages.length).to.be(0);
     });
   });
+
+  it("a phone number in a code block should not error", () => {
+    const code = "<code><span><span>+61 2 9953 3000</span></span></code>";
+    const messages = HTMLHint.verify(code, ruleOptions);
+    expect(messages.length).to.be(0);
+  });
 });

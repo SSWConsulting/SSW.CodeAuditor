@@ -502,29 +502,42 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
       "Checks for phone numbers that aren't in hyperlinks with a \"tel:\" prefix.",
       init: function (parser, reporter) {
         const self = this;
-        const ruleId = "phone-numbers-without-links";
+        let isInCodeBlock = false;
+        parser.addListener("tagstart", (event) => {
+          // Check if custom options exist in this rule
+          let optionValue = '';
+          if (customRuleOptions && customRuleOptions.length > 0 && customRuleOptions.filter(option => option.ruleId === ruleId).length > 0) {
+            optionValue = customRuleOptions.find(option => option.ruleId === ruleId).optionValue
+          }
+          const tagName = event.tagName.toLowerCase();
+          if (tagName === "code") {
+            isInCodeBlock = true;
+          }
+        });
+        parser.addListener("tagend", (event) => {
+          const tagName = event.tagName.toLowerCase();
+          if (tagName === "code") {
+            isInCodeBlock = false;
+          }
+        });
         parser.addListener("text", (event) => {
-          if (event.raw && event.lastEvent) {
-            // Check if custom options exist in this rule
-            let optionValue = '';
-            if (customRuleOptions && customRuleOptions.length > 0 && customRuleOptions.filter(option => option.ruleId === ruleId).length > 0) {
-              optionValue = customRuleOptions.find(option => option.ruleId === ruleId).optionValue
-            }
-            if (findPhoneNumbersInText(event.raw, optionValue.length > 0 ? optionValue : 'AU').length) {
-              const pageContent = event.lastEvent.raw;
-              if (pageContent && event.lastEvent.tagName) {
-                const tagName = event.lastEvent.tagName.toLowerCase();
-                const mapAttrs = parser.getMapAttrs(event.lastEvent.attrs);
-                const href = mapAttrs["href"];
-                if (!(tagName === "a" && href && href.startsWith("tel:"))) {
-                  reporter.warn(
-                    "Phone number must be in a hyperlink.",
-                    event.line,
-                    event.col,
-                    self,
-                    event.raw
-                  );
-                }
+          if (event.raw && event.lastEvent && findPhoneNumbersInText(event.raw, optionValue.length > 0 ? optionValue : 'AU').length) {
+            const pageContent = event.lastEvent.raw;
+            if (pageContent && event.lastEvent.tagName) {
+              const tagName = event.lastEvent.tagName.toLowerCase();
+              const mapAttrs = parser.getMapAttrs(event.lastEvent.attrs);
+              const href = mapAttrs["href"];
+              const isLink = tagName === "a";
+              const isTelLink = isLink && href && href.startsWith("tel:");
+              
+              if (!(isTelLink || isInCodeBlock)) {
+                reporter.warn(
+                  "Phone number must be in a hyperlink.",
+                  event.line,
+                  event.col,
+                  self,
+                  event.raw
+                );
               }
             }
           }
