@@ -536,7 +536,11 @@ export const customHtmlHintRules = [
     rule: "common-spelling-mistakes",
     displayName: "Content - Avoid common spelling and syntax mistakes",
     ruleLink: "https://www.ssw.com.au/rules/avoid-common-mistakes",
-    type: RuleType.Warning
+    type: RuleType.Warning,
+    isEnableCustomOptions: true,
+    customOptionsMessage: 'Please enter the terms to be reported:',
+    customOptionInputType: 'text',
+    isEnableMutipleInputs: true,
   },
   {
     rule: "page-must-not-show-email-addresses",
@@ -551,7 +555,7 @@ export const customHtmlHintRules = [
     type: RuleType.Warning,
     isEnableCustomOptions: true,
     customOptionsMessage: 'Please enter your phone country code in 2 DIGIT ISO (e.g. AU):',
-    defaultOptionValue: 'AU'
+    customOptionInputType: 'text',
   },
   {
     rule: "use-unicode-hex-code-for-special-html-characters",
@@ -578,7 +582,7 @@ export const customHtmlHintRules = [
     type: RuleType.Warning,
     isEnableCustomOptions: true,
     customOptionsMessage: 'Please enter your website internal URL:',
-    defaultOptionValue: 'https://ssw.com.au/rules'
+    customOptionInputType: 'url'
   },
   {
     rule: "url-must-not-have-space",

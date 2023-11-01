@@ -439,17 +439,26 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
       var self = this;
 
       parser.addListener("all", (event) => {
-        var spellings = [
-          "a.k.a",
-          "A.K.A",
-          "AKA",
-          "e-mail",
-          "EMail",
-          "can not",
-          "web site",
-          "user name",
-          "task bar"
-        ];
+        const ruleId = "common-spelling-mistakes";
+        let optionValue = [];
+        // Check if custom options exist in this rule
+        if (customRuleOptions && customRuleOptions.length > 0 && customRuleOptions.filter(option => option.ruleId === ruleId).length > 0) {
+          optionValue = customRuleOptions.find(option => option.ruleId === ruleId).optionValue.split(',');
+        }
+        var spellings = 
+          optionValue.length > 0 ? 
+          optionValue :
+          [
+            "a.k.a",
+            "A.K.A",
+            "AKA",
+            "e-mail",
+            "EMail",
+            "can not",
+            "web site",
+            "user name",
+            "task bar"
+          ];
 
         if (event.tagName) {
           if (event.tagName !== "a" && event.tagName !== "meta" && event.tagName !== "link" && event.tagName !== "script" && event.tagName !== "svg") { 

@@ -28,6 +28,7 @@
   let historyLog = [];
 
   let customOptionInput = '';
+  let multiInputValues = [''];
 
   $: htmlHintSelectedRules, handleSelectionChange();
   $: customHtmlHintSelectedRules, handleSelectionChange();
@@ -35,6 +36,7 @@
 
   const dispatch = createEventDispatcher();
   const updateHtmlRules = () => dispatch("updateHtmlRules");
+  const updateHtmlHintCustomOption = () => dispatch("htmlHintThreshold");
   
   onMount(() => {
     initSelectedRules();
@@ -189,6 +191,8 @@
 
   let currSelectedCustomOption = -1;
   const toggleCustomOption = (index) => {
+    customOptionInput = null;
+    multiInputValues = [''];
     currSelectedCustomOption = index;
   }
 
@@ -200,14 +204,14 @@
     return allHtmlRules.map(rule => ({...rule, isRuleEnabled: allSelectedRuleLog.includes(rule)}))
   };
 
-  const addCustomRuleOptions = async (optionValue, ruleId) => {
+  const addCustomRuleOptions = async (optionValue, ruleSetting) => {
     saving = true;
     const res = await fetch(
       `${CONSTS.API}/api/config/addCustomHtmlRuleOptions/${user.apiKey}`,
       {
         method: "POST",
         body: JSON.stringify({
-          ruleId, 
+          ruleId: ruleSetting.rule, 
           url, 
           optionValue
         }),
@@ -220,17 +224,28 @@
       addedSuccess = true;
       customOptionInput = null;
       toggleCustomOption(-1);
-      customHtmlRuleOptions = customHtmlRuleOptions.map(rule => {
-        if (rule.ruleId === ruleId) {
-          return ({...rule, optionValue: optionValue})
-        } else {
-          return rule
-        }
-      });
+      updateHtmlHintCustomOption();
     } else {
       throw new Error("Failed to load");
     } 
   }
+
+  const handleOnSubmit = (ruleSetting) => {
+    const optionValueInput = 
+      multiInputValues.length > 0 && multiInputValues.every(i => i) ?
+        multiInputValues.toString() :
+        customOptionInput;
+    addCustomRuleOptions(optionValueInput, ruleSetting);
+  }
+
+  const addField = () => {
+    multiInputValues = [...multiInputValues, ''];
+  };
+
+  const removeField = (index) => {
+    multiInputValues.splice(index, 1);
+    multiInputValues = multiInputValues;
+  };
 </script>
 
 <Modal
@@ -326,7 +341,7 @@
               ><i class="fas fa-pen-to-square"></i> Edit</button>
             </span>
             <div class="bggrey mt-2">
-              {#if customHtmlRuleOptions && customHtmlRuleOptions.length > 0}
+              {#if customHtmlRuleOptions && customHtmlRuleOptions.length > 0 && customHtmlRuleOptions.find(x => x.ruleId === rule.rule)}
                 <div class="ml-5">
                   <span class="font-sans font-bold">
                     Applied custom option value: 
@@ -341,26 +356,50 @@
                   <div>
                     {rule.customOptionsMessage}
                   </div>
-                  <input bind:value={customOptionInput} 
-                  />
-                  <button
-                    class="textred px-2 py-1"
-                    style="border: none"
-                    on:click={() => {addCustomRuleOptions(customOptionInput, rule.rule)}}
-                    on:keypress={undefined}
-                  >Save</button>
-                  <button
-                    class="textred px-2 py-1"
-                    style="border: none"
-                    on:click={() => {addCustomRuleOptions(rule.defaultOptionValue, rule.rule)}}
-                    on:keypress={undefined}
-                  >Reset</button>
-                  <button
-                    class="px-2 py-1"
-                    style="border: none"
-                    on:click={() => {toggleCustomOption(-1)}}
-                    on:keypress={undefined}
-                  >Cancel</button>
+                  <form on:submit|preventDefault={handleOnSubmit(rule)}>
+                    {#if !rule.isEnableMutipleInputs} 
+                      <input 
+                        type={rule.customOptionInputType} 
+                        on:input={(e) => customOptionInput = e.target.value} 
+                      />
+                    {/if}
+                    {#if rule.isEnableMutipleInputs === true} 
+                      {#each multiInputValues as v, i}
+                        <div>
+                          <input id={i} type="text" bind:value={v}/>
+                          {#if multiInputValues.length > 1}
+                            <button
+                              class="textred px-2 py-1"
+                              style="border: none"
+                              on:click|preventDefault={() => removeField(i)}
+                            ><i class="fas fa-minus"></i></button>
+                          {/if}
+                        </div>
+                      {/each}
+                        <button
+                          class="textred px-2 py-1"
+                          style="border: none"
+                          on:click|preventDefault={() => addField()}
+                        >Add</button>
+                    {/if}
+                    <div class="py-2">
+                      <button
+                        class="text-white bgred px-2 py-1"
+                        type="submit"
+                      >Save</button>
+                      <button
+                        class="text-white bgdark px-2 py-1"
+                        on:click={() => {toggleCustomOption(-1)}}
+                        on:keypress={undefined}
+                      >Cancel</button>
+                      <button
+                        class="px-2 py-1"
+                        style="border: none"
+                        on:click={() => {addCustomRuleOptions('', rule)}}
+                        on:keypress={undefined}
+                      >Reset to default</button>
+                    </div>
+                  </form>
                 </div>
               {/if}
             </div>

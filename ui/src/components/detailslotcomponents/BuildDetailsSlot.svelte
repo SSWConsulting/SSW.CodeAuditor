@@ -114,6 +114,7 @@
     {htmlRules}
     {threshold}
     {customHtmlRuleOptions}
+    on:htmlHintThreshold={() => showHtmlHintThreshold(data.summary, user)}
   />
 {:else}
   <UpdateHtmlRules 
@@ -124,6 +125,7 @@
     htmlRules={null}
     threshold={null}
     {customHtmlRuleOptions}
+    on:htmlHintThreshold={() => showHtmlHintThreshold(data.summary, user)}
   />
 {/if}
 
