@@ -408,13 +408,13 @@
                       >Save</button>
                       <button
                         class="text-white bgdark px-2 py-1"
-                        on:click={() => {toggleCustomOption(-1)}}
+                        on:click|preventDefault={() => {toggleCustomOption(-1)}}
                         on:keypress={undefined}
                       >Cancel</button>
                       <button
                         class="px-2 py-1"
                         style="border: none"
-                        on:click={() => {addCustomRuleOptions('', rule)}}
+                        on:click|preventDefault={() => {addCustomRuleOptions('', rule)}}
                         on:keypress={undefined}
                       >Reset to default</button>
                     </div>
