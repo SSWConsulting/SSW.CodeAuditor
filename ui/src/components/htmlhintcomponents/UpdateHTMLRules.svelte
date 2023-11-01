@@ -190,10 +190,27 @@
   }
 
   let currSelectedCustomOption = -1;
-  const toggleCustomOption = (index) => {
+  const toggleCustomOption = (index, ruleSetting) => {
     customOptionInput = null;
     multiInputValues = [''];
     currSelectedCustomOption = index;
+    if (ruleSetting) {
+      populateCustomOptions(ruleSetting)
+    }
+  }
+
+  const populateCustomOptions = (ruleSetting) => {
+    if (customHtmlRuleOptions && customHtmlRuleOptions.length > 0) {
+      customHtmlRuleOptions.forEach(option => {
+        if (option.ruleId === ruleSetting.rule) {
+          if (ruleSetting.isEnableMutipleInputs) {
+            multiInputValues = option.optionValue.split(',');
+          } else {
+            customOptionInput = option.optionValue;
+          }
+        }
+      })
+    }
   }
 
   const formatHtmlRule = (rules) => {
@@ -223,6 +240,7 @@
       saving = false;
       addedSuccess = true;
       customOptionInput = null;
+      multiInputValues = [''];
       toggleCustomOption(-1);
       updateHtmlHintCustomOption();
     } else {
@@ -336,12 +354,12 @@
               <button 
                 class="textred px-2 py-1"
                 style="border: none"
-                on:click={() => toggleCustomOption(index)} 
+                on:click={() => toggleCustomOption(index, rule)} 
                 on:keypress={undefined}
               ><i class="fas fa-pen-to-square"></i> Edit</button>
             </span>
             <div class="bggrey mt-2">
-              {#if customHtmlRuleOptions && customHtmlRuleOptions.length > 0 && customHtmlRuleOptions.find(x => x.ruleId === rule.rule)}
+              {#if customHtmlRuleOptions && customHtmlRuleOptions.length > 0 && customHtmlRuleOptions.find(x => x.ruleId === rule.rule)?.optionValue.length > 0}
                 <div class="ml-5">
                   <span class="font-sans font-bold">
                     Applied custom option value: 
@@ -360,6 +378,7 @@
                     {#if !rule.isEnableMutipleInputs} 
                       <input 
                         type={rule.customOptionInputType} 
+                        value={customOptionInput}
                         on:input={(e) => customOptionInput = e.target.value} 
                       />
                     {/if}
