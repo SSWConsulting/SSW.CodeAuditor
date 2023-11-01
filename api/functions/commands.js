@@ -139,6 +139,17 @@ exports.removeAlertEmailAddress = (api, rowkey) => {
 	return deleteEntity(TABLE.alertEmailAddresses, entity);
 };
 
+exports.addCustomHtmlRuleOptions = (api, data) => {
+	const entGen = azure.TableUtilities.entityGenerator;
+	return updateEntity(
+		TABLE.HtmlRulesCustomOptions,
+		replaceProp(data, {
+			PartitionKey: entGen.String(api),
+			RowKey: entGen.String(data.ruleId),
+		})
+	);
+};
+
 exports.uploadLighthouseReport = (runId, lhr) =>
 	uploadBlob(BLOB.lhr, `${runId}.json`, JSON.stringify(lhr));
 

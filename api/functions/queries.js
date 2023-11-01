@@ -332,3 +332,15 @@ exports.compareScans = (api, url) =>
 		} 
 		resolve(isErrorUp)
 	});
+
+exports.getCustomHtmlRuleOptions = (api, url) => 
+	new Promise(async (resolve) => {
+		const entity = new TableClient(azureUrl, TABLE.HtmlRulesCustomOptions, credential).listEntities({
+			queryOptions: { filter: odata`PartitionKey eq ${api} and url eq ${url}` }
+		});
+		let result = []
+		for await (const item of entity) {
+			result.push(item);
+		}
+		resolve(result || {})
+	})

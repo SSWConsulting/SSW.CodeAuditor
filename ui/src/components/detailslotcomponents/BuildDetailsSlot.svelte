@@ -14,6 +14,7 @@
   export let user;
 
   let threshold = {};
+  let customHtmlRuleOptions = [];
   let htmlHintRulesShown;
   let loadingHtmlHintSettings;
   let scanUrl;
@@ -29,6 +30,16 @@
     htmlHintRulesShown = true;
     loadingHtmlHintSettings = true;
     try {
+      // Retrieve custom HTML Rules input options
+      const optionRes = await fetch(`${CONSTS.API}/api/config/getCustomHtmlRuleOptions/${user.apiKey}`, {
+        method: "POST",
+        body: JSON.stringify({url: scanUrl}),
+        headers: { "Content-Type": "application/json" },
+      })
+      const optionResult = await optionRes.json();
+      customHtmlRuleOptions = optionResult || [];
+
+      // Retrieve selected custom HTML Rules 
       const res = await fetch(
         `${CONSTS.API}/api/config/${user.apiKey}/htmlhintrules/${slug(scanUrl)}`
       );
@@ -37,6 +48,7 @@
     } catch (error) {
       console.error("error getting threshold", error);
       threshold = {};
+      customHtmlRuleOptions = [];
     } finally {
       loadingHtmlHintSettings = false;
     }
@@ -101,6 +113,8 @@
     {user}
     {htmlRules}
     {threshold}
+    {customHtmlRuleOptions}
+    on:htmlHintThreshold={() => showHtmlHintThreshold(data.summary, user)}
   />
 {:else}
   <UpdateHtmlRules 
@@ -110,6 +124,8 @@
     {user}
     htmlRules={null}
     threshold={null}
+    {customHtmlRuleOptions}
+    on:htmlHintThreshold={() => showHtmlHintThreshold(data.summary, user)}
   />
 {/if}
 

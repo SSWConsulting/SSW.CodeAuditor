@@ -1,7 +1,10 @@
+const { getCustomHtmlRuleOptions } = require("./api");
 const HTMLHint = require("htmlhint").default;
 const findPhoneNumbersInText = require('libphonenumber-js').findPhoneNumbersInText;
 
-exports.addCustomHtmlRule = () => {
+exports.addCustomHtmlRule = async (apiToken, url) => {
+  const customRuleOptions = await getCustomHtmlRuleOptions(apiToken, url)
+
   HTMLHint.addRule({
     id: "code-block-missing-language",
     description: "Code blocks must contain a language specifier.",
@@ -380,9 +383,15 @@ exports.addCustomHtmlRule = () => {
       parser.addListener("tagstart", (event) => {
         var tagName = event.tagName.toLowerCase(),
         mapAttrs = parser.getMapAttrs(event.attrs);
+        const ruleId = "detect-absolute-references-url-path-correctly";
         if (tagName === "a") {
           if (mapAttrs["href"]) {
-            if (mapAttrs["href"].startsWith("https://ssw.com.au/rules")) {
+            // Check if custom options exist in this rule
+            let optionValue = '';
+            if (customRuleOptions && customRuleOptions.length > 0 && customRuleOptions.filter(option => option.ruleId === ruleId).length > 0) {
+              optionValue = customRuleOptions.find(option => option.ruleId === ruleId).optionValue
+            }
+            if (mapAttrs["href"].startsWith(optionValue.length > 0 ? optionValue : "https://ssw.com.au/rules")) {
               if (!mapAttrs["href"].startsWith("/")) {
               reporter.warn(
                 "URLs must be formatted to direct to a url path correctly.",
@@ -433,17 +442,26 @@ exports.addCustomHtmlRule = () => {
       var self = this;
 
       parser.addListener("text", (event) => {
-        var spellings = [
-          "a.k.a",
-          "A.K.A",
-          "AKA",
-          "e-mail",
-          "EMail",
-          "can not",
-          "web site",
-          "user name",
-          "task bar"
-        ];
+        const ruleId = "common-spelling-mistakes";
+        let optionValue = [];
+        // Check if custom options exist in this rule
+        if (customRuleOptions && customRuleOptions.length > 0 && customRuleOptions.filter(option => option.ruleId === ruleId).length > 0) {
+          optionValue = customRuleOptions.find(option => option.ruleId === ruleId).optionValue.split(',');
+        }
+        var spellings = 
+          optionValue.length > 0 ? 
+          optionValue :
+          [
+            "a.k.a",
+            "A.K.A",
+            "AKA",
+            "e-mail",
+            "EMail",
+            "can not",
+            "web site",
+            "user name",
+            "task bar"
+          ];
 
         if (event.raw) {
           const pageContent = event.raw;
@@ -486,6 +504,11 @@ exports.addCustomHtmlRule = () => {
         const self = this;
         let isInCodeBlock = false;
         parser.addListener("tagstart", (event) => {
+          // Check if custom options exist in this rule
+          let optionValue = '';
+          if (customRuleOptions && customRuleOptions.length > 0 && customRuleOptions.filter(option => option.ruleId === ruleId).length > 0) {
+            optionValue = customRuleOptions.find(option => option.ruleId === ruleId).optionValue
+          }
           const tagName = event.tagName.toLowerCase();
           if (tagName === "code") {
             isInCodeBlock = true;
@@ -498,7 +521,7 @@ exports.addCustomHtmlRule = () => {
           }
         });
         parser.addListener("text", (event) => {
-          if (event.raw && event.lastEvent && findPhoneNumbersInText(event.raw, "AU").length) {
+          if (event.raw && event.lastEvent && findPhoneNumbersInText(event.raw, optionValue.length > 0 ? optionValue : 'AU').length) {
             const pageContent = event.lastEvent.raw;
             if (pageContent && event.lastEvent.tagName) {
               const tagName = event.lastEvent.tagName.toLowerCase();
