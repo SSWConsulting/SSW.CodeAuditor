@@ -16,7 +16,7 @@ const {
 const azure = require('azure-storage');
 const slug = require('slug');
 
-exports.insertScanResult = (api, buildId, runId, data, buildDate) => {
+exports.insertScanResult = async (api, buildId, runId, data, buildDate, url) => {
 	const entGen = azure.TableUtilities.entityGenerator;
 	let entity = {
 		PartitionKey: entGen.String(api),
@@ -24,7 +24,18 @@ exports.insertScanResult = (api, buildId, runId, data, buildDate) => {
 		buildId: entGen.String(buildId),
 		runId: entGen.String(runId),
 		buildDate: entGen.DateTime(buildDate),
+		apiKey: entGen.String(api)
 	};
+	let entityRunIndexed = {
+		...entity,
+		PartitionKey: entGen.String(`${api}-${runId}`),
+	};
+	let entityUrlIndexed = {
+		...entity,
+		PartitionKey: entGen.String(`${api}-${slug(url)}`),
+	};
+	await insertEntity(TABLE.ScanResults, replaceProp(data, entityRunIndexed));
+	await insertEntity(TABLE.ScanResults, replaceProp(data, entityUrlIndexed));
 	return insertEntity(TABLE.ScanResults, replaceProp(data, entity));
 };
 
@@ -105,16 +116,28 @@ exports.addHTMLHintRulesForEachRun = (api, data) => {
 	);
 };
 
-exports.insertScanSummary = (api, buildId, runId, buildDate, data) => {
+exports.insertScanSummary = async (api, buildId, runId, buildDate, data) => {
 	var entGen = azure.TableUtilities.entityGenerator;
 	// use Log tail pattern to get native sort from Table Storage
-	var entity = {
+	const entity = {
 		PartitionKey: entGen.String(api),
 		RowKey: entGen.String(getReversedTick()),
 		buildId: entGen.String(buildId),
 		runId: entGen.String(runId),
 		buildDate: entGen.DateTime(buildDate),
+		scanResultVersion: entGen.Int32(2),
+		apiKey: entGen.String(api)
 	};
+	const entityRunIndexed = {
+		...entity,
+		PartitionKey: entGen.String(`${api}-${runId}`),
+	};
+	let entityUrlIndexed = {
+		...entity,
+		PartitionKey: entGen.String(`${api}-${slug(data.url)}`),
+	};
+	await insertEntity(TABLE.Scans, replaceProp(data, entityRunIndexed));
+	await insertEntity(TABLE.Scans, replaceProp(data, entityUrlIndexed));
 	return insertEntity(TABLE.Scans, replaceProp(data, entity));
 };
 
