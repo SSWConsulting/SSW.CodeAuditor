@@ -1,6 +1,6 @@
 <script>
   import Toastr from "../misccomponents/Toastr.svelte";
-  import { CONSTS, htmlHintRules, customHtmlHintRules, RuleType, rulePresets, PresetType } from "../../utils/utils";
+  import { CONSTS, htmlHintRules, customHtmlHintRules, RuleType, rulePresets, PresetType, customOptionInputType } from "../../utils/utils";
   import Modal from "../misccomponents//Modal.svelte";
   import LoadingFlat from "../misccomponents/LoadingFlat.svelte";
   import { createEventDispatcher, onMount } from "svelte";
@@ -203,7 +203,7 @@
     if (customHtmlRuleOptions && customHtmlRuleOptions.length > 0) {
       customHtmlRuleOptions.forEach(option => {
         if (option.ruleId === ruleSetting.rule) {
-          if (ruleSetting.isEnableMutipleInputs) {
+          if (ruleSetting.customOptionInputType === customOptionInputType.multipleTextBoxes) {
             multiInputValues = option.optionValue.split(',');
           } else {
             customOptionInput = option.optionValue;
@@ -375,14 +375,19 @@
                     {rule.customOptionsMessage}
                   </div>
                   <form on:submit|preventDefault={handleOnSubmit(rule)}>
-                    {#if !rule.isEnableMutipleInputs} 
-                      <input 
-                        type={rule.customOptionInputType} 
-                        value={customOptionInput}
-                        on:input={(e) => customOptionInput = e.target.value} 
-                      />
+                    {#if rule.customOptionInputType === customOptionInputType.dropDown} 
+                      <select bind:value={customOptionInput}>
+                        {#each rule.customOptionDropdownValues as country}
+                          <option value={country.code}>
+                            {country.name} ({country.code})
+                          </option>
+                        {/each}
+                      </select>
                     {/if}
-                    {#if rule.isEnableMutipleInputs === true} 
+                    {#if rule.customOptionInputType === customOptionInputType.singleTextBox} 
+                      <input type={rule.customOptionInputValueType} on:input={(e) => customOptionInput = e.target.value} />
+                    {/if}
+                    {#if rule.customOptionInputType === customOptionInputType.multipleTextBoxes} 
                       {#each multiInputValues as v, i}
                         <div>
                           <input id={i} type="text" bind:value={v}/>
