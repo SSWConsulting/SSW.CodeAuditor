@@ -19,10 +19,6 @@
 </script>
 
 <style>
-  .modal {
-    transition: opacity 0.2s ease;
-    z-index: 3000;
-  }
   .fullheight {
     height: 90vh;
   }

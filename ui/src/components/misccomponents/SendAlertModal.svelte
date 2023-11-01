@@ -9,13 +9,16 @@
 
   let isLoading;
   let emailAddress = "";
-  let type = "text";
-  let showErrorPromp = false;
+  let showErrorPrompt = false;
 
   const dismiss = () => (show = false);
 
   const handleInput = (e) => {
-    emailAddress = validateEmail(e.target.value) ? e.target.value : null;
+    if (e.key === "Enter") {
+      updateEmailAddress();
+    } else {
+      showErrorPrompt = false;
+    }
   };
 
   const reloadSharedEmailList = async () => {
@@ -44,8 +47,8 @@
   };
 
   const updateEmailAddress = async () => {
-    if (emailAddress) {
-      showErrorPromp = false;
+    if (emailAddress && validateEmail(emailAddress)) {
+      showErrorPrompt = false;
       isLoading = true;
       const res = await fetch(
         `${CONSTS.API}/api/${userApiKey}/addalertemailaddresses`,
@@ -62,12 +65,13 @@
   
       if (res.ok) {
         isLoading = false;
+        emailAddress = "";
         reloadSharedEmailList();
       } else {
         throw new Error("Failed to load");
       }
     } else {
-      showErrorPromp = true;
+      showErrorPrompt = true;
     }
   };
 </script>
@@ -104,11 +108,11 @@
                 class="appearance-none block w-full text-gray-700 border border-red-700
                 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white
                 focus:border-red-800"
-                {type}
-                value={emailAddress}
+                type="text"
+                bind:value={emailAddress}
+                on:keydown={handleInput}
                 class:border-red-300={!emailAddress}
                 class:focus:border-red-500={!emailAddress}
-                on:input={handleInput}
                 placeholder="Email address"
               />
             </div>
@@ -119,9 +123,9 @@
                 on:click={updateEmailAddress}>Add</button
               >
             </div>
-            {#if showErrorPromp}
-              <div class="text-red-700 font-sans">Invalid email input</div>
-            {/if}
+          </div>
+          <div class="{showErrorPrompt ? 'visible' : 'invisible'}">
+            <span class="text-red-700 font-sans">Invalid email input</span>
           </div>
           {#if sharedEmailAddresses.length > 0}
             <div class="font-sans font-bold mt-5">

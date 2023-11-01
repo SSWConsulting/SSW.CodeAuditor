@@ -4,10 +4,10 @@
   import { createEventDispatcher } from "svelte";
   import { printTimeDiff, convertSpecialCharUrl } from "../../utils/utils";
   import SendAlertModal from "../misccomponents/SendAlertModal.svelte";
-  import { userSession$ } from "../../stores";
+  import { userSession$, isLoggedIn } from "../../stores";
   import { CONSTS } from "../../utils/utils";
   import { navigateTo } from "svelte-router-spa";
-  import { onMount } from "svelte";
+  import { onDestroy } from "svelte";
 
   export let value;
   export let isHtmlHintComp = false;
@@ -23,14 +23,11 @@
   const perfThreshold = () => dispatch("perfThreshold");
   const htmlHintThreshold = () => dispatch("htmlHintThreshold");
 
-  const emailAlertModal = () => {
-    userSession$.subscribe(async x => {
-      userApiKey = x.apiKey;
-      let fullUrl = convertSpecialCharUrl(value.url)
-      const res = await fetch(`${CONSTS.API}/api/getalertemailaddresses/${userApiKey}/${fullUrl}`);
-      sharedEmailAddresses = await res.json();
-      showShareAlert = true;
-    });
+  const emailAlertModal = async () => {
+    let fullUrl = convertSpecialCharUrl(value.url)
+    const res = await fetch(`${CONSTS.API}/api/getalertemailaddresses/${userApiKey}/${fullUrl}`);
+    sharedEmailAddresses = await res.json();
+    showShareAlert = true;
   };
 
   const navigateToLatestScan = () => {
@@ -38,19 +35,21 @@
     // Force reload page otherwise Svelte would not refresh the content
     location.reload(true);
   }
-  
-  onMount(async () => {
-    // Check if scan has any previous scans
-    userSession$.subscribe(async x => {
-      if (x) {
-        userApiKey = x.apiKey;
-        let fullUrl = convertSpecialCharUrl(value.url)
-        const res = await fetch(`${CONSTS.API}/api/scanSummaryFromUrl/${userApiKey}/${fullUrl}`);
-        previousScans = await res.json();
-      }
-    });
-  })
 
+  const getPreviousScans = async () => {
+    let fullUrl = convertSpecialCharUrl(value.url)
+    const res = await fetch(`${CONSTS.API}/api/scanSummaryFromUrl/${userApiKey}/${fullUrl}`);
+    previousScans = await res.json();
+  };
+
+  const userSubscriber = userSession$.subscribe(x => {
+    if (x) {
+      userApiKey = x.apiKey;
+      getPreviousScans();
+    }
+  });
+
+  onDestroy(userSubscriber);
 </script>
 
 <div class="grid grid-cols">
@@ -73,7 +72,7 @@
       </span>
     </div>
   </div>
-  <div class="text-center mt-3">
+  <div class="text-center my-3">
     {#if previousScans.length > 1}
       {#if previousScans[0].runId !== value.runId}
         <button 
@@ -87,38 +86,38 @@
       <button 
         type="button"
         class="bg-white hover:bg-gray-800 hover:text-white font-semibold py-2 px-4 border rounded"
-        on:click={navigateTo(`/scanCompare/${value.partitionKey}/${convertSpecialCharUrl(value.url.slice(12))}/${value.buildDate}`)}
+        on:click={navigateTo(`/scanCompare/${value.partitionKey}/${convertSpecialCharUrl(value.url)}/${value.buildDate}`)}
       >
         <i class="fas fa-code-compare"></i> 
         {previousScans[0].runId !== value.runId ? "Compare to latest scan" : "Compare to previous scan"}
       </button>
     {/if}
-    <button
-      on:click={emailAlertModal} 
-      class="bg-white hover:bg-gray-800 hover:text-white font-semibold py-2 px-4 border rounded"
-    >
-      <i class="fas fa-paper-plane"></i> Send Email Alerts
-    </button>
-    {#if value.buildDate && isLighthouseAudit}
-    <div class="text-center lg:text-right">
+    {#if $isLoggedIn}
       <button
-        on:click={perfThreshold}
-        class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
-          border hover:border-transparent rounded">
-        <span>Set Performance Threshold For Next Scan</span>
+        on:click={emailAlertModal} 
+        class="bg-white hover:bg-gray-800 hover:text-white font-semibold py-2 px-4 border rounded"
+      >
+        <i class="fas fa-paper-plane"></i> Send Email Alerts
       </button>
-    </div>
     {/if}
   </div>
   <div class="text-center lg:text-right">
-    {#if (value.buildDate && isHtmlHintComp)}
+    {#if (value.buildDate && isHtmlHintComp && $isLoggedIn)}
       <button
         on:click={htmlHintThreshold}
         class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
         border hover:border-transparent rounded">
         <span>Enable/Disable Rules</span>
       </button>
-  {/if}
+    {/if}
+    {#if value.buildDate && isLighthouseAudit && $isLoggedIn}
+      <button
+        on:click={perfThreshold}
+        class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
+          border hover:border-transparent rounded">
+        <span>Set Performance Threshold For Next Scan</span>
+      </button>
+    {/if}
   </div>
 </div>
 

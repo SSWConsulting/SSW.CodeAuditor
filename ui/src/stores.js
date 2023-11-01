@@ -171,8 +171,7 @@ export const getLatestBuildDetails = async (api, url) => {
 };
 
 export const getAllScanSummaryFromUrl = async (api, url) => {
-	const fullUrl = `https%3A%2F%2Fwww.${url}` 
-	const res = await fetch(`${CONSTS.API}/api/scanSummaryFromUrl/${api}/${fullUrl}`);
+	const res = await fetch(`${CONSTS.API}/api/scanSummaryFromUrl/${api}/${url}`);
 	const result = await res.json();
 
 	if (res.ok) {

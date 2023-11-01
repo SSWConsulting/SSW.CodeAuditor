@@ -41,7 +41,7 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
     init: function (parser, reporter) {
       var self = this;
 
-      parser.addListener("all", (event) => {
+      parser.addListener("text", (event) => {
         var scrumTerms = [
           "scrum",
           "sprint",
@@ -56,30 +56,33 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
           "spec review"
         ];
 
-        if (event.tagName) {
-          if (event.tagName !== "a" && event.tagName !== "meta" && event.tagName !== "link" && event.tagName !== "script" && event.tagName !== "svg") { 
-            if (event.lastEvent) {
-              let pageContent = event.lastEvent.raw;
-              if (pageContent) {
-                scrumTerms.forEach((i) => {
-                  var contentIndex = pageContent.indexOf(i);
-                  var col = event.lastEvent.col;
-                  
-                  // Make sure the character has space and is not part of a long single string 
-                  if (pageContent.indexOf(' ') >= 0) {
-                    if (contentIndex >= 0) {
-                      reporter.warn(
-                        "Incorrect Scrum term: '" + i + "'.",
-                        event.line,
-                        col,
-                        self,
-                        event.raw
-                      );
-                    }
+        if (event.raw) {
+          const pageContent = event.raw;
+          if (event.lastEvent) {
+            if (
+              event.lastEvent.tagName !== "a" && 
+              event.lastEvent.tagName !== "meta" && 
+              event.lastEvent.tagName !== "link" && 
+              event.lastEvent.tagName !== "script" && 
+              event.lastEvent.tagName !== "svg"
+            ) {
+              scrumTerms.forEach((i) => {
+                var contentIndex = pageContent.indexOf(i);
+                
+                // Make sure the character has space and is not part of a long single string 
+                if (pageContent.indexOf(' ') >= 0) {
+                  if (contentIndex >= 0) {
+                    reporter.warn(
+                      "Incorrect Scrum term: '" + i + "'.",
+                      event.line,
+                      event.col,
+                      self,
+                      event.raw
+                    );
                   }
-                });
-              }
-            }    
+                }
+              });
+            }
           }
         }
       });
@@ -438,7 +441,7 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
     init: function (parser, reporter) {
       var self = this;
 
-      parser.addListener("all", (event) => {
+      parser.addListener("text", (event) => {
         const ruleId = "common-spelling-mistakes";
         let optionValue = [];
         // Check if custom options exist in this rule
@@ -460,29 +463,33 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
             "task bar"
           ];
 
-        if (event.tagName) {
-          if (event.tagName !== "a" && event.tagName !== "meta" && event.tagName !== "link" && event.tagName !== "script" && event.tagName !== "svg") { 
-            if (event.lastEvent) {
-              let pageContent = event.lastEvent.raw;
-              if (pageContent) {
-                spellings.forEach((i) => {
-                  var contentIndex = pageContent.indexOf(i) >= 0;
-                  var col = event.lastEvent.col;
-                  // Make sure the character has space and is not part of a long single string 
-                  if (pageContent.indexOf(' ') >= 0) {
-                    if (contentIndex) {
-                      reporter.warn(
-                        "Incorrect spellings: '" + i + "'.",
-                        event.line,
-                        col,
-                        self,
-                        event.raw
-                      );
-                    }
+        if (event.raw) {
+          const pageContent = event.raw;
+          if (event.lastEvent) {
+            if (
+              event.lastEvent.tagName !== "a" && 
+              event.lastEvent.tagName !== "meta" && 
+              event.lastEvent.tagName !== "link" && 
+              event.lastEvent.tagName !== "script" && 
+              event.lastEvent.tagName !== "svg"
+            ) {
+              spellings.forEach((i) => {
+                var contentIndex = pageContent.indexOf(i);
+                
+                // Make sure the character has space and is not part of a long single string 
+                if (pageContent.indexOf(' ') >= 0) {
+                  if (contentIndex >= 0) {
+                    reporter.warn(
+                      "Incorrect terms: '" + i + "'.",
+                      event.line,
+                      event.col,
+                      self,
+                      event.raw
+                    );
                   }
-                });
-              }
-            }    
+                }
+              });
+            }
           }
         }
       });

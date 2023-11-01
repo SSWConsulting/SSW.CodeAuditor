@@ -137,3 +137,8 @@ button:focus {
   width: 100%;
   height: 2px;
 }
+
+.modal {
+  transition: opacity 0.2s ease;
+  z-index: 3000;
+}
