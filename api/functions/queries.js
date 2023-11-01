@@ -378,5 +378,5 @@ exports.getCustomHtmlRuleOptions = (api, url) =>
 		for await (const item of entity) {
 			result.push(item);
 		}
-		resolve(result || {})
+		resolve(result || [])
 	})

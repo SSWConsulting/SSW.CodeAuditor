@@ -9,8 +9,11 @@ const { addCustomHtmlRule } = require("../customHtmlRules");
 
 ruleOptions[ruldId] = true;
 
+before(async () => {
+  await addCustomHtmlRule();
+});
+
 describe(`Rules: ${ruldId}`, () => {
-  addCustomHtmlRule();
   it("Figures not wrapped in figcaption must result in an error", () => {
     const code = "<p>Figure: Caption</p>";
     const messages = HTMLHint.verify(code, ruleOptions);

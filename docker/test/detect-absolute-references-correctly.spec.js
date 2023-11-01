@@ -9,8 +9,11 @@ const { addCustomHtmlRule } = require("../customHtmlRules");
 
 ruleOptions[ruldId] = true;
 
+before(async () => {
+  await addCustomHtmlRule();
+});
+
 describe(`Rules: ${ruldId}`, () => {
-  addCustomHtmlRule();
   it("Bad example should result in an error", () => {
     const code = '<a href="https://ssw.com.au/rules/when-you-use-mentions-in-a-pbi/" />';
     const messages = HTMLHint.verify(code, ruleOptions);

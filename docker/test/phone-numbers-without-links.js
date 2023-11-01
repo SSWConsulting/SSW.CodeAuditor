@@ -26,8 +26,11 @@ const nonPhoneNumbers = [
   "20231024.16"
 ];
 
+before(async () => {
+  await addCustomHtmlRule();
+});
+
 describe(`Rules: ${ruleId}`, () => {
-  addCustomHtmlRule();
 
   phoneNumbers.forEach((phone) => {
     it(`text containing "${phone}" without hyperlink should error`, () => {

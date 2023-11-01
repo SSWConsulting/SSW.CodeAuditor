@@ -233,9 +233,9 @@ const processAndUpload = async (
 
   if (args.htmlhint) {
     if (args.token) {
-      addCustomHtmlRule(args.token, args.url);
+      await addCustomHtmlRule(args.token, args.url);
     } else {
-      addCustomHtmlRule();
+      await addCustomHtmlRule();
     };
     [htmlIssuesSummary, htmlIssues] = await runHtmlHint(
       args.url,

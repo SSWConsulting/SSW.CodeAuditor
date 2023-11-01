@@ -3,7 +3,7 @@ const HTMLHint = require("htmlhint").default;
 const findPhoneNumbersInText = require('libphonenumber-js').findPhoneNumbersInText;
 
 exports.addCustomHtmlRule = async (apiToken, url) => {
-  const customRuleOptions = await getCustomHtmlRuleOptions(apiToken, url)
+  const customRuleOptions = await getCustomHtmlRuleOptions(apiToken, url);
 
   HTMLHint.addRule({
     id: "code-block-missing-language",
@@ -503,9 +503,9 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
       init: function (parser, reporter) {
         const self = this;
         let isInCodeBlock = false;
+        let optionValue = '';
         parser.addListener("tagstart", (event) => {
           // Check if custom options exist in this rule
-          let optionValue = '';
           if (customRuleOptions && customRuleOptions.length > 0 && customRuleOptions.filter(option => option.ruleId === ruleId).length > 0) {
             optionValue = customRuleOptions.find(option => option.ruleId === ruleId).optionValue
           }

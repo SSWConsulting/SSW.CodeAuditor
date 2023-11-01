@@ -9,8 +9,11 @@ const {addCustomHtmlRule} = require('../customHtmlRules')
 
 ruleOptions[ruldId] = true
 
+before(async () => {
+  await addCustomHtmlRule();
+});
+
 describe(`Rules: ${ruldId}`, () => {
-  addCustomHtmlRule();
   it('URL text without words click here should not result in an error', () => {
     const code = '<a href="www.ssw.com.au/Thisisarule">Not Click Here</a>'
     const messages = HTMLHint.verify(code, ruleOptions)

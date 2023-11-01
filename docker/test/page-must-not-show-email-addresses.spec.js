@@ -9,8 +9,11 @@ const {addCustomHtmlRule} = require('../customHtmlRules')
 
 ruleOptions[ruldId] = true
 
+before(async () => {
+  await addCustomHtmlRule();
+});
+
 describe(`Rules: ${ruldId}`, () => {
-  addCustomHtmlRule();
   it('Page that does not show email addresses should not result in an error', () => {
     const code = '<a href="...">email address</a>'
     const messages = HTMLHint.verify(code, ruleOptions)
