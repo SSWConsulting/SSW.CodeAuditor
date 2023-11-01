@@ -21,6 +21,7 @@ import {
   prepend,
   __,
 } from "ramda";
+import { countryCodes } from "./countries";
 
 export const truncate = (len) =>
   when(
@@ -360,6 +361,12 @@ export const historyChartType = {
   ErrorCode: "CODE ERRORS",
 }
 
+export const customOptionInputType = {
+  dropDown: "dropDown",
+  singleTextBox: "singleTextBox",
+  multipleTextBoxes: "multipleTextBoxes",
+};
+
 export const htmlHintRules = [
   {
     rule: "tagname-lowercase",
@@ -539,8 +546,7 @@ export const customHtmlHintRules = [
     type: RuleType.Warning,
     isEnableCustomOptions: true,
     customOptionsMessage: 'Please enter the terms to be reported:',
-    customOptionInputType: 'text',
-    isEnableMutipleInputs: true,
+    customOptionInputType: customOptionInputType.multipleTextBoxes,
   },
   {
     rule: "page-must-not-show-email-addresses",
@@ -554,8 +560,9 @@ export const customHtmlHintRules = [
     ruleLink: "https://www.ssw.com.au/rules/do-you-know-to-hyperlink-your-phone-numbers",
     type: RuleType.Warning,
     isEnableCustomOptions: true,
-    customOptionsMessage: 'Please enter your phone country code in 2 DIGIT ISO (e.g. AU):',
-    customOptionInputType: 'text',
+    customOptionsMessage: 'Please choose your country code:',
+    customOptionInputType: customOptionInputType.dropDown,
+    customOptionDropdownValues: countryCodes
   },
   {
     rule: "use-unicode-hex-code-for-special-html-characters",
@@ -582,7 +589,8 @@ export const customHtmlHintRules = [
     type: RuleType.Warning,
     isEnableCustomOptions: true,
     customOptionsMessage: 'Please enter your website internal URL:',
-    customOptionInputType: 'url'
+    customOptionInputType: customOptionInputType.singleTextBox,
+    customOptionInputValueType: 'url'
   },
   {
     rule: "url-must-not-have-space",
