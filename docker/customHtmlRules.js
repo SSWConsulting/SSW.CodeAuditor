@@ -521,8 +521,8 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
           }
         });
         parser.addListener("text", (event) => {
-          // Replace . / - characters to avoid false positives when parsing phone numbers
-          const text = event.raw?.replace(/\.|\/|\-/g, "_");
+          // Replace "." and "/" characters to avoid false positives when parsing phone numbers
+          const text = event.raw?.replace(/\.|\//g, "_");
           if (text && event.lastEvent && findPhoneNumbersInText(text, optionValue.length > 0 ? optionValue : 'AU').length) {
             const pageContent = event.lastEvent.raw;
             if (pageContent && event.lastEvent.tagName) {
