@@ -9,8 +9,11 @@ const { addCustomHtmlRule } = require("../customHtmlRules");
 
 ruleOptions[ruldId] = true;
 
+before(async () => {
+  await addCustomHtmlRule();
+});
+
 describe(`Rules: ${ruldId}`, () => {
-  addCustomHtmlRule();
   it("Scrum terms that are cased correctly should not result in an error", () => {
     const code =
       "<p>Scrum, Sprint, Product Owner, Scrum Master, Product Backlog, Sprint Review, Sprint Planning, Sprint Retrospective, Sprint Retro, Specification Review, Spec Review</p>";

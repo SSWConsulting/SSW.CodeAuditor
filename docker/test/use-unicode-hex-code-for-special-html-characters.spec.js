@@ -9,8 +9,11 @@ const { addCustomHtmlRule } = require("../customHtmlRules");
 
 ruleOptions[ruldId] = true;
 
+before(async () => {
+  await addCustomHtmlRule();
+});
+
 describe(`Rules: ${ruldId}`, () => {
-  addCustomHtmlRule();
   it("Non code tag with special char should result in an error", () => {
     const code = '<span>aaa>bbb<ccc</span>';
     const messages = HTMLHint.verify(code, ruleOptions);

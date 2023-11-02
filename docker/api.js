@@ -132,7 +132,7 @@ exports.getCustomHtmlRuleOptions = (api, url) => {
     headers: { "Content-Type": "application/json" },
   }).then((res) => {
     if (res) {
-      return res.json();
+      return res.ok ? res.json() : [];
     } else {
       throw Error("Failed to get custom html rule options");
     }
