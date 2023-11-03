@@ -9,8 +9,11 @@ const {addCustomHtmlRule} = require('../customHtmlRules')
 
 ruleOptions[ruldId] = true
 
+before(async () => {
+  await addCustomHtmlRule();
+});
+
 describe(`Rules: ${ruldId}`, () => {
-  addCustomHtmlRule();
   it('Anything that is not font tag should not result in an error', () => {
     const code = '<p color="red">Text</p>'
     const messages = HTMLHint.verify(code, ruleOptions)

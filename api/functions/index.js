@@ -22,6 +22,7 @@ const {
 	addHTMLHintRulesForEachRun,
 	addAlertEmailAddresses,
 	removeAlertEmailAddress,
+	addCustomHtmlRuleOptions,
 } = require('./commands');
 const {
 	getPersonalSummary,
@@ -39,6 +40,7 @@ const {
 	getAllScanSummaryFromUrl,
 	getUnscannableLinks,
 	compareScans,
+	getCustomHtmlRuleOptions,
 } = require('./queries');
 const {
 	newGuid,
@@ -179,6 +181,14 @@ app.get('/unscannableLinks', async (req, res) => {
 	res.json(await getUnscannableLinks());
 });
 
+app.post('/config/getCustomHtmlRuleOptions/:api', async (req, res) => {
+	res.json(await getCustomHtmlRuleOptions(req.params.api, req.body.url));
+});
+
+app.post('/config/addCustomHtmlRuleOptions/:api', async (req, res) => {
+	res.json(await addCustomHtmlRuleOptions(req.params.api, req.body));
+});
+
 app.post('/scanresult/:api/:buildId', async (req, res) => {
 	const {
 		badUrls,
@@ -230,7 +240,6 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 	const buildId = req.params.buildId;
 	const runId = newGuid();
 	const buildDate = new Date();
-	const unscannableLinks = await getUnscannableLinks();
 
 	const uid = await getUserIdFromApiKey(apikey);
 	if (!uid) {
@@ -314,7 +323,8 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 						buildId,
 						runId,
 						brokenLinkData,
-						buildDate
+						buildDate,
+						url
 					);
 					cb(data);
 				}, {

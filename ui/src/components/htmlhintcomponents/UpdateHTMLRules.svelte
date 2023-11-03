@@ -1,9 +1,9 @@
 <script>
   import Toastr from "../misccomponents/Toastr.svelte";
-  import { CONSTS, htmlHintRules, customHtmlHintRules, RuleType, rulePresets, PresetType } from "../../utils/utils";
+  import { CONSTS, htmlHintRules, customHtmlHintRules, RuleType, rulePresets, PresetType, customOptionInputType } from "../../utils/utils";
   import Modal from "../misccomponents//Modal.svelte";
   import LoadingFlat from "../misccomponents/LoadingFlat.svelte";
-  import { onMount, createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   import slug from "slug";
 
   export let url;
@@ -12,6 +12,7 @@
   export let user;
   export let htmlRules;
   export let threshold;
+  export let customHtmlRuleOptions = [];
 
   let saving;
   let addedSuccess;
@@ -20,17 +21,22 @@
   let presetSelection = [];
   
   // Check all selected htmlhint rules
-  let htmlHintSelectedRules = []
-  let customHtmlHintSelectedRules = []
+  let htmlHintSelectedRules = [];
+  let customHtmlHintSelectedRules = [];
 
   let showHistory = false;
   let historyLog = [];
 
+  let customOptionInput = '';
+  let multiInputValues = [''];
+
   $: htmlHintSelectedRules, handleSelectionChange();
   $: customHtmlHintSelectedRules, handleSelectionChange();
+  $: customHtmlRuleOptions;
 
   const dispatch = createEventDispatcher();
   const updateHtmlRules = () => dispatch("updateHtmlRules");
+  const updateHtmlHintCustomOption = () => dispatch("htmlHintThreshold");
   
   onMount(() => {
     initSelectedRules();
@@ -183,6 +189,30 @@
     currSelectedLog = index;
   }
 
+  let currSelectedCustomOption = -1;
+  const toggleCustomOption = (index, ruleSetting) => {
+    customOptionInput = null;
+    multiInputValues = [''];
+    currSelectedCustomOption = index;
+    if (ruleSetting) {
+      populateCustomOptions(ruleSetting)
+    }
+  }
+
+  const populateCustomOptions = (ruleSetting) => {
+    if (customHtmlRuleOptions && customHtmlRuleOptions.length > 0) {
+      customHtmlRuleOptions.forEach(option => {
+        if (option.ruleId === ruleSetting.rule) {
+          if (ruleSetting.customOptionInputType === customOptionInputType.multipleTextBoxes) {
+            multiInputValues = option.optionValue.split(',');
+          } else {
+            customOptionInput = option.optionValue;
+          }
+        }
+      })
+    }
+  }
+
   const formatHtmlRule = (rules) => {
     let selectedHtmlHintRules = rules.map(rule => htmlHintRules.find(x => x.rule === rule));
     let selectedCustomHtmlHintRules = rules.map(rule => customHtmlHintRules.find(x => x.rule === rule));
@@ -190,7 +220,50 @@
     let allHtmlRules = htmlHintRules.concat(customHtmlHintRules)
     return allHtmlRules.map(rule => ({...rule, isRuleEnabled: allSelectedRuleLog.includes(rule)}))
   };
-  
+
+  const addCustomRuleOptions = async (optionValue, ruleSetting) => {
+    saving = true;
+    const res = await fetch(
+      `${CONSTS.API}/api/config/addCustomHtmlRuleOptions/${user.apiKey}`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          ruleId: ruleSetting.rule, 
+          url, 
+          optionValue
+        }),
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    if (res.ok) {
+      saving = false;
+      addedSuccess = true;
+      customOptionInput = null;
+      multiInputValues = [''];
+      toggleCustomOption(-1);
+      updateHtmlHintCustomOption();
+    } else {
+      throw new Error("Failed to load");
+    } 
+  }
+
+  const handleOnSubmit = (ruleSetting) => {
+    const optionValueInput = 
+      multiInputValues.length > 0 && multiInputValues.every(i => i) ?
+        multiInputValues.toString() :
+        customOptionInput;
+    addCustomRuleOptions(optionValueInput, ruleSetting);
+  }
+
+  const addField = () => {
+    multiInputValues = [...multiInputValues, ''];
+  };
+
+  const removeField = (index) => {
+    multiInputValues.splice(index, 1);
+    multiInputValues = multiInputValues;
+  };
 </script>
 
 <Modal
@@ -251,9 +324,9 @@
           </label>
         {/each}
       </div>
-      <h3 class="font-bold">HTML Hint Rules: </h3>
+      <h3 class="font-bold mb-2">HTML Hint Rules: </h3>
       {#each htmlHintSelectedRules as rule}
-        <label>
+        <div class="mb-2">
           <input type="checkbox" bind:checked={rule.isChecked} value={rule.rule} /> 
             <i class="{rule.type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}" style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"></i> 
             <a 
@@ -262,21 +335,100 @@
             href="https://htmlhint.com/docs/user-guide/rules/{rule.rule}">
               {rule.displayName}
             </a>
-        </label>
+        </div>
       {/each}
       <br />
-      <h3 class="font-bold">Custom HTML Rules: </h3>
-      {#each customHtmlHintSelectedRules as rule}
-        <label>
+      <h3 class="font-bold mb-2">Custom HTML Rules: </h3>
+      {#each customHtmlHintSelectedRules as rule, index}
+        <div class="mb-2">
           <input type="checkbox" bind:checked={rule.isChecked} value={rule.rule} /> 
-            <i class="{rule.type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}" style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"></i> 
-            <a 
-            target="_blank"
-            class="{rule.ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline" 
-            href={rule.ruleLink}>
-              {rule.displayName}
-            </a>
-        </label>
+          <i class="{rule.type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}" style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"></i> 
+          <a 
+          target="_blank"
+          class="{rule.ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline" 
+          href={rule.ruleLink}>
+            {rule.displayName}
+          </a>
+          {#if rule.isEnableCustomOptions}
+            <span class="cursor-pointer">
+              <button 
+                class="textred px-2 py-1"
+                style="border: none"
+                on:click={() => toggleCustomOption(index, rule)} 
+                on:keypress={undefined}
+              ><i class="fas fa-pen-to-square"></i> Edit</button>
+            </span>
+            <div class="bggrey mt-2">
+              {#if customHtmlRuleOptions && customHtmlRuleOptions.length > 0 && customHtmlRuleOptions.find(x => x.ruleId === rule.rule)?.optionValue.length > 0}
+                <div class="ml-5">
+                  <span class="font-sans font-bold">
+                    Applied custom option value: 
+                  </span>
+                  <span class="textred">
+                    {customHtmlRuleOptions.find(x => x.ruleId === rule.rule)?.optionValue}
+                  </span>
+                </div>
+              {/if}
+              {#if currSelectedCustomOption === index}
+                <div class="ml-5 mb-3">
+                  <div>
+                    {rule.customOptionsMessage}
+                  </div>
+                  <form on:submit|preventDefault={handleOnSubmit(rule)}>
+                    {#if rule.customOptionInputType === customOptionInputType.dropDown} 
+                      <select bind:value={customOptionInput}>
+                        {#each rule.customOptionDropdownValues as country}
+                          <option value={country.code}>
+                            {country.name} ({country.code})
+                          </option>
+                        {/each}
+                      </select>
+                    {/if}
+                    {#if rule.customOptionInputType === customOptionInputType.singleTextBox} 
+                      <input type={rule.customOptionInputValueType} on:input={(e) => customOptionInput = e.target.value} />
+                    {/if}
+                    {#if rule.customOptionInputType === customOptionInputType.multipleTextBoxes} 
+                      {#each multiInputValues as v, i}
+                        <div>
+                          <input id={i} type="text" bind:value={v}/>
+                          {#if multiInputValues.length > 1}
+                            <button
+                              class="textred px-2 py-1"
+                              style="border: none"
+                              on:click|preventDefault={() => removeField(i)}
+                            ><i class="fas fa-minus"></i></button>
+                          {/if}
+                        </div>
+                      {/each}
+                        <button
+                          class="textred px-2 py-1"
+                          style="border: none"
+                          on:click|preventDefault={() => addField()}
+                        >Add</button>
+                    {/if}
+                    <div class="py-2">
+                      <button
+                        class="text-white bgred px-2 py-1"
+                        type="submit"
+                      >Save</button>
+                      <button
+                        class="text-white bgdark px-2 py-1"
+                        on:click|preventDefault={() => {toggleCustomOption(-1)}}
+                        on:keypress={undefined}
+                      >Cancel</button>
+                      <button
+                        class="px-2 py-1"
+                        style="border: none"
+                        on:click|preventDefault={() => {addCustomRuleOptions('', rule)}}
+                        on:keypress={undefined}
+                      >Reset to default</button>
+                    </div>
+                  </form>
+                </div>
+              {/if}
+            </div>
+          {/if}
+        </div>
       {/each}
     {/if}
   {/if}

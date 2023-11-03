@@ -12,7 +12,7 @@
   export let value;
   export let isHtmlHintComp = false;
   export let isLighthouseAudit = false;
-
+  
   let showShareAlert;
   let previousScans = [];
   let sharedEmailAddresses = [];
@@ -86,7 +86,7 @@
       <button 
         type="button"
         class="bg-white hover:bg-gray-800 hover:text-white font-semibold py-2 px-4 border rounded"
-        on:click={navigateTo(`/scanCompare/${value.partitionKey}/${convertSpecialCharUrl(value.url)}/${value.buildDate}`)}
+        on:click={navigateTo(`/scanCompare/${value.apiKey || value.partitionKey}/${convertSpecialCharUrl(value.url)}/${value.buildDate}`)}
       >
         <i class="fas fa-code-compare"></i> 
         {previousScans[0].runId !== value.runId ? "Compare to latest scan" : "Compare to previous scan"}

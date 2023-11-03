@@ -21,6 +21,7 @@ import {
   prepend,
   __,
 } from "ramda";
+import { countryCodes } from "./countries";
 
 export const truncate = (len) =>
   when(
@@ -360,6 +361,12 @@ export const historyChartType = {
   ErrorCode: "CODE ERRORS",
 }
 
+export const customOptionInputType = {
+  dropDown: "dropDown",
+  singleTextBox: "singleTextBox",
+  multipleTextBoxes: "multipleTextBoxes",
+};
+
 export const htmlHintRules = [
   {
     rule: "tagname-lowercase",
@@ -536,7 +543,10 @@ export const customHtmlHintRules = [
     rule: "common-spelling-mistakes",
     displayName: "Content - Avoid common spelling and syntax mistakes",
     ruleLink: "https://www.ssw.com.au/rules/avoid-common-mistakes",
-    type: RuleType.Warning
+    type: RuleType.Warning,
+    isEnableCustomOptions: true,
+    customOptionsMessage: 'Please enter the terms to be reported:',
+    customOptionInputType: customOptionInputType.multipleTextBoxes,
   },
   {
     rule: "page-must-not-show-email-addresses",
@@ -548,7 +558,11 @@ export const customHtmlHintRules = [
     rule: "phone-numbers-without-links",
     displayName: "Content - Phone numbers must be in hyperlinks",
     ruleLink: "https://www.ssw.com.au/rules/do-you-know-to-hyperlink-your-phone-numbers",
-    type: RuleType.Warning
+    type: RuleType.Warning,
+    isEnableCustomOptions: true,
+    customOptionsMessage: 'Please choose your country code:',
+    customOptionInputType: customOptionInputType.dropDown,
+    customOptionDropdownValues: countryCodes
   },
   {
     rule: "use-unicode-hex-code-for-special-html-characters",
@@ -572,7 +586,11 @@ export const customHtmlHintRules = [
     rule: "detect-absolute-references-url-path-correctly",
     displayName: "Links - Avoid absolute internal URLs",
     ruleLink: "https://ssw.com.au/rules/avoid-absolute-internal-links/",
-    type: RuleType.Warning
+    type: RuleType.Warning,
+    isEnableCustomOptions: true,
+    customOptionsMessage: 'Please enter your website internal URL:',
+    customOptionInputType: customOptionInputType.singleTextBox,
+    customOptionInputValueType: 'url'
   },
   {
     rule: "url-must-not-have-space",

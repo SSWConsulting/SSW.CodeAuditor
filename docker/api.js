@@ -125,6 +125,20 @@ exports.getAllScanSummaryFromUrl = (api, url) => {
   );
 };
 
+exports.getCustomHtmlRuleOptions = (api, url) => {
+  return fetch(`${endpoint}/api/config/getCustomHtmlRuleOptions/${api}`, {
+    method: "POST",
+    body: JSON.stringify({url}),
+    headers: { "Content-Type": "application/json" },
+  }).then((res) => {
+    if (res) {
+      return res.ok ? res.json() : [];
+    } else {
+      throw Error("Failed to get custom html rule options");
+    }
+  });
+};
+
 exports.htmlHintConfig = {
   "grammar-scrum-terms": true,
   "code-block-missing-language": true,

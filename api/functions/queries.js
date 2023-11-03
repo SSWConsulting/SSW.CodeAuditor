@@ -72,7 +72,14 @@ exports.getConfig = (api) =>
 
 exports.getScanDetails = async (runId) => {
 	const scan = await exports.getSummaryById(runId);
-	const filter = odata`PartitionKey eq ${scan.partitionKey} and src ge ${scan.url} and src le ${incrementString(scan.url)}`;
+	let filter;
+
+	if (scan.scanResultVersion === 2) {
+		filter = `PartitionKey eq '${scan.partitionKey}-${slug(scan.url)}'`;
+	} else {
+		filter = odata`PartitionKey eq ${scan.partitionKey} and src ge ${scan.url} and src le ${incrementString(scan.url)}`;
+	}
+
     const entity = new TableClient(azureUrl, TABLE.ScanResults, credential).listEntities({
         queryOptions: { filter }
     });
@@ -208,7 +215,10 @@ exports.getAllPublicSummary = (showAll) =>
 			for await (const item of entity) {
 				result.push(item);
 			}
-			resolve(result)
+
+			resolve(result.filter((value, index, self) => {
+				return self.findIndex(v => v.runId === value.runId) === index;
+			}))
 		} else {
 			// Top 500 scans in last 24 months
 			var date = new Date();
@@ -218,24 +228,39 @@ exports.getAllPublicSummary = (showAll) =>
 				queryOptions: { filter: odata`isPrivate eq ${false} and buildDate gt datetime'${date.toISOString()}'` }
 			});
 			const iterator = entity.byPage({ maxPageSize: parseInt(process.env.MAX_SCAN_SIZE) });
+			let result = [];
 			for await (const item of iterator) {
-				resolve(item)
+				result = item;
 				break;
 			}
+
+			resolve(result.filter((value, index, self) => {
+				return self.findIndex(v => v.runId === value.runId) === index;
+			}))
 		}
 	});
 
 exports.getSummaryById = (runId) => 
 	getRun(runId).then((doc) =>
 		new Promise(async (resolve) => {
-			const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
-				queryOptions: { filter: odata`PartitionKey eq ${doc.apikey} and runId eq ${doc.runId}` }
-			});
-			let result = []
-			for await (const item of entity) {
-				result.push(item);
+			const getSummary = async (filter) => {
+				const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
+					queryOptions: { filter }
+				});
+				let result = []
+				for await (const item of entity) {
+					result.push(item);
+				}
+				return result[0];
+			};
+
+			let summary = await getSummary(`PartitionKey eq '${doc.apikey}-${doc.runId}'`);
+
+			if (!summary) {
+				summary = await getSummary(odata`PartitionKey eq ${doc.apikey} and runId eq ${doc.runId}`);
 			}
-			resolve(result[0] || {})
+			
+			resolve(summary || {});
 		}));
 
 exports.getLatestSummaryFromUrlAndApi = (url, api) => 
@@ -272,19 +297,30 @@ exports.getAlertEmailAddressesFromTokenAndUrl = (api, url) =>
 
 exports.getAllScanSummaryFromUrl = (url, api) =>
 	new Promise(async (resolve) => {
-		const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
-			queryOptions: { filter: odata`url eq ${url} and PartitionKey eq ${api}` }
-		});
-		const iterator = entity.byPage({ maxPageSize: 10 });
-		for await (const item of iterator) {
-			if (item[0]) {
-				const existing = await getExistingBrokenLinkCount(item[0].runId);
-				item[0].totalUniqueBrokenLinksExisting = existing;
+		const getSummary = async (filter) => {
+			const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
+				queryOptions: { filter }
+			});
+			const iterator = entity.byPage({ maxPageSize: 10 });
+			let result;
+			for await (const item of iterator) {
+				if (item[0]) {
+					const existing = await getExistingBrokenLinkCount(item[0].runId);
+					item[0].totalUniqueBrokenLinksExisting = existing;
+				}
+				result = item;
+				break;
 			}
-			
-			resolve(item);
-			break;
+			return result;
+		};
+
+		let summary = await getSummary(`PartitionKey eq '${api}-${slug(url)}'`);
+
+		if (!summary) {
+			summary = await getSummary(odata`url eq ${url} and PartitionKey eq ${api}`);
 		}
+
+		resolve(summary);
 	});
 
 exports.getUnscannableLinks = () =>
@@ -332,3 +368,15 @@ exports.compareScans = (api, url) =>
 		} 
 		resolve(isErrorUp)
 	});
+
+exports.getCustomHtmlRuleOptions = (api, url) => 
+	new Promise(async (resolve) => {
+		const entity = new TableClient(azureUrl, TABLE.HtmlRulesCustomOptions, credential).listEntities({
+			queryOptions: { filter: odata`PartitionKey eq ${api} and url eq ${url}` }
+		});
+		let result = []
+		for await (const item of entity) {
+			result.push(item);
+		}
+		resolve(result || [])
+	})

@@ -29,6 +29,7 @@ const {
   runArtilleryLoadTest
 } = require("./utils");
 const { htmlHintConfig } = require("./api");
+const { addCustomHtmlRule } = require("./customHtmlRules");
 
 const LIGHTHOUSEFOLDER = "./lhr.json";
 const ARTILLERYFOLDER = "./artilleryOut.json";
@@ -230,9 +231,12 @@ const processAndUpload = async (
     [atr, atrSummary] = readArtilleryReport(ARTILLERYFOLDER, writeLog);
   }
 
-  const { addCustomHtmlRule } = require("./customHtmlRules");
   if (args.htmlhint) {
-    addCustomHtmlRule();
+    if (args.token) {
+      await addCustomHtmlRule(args.token, args.url);
+    } else {
+      await addCustomHtmlRule();
+    };
     [htmlIssuesSummary, htmlIssues] = await runHtmlHint(
       args.url,
       results,

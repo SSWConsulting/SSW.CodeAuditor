@@ -9,8 +9,11 @@ const {addCustomHtmlRule} = require('../customHtmlRules')
 
 ruleOptions[ruldId] = true
 
+before(async () => {
+  await addCustomHtmlRule();
+});
+
 describe(`Rules: ${ruldId}`, () => {
-  addCustomHtmlRule();
   it('Meta tags that does not refresh should not result in an error', () => {
     const code = '<meta name="description" />'
     const messages = HTMLHint.verify(code, ruleOptions)

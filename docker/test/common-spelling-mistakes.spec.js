@@ -9,8 +9,11 @@ const { addCustomHtmlRule } = require("../customHtmlRules");
 
 ruleOptions[ruleId] = true;
 
+before(async () => {
+  await addCustomHtmlRule();
+});
+
 describe(`Rules: ${ruleId}`, () => {
-  addCustomHtmlRule();
   it("terms used correctly should not result in an error", () => {
     const code = "<p>aka email cannot website username taskbar</p>";
     const messages = HTMLHint.verify(code, ruleOptions);
