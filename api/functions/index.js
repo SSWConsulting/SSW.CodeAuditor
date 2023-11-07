@@ -146,9 +146,15 @@ app.get('/allscans', async (req, res) => {
 });
 
 app.get('/viewsource', async (req, res) => {
-	const resp = await fetch(req.query.url);
-	const source = await resp.text();
-	res.send(source);
+	const resp = await fetch(req.query.url).catch((err) => {
+		res.send(`Failed to load source: ${err.message}`);
+	});
+	if (resp.ok) {
+		const source = await resp.text();
+		res.send(source);
+	} else {
+		res.send(`Failed to load source: ${resp.status} - ${resp.statusText}`);
+	}
 });
 
 app.get('/run/:runId', async (req, res) => {
