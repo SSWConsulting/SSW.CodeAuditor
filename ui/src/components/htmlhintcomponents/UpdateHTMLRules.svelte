@@ -358,9 +358,9 @@
                 on:keypress={undefined}
               ><i class="fas fa-pen-to-square"></i> Edit</button>
             </span>
-            <div class="bggrey mt-2">
+            <div class="bggrey ml-4 mr-5">
               {#if customHtmlRuleOptions && customHtmlRuleOptions.length > 0 && customHtmlRuleOptions.find(x => x.ruleId === rule.rule)?.optionValue.length > 0}
-                <div class="ml-5">
+                <div class="p-3">
                   <span class="font-sans font-bold">
                     Applied custom option value: 
                   </span>
@@ -370,7 +370,7 @@
                 </div>
               {/if}
               {#if currSelectedCustomOption === index}
-                <div class="ml-5 mb-3">
+                <div class="p-3">
                   <div>
                     {rule.customOptionsMessage}
                   </div>

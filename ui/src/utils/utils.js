@@ -560,7 +560,7 @@ export const customHtmlHintRules = [
     ruleLink: "https://www.ssw.com.au/rules/do-you-know-to-hyperlink-your-phone-numbers",
     type: RuleType.Warning,
     isEnableCustomOptions: true,
-    customOptionsMessage: 'Please choose your country code:',
+    customOptionsMessage: 'Please choose the country code:',
     customOptionInputType: customOptionInputType.dropDown,
     customOptionDropdownValues: countryCodes
   },
@@ -588,7 +588,7 @@ export const customHtmlHintRules = [
     ruleLink: "https://ssw.com.au/rules/avoid-absolute-internal-links/",
     type: RuleType.Warning,
     isEnableCustomOptions: true,
-    customOptionsMessage: 'Please enter your website internal URL:',
+    customOptionsMessage: 'Please enter the website internal URL:',
     customOptionInputType: customOptionInputType.singleTextBox,
     customOptionInputValueType: 'url'
   },
