@@ -75,7 +75,7 @@ exports.getScanDetails = async (runId) => {
 	let filter;
 
 	if (scan.scanResultVersion === 2) {
-		filter = `PartitionKey eq '${scan.partitionKey}-${slug(scan.url)}'`;
+		filter = `PartitionKey eq '${scan.apiKey}-${slug(scan.url)}'`;
 	} else {
 		filter = odata`PartitionKey eq ${scan.partitionKey} and src ge ${scan.url} and src le ${incrementString(scan.url)}`;
 	}
