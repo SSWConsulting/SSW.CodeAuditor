@@ -73,11 +73,14 @@ exports.getConfig = (api) =>
 exports.getScanDetails = async (runId) => {
 	const scan = await exports.getSummaryById(runId);
 	let filter;
+	const filterDays = 90;
+	const startDate = new Date(scan.buildDate);
+	startDate.setDate(startDate.getDate() - filterDays);
 
 	if (scan.scanResultVersion === 2) {
-		filter = `PartitionKey eq '${scan.apiKey}-${slug(scan.url)}'`;
+		filter = `PartitionKey eq '${scan.apiKey}-${slug(scan.url)}' and buildDate ge datetime'${startDate.toISOString()}' and buildDate le datetime'${scan.buildDate.toISOString()}'`;
 	} else {
-		filter = odata`PartitionKey eq ${scan.partitionKey} and src ge ${scan.url} and src le ${incrementString(scan.url)}`;
+		filter = odata`PartitionKey eq ${scan.partitionKey} and src ge ${scan.url} and src le ${incrementString(scan.url)} and buildDate ge datetime'${startDate.toISOString()}' and buildDate le datetime'${scan.buildDate.toISOString()}'`;
 	}
 
     const entity = new TableClient(azureUrl, TABLE.ScanResults, credential).listEntities({
@@ -256,7 +259,7 @@ exports.getSummaryById = (runId) =>
 
 			let summary = await getSummary(`PartitionKey eq '${doc.apikey}-${doc.runId}'`);
 
-			if (!summary) {
+			if (!summary || summary.scanResultVersion !== 2) {
 				summary = await getSummary(odata`PartitionKey eq ${doc.apikey} and runId eq ${doc.runId}`);
 			}
 			
