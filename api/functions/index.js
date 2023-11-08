@@ -146,7 +146,16 @@ app.get('/allscans', async (req, res) => {
 });
 
 app.get('/viewsource', async (req, res) => {
-	const resp = await fetch(req.query.url).catch((err) => {
+	const target = new URL(req.query.url);
+	const functionHost = '-sswlinkauditor-c1131.cloudfunctions.net';
+
+	// Prevent fetching from same host to prevent request forgery
+	if (target.hostname.includes(functionHost) || target.hostname === 'localhost') {
+		res.send('Cannot fetch from internal URL');
+		return;
+	}
+
+	const resp = await fetch(target.href).catch((err) => {
 		res.send(`Failed to load source: ${err.message}`);
 	});
 	if (resp.ok) {
