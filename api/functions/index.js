@@ -146,9 +146,24 @@ app.get('/allscans', async (req, res) => {
 });
 
 app.get('/viewsource', async (req, res) => {
-	const resp = await fetch(req.query.url);
-	const source = await resp.text();
-	res.send(source);
+	const target = new URL(req.query.url);
+	const functionHost = '-sswlinkauditor-c1131.cloudfunctions.net';
+
+	// Disallow fetching from same host to prevent request forgery
+	if (target.hostname.includes(functionHost) || target.hostname === 'localhost') {
+		res.send('Cannot fetch from internal host');
+		return;
+	}
+
+	const resp = await fetch(target.href).catch((err) => {
+		res.send(`Failed to load source: ${err.message}`);
+	});
+	if (resp.ok) {
+		const source = await resp.text();
+		res.send(source);
+	} else {
+		res.send(`Failed to load source: ${resp.status} - ${resp.statusText}`);
+	}
 });
 
 app.get('/run/:runId', async (req, res) => {
