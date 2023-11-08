@@ -149,9 +149,9 @@ app.get('/viewsource', async (req, res) => {
 	const target = new URL(req.query.url);
 	const functionHost = '-sswlinkauditor-c1131.cloudfunctions.net';
 
-	// Prevent fetching from same host to prevent request forgery
+	// Disallow fetching from same host to prevent request forgery
 	if (target.hostname.includes(functionHost) || target.hostname === 'localhost') {
-		res.send('Cannot fetch from internal URL');
+		res.send('Cannot fetch from internal host');
 		return;
 	}
 
