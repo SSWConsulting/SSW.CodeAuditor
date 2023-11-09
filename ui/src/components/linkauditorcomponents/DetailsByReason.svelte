@@ -112,7 +112,7 @@
             </td>
             <td class="w-3/12 border px-2 py-2 break-all">
               <a
-                class="inline-block align-baseline"
+                class="inline-block align-baseline link"
                 target="_blank"
                 href={val.dst}>
                 {val.dst.length < 70 ? val.dst : val.dst.substring(0, 70) + '...'}
