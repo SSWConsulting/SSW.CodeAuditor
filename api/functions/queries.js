@@ -219,9 +219,16 @@ exports.getAllPublicSummary = (showAll) =>
 				result.push(item);
 			}
 
-			resolve(result.filter((value, index, self) => {
-				return self.findIndex(v => v.runId === value.runId) === index;
-			}))
+			const seen = new Set();
+			const filteredResult = result.filter(value => {
+				if (seen.has(value.runId)) {
+					return false;
+				}
+				seen.add(value.runId);
+				return true;
+			})
+
+			resolve(filteredResult);
 		} else {
 			// Top 500 scans in last 12 months
 			var date = new Date();
@@ -235,13 +242,18 @@ exports.getAllPublicSummary = (showAll) =>
 				result.push(item);
 			}
 
-			const filteredResult = result.filter((value, index, self) => {
-				return self.findIndex(v => v.runId === value.runId) === index;
+			const seen = new Set();
+			const filteredResult = result.filter(value => {
+				if (seen.has(value.runId)) {
+					return false;
+				}
+				seen.add(value.runId);
+				return true;
 			})
 			.sort((a, b) => (a.rowKey > b.rowKey) ? 1 : -1)
 			.slice(0, parseInt(process.env.MAX_SCAN_SIZE));
 
-			resolve(filteredResult)
+			resolve(filteredResult);
 		}
 	});
 
