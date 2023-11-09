@@ -219,27 +219,41 @@ exports.getAllPublicSummary = (showAll) =>
 				result.push(item);
 			}
 
-			resolve(result.filter((value, index, self) => {
-				return self.findIndex(v => v.runId === value.runId) === index;
-			}))
+			const seen = new Set();
+			const filteredResult = result.filter(value => {
+				if (seen.has(value.runId)) {
+					return false;
+				}
+				seen.add(value.runId);
+				return true;
+			})
+
+			resolve(filteredResult);
 		} else {
-			// Top 500 scans in last 24 months
+			// Top 500 scans in last 12 months
 			var date = new Date();
 			date.setMonth(date.getMonth() - 12);
 
 			const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
 				queryOptions: { filter: odata`isPrivate eq ${false} and buildDate gt datetime'${date.toISOString()}'` }
 			});
-			const iterator = entity.byPage({ maxPageSize: parseInt(process.env.MAX_SCAN_SIZE) });
-			let result = [];
-			for await (const item of iterator) {
-				result = item;
-				break;
+			let result = []
+			for await (const item of entity) {
+				result.push(item);
 			}
 
-			resolve(result.filter((value, index, self) => {
-				return self.findIndex(v => v.runId === value.runId) === index;
-			}))
+			const seen = new Set();
+			const filteredResult = result.filter(value => {
+				if (seen.has(value.runId)) {
+					return false;
+				}
+				seen.add(value.runId);
+				return true;
+			})
+			.sort((a, b) => (a.rowKey > b.rowKey) ? 1 : -1)
+			.slice(0, parseInt(process.env.MAX_SCAN_SIZE));
+
+			resolve(filteredResult);
 		}
 	});
 
