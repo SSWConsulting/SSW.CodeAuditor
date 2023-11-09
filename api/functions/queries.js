@@ -73,11 +73,14 @@ exports.getConfig = (api) =>
 exports.getScanDetails = async (runId) => {
 	const scan = await exports.getSummaryById(runId);
 	let filter;
+	const filterDays = 90;
+	const startDate = new Date(scan.buildDate);
+	startDate.setDate(startDate.getDate() - filterDays);
 
 	if (scan.scanResultVersion === 2) {
-		filter = `PartitionKey eq '${scan.apiKey}-${slug(scan.url)}'`;
+		filter = `PartitionKey eq '${scan.apiKey}-${slug(scan.url)}' and buildDate ge datetime'${startDate.toISOString()}' and buildDate le datetime'${scan.buildDate.toISOString()}'`;
 	} else {
-		filter = odata`PartitionKey eq ${scan.partitionKey} and src ge ${scan.url} and src le ${incrementString(scan.url)}`;
+		filter = odata`PartitionKey eq ${scan.partitionKey} and src ge ${scan.url} and src le ${incrementString(scan.url)} and buildDate ge datetime'${startDate.toISOString()}' and buildDate le datetime'${scan.buildDate.toISOString()}'`;
 	}
 
     const entity = new TableClient(azureUrl, TABLE.ScanResults, credential).listEntities({
@@ -166,17 +169,17 @@ exports.getHTMLHintRules = (api, url, isGetAllRecords) =>
 		resolve(isGetAllRecords ? result : result[result.length - 1] || {})
   });
 
-exports.getHTMLHintRulesByRunId = (runId) => 
-	new Promise(async (resolve) => {
-		const entity = new TableClient(azureUrl, TABLE.htmlhintrules, credential).listEntities({
-			queryOptions: { filter: odata`RowKey eq ${runId}` }
-		});
-		let result = []
-		for await (const item of entity) {
-			result.push(item);
-		}
-		resolve(result[0] || {})
+exports.getHTMLHintRulesByRunId = async (runId) => {
+	const doc = await getRun(runId);
+	const entity = new TableClient(azureUrl, TABLE.htmlhintrules, credential).listEntities({
+		queryOptions: { filter: odata`PartitionKey eq ${doc.apikey} and RowKey eq ${runId}` }
 	});
+	let result = []
+	for await (const item of entity) {
+		result.push(item);
+	}
+	return result[0] || {};
+}
 
 exports.getPersonalSummary = (api, showAll) =>
 	new Promise(async (resolve) => {
@@ -216,27 +219,41 @@ exports.getAllPublicSummary = (showAll) =>
 				result.push(item);
 			}
 
-			resolve(result.filter((value, index, self) => {
-				return self.findIndex(v => v.runId === value.runId) === index;
-			}))
+			const seen = new Set();
+			const filteredResult = result.filter(value => {
+				if (seen.has(value.runId)) {
+					return false;
+				}
+				seen.add(value.runId);
+				return true;
+			})
+
+			resolve(filteredResult);
 		} else {
-			// Top 500 scans in last 24 months
+			// Top 500 scans in last 12 months
 			var date = new Date();
 			date.setMonth(date.getMonth() - 12);
 
 			const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
 				queryOptions: { filter: odata`isPrivate eq ${false} and buildDate gt datetime'${date.toISOString()}'` }
 			});
-			const iterator = entity.byPage({ maxPageSize: parseInt(process.env.MAX_SCAN_SIZE) });
-			let result = [];
-			for await (const item of iterator) {
-				result = item;
-				break;
+			let result = []
+			for await (const item of entity) {
+				result.push(item);
 			}
 
-			resolve(result.filter((value, index, self) => {
-				return self.findIndex(v => v.runId === value.runId) === index;
-			}))
+			const seen = new Set();
+			const filteredResult = result.filter(value => {
+				if (seen.has(value.runId)) {
+					return false;
+				}
+				seen.add(value.runId);
+				return true;
+			})
+			.sort((a, b) => (a.rowKey > b.rowKey) ? 1 : -1)
+			.slice(0, parseInt(process.env.MAX_SCAN_SIZE));
+
+			resolve(filteredResult);
 		}
 	});
 
@@ -256,7 +273,7 @@ exports.getSummaryById = (runId) =>
 
 			let summary = await getSummary(`PartitionKey eq '${doc.apikey}-${doc.runId}'`);
 
-			if (!summary) {
+			if (!summary || summary.scanResultVersion !== 2) {
 				summary = await getSummary(odata`PartitionKey eq ${doc.apikey} and runId eq ${doc.runId}`);
 			}
 			
