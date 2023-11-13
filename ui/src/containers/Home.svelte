@@ -59,20 +59,17 @@
 
   <section class="text-gray-700 body-font">
     <div
-      class="container mx-auto flex px-5 py-19 md:flex-row flex-col items-center"
+      class="container grid grid-cols-2 gap-4 mx-auto px-5 py-24 items-center"
     >
-      <div
-        class="lg:grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col
-        md:items-start md:text-left items-center text-center"
-      >
+      <div>
         <h1
           class="title-font leading-tight sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
         >
           View prior scans history
         </h1>
-        <p class="mb-8 leading-relaxed">View previous scan results</p>
+        <p class="mb-8 leading-relaxed">View previous scan results.</p>
       </div>
-      <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
+      <div>
         <a href="/images/dashboard.png" target="_blank">
           <img
             class="object-cover object-center rounded bordered"
@@ -86,9 +83,9 @@
 
   <section class="text-gray-700 body-font">
     <div
-      class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center"
+      class="container grid grid-cols-2 gap-4 mx-auto px-5 py-24 items-center"
     >
-      <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
+      <div>
         <a href="/images/exportcsv.png" target="_blank">
           <img
             class="object-cover object-center rounded bordered"
@@ -97,17 +94,14 @@
           />
         </a>
       </div>
-      <div
-        class="lg:grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col
-        md:items-start md:text-left items-center text-center"
-      >
+      <div class="text-right">
         <h1
           class="title-font leading-tight sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
         >
           Export to CSV
         </h1>
         <p class="mb-8 leading-relaxed">
-          Export scan result to CSV to perform further analysis (e.g on PowerBI)
+          Export scan result to CSV to perform further analysis (e.g on PowerBI).
         </p>
       </div>
     </div>
@@ -115,22 +109,19 @@
 
   <section class="text-gray-700 body-font">
     <div
-      class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center"
+      class="container grid grid-cols-2 gap-4 mx-auto px-5 py-24 items-center"
     >
-      <div
-        class="lg:grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col
-        md:items-start md:text-left items-center text-center"
-      >
+      <div>
         <h1
           class="title-font leading-tight sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
         >
           View Lighthouse Report
         </h1>
         <p class="mb-8 leading-relaxed">
-          View Lighthouse Report without leaving the app
+          View Lighthouse Report without leaving the app.
         </p>
       </div>
-      <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
+      <div>
         <a href="/images/lighthouse2.png" target="_blank">
           <img
             class="object-cover object-center rounded bordered"
@@ -144,9 +135,9 @@
 
   <section class="text-gray-700 body-font">
     <div
-      class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center"
+      class="container grid grid-cols-2 gap-4 mx-auto px-5 py-24 items-center"
     >
-      <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
+      <div>
         <a href="/images/threshold.png" target="_blank">
           <img
             class="object-cover object-center rounded bordered"
@@ -155,10 +146,7 @@
           />
         </a>
       </div>
-      <div
-        class="lg:grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col
-        md:items-start md:text-left items-center text-center"
-      >
+      <div class="text-right">
         <h1
           class="title-font leading-tight sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
         >
@@ -166,7 +154,7 @@
         </h1>
         <p class="mb-8 leading-relaxed">
           If Performance is less than 80 and SEO score is less than 100, fail
-          the build
+          the build.
         </p>
       </div>
     </div>
@@ -174,22 +162,19 @@
 
   <section class="text-gray-700 body-font">
     <div
-      class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center"
+      class="container grid grid-cols-2 gap-4 mx-auto px-5 py-24 items-center"
     >
-      <div
-        class="lg:grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col
-        md:items-start md:text-left items-center text-center"
-      >
+      <div>
         <h1
           class="title-font leading-tight sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
         >
           Ignore broken Links
         </h1>
         <p class="mb-8 leading-relaxed">
-          Ignored URLs will not cause build to fail
+          Ignored URLs will not cause build to fail.
         </p>
       </div>
-      <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
+      <div>
         <a href="/images/ignore.png" target="_blank">
           <img
             class="object-cover object-center rounded bordered"
@@ -203,9 +188,9 @@
 
   <section class="text-gray-700 body-font">
     <div
-      class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center"
+      class="container grid grid-cols-2 gap-4 mx-auto px-5 py-24 items-center"
     >
-      <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
+      <div>
         <a href="/images/codeissues.png" target="_blank">
           <img
             class="object-cover object-center rounded bordered"
@@ -214,17 +199,14 @@
           />
         </a>
       </div>
-      <div
-        class="lg:grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col
-        md:items-start md:text-left items-center text-center"
-      >
+      <div class="text-right">
         <h1
           class="title-font leading-tight sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
         >
           View Code Errors
         </h1>
         <p class="mb-8 leading-relaxed">
-          View HTML code errors and Code errors without leaving the app
+          View HTML code errors and Code errors without leaving the app.
         </p>
       </div>
     </div>
@@ -232,22 +214,19 @@
 
   <section class="text-gray-700 body-font">
     <div
-      class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center"
+      class="container grid grid-cols-2 gap-4 mx-auto px-5 py-24 items-center"
     >
-      <div
-        class="lg:grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col
-        md:items-start md:text-left items-center text-center"
-      >
+      <div>
         <h1
           class="title-font leading-tight sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
         >
           View Artillery Load Test
         </h1>
         <p class="mb-8 leading-relaxed">
-          View Load Test results ran by Artillery without leaving the app
+          View Load Test results ran by Artillery without leaving the app.
         </p>
       </div>
-      <div class="md:w-1/2 w-5/6 mb-10 md:mb-0">
+      <div>
         <a href="/images/artillery.png" target="_blank">
           <img
             class="object-cover object-center rounded bordered"
