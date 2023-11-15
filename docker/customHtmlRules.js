@@ -71,11 +71,12 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
                 
                 // Make sure the character has space and is not part of a long single string 
                 if (pageContent.indexOf(' ') >= 0) {
+                  const col = event.col + contentIndex;
                   if (contentIndex >= 0) {
                     reporter.warn(
                       "Incorrect Scrum term: '" + i + "'.",
                       event.line,
-                      event.col,
+                      col,
                       self,
                       event.raw
                     );
@@ -479,10 +480,11 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
                 // Make sure the character has space and is not part of a long single string 
                 if (pageContent.indexOf(' ') >= 0) {
                   if (contentIndex >= 0) {
+                    const col = event.col + contentIndex;
                     reporter.warn(
                       "Incorrect terms: '" + i + "'.",
                       event.line,
-                      event.col,
+                      col,
                       self,
                       event.raw
                     );
