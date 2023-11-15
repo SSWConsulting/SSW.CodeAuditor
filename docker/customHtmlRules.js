@@ -526,9 +526,9 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
           // Replace "." and "/" characters to avoid false positives when parsing phone numbers
           const text = event.raw?.replace(/\.|\//g, "_");
           if (text && event.lastEvent) {
-            const foundText = findPhoneNumbersInText(text, optionValue.length > 0 ? optionValue : 'AU');
+            const foundPhoneNumbers = findPhoneNumbersInText(text, optionValue.length > 0 ? optionValue : 'AU');
 
-            foundText.forEach((phone) => {
+            foundPhoneNumbers.forEach((phone) => {
               const pageContent = event.lastEvent.raw;
               if (pageContent && event.lastEvent.tagName) {
                 const tagName = event.lastEvent.tagName.toLowerCase();
