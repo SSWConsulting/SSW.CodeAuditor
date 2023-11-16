@@ -36,136 +36,134 @@
 
 <body class="flex flex-col min-h-screen">
   <main class="grow">
-    <nav class="flex items-center justify-between p-4 lg:h-24 bggrey mb-4">
-      <div class="flex flex-wrap mx-auto">
-        <div class="w-full">
-          <div class="w-full block md:flex md:justify-center md:flex-wrap lg:items-center">
-            <Navigate to="/" styles="sm:w-4/4 md:w-1/7 lg:w-3/12">
-              <img
-                class="logo h-7 object-cover max-h-20"
-                src="/images/logo-dark.png"
-                alt="CodeAuditor"
-              />
-            </Navigate>
-            <div
-              class="flex text-center md:block justify-evenly pt-4 lg:pt-0 lg:mt-2 sm:w-4/4 lg:w-6/12 overflow-hidden"
-            >
-              <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
-                <span
-                  class="header-item {currentRoute.path === '/'
-                    ? 'textred'
-                    : 'textdark'}"
-                >
-                  <Navigate to="/" styles="hover:no-underline">Home</Navigate>
-                </span>
-              </span>
-              <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
-                <span
-                  class="header-item {currentRoute.path === '/howitworks'
-                    ? 'textred'
-                    : 'textdark'}"
-                >
-                  <Navigate to="/howItWorks" styles="hover:no-underline">How It Works</Navigate>
-                </span>
-              </span>
-              <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
-                <span
-                  class="header-item {currentRoute.path === '/explore'
-                    ? 'textred'
-                    : 'textdark'}"
-                >
-                  <Navigate to="/explore" styles="hover:no-underline">Explore</Navigate>
-                </span>
-              </span>
-              <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
-                <span
-                  class="header-item {currentRoute.path === '/rules'
-                    ? 'textred'
-                    : 'textdark'}"
-                >
-                  <Navigate to="/rules" styles="hover:no-underline">Rules</Navigate>
-                </span>
-              </span>
-            </div>
-            {#if $isLoggedIn}
-              <div class="text-center md:text-right sm:w-4/4 lg:mt-1 lg:w-3/12 mx-4 lg:mx-0 mt-4 md:mt-2">
-                <span class="text-white">
-                  <div
-                    class="relative"
-                  >
-                    <div
-                      on:mouseenter={() => (menu = true)}
-                      on:mouseleave={() => (menu = false)}
-                      class="inline-block relative text-l px-4 py-2 leading-none border rounded
-                        textdark borderdark header-item hover:bg-white cursor-default"
-                    >
-                      {$userName}
-                      
-                      {#if menu}
-                        <span
-                          in:scale={{ duration: 100, start: 0.95 }}
-                          out:scale={{ duration: 75, start: 0.95 }}
-                          class="text-center w-full md:text-right text-white origin-top-right absolute right-0 w-48 py-2 mt-6 rounded shadow-md"
-                          style="background-color: #797979"
-                        >
-                          <!-- svelte-ignore a11y-click-events-have-key-events -->
-                          <span
-                            class="{scanActive
-                              ? 'bgred'
-                              : '#797979'} block px-4 py-2 cursor-pointer"
-                            on:click={() => navigateTo("/yourScan")}
-                            on:mouseenter={() => (scanActive = true)}
-                            on:mouseleave={() => (scanActive = false)}
-                            >Your Scans</span
-                          >
-                          <!-- svelte-ignore a11y-click-events-have-key-events -->
-                          <span
-                            class="{settingActive
-                              ? 'bgred'
-                              : '#797979'} block px-4 py-2 cursor-pointer"
-                            on:click={() => navigateTo("/settings")}
-                            on:mouseenter={() => (settingActive = true)}
-                            on:mouseleave={() => (settingActive = false)}
-                            >Ignored URLs</span
-                          >
-                          <!-- svelte-ignore a11y-click-events-have-key-events -->
-                          <span
-                            class="{signOutActive
-                              ? 'bgred'
-                              : '#797979'} block px-4 py-2 cursor-pointer"
-                            on:click={signOut}
-                            on:mouseenter={() => (signOutActive = true)}
-                            on:mouseleave={() => (signOutActive = false)}
-                            >Logout</span
-                          >
-                        </span>
-                      {/if}
-                    </div>
-                  </div>
-                </span>
-              </div>
-            {:else}
-              <div class="text-center sm:w-4/4 md:mt-1 lg:w-3/12 mx-4 lg:mx-0 mt-2">
-                <!-- svelte-ignore a11y-click-events-have-key-events -->
-                <button
-                  class="inline-block text-sm px-4 py-2 leading-none border rounded
-                    uppercase borderdark font-bold text-sm header-item
-                    mt-2 lg:mt-0 cursor-pointer"
-                  on:click={() => navigateTo("/login")}>Log In</button
-                >
-                <button
-                  on:click={() => navigateTo("/signup")}
-                  type="button"
-                  class="inline-block text-sm px-4 py-2 leading-none border rounded
-                    text-white borderdark bgdark uppercase font-bold text-sm header-item
-                    hover:bg-white mt-2 lg:mt-0 cursor-pointer"
-                >
-                  Sign Up
-                </button>
-              </div>
-            {/if}
-          </div>
+    <nav class="items-center justify-between p-4 lg:h-24 bggrey mb-4">
+      <div class="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-1 items-center text-center">
+        <div class="mx-auto">
+          <Navigate to="/">
+            <img
+              class="logo h-7 object-cover max-h-20"
+              src="/images/logo-dark.png"
+              alt="CodeAuditor"
+            />
+          </Navigate>
         </div>
+        <div
+          class="md:block justify-evenly pt-4 lg:pt-0 overflow-hidden"
+        >
+          <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
+            <span
+              class="header-item {currentRoute.path === '/'
+                ? 'textred'
+                : 'textdark'}"
+            >
+              <Navigate to="/" styles="hover:no-underline">Home</Navigate>
+            </span>
+          </span>
+          <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
+            <span
+              class="header-item {currentRoute.path === '/howitworks'
+                ? 'textred'
+                : 'textdark'}"
+            >
+              <Navigate to="/howItWorks" styles="hover:no-underline">How It Works</Navigate>
+            </span>
+          </span>
+          <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
+            <span
+              class="header-item {currentRoute.path === '/explore'
+                ? 'textred'
+                : 'textdark'}"
+            >
+              <Navigate to="/explore" styles="hover:no-underline">Explore</Navigate>
+            </span>
+          </span>
+          <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
+            <span
+              class="header-item {currentRoute.path === '/rules'
+                ? 'textred'
+                : 'textdark'}"
+            >
+              <Navigate to="/rules" styles="hover:no-underline">Rules</Navigate>
+            </span>
+          </span>
+        </div>
+        {#if $isLoggedIn}
+          <div class="lg:mt-1 mx-4 lg:mx-0 mt-4 md:mt-2">
+            <span class="text-white">
+              <div
+                class="relative"
+              >
+                <div
+                  on:mouseenter={() => (menu = true)}
+                  on:mouseleave={() => (menu = false)}
+                  class="inline-block relative text-l px-4 py-2 leading-none border rounded
+                    textdark borderdark header-item hover:bg-white cursor-default"
+                >
+                  {$userName}
+                  
+                  {#if menu}
+                    <span
+                      in:scale={{ duration: 100, start: 0.95 }}
+                      out:scale={{ duration: 75, start: 0.95 }}
+                      class="text-center w-full md:text-right text-white origin-top-right absolute right-0 py-2 mt-6 rounded shadow-md"
+                      style="background-color: #797979"
+                    >
+                      <!-- svelte-ignore a11y-click-events-have-key-events -->
+                      <span
+                        class="{scanActive
+                          ? 'bgred'
+                          : '#797979'} block px-4 py-2 cursor-pointer"
+                        on:click={() => navigateTo("/yourScan")}
+                        on:mouseenter={() => (scanActive = true)}
+                        on:mouseleave={() => (scanActive = false)}
+                        >Your Scans</span
+                      >
+                      <!-- svelte-ignore a11y-click-events-have-key-events -->
+                      <span
+                        class="{settingActive
+                          ? 'bgred'
+                          : '#797979'} block px-4 py-2 cursor-pointer"
+                        on:click={() => navigateTo("/settings")}
+                        on:mouseenter={() => (settingActive = true)}
+                        on:mouseleave={() => (settingActive = false)}
+                        >Ignored URLs</span
+                      >
+                      <!-- svelte-ignore a11y-click-events-have-key-events -->
+                      <span
+                        class="{signOutActive
+                          ? 'bgred'
+                          : '#797979'} block px-4 py-2 cursor-pointer"
+                        on:click={signOut}
+                        on:mouseenter={() => (signOutActive = true)}
+                        on:mouseleave={() => (signOutActive = false)}
+                        >Logout</span
+                      >
+                    </span>
+                  {/if}
+                </div>
+              </div>
+            </span>
+          </div>
+        {:else}
+          <div class="md:mt-1 mx-4 lg:mx-0 mt-2">
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <button
+              class="inline-block px-4 py-2 leading-none border rounded
+                uppercase borderdark font-bold text-sm header-item
+                mt-2 lg:mt-0 cursor-pointer"
+              on:click={() => navigateTo("/login")}>Log In</button
+            >
+            <button
+              on:click={() => navigateTo("/signup")}
+              type="button"
+              class="inline-block px-4 py-2 leading-none border rounded
+                text-white borderdark bgdark uppercase font-bold text-sm header-item
+                hover:bg-white mt-2 lg:mt-0 cursor-pointer"
+            >
+              Sign Up
+            </button>
+          </div>
+        {/if}
       </div>
     </nav>
     <Route {currentRoute} {params} />
@@ -369,7 +367,7 @@
     max-width: 1280px;
   }
   img {
-    max-width: 100%;
+    max-width: 400px;
     height: auto;
   }
   footer {

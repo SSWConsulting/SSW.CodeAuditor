@@ -71,11 +71,12 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
                 
                 // Make sure the character has space and is not part of a long single string 
                 if (pageContent.indexOf(' ') >= 0) {
+                  const col = event.col + contentIndex;
                   if (contentIndex >= 0) {
                     reporter.warn(
                       "Incorrect Scrum term: '" + i + "'.",
                       event.line,
-                      event.col,
+                      col,
                       self,
                       event.raw
                     );
@@ -479,10 +480,11 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
                 // Make sure the character has space and is not part of a long single string 
                 if (pageContent.indexOf(' ') >= 0) {
                   if (contentIndex >= 0) {
+                    const col = event.col + contentIndex;
                     reporter.warn(
                       "Incorrect terms: '" + i + "'.",
                       event.line,
-                      event.col,
+                      col,
                       self,
                       event.raw
                     );
@@ -523,25 +525,29 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
         parser.addListener("text", (event) => {
           // Replace "." and "/" characters to avoid false positives when parsing phone numbers
           const text = event.raw?.replace(/\.|\//g, "_");
-          if (text && event.lastEvent && findPhoneNumbersInText(text, optionValue.length > 0 ? optionValue : 'AU').length) {
-            const pageContent = event.lastEvent.raw;
-            if (pageContent && event.lastEvent.tagName) {
-              const tagName = event.lastEvent.tagName.toLowerCase();
-              const mapAttrs = parser.getMapAttrs(event.lastEvent.attrs);
-              const href = mapAttrs["href"];
-              const isLink = tagName === "a";
-              const isTelLink = isLink && href && href.startsWith("tel:");
-              
-              if (!(isTelLink || isInCodeBlock)) {
-                reporter.warn(
-                  "Phone number must be in a hyperlink.",
-                  event.line,
-                  event.col,
-                  self,
-                  event.raw
-                );
+          if (text && event.lastEvent) {
+            const foundPhoneNumbers = findPhoneNumbersInText(text, optionValue.length > 0 ? optionValue : 'AU');
+
+            foundPhoneNumbers.forEach((phone) => {
+              const pageContent = event.lastEvent.raw;
+              if (pageContent && event.lastEvent.tagName) {
+                const tagName = event.lastEvent.tagName.toLowerCase();
+                const mapAttrs = parser.getMapAttrs(event.lastEvent.attrs);
+                const href = mapAttrs["href"];
+                const isLink = tagName === "a";
+                const isTelLink = isLink && href && href.startsWith("tel:");
+                
+                if (!(isTelLink || isInCodeBlock)) {
+                  reporter.warn(
+                    "Phone number must be in a hyperlink.",
+                    event.line,
+                    event.col + phone.startsAt - 1,
+                    self,
+                    event.raw
+                  );
+                }
               }
-            }
+            });
           }
         });
       },

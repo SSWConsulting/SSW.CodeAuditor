@@ -28,9 +28,18 @@ const incrementString = (str) => {
 };
 
 const getExistingBrokenLinkCount = async (runId) => {
-	const unscannableLinks = await exports.getUnscannableLinks();
 	const scan = await exports.getSummaryById(runId);
-	const filter = odata`PartitionKey eq ${scan.partitionKey} and src ge ${scan.url} and src le ${incrementString(scan.url)}`;
+	const filterDays = 90;
+	let filter;
+	const startDate = new Date(scan.buildDate);
+	startDate.setDate(startDate.getDate() - filterDays);
+
+	if (scan.scanResultVersion === 2) {
+		filter = `PartitionKey eq '${scan.apiKey}-${slug(scan.url)}' and buildDate ge datetime'${startDate.toISOString()}' and buildDate le datetime'${scan.buildDate.toISOString()}'`;
+	} else {
+		filter = odata`PartitionKey eq ${scan.partitionKey} and src ge ${scan.url} and src le ${incrementString(scan.url)} and buildDate ge datetime'${startDate.toISOString()}' and buildDate le datetime'${scan.buildDate.toISOString()}'`;
+	}
+
     const entity = new TableClient(azureUrl, TABLE.ScanResults, credential).listEntities({
         queryOptions: { filter }
     });
@@ -38,19 +47,16 @@ const getExistingBrokenLinkCount = async (runId) => {
     for await (const item of entity) {
         result.push(item);
     }
-	const previousFailures = new Map();
+	const previousFailures = new Set();
+	const sortedResult = result.sort((a, b) => a.buildDate - b.buildDate);
 
-    const existingCount = result.reduce((count, item) => {
-        if (item.runId === runId) {
-            if (!previousFailures.has(item.dst) && !unscannableLinks.some((i) => item.dst.includes(i))) {
-				const hasPrevious = result.some((i) => i.dst === item.dst && i.buildDate < item.buildDate);
-				previousFailures.set(item.dst, hasPrevious);
-                
-				if (hasPrevious) {
-					count++;
-				}
-            }
-        }
+    const existingCount = sortedResult.reduce((count, item) => {
+		if (previousFailures.has(item.dst) && item.runId === runId) {
+			count++;
+		} else {
+			previousFailures.add(item.dst);
+		}
+
         return count;
     }, 0);
 
