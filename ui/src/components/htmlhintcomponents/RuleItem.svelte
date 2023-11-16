@@ -43,7 +43,11 @@
     }
   };
 
-  const addCustomRuleOptions = async (optionValue, ignoredUrls, ruleId) => {
+  const addCustomRuleOptions = async (
+    optionValue,
+    ignoredUrls,
+    { rule: ruleId }
+  ) => {
     dispatch('updateHtmlHintCustomOption', true);
     const res = await fetch(
       `${CONSTS.API}/api/config/addCustomHtmlRuleOptions/${user.apiKey}`,
@@ -70,12 +74,12 @@
     }
   };
 
-  const handleOnSubmit = (ruleId) => {
+  const handleOnSubmit = (rule) => {
     const optionValueInput =
       multiInputValues.length > 0 && multiInputValues.every((i) => i)
         ? multiInputValues.toString()
         : customOptionInput;
-    addCustomRuleOptions(optionValueInput, ignoredUrls.toString(), ruleId);
+    addCustomRuleOptions(optionValueInput, ignoredUrls.toString(), rule);
   };
 
   const addIgnoredUrl = () => {
@@ -226,7 +230,7 @@
               class="px-2 py-1"
               style="border: none"
               on:click|preventDefault={() => {
-                addCustomRuleOptions('', '', rule.rule);
+                addCustomRuleOptions('', '', rule);
               }}
               on:keypress={undefined}>Reset to default</button
             >
