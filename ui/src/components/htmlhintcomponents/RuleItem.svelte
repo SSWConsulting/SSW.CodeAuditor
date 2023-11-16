@@ -4,11 +4,11 @@
 
   export let rule;
   export let customHtmlRuleOptions;
-  export let index;
   export let user;
   export let url;
-  export let currSelectedCustomOption;
+  export let isEditing;
 
+  let ignoredUrls = [''];
   let customOptionInput = '';
   let multiInputValues = [''];
 
@@ -16,42 +16,44 @@
   const updateHtmlHintCustomOption = () =>
     dispatch('updateHtmlHintCustomOption');
 
-  const toggleCustomOption = (i, ruleSetting) => {
+  const toggleCustomOption = (editing, ruleSetting) => {
     customOptionInput = null;
     multiInputValues = [''];
-    dispatch('updateSelectedCustomOption', i);
+    ignoredUrls = [''];
+    dispatch('updateCurrentlyEditingRule', editing);
     if (ruleSetting) {
       populateCustomOptions(ruleSetting);
     }
   };
 
   const populateCustomOptions = (ruleSetting) => {
-    if (customHtmlRuleOptions && customHtmlRuleOptions.length > 0) {
-      customHtmlRuleOptions.forEach((option) => {
-        if (option.ruleId === ruleSetting.rule) {
-          if (
-            ruleSetting.customOptionInputType ===
-            customOptionInputType.multipleTextBoxes
-          ) {
-            multiInputValues = option.optionValue.split(',');
-          } else {
-            customOptionInput = option.optionValue;
-          }
-        }
-      });
+    if (customHtmlRuleOptions?.optionValue) {
+      if (
+        ruleSetting.customOptionInputType ===
+        customOptionInputType.multipleTextBoxes
+      ) {
+        multiInputValues = customHtmlRuleOptions.optionValue.split(',');
+      } else {
+        customOptionInput = customHtmlRuleOptions.optionValue;
+      }
+    }
+
+    if (customHtmlRuleOptions?.ignoredUrls) {
+      ignoredUrls = customHtmlRuleOptions.ignoredUrls.split(',');
     }
   };
 
-  const addCustomRuleOptions = async (optionValue, ruleSetting) => {
+  const addCustomRuleOptions = async (optionValue, ignoredUrls, ruleId) => {
     dispatch('updateHtmlHintCustomOption', true);
     const res = await fetch(
       `${CONSTS.API}/api/config/addCustomHtmlRuleOptions/${user.apiKey}`,
       {
         method: 'POST',
         body: JSON.stringify({
-          ruleId: ruleSetting.rule,
+          ruleId,
           url,
           optionValue,
+          ignoredUrls,
         }),
         headers: { 'Content-Type': 'application/json' },
       }
@@ -59,29 +61,37 @@
 
     if (res.ok) {
       dispatch('updateHtmlHintCustomOption', false);
-      addedSuccess = true;
       customOptionInput = null;
       multiInputValues = [''];
-      toggleCustomOption(-1);
+      toggleCustomOption(false);
       updateHtmlHintCustomOption();
     } else {
       throw new Error('Failed to load');
     }
   };
 
-  const handleOnSubmit = (ruleSetting) => {
+  const handleOnSubmit = (ruleId) => {
     const optionValueInput =
       multiInputValues.length > 0 && multiInputValues.every((i) => i)
         ? multiInputValues.toString()
         : customOptionInput;
-    addCustomRuleOptions(optionValueInput, ruleSetting);
+    addCustomRuleOptions(optionValueInput, ignoredUrls.toString(), ruleId);
   };
 
-  const addField = () => {
+  const addIgnoredUrl = () => {
+    ignoredUrls = [...ignoredUrls, ''];
+  };
+
+  const removeIgnoredUrl = (index) => {
+    ignoredUrls.splice(index, 1);
+    ignoredUrls = ignoredUrls;
+  };
+
+  const addCustomField = () => {
     multiInputValues = [...multiInputValues, ''];
   };
 
-  const removeField = (index) => {
+  const removeCustomField = (index) => {
     multiInputValues.splice(index, 1);
     multiInputValues = multiInputValues;
   };
@@ -108,27 +118,59 @@
     <button
       class="textred px-2 py-1"
       style="border: none"
-      on:click={() =>
-        toggleCustomOption(
-          currSelectedCustomOption !== index ? index : -1,
-          rule
-        )}
+      on:click={() => toggleCustomOption(!isEditing, rule)}
       on:keypress={undefined}><i class="fas fa-pen-to-square" /> Edit</button
     >
   </span>
   <div class="bggrey ml-4 mr-5">
-    {#if customHtmlRuleOptions && customHtmlRuleOptions.length > 0 && customHtmlRuleOptions.find((x) => x.ruleId === rule.rule)?.optionValue.length > 0}
+    {#if customHtmlRuleOptions?.optionValue || customHtmlRuleOptions?.ignoredUrls}
       <div class="p-3">
-        <span class="font-sans font-bold"> Applied custom option value: </span>
-        <span class="textred">
-          {customHtmlRuleOptions.find((x) => x.ruleId === rule.rule)
-            ?.optionValue}
-        </span>
+        {#if customHtmlRuleOptions?.optionValue}
+          <div>
+            <span class="font-sans font-bold">
+              Applied custom option value:
+            </span>
+            <span class="textred">
+              {customHtmlRuleOptions.optionValue}
+            </span>
+          </div>
+        {/if}
+        {#if customHtmlRuleOptions?.ignoredUrls}
+          <div>
+            <span class="font-sans font-bold"> Ignored URLs: </span>
+            <span class="textred">
+              {customHtmlRuleOptions.ignoredUrls.split(',').length}
+            </span>
+          </div>
+        {/if}
       </div>
     {/if}
-    {#if currSelectedCustomOption === index}
+    {#if isEditing}
       <div class="p-3">
-        <form on:submit|preventDefault={handleOnSubmit(rule)}>
+        <form on:submit|preventDefault={handleOnSubmit(rule.rule)}>
+          <div class="pb-3">
+            <div>
+              <span>Ignore on the following URLs:</span>
+            </div>
+            {#each ignoredUrls as v, i}
+              <div>
+                <input id={i} type="text" bind:value={v} />
+                {#if ignoredUrls.length > 1}
+                  <button
+                    class="textred px-2 py-1"
+                    style="border: none"
+                    on:click|preventDefault={() => removeIgnoredUrl(i)}
+                    ><i class="fas fa-minus" /></button
+                  >
+                {/if}
+              </div>
+            {/each}
+            <button
+              class="textred px-2 py-1"
+              style="border: none"
+              on:click|preventDefault={() => addIgnoredUrl()}>Add</button
+            >
+          </div>
           {#if rule.isEnableCustomOptions}
             <div>
               {rule.customOptionsMessage}
@@ -156,7 +198,7 @@
                     <button
                       class="textred px-2 py-1"
                       style="border: none"
-                      on:click|preventDefault={() => removeField(i)}
+                      on:click|preventDefault={() => removeCustomField(i)}
                       ><i class="fas fa-minus" /></button
                     >
                   {/if}
@@ -165,7 +207,7 @@
               <button
                 class="textred px-2 py-1"
                 style="border: none"
-                on:click|preventDefault={() => addField()}>Add</button
+                on:click|preventDefault={() => addCustomField()}>Add</button
               >
             {/if}
           {/if}
@@ -176,7 +218,7 @@
             <button
               class="text-white bgdark px-2 py-1"
               on:click|preventDefault={() => {
-                toggleCustomOption(-1);
+                toggleCustomOption(false);
               }}
               on:keypress={undefined}>Cancel</button
             >
@@ -184,7 +226,7 @@
               class="px-2 py-1"
               style="border: none"
               on:click|preventDefault={() => {
-                addCustomRuleOptions('', rule);
+                addCustomRuleOptions('', '', rule.rule);
               }}
               on:keypress={undefined}>Reset to default</button
             >

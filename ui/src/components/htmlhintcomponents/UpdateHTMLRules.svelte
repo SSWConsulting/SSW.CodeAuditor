@@ -33,7 +33,7 @@
 
   let showHistory = false;
   let historyLog = [];
-  let currSelectedCustomOption = -1;
+  let currentlyEditingRule = '';
 
   $: htmlHintSelectedRules, handleSelectionChange();
   $: customHtmlHintSelectedRules, handleSelectionChange();
@@ -327,34 +327,32 @@
         {/each}
       </div>
       <h3 class="font-bold mb-2">HTML Hint Rules:</h3>
-      {#each htmlHintSelectedRules as rule, index}
+      {#each htmlHintSelectedRules as rule}
         <RuleItem
           {rule}
-          {customHtmlRuleOptions}
-          {index}
+          customHtmlRuleOptions={customHtmlRuleOptions.find((x) => x.ruleId === rule.rule)}
           {user}
           {url}
-          {currSelectedCustomOption}
+          isEditing={currentlyEditingRule === rule.rule}
           on:updateHtmlHintCustomOption={updateHtmlHintCustomOption}
           on:saving={(e) => (saving = e.detail)}
-          on:updateSelectedCustomOption={(e) =>
-            (currSelectedCustomOption = e.detail)}
+          on:updateCurrentlyEditingRule={(e) =>
+            (currentlyEditingRule = e.detail ? rule.rule : '')}
         />
       {/each}
       <br />
       <h3 class="font-bold mb-2">Custom HTML Rules:</h3>
-      {#each customHtmlHintSelectedRules as rule, index}
+      {#each customHtmlHintSelectedRules as rule}
         <RuleItem
           {rule}
-          {customHtmlRuleOptions}
-          {index}
+          customHtmlRuleOptions={customHtmlRuleOptions.find((x) => x.ruleId === rule.rule)}
           {user}
           {url}
-          {currSelectedCustomOption}
+          isEditing={currentlyEditingRule === rule.rule}
           on:updateHtmlHintCustomOption={updateHtmlHintCustomOption}
           on:saving={(e) => (saving = e.detail)}
-          on:updateSelectedCustomOption={(e) =>
-            (currSelectedCustomOption = e.detail)}
+          on:updateCurrentlyEditingRule={(e) =>
+            (currentlyEditingRule = e.detail ? rule.rule : '')}
         />
       {/each}
     {/if}
