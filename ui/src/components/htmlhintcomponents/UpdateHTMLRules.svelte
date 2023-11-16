@@ -1,10 +1,17 @@
 <script>
-  import Toastr from "../misccomponents/Toastr.svelte";
-  import { CONSTS, htmlHintRules, customHtmlHintRules, RuleType, rulePresets, PresetType, customOptionInputType } from "../../utils/utils";
-  import Modal from "../misccomponents//Modal.svelte";
-  import LoadingFlat from "../misccomponents/LoadingFlat.svelte";
-  import { createEventDispatcher, onMount } from "svelte";
-  import slug from "slug";
+  import Toastr from '../misccomponents/Toastr.svelte';
+  import {
+    CONSTS,
+    htmlHintRules,
+    customHtmlHintRules,
+    rulePresets,
+    PresetType,
+  } from '../../utils/utils';
+  import Modal from '../misccomponents//Modal.svelte';
+  import LoadingFlat from '../misccomponents/LoadingFlat.svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
+  import slug from 'slug';
+  import RuleItem from './RuleItem.svelte';
 
   export let url;
   export let show;
@@ -19,28 +26,26 @@
   let addedFail;
 
   let presetSelection = [];
-  
+
   // Check all selected htmlhint rules
   let htmlHintSelectedRules = [];
   let customHtmlHintSelectedRules = [];
 
   let showHistory = false;
   let historyLog = [];
-
-  let customOptionInput = '';
-  let multiInputValues = [''];
+  let currSelectedCustomOption = -1;
 
   $: htmlHintSelectedRules, handleSelectionChange();
   $: customHtmlHintSelectedRules, handleSelectionChange();
   $: customHtmlRuleOptions;
 
   const dispatch = createEventDispatcher();
-  const updateHtmlRules = () => dispatch("updateHtmlRules");
-  const updateHtmlHintCustomOption = () => dispatch("htmlHintThreshold");
-  
+  const updateHtmlRules = () => dispatch('updateHtmlRules');
+  const updateHtmlHintCustomOption = () => dispatch('htmlHintThreshold');
+
   onMount(() => {
     initSelectedRules();
-  })
+  });
 
   const initSelectedRules = () => {
     if (threshold?.selectedRules) {
@@ -48,15 +53,27 @@
     } else if (htmlRules?.selectedRules) {
       setSelectedRules(htmlRules?.selectedRules);
     } else {
-      htmlHintSelectedRules = htmlHintRules.map(htmlRule => ({...htmlRule, isChecked: true}))
-      customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => ({...htmlRule, isChecked: true}))
+      htmlHintSelectedRules = htmlHintRules.map((htmlRule) => ({
+        ...htmlRule,
+        isChecked: true,
+      }));
+      customHtmlHintSelectedRules = customHtmlHintRules.map((htmlRule) => ({
+        ...htmlRule,
+        isChecked: true,
+      }));
     }
   };
 
   const setSelectedRules = (rulesString) => {
     let selectedHTMLRules = rulesString.split(/[,]+/);
-    htmlHintSelectedRules = htmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}));
-    customHtmlHintSelectedRules = customHtmlHintRules.map(htmlRule => ({...htmlRule, isChecked: selectedHTMLRules.includes(htmlRule.rule)}));
+    htmlHintSelectedRules = htmlHintRules.map((htmlRule) => ({
+      ...htmlRule,
+      isChecked: selectedHTMLRules.includes(htmlRule.rule),
+    }));
+    customHtmlHintSelectedRules = customHtmlHintRules.map((htmlRule) => ({
+      ...htmlRule,
+      isChecked: selectedHTMLRules.includes(htmlRule.rule),
+    }));
   };
 
   const selectPreset = (presetName) => {
@@ -81,28 +98,42 @@
     const preset = rulePresets.find((preset) => preset.name === presetName);
     const isWhitelist = preset.type === PresetType.Whitelist;
     return [
-      ...htmlHintSelectedRules.filter((rule) => {
-        return isWhitelist
-          ? preset.rules.includes(rule.rule)
-          : !preset.rules.includes(rule.rule)
-      }).map((rule) => rule.rule),
-      ...customHtmlHintSelectedRules.filter((rule) => {
-        return isWhitelist
-          ? preset.rules.includes(rule.rule)
-          : !preset.rules.includes(rule.rule)
-      }).map((rule) => rule.rule),
-    ]
-  }
- 
+      ...htmlHintSelectedRules
+        .filter((rule) => {
+          return isWhitelist
+            ? preset.rules.includes(rule.rule)
+            : !preset.rules.includes(rule.rule);
+        })
+        .map((rule) => rule.rule),
+      ...customHtmlHintSelectedRules
+        .filter((rule) => {
+          return isWhitelist
+            ? preset.rules.includes(rule.rule)
+            : !preset.rules.includes(rule.rule);
+        })
+        .map((rule) => rule.rule),
+    ];
+  };
+
   const deselectAllRules = () => {
-    htmlHintSelectedRules = htmlHintSelectedRules.map(rule => ({...rule, isChecked: false}))
-    customHtmlHintSelectedRules = customHtmlHintSelectedRules.map(rule => ({...rule, isChecked: false}))
+    htmlHintSelectedRules = htmlHintSelectedRules.map((rule) => ({
+      ...rule,
+      isChecked: false,
+    }));
+    customHtmlHintSelectedRules = customHtmlHintSelectedRules.map((rule) => ({
+      ...rule,
+      isChecked: false,
+    }));
   };
 
   const getSelectedRules = () => {
     return [
-      ...htmlHintSelectedRules.filter((rule) => rule.isChecked).map((rule) => rule.rule),
-      ...customHtmlHintSelectedRules.filter((rule) => rule.isChecked).map((rule) => rule.rule),
+      ...htmlHintSelectedRules
+        .filter((rule) => rule.isChecked)
+        .map((rule) => rule.rule),
+      ...customHtmlHintSelectedRules
+        .filter((rule) => rule.isChecked)
+        .map((rule) => rule.rule),
     ];
   };
 
@@ -119,26 +150,26 @@
       const res = await fetch(
         `${CONSTS.API}/api/config/${user.apiKey}/htmlhintrules`,
         {
-          method: "POST",
+          method: 'POST',
           body: JSON.stringify({
             url,
             selectedRules,
           }),
-          headers: { "Content-Type": "application/json" },
+          headers: { 'Content-Type': 'application/json' },
         }
       );
-  
+
       if (res.ok) {
         saving = false;
         show = false;
         addedSuccess = true;
-        updateHtmlRules()
+        updateHtmlRules();
       } else {
-        throw new Error("Failed to load");
+        throw new Error('Failed to load');
       }
     } else {
       addedFail = true;
-      saving = false
+      saving = false;
     }
   };
 
@@ -172,12 +203,14 @@
   };
 
   const showHistoryLog = async () => {
-    showHistory = !showHistory
+    showHistory = !showHistory;
     // Get all change records
     if (showHistory) {
       const res = await fetch(
-          `${CONSTS.API}/api/config/${user.apiKey}/htmlhintrules/${slug(url)}?isGetAllRecords=true`
-        );
+        `${CONSTS.API}/api/config/${user.apiKey}/htmlhintrules/${slug(
+          url
+        )}?isGetAllRecords=true`
+      );
       historyLog = await res.json();
       // Reverse array order so latest date comes first
       historyLog.reverse();
@@ -187,82 +220,23 @@
   let currSelectedLog = -1;
   const toggleViewChanges = (index) => {
     currSelectedLog = index;
-  }
-
-  let currSelectedCustomOption = -1;
-  const toggleCustomOption = (index, ruleSetting) => {
-    customOptionInput = null;
-    multiInputValues = [''];
-    currSelectedCustomOption = index;
-    if (ruleSetting) {
-      populateCustomOptions(ruleSetting)
-    }
-  }
-
-  const populateCustomOptions = (ruleSetting) => {
-    if (customHtmlRuleOptions && customHtmlRuleOptions.length > 0) {
-      customHtmlRuleOptions.forEach(option => {
-        if (option.ruleId === ruleSetting.rule) {
-          if (ruleSetting.customOptionInputType === customOptionInputType.multipleTextBoxes) {
-            multiInputValues = option.optionValue.split(',');
-          } else {
-            customOptionInput = option.optionValue;
-          }
-        }
-      })
-    }
-  }
+  };
 
   const formatHtmlRule = (rules) => {
-    let selectedHtmlHintRules = rules.map(rule => htmlHintRules.find(x => x.rule === rule));
-    let selectedCustomHtmlHintRules = rules.map(rule => customHtmlHintRules.find(x => x.rule === rule));
-    let allSelectedRuleLog = selectedHtmlHintRules.concat(selectedCustomHtmlHintRules).filter(x => x);
-    let allHtmlRules = htmlHintRules.concat(customHtmlHintRules)
-    return allHtmlRules.map(rule => ({...rule, isRuleEnabled: allSelectedRuleLog.includes(rule)}))
-  };
-
-  const addCustomRuleOptions = async (optionValue, ruleSetting) => {
-    saving = true;
-    const res = await fetch(
-      `${CONSTS.API}/api/config/addCustomHtmlRuleOptions/${user.apiKey}`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          ruleId: ruleSetting.rule, 
-          url, 
-          optionValue
-        }),
-        headers: { "Content-Type": "application/json" },
-      }
+    let selectedHtmlHintRules = rules.map((rule) =>
+      htmlHintRules.find((x) => x.rule === rule)
     );
-
-    if (res.ok) {
-      saving = false;
-      addedSuccess = true;
-      customOptionInput = null;
-      multiInputValues = [''];
-      toggleCustomOption(-1);
-      updateHtmlHintCustomOption();
-    } else {
-      throw new Error("Failed to load");
-    } 
-  }
-
-  const handleOnSubmit = (ruleSetting) => {
-    const optionValueInput = 
-      multiInputValues.length > 0 && multiInputValues.every(i => i) ?
-        multiInputValues.toString() :
-        customOptionInput;
-    addCustomRuleOptions(optionValueInput, ruleSetting);
-  }
-
-  const addField = () => {
-    multiInputValues = [...multiInputValues, ''];
-  };
-
-  const removeField = (index) => {
-    multiInputValues.splice(index, 1);
-    multiInputValues = multiInputValues;
+    let selectedCustomHtmlHintRules = rules.map((rule) =>
+      customHtmlHintRules.find((x) => x.rule === rule)
+    );
+    let allSelectedRuleLog = selectedHtmlHintRules
+      .concat(selectedCustomHtmlHintRules)
+      .filter((x) => x);
+    let allHtmlRules = htmlHintRules.concat(customHtmlHintRules);
+    return allHtmlRules.map((rule) => ({
+      ...rule,
+      isRuleEnabled: allSelectedRuleLog.includes(rule),
+    }));
   };
 </script>
 
@@ -272,14 +246,19 @@
   header="Enable/Disable Rules:"
   mainAction="Save"
   on:action={updateCustomHtmlRules}
-  on:dismiss={dismiss}>
+  on:dismiss={dismiss}
+>
   {#if loading}
     <LoadingFlat />
   {:else}
     <!-- else content here -->
     {#if showHistory}
-      <div class="mb-4 link cursor-pointer" on:click={() => showHistoryLog()} on:keypress>
-        <i class="fas fa-arrow-left"></i>
+      <div
+        class="mb-4 link cursor-pointer"
+        on:click={() => showHistoryLog()}
+        on:keypress
+      >
+        <i class="fas fa-arrow-left" />
         Back
       </div>
       {#each historyLog as log, index}
@@ -289,14 +268,32 @@
               Changes made on {new Date(log.timestamp).toLocaleString()}
             </div>
             {#if currSelectedLog !== index}
-              <div class="link cursor-pointer" on:click={() => toggleViewChanges(index)} on:keypress>View Changes</div>
+              <div
+                class="link cursor-pointer"
+                on:click={() => toggleViewChanges(index)}
+                on:keypress
+              >
+                View Changes
+              </div>
             {/if}
             {#if currSelectedLog === index}
-              <div class="link cursor-pointer" on:click={() => currSelectedLog = -1 } on:keypress>Hide Changes</div>
+              <div
+                class="link cursor-pointer"
+                on:click={() => (currSelectedLog = -1)}
+                on:keypress
+              >
+                Hide Changes
+              </div>
               <div>
                 {#each formatHtmlRule(log.selectedRules.split(/[,]+/)) as rule}
-                  <div class="{rule.isRuleEnabled ? 'text-green-600' : 'textred'}">
-                    <i class="{rule.isRuleEnabled ? 'fas fa-plus' : 'fas fa-minus'}"></i>
+                  <div
+                    class={rule.isRuleEnabled ? 'text-green-600' : 'textred'}
+                  >
+                    <i
+                      class={rule.isRuleEnabled
+                        ? 'fas fa-plus'
+                        : 'fas fa-minus'}
+                    />
                     {rule.displayName}
                   </div>
                 {/each}
@@ -306,129 +303,59 @@
         </div>
       {/each}
     {:else}
-      <div class="mb-4 link cursor-pointer" on:click={() => showHistoryLog()} on:keypress>
-        <i class="fas fa-history"></i>
+      <div
+        class="mb-4 link cursor-pointer"
+        on:click={() => showHistoryLog()}
+        on:keypress
+      >
+        <i class="fas fa-history" />
         History
       </div>
       <div class="option">
         {#each rulePresets as presetOption, index}
           <label class="inline-block mr-2">
-            <input type="checkbox"
+            <input
+              type="checkbox"
               name="presets"
               value={presetOption.name}
               id="option{index}"
               on:input={handlePresetInput}
               bind:group={presetSelection}
-            >
+            />
             <p class="inline-block align-baseline">{presetOption.name}</p>
           </label>
         {/each}
       </div>
-      <h3 class="font-bold mb-2">HTML Hint Rules: </h3>
-      {#each htmlHintSelectedRules as rule}
-        <div class="mb-2">
-          <input type="checkbox" bind:checked={rule.isChecked} value={rule.rule} /> 
-            <i class="{rule.type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}" style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"></i> 
-            <a 
-            target="_blank"
-            class="inline-block align-baseline link" 
-            href="https://htmlhint.com/docs/user-guide/rules/{rule.rule}">
-              {rule.displayName}
-            </a>
-        </div>
+      <h3 class="font-bold mb-2">HTML Hint Rules:</h3>
+      {#each htmlHintSelectedRules as rule, index}
+        <RuleItem
+          {rule}
+          {customHtmlRuleOptions}
+          {index}
+          {user}
+          {url}
+          {currSelectedCustomOption}
+          on:updateHtmlHintCustomOption={updateHtmlHintCustomOption}
+          on:saving={(e) => (saving = e.detail)}
+          on:updateSelectedCustomOption={(e) =>
+            (currSelectedCustomOption = e.detail)}
+        />
       {/each}
       <br />
-      <h3 class="font-bold mb-2">Custom HTML Rules: </h3>
+      <h3 class="font-bold mb-2">Custom HTML Rules:</h3>
       {#each customHtmlHintSelectedRules as rule, index}
-        <div class="mb-2">
-          <input type="checkbox" bind:checked={rule.isChecked} value={rule.rule} /> 
-          <i class="{rule.type === RuleType.Error ? 'fas fa-exclamation-circle fa-md' : 'fas fa-exclamation-triangle fa-md'}" style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"></i> 
-          <a 
-          target="_blank"
-          class="{rule.ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline" 
-          href={rule.ruleLink}>
-            {rule.displayName}
-          </a>
-          {#if rule.isEnableCustomOptions}
-            <span class="cursor-pointer">
-              <button 
-                class="textred px-2 py-1"
-                style="border: none"
-                on:click={() => toggleCustomOption(index, rule)} 
-                on:keypress={undefined}
-              ><i class="fas fa-pen-to-square"></i> Edit</button>
-            </span>
-            <div class="bggrey ml-4 mr-5">
-              {#if customHtmlRuleOptions && customHtmlRuleOptions.length > 0 && customHtmlRuleOptions.find(x => x.ruleId === rule.rule)?.optionValue.length > 0}
-                <div class="p-3">
-                  <span class="font-sans font-bold">
-                    Applied custom option value: 
-                  </span>
-                  <span class="textred">
-                    {customHtmlRuleOptions.find(x => x.ruleId === rule.rule)?.optionValue}
-                  </span>
-                </div>
-              {/if}
-              {#if currSelectedCustomOption === index}
-                <div class="p-3">
-                  <div>
-                    {rule.customOptionsMessage}
-                  </div>
-                  <form on:submit|preventDefault={handleOnSubmit(rule)}>
-                    {#if rule.customOptionInputType === customOptionInputType.dropDown} 
-                      <select bind:value={customOptionInput}>
-                        {#each rule.customOptionDropdownValues as country}
-                          <option value={country.code}>
-                            {country.name} ({country.code})
-                          </option>
-                        {/each}
-                      </select>
-                    {/if}
-                    {#if rule.customOptionInputType === customOptionInputType.singleTextBox} 
-                      <input type={rule.customOptionInputValueType} on:input={(e) => customOptionInput = e.target.value} />
-                    {/if}
-                    {#if rule.customOptionInputType === customOptionInputType.multipleTextBoxes} 
-                      {#each multiInputValues as v, i}
-                        <div>
-                          <input id={i} type="text" bind:value={v}/>
-                          {#if multiInputValues.length > 1}
-                            <button
-                              class="textred px-2 py-1"
-                              style="border: none"
-                              on:click|preventDefault={() => removeField(i)}
-                            ><i class="fas fa-minus"></i></button>
-                          {/if}
-                        </div>
-                      {/each}
-                        <button
-                          class="textred px-2 py-1"
-                          style="border: none"
-                          on:click|preventDefault={() => addField()}
-                        >Add</button>
-                    {/if}
-                    <div class="py-2">
-                      <button
-                        class="text-white bgred px-2 py-1"
-                        type="submit"
-                      >Save</button>
-                      <button
-                        class="text-white bgdark px-2 py-1"
-                        on:click|preventDefault={() => {toggleCustomOption(-1)}}
-                        on:keypress={undefined}
-                      >Cancel</button>
-                      <button
-                        class="px-2 py-1"
-                        style="border: none"
-                        on:click|preventDefault={() => {addCustomRuleOptions('', rule)}}
-                        on:keypress={undefined}
-                      >Reset to default</button>
-                    </div>
-                  </form>
-                </div>
-              {/if}
-            </div>
-          {/if}
-        </div>
+        <RuleItem
+          {rule}
+          {customHtmlRuleOptions}
+          {index}
+          {user}
+          {url}
+          {currSelectedCustomOption}
+          on:updateHtmlHintCustomOption={updateHtmlHintCustomOption}
+          on:saving={(e) => (saving = e.detail)}
+          on:updateSelectedCustomOption={(e) =>
+            (currSelectedCustomOption = e.detail)}
+        />
       {/each}
     {/if}
   {/if}
