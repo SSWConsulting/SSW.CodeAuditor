@@ -11,6 +11,7 @@ const nodemailer = require("nodemailer");
 const fns = require('date-fns');
 const fetch = require('node-fetch');
 const beautify_html = require('js-beautify').html;
+const { getCustomHtmlRuleOptions } = require("./api");
 
 exports.sendAlertEmail = async (email, emailConfig, scanSummary) => {
   // create reusable transporter object using the default SMTP transport
@@ -140,30 +141,25 @@ exports.runCodeAuditor = (ignorefile, rulesfolder) => {
  * Send GET request and then perform HTML Hint check on it
  * @param {string} url - URL to scan
  */
-const runHtmlHint = async (url, startUrl, tokenApi) => {
+const runHtmlHint = async (url, rules, customRuleOptions) => {
   const HTMLHint = require("htmlhint").default;
-
-  if (tokenApi) {
-    const result = await getHTMLHintRules(tokenApi, startUrl);
+  const selectedRules = new Set(rules?.selectedRules?.split(","));
+  const ignoredRules = new Set(
+    customRuleOptions
+      .filter((opt) => {
+        const ignoredUrlsList = opt.ignoredUrls?.split(',') || [];
+        return ignoredUrlsList.some((ignoredUrl) => minimatch(url, ignoredUrl));
+      })
+      .map((x) => x.ruleId)
+  );
   
-    if (result && result.selectedRules?.split(",").length > 0) {
-      const selectedHtmlConfig = result.selectedRules.split(",");
-  
-      const htmlRulesConfig = Object.keys(htmlHintConfig);
-  
-      // Turn off all the rules
-      for (var i in htmlHintConfig) {
+  if (selectedRules.size) {
+    for (var i in htmlHintConfig) {
+      if (selectedRules.has(i) && !ignoredRules.has(i)) {
+        htmlHintConfig[i] = true;
+      } else {
         htmlHintConfig[i] = false;
       }
-  
-      // Add only selected rules to htmlHintConfig
-      htmlRulesConfig.forEach((x) => {
-        selectedHtmlConfig.forEach((c) => {
-          if (x === c) {
-            htmlHintConfig[x] = true;
-          }
-        });
-      });
     }
   }
 
@@ -387,11 +383,14 @@ exports.runHtmlHint = async (startUrl, scannedUrls, writeLog, tokenApi) => {
     return [...new Set(all)];
   };
 
-  const allgoodLinks = __getGoodUrls(scannedUrls);
-  writeLog(`running htmlhint on ${allgoodLinks.length} URLs`);
+  const allGoodLinks = __getGoodUrls(scannedUrls);
+  writeLog(`running htmlhint on ${allGoodLinks.length} URLs`);
+
+  const rules = await getHTMLHintRules(tokenApi, startUrl);
+  const customRuleOptions = await getCustomHtmlRuleOptions(tokenApi, startUrl);
 
   const result = await Promise.all(
-    allgoodLinks.map((x) => runHtmlHint(x, startUrl, tokenApi))
+    allGoodLinks.map((x) => runHtmlHint(x, rules, customRuleOptions))
   );
 
   const [summary, details] = getHtmlHintDetails(result);
