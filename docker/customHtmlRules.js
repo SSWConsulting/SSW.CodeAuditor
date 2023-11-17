@@ -444,11 +444,11 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
 
       parser.addListener("text", (event) => {
         const ruleId = "common-spelling-mistakes";
-        let optionValue = customRuleOptions?.find(option => option.ruleId === ruleId)?.optionValue?.trim();
+        let optionValue = customRuleOptions?.find(option => option.ruleId === ruleId)?.optionValue;
         let customOptions = [];
         // Check if custom options exist in this rule
         if (optionValue?.length) {
-          customOptions = optionValue.split(',');
+          customOptions = optionValue.split(',').filter(i => i);
         }
         var spellings = 
           customOptions.length ? 

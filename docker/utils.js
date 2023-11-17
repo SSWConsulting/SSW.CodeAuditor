@@ -143,11 +143,11 @@ exports.runCodeAuditor = (ignorefile, rulesfolder) => {
  */
 const runHtmlHint = async (url, rules, customRuleOptions) => {
   const HTMLHint = require("htmlhint").default;
-  const selectedRules = new Set(rules?.selectedRules?.split(","));
+  const selectedRules = new Set(rules?.selectedRules?.split(",").filter(i => i));
   const ignoredRules = new Set(
     customRuleOptions
       .filter((opt) => {
-        const ignoredUrlsList = opt.ignoredUrls?.split(',') || [];
+        const ignoredUrlsList = opt.ignoredUrls?.split(',').filter(i => i) || [];
         return ignoredUrlsList.some((ignoredUrl) => minimatch(url, ignoredUrl));
       })
       .map((x) => x.ruleId)

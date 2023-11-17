@@ -79,7 +79,7 @@
       multiInputValues.length > 0 && multiInputValues.every((i) => i)
         ? multiInputValues.toString()
         : customOptionInput;
-    addCustomRuleOptions(optionValueInput, ignoredUrls.toString(), rule);
+    addCustomRuleOptions(optionValueInput, ignoredUrls.filter(i => i).toString(), rule);
   };
 
   const addIgnoredUrl = () => {
@@ -123,11 +123,10 @@
       class="textred px-2 py-1"
       style="border: none"
       on:click={() => toggleCustomOption(!isEditing, rule)}
-      on:keypress={undefined}><i class="fas fa-pen-to-square" /></button
-    >
+      on:keypress={undefined}><i class="fas fa-pen-to-square" />
   </span>
   <div class="bggrey ml-4 mr-5">
-    {#if customHtmlRuleOptions?.optionValue || customHtmlRuleOptions?.ignoredUrls}
+    {#if !isEditing && (customHtmlRuleOptions?.optionValue || customHtmlRuleOptions?.ignoredUrls)}
       <div class="p-3">
         {#if customHtmlRuleOptions?.optionValue}
           <div>
