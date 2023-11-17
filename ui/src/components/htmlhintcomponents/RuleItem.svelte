@@ -16,21 +16,20 @@
   const updateHtmlHintCustomOption = () =>
     dispatch('updateHtmlHintCustomOption');
 
-  const toggleCustomOption = (editing, ruleSetting) => {
+  const toggleCustomOption = (editing) => {
     customOptionInput = null;
     multiInputValues = [''];
     ignoredUrls = [''];
     dispatch('updateCurrentlyEditingRule', editing);
-    if (ruleSetting) {
-      populateCustomOptions(ruleSetting);
+    if (editing) {
+      populateCustomOptions();
     }
   };
 
-  const populateCustomOptions = (ruleSetting) => {
+  const populateCustomOptions = () => {
     if (customHtmlRuleOptions?.optionValue) {
       if (
-        ruleSetting.customOptionInputType ===
-        customOptionInputType.multipleTextBoxes
+        rule.customOptionInputType === customOptionInputType.multipleTextBoxes
       ) {
         multiInputValues = customHtmlRuleOptions.optionValue.split(',');
       } else {
@@ -76,10 +75,14 @@
 
   const handleOnSubmit = (rule) => {
     const optionValueInput =
-      multiInputValues.length > 0 && multiInputValues.every((i) => i)
-        ? multiInputValues.toString()
+      rule.customOptionInputType === customOptionInputType.multipleTextBoxes
+        ? multiInputValues.filter((i) => i).toString()
         : customOptionInput;
-    addCustomRuleOptions(optionValueInput, ignoredUrls.filter(i => i).toString(), rule);
+    addCustomRuleOptions(
+      optionValueInput,
+      ignoredUrls.filter((i) => i).toString(),
+      rule
+    );
   };
 
   const addIgnoredUrl = () => {
@@ -122,12 +125,22 @@
     <button
       class="textred px-2 py-1"
       style="border: none"
-      on:click={() => toggleCustomOption(!isEditing, rule)}
-      on:keypress={undefined}><i class="fas fa-pen-to-square" />
-  </span>
+      on:click={() => toggleCustomOption(!isEditing)}
+      on:keypress={undefined}
+      ><i class="fas fa-pen-to-square" />
+    </button></span
+  >
   <div class="bggrey ml-4 mr-5">
     {#if !isEditing && (customHtmlRuleOptions?.optionValue || customHtmlRuleOptions?.ignoredUrls)}
       <div class="p-3">
+        {#if customHtmlRuleOptions?.ignoredUrls}
+          <div>
+            <span class="font-sans font-bold"> Ignored URLs: </span>
+            <span class="textred">
+              {customHtmlRuleOptions.ignoredUrls.split(',').length}
+            </span>
+          </div>
+        {/if}
         {#if customHtmlRuleOptions?.optionValue}
           <div>
             <span class="font-sans font-bold">
@@ -135,14 +148,6 @@
             </span>
             <span class="textred">
               {customHtmlRuleOptions.optionValue}
-            </span>
-          </div>
-        {/if}
-        {#if customHtmlRuleOptions?.ignoredUrls}
-          <div>
-            <span class="font-sans font-bold"> Ignored URLs: </span>
-            <span class="textred">
-              {customHtmlRuleOptions.ignoredUrls.split(',').length}
             </span>
           </div>
         {/if}
@@ -157,7 +162,7 @@
             </div>
             {#each ignoredUrls as v, i}
               <div>
-                <input id={i} type="text" class="w-4/5" bind:value={v} />
+                <input id={i} type="url" class="w-4/5" bind:value={v} />
                 {#if ignoredUrls.length > 1}
                   <button
                     class="textred px-2 py-1"
@@ -191,6 +196,7 @@
               <input
                 class="w-4/5"
                 type={rule.customOptionInputValueType}
+                value={customOptionInput}
                 on:input={(e) => (customOptionInput = e.target.value)}
               />
             {/if}
