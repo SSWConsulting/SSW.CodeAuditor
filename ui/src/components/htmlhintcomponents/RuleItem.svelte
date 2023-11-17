@@ -151,7 +151,7 @@
     {/if}
     {#if isEditing}
       <div class="p-3">
-        <form on:submit|preventDefault={handleOnSubmit(rule.rule)}>
+        <form on:submit|preventDefault={handleOnSubmit(rule)}>
           <div class="pb-3">
             <div>
               <span>Ignore on the following URLs:</span>
