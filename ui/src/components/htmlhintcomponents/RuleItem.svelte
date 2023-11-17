@@ -123,7 +123,7 @@
       class="textred px-2 py-1"
       style="border: none"
       on:click={() => toggleCustomOption(!isEditing, rule)}
-      on:keypress={undefined}><i class="fas fa-pen-to-square" /> Edit</button
+      on:keypress={undefined}><i class="fas fa-pen-to-square" /></button
     >
   </span>
   <div class="bggrey ml-4 mr-5">
@@ -158,7 +158,7 @@
             </div>
             {#each ignoredUrls as v, i}
               <div>
-                <input id={i} type="text" bind:value={v} />
+                <input id={i} type="text" class="w-4/5" bind:value={v} />
                 {#if ignoredUrls.length > 1}
                   <button
                     class="textred px-2 py-1"
@@ -180,7 +180,7 @@
               {rule.customOptionsMessage}
             </div>
             {#if rule.customOptionInputType === customOptionInputType.dropDown}
-              <select bind:value={customOptionInput}>
+              <select class="w-4/5" bind:value={customOptionInput}>
                 {#each rule.customOptionDropdownValues as country}
                   <option value={country.code}>
                     {country.name} ({country.code})
@@ -190,6 +190,7 @@
             {/if}
             {#if rule.customOptionInputType === customOptionInputType.singleTextBox}
               <input
+                class="w-4/5"
                 type={rule.customOptionInputValueType}
                 on:input={(e) => (customOptionInput = e.target.value)}
               />
@@ -197,7 +198,7 @@
             {#if rule.customOptionInputType === customOptionInputType.multipleTextBoxes}
               {#each multiInputValues as v, i}
                 <div>
-                  <input id={i} type="text" bind:value={v} />
+                  <input id={i} type="text" class="w-4/5" bind:value={v} />
                   {#if multiInputValues.length > 1}
                     <button
                       class="textred px-2 py-1"
