@@ -392,7 +392,7 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
             if (customRuleOptions && customRuleOptions.length > 0 && customRuleOptions.filter(option => option.ruleId === ruleId).length > 0) {
               optionValue = customRuleOptions.find(option => option.ruleId === ruleId).optionValue
             }
-            if (mapAttrs["href"].startsWith(optionValue.length > 0 ? optionValue : "https://ssw.com.au/rules")) {
+            if (mapAttrs["href"].startsWith(optionValue.length > 0 ? optionValue : url)) {
               if (!mapAttrs["href"].startsWith("/")) {
               reporter.warn(
                 "URLs must be formatted to direct to a url path correctly.",

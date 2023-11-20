@@ -8,6 +8,7 @@
   import { CONSTS } from "../../utils/utils";
   import { navigateTo } from "svelte-router-spa";
   import { onDestroy } from "svelte";
+  import LoadingFlat from "../misccomponents/LoadingFlat.svelte";
   import Toastr from "../misccomponents/Toastr.svelte";
 
   export let value;
@@ -18,6 +19,7 @@
   let previousScans = [];
   let sharedEmailAddresses = [];
   let userApiKey;
+  let isLoading;
   let showToast = false;
 
   const dispatch = createEventDispatcher();
@@ -56,9 +58,13 @@
   }
 
   const getPreviousScans = async () => {
+    isLoading = true;
     let fullUrl = convertSpecialCharUrl(value.url)
     const res = await fetch(`${CONSTS.API}/api/scanSummaryFromUrl/${userApiKey}/${fullUrl}`);
-    previousScans = await res.json();
+    if (res) {
+      previousScans = await res.json();
+      isLoading = false;
+    }
   };
 
   const userSubscriber = userSession$.subscribe(x => {
@@ -92,6 +98,9 @@
     </div>
   </div>
   <div class="text-center my-3">
+    {#if isLoading}
+      <LoadingFlat />
+    {/if}
     {#if previousScans.length > 1}
       {#if previousScans[0].runId !== value.runId}
         <button 
