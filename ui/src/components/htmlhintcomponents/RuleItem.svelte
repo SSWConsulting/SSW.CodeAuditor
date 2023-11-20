@@ -121,15 +121,17 @@
   >
     {rule.displayName}
   </a>
-  <span class="cursor-pointer">
-    <button
-      class="textred px-2 py-1"
-      style="border: none"
-      on:click={() => toggleCustomOption(!isEditing)}
-      on:keypress={undefined}
-      ><i class="fas fa-pen-to-square" />
-    </button></span
+  <button
+    style="border: none"
+    class="textred p-0 cursor-pointer ml-1"
+    on:click={() => toggleCustomOption(!isEditing)}
+    on:keypress={undefined}
   >
+    {#if rule.isEnableCustomOptions}
+      <i class="fas fa-gear" title="Options" />
+    {/if}
+    <i class="fas fa-filter-circle-xmark" title="Ignore URLs" />
+  </button>
   <div class="bggrey ml-4 mr-5">
     {#if !isEditing && (customHtmlRuleOptions?.optionValue || customHtmlRuleOptions?.ignoredUrls)}
       <div class="p-3">
