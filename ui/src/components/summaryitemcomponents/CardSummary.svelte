@@ -8,6 +8,7 @@
   import { CONSTS } from "../../utils/utils";
   import { navigateTo } from "svelte-router-spa";
   import { onDestroy } from "svelte";
+  import Toastr from "../misccomponents/Toastr.svelte";
 
   export let value;
   export let isHtmlHintComp = false;
@@ -17,17 +18,35 @@
   let previousScans = [];
   let sharedEmailAddresses = [];
   let userApiKey;
+  let showToast = false;
 
   const dispatch = createEventDispatcher();
   
-  const perfThreshold = () => dispatch("perfThreshold");
-  const htmlHintThreshold = () => dispatch("htmlHintThreshold");
+  const perfThreshold = () => {
+    if ($isLoggedIn) {
+      dispatch("perfThreshold")
+    } else {
+      showToast = true;
+    }
+  };
+  
+  const htmlHintThreshold = () => {
+    if ($isLoggedIn) {
+      dispatch("htmlHintThreshold");
+    } else {
+      showToast = true;
+    }
+  };
 
   const emailAlertModal = async () => {
-    let fullUrl = convertSpecialCharUrl(value.url)
-    const res = await fetch(`${CONSTS.API}/api/getalertemailaddresses/${userApiKey}/${fullUrl}`);
-    sharedEmailAddresses = await res.json();
-    showShareAlert = true;
+    if ($isLoggedIn) {
+      let fullUrl = convertSpecialCharUrl(value.url)
+      const res = await fetch(`${CONSTS.API}/api/getalertemailaddresses/${userApiKey}/${fullUrl}`);
+      sharedEmailAddresses = await res.json();
+      showShareAlert = true;
+    } else {
+      showToast = true;
+    }
   };
 
   const navigateToLatestScan = () => {
@@ -92,17 +111,15 @@
         {previousScans[0].runId !== value.runId ? "Compare to latest scan" : "Compare to previous scan"}
       </button>
     {/if}
-    {#if $isLoggedIn}
-      <button
-        on:click={emailAlertModal} 
-        class="bg-white hover:bg-gray-800 hover:text-white font-semibold py-2 px-4 border rounded"
-      >
-        <i class="fas fa-paper-plane"></i> Send Email Alerts
-      </button>
-    {/if}
+    <button
+      on:click={emailAlertModal} 
+      class="bg-white hover:bg-gray-800 hover:text-white font-semibold py-2 px-4 border rounded"
+    >
+      <i class="fas fa-paper-plane"></i> Send Email Alerts
+    </button>
   </div>
   <div class="text-center lg:text-right">
-    {#if (value.buildDate && isHtmlHintComp && $isLoggedIn)}
+    {#if (value.buildDate && isHtmlHintComp)}
       <button
         on:click={htmlHintThreshold}
         class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
@@ -110,7 +127,7 @@
         <span>Enable/Disable Rules</span>
       </button>
     {/if}
-    {#if value.buildDate && isLighthouseAudit && $isLoggedIn}
+    {#if value.buildDate && isLighthouseAudit}
       <button
         on:click={perfThreshold}
         class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
@@ -122,3 +139,7 @@
 </div>
 
 <SendAlertModal bind:show={showShareAlert} {sharedEmailAddresses} {userApiKey} url={value.url} />
+
+<Toastr bind:show={showToast}>
+  <p class="font-bold">Please Log In or Sign Up to access this feature</p>
+</Toastr>
