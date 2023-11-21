@@ -6,14 +6,13 @@
 <div class="container mx-auto">
   <section class="text-gray-700 body-font">
     <div
-      class="container mx-auto flex px-5 py-20 items-center justify-center
-    flex-col"
+      class="container mx-auto flex px-5 py-20 items-center justify-center flex-col"
     >
       <div class="text-center lg:w-2/3 w-full">
         <h1
           class="title-font leading-tight sm:text-4xl text-3xl mb-10 font-medium text-gray-900"
         >
-          Check out our Github
+          Check out our GitHub
         </h1>
       </div>
       <a
@@ -22,6 +21,13 @@
       >
         <img width="110" height="100" alt="hero" src="/images/githublogo.png" />
       </a>
+      <div class="text-center w-full mt-8">
+        <h1
+          class="title-font leading-tight sm:text-4xl text-3xl mb-10 font-medium text-gray-900"
+        >
+          Find the problems/gremlins in your website
+        </h1>
+      </div>
     </div>
   </section>
 
