@@ -74,7 +74,7 @@
 
   const toggleIgnore = async (url, id) => {
     loadingChecks[getKey(url, id)] = true;
-    
+
     if (ignoredChecks[getKey(url, id)]) {
       dispatch('removeIgnoredUrl', { url, id });
     } else {
@@ -173,7 +173,7 @@
                 </a>
               {/if}
             </td>
-            <td class="w-1/12 border px-4 py-2 break-all">
+            <td class="w-1/12 border px-4 py-2 break-all text-center">
               {#if loadingChecks[getKey(url.url, key)]}
                 <LoadingCircle />
               {:else}
