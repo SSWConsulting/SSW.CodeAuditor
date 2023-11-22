@@ -110,24 +110,26 @@
       return;
     }
 
-    const res = await fetch(
-      `${CONSTS.API}/api/config/addCustomHtmlRuleOptions/${$userSession$.apiKey}`,
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          ruleId,
-          url: 'https://htmlhint.com/',
-          ignoredUrls: ignoredUrls.join(','),
-        }),
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    await promise.then(async (summary) => {
+      const res = await fetch(
+        `${CONSTS.API}/api/config/addCustomHtmlRuleOptions/${$userSession$.apiKey}`,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            ruleId,
+            url: summary.summary.url,
+            ignoredUrls: ignoredUrls.join(','),
+          }),
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
 
-    if (res.ok) {
-      getCustomHtmlRuleOptions()
-    } else {
-      throw new Error('Failed to update ignored URLs');
-    }
+      if (res.ok) {
+        getCustomHtmlRuleOptions()
+      } else {
+        throw new Error('Failed to update ignored URLs');
+      }
+    });
   };
 
   onMount(() => {
