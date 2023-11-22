@@ -1,6 +1,7 @@
 <script>
   import { CONSTS, RuleType, customOptionInputType } from '../../utils/utils';
   import { createEventDispatcher } from 'svelte';
+  import LoadingCircle from '../misccomponents/LoadingCircle.svelte';
 
   export let rule;
   export let customHtmlRuleOptions;
@@ -11,6 +12,7 @@
   let ignoredUrls = [''];
   let customOptionInput = '';
   let multiInputValues = [''];
+  let loading = false;
 
   const dispatch = createEventDispatcher();
   const updateHtmlHintCustomOption = () =>
@@ -47,7 +49,7 @@
     ignoredUrls,
     { rule: ruleId }
   ) => {
-    dispatch('updateHtmlHintCustomOption', true);
+    loading = true;
     const res = await fetch(
       `${CONSTS.API}/api/config/addCustomHtmlRuleOptions/${user.apiKey}`,
       {
@@ -62,8 +64,9 @@
       }
     );
 
+    loading = false;
+
     if (res.ok) {
-      dispatch('updateHtmlHintCustomOption', false);
       customOptionInput = null;
       multiInputValues = [''];
       toggleCustomOption(false);
@@ -224,10 +227,17 @@
             {/if}
           {/if}
           <div class="py-2">
-            <button class="text-white bgred px-2 py-1" type="submit"
-              >Save</button
+            <button
+              class="text-white bgred px-2 py-1"
+              type="submit"
+              disabled={loading}
+              >Save
+              {#if loading}
+                <LoadingCircle />
+              {/if}</button
             >
             <button
+              disabled={loading}
               class="text-white bgdark px-2 py-1"
               on:click|preventDefault={() => {
                 toggleCustomOption(false);
@@ -237,6 +247,7 @@
             <button
               class="px-2 py-1"
               style="border: none"
+              disabled={loading}
               on:click|preventDefault={() => {
                 addCustomRuleOptions('', '', rule);
               }}
