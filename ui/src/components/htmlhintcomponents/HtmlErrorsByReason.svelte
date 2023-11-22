@@ -9,17 +9,22 @@
     HTMLERRORS,
     getRuleLink,
     getDisplayText,
+    globMatchUrl
   } from "../../utils/utils.js";
   import { fade } from "svelte/transition";
   import { createEventDispatcher } from "svelte";
   import Icon from "../misccomponents/Icon.svelte";
   import { htmlHintRules, customHtmlHintRules } from "../../utils/utils.js";
+  import LoadingCircle from "../misccomponents/LoadingCircle.svelte";
 
   export let errors = [];
   export let codeIssues = [];
+  export let customHtmlRuleOptions = [];
 
   let showAllErrorLocations = false;
   let currentlySelectedUrl;
+  let ignoredChecks = {};
+  let loadingChecks = {};
 
   const dispatch = createEventDispatcher();
 
@@ -59,6 +64,33 @@
     codeIssues && codeIssues.length > 0
       ? (getCodeErrorRules(codeIssues) || []).concat(HTMLERRORS)
       : HTMLERRORS;
+  $: {
+    customHtmlRuleOptions.forEach((rule) => {
+      const ignoredUrls = rule.ignoredUrls?.split(',').filter(i => i) || [];
+      
+      errors.forEach((error) => {
+        if (error.errors[rule.ruleId] && ignoredUrls.some((url) => globMatchUrl(url, error.url))) {
+          ignoredChecks[getKey(error.url, rule.ruleId)] = true;
+        } else {
+          ignoredChecks[getKey(error.url, rule.ruleId)] = false;
+        }
+      });
+
+      loadingChecks = {};
+    });
+  }
+
+  const toggleIgnore = async (url, id) => {
+    loadingChecks[getKey(url, id)] = true;
+    
+    if (ignoredChecks[getKey(url, id)]) {
+      dispatch('removeIgnoredUrl', { url, id });
+    } else {
+      dispatch('addIgnoredUrl', { url, id });
+    }
+  };
+
+  const getKey = (url, id) => (`${url}-${id}`);
 
   // Assigning key values to each rules to collapse reason line by default
   var arr = htmlHintRules.map(x => ({[x.rule]: true})).concat(customHtmlHintRules.map(x => ({[x.rule]: true})))
@@ -102,19 +134,19 @@
       <thead>
         <tr>
           <th class="w-2/12 px-4 py-2">Page ({error.pages.length})</th>
-          <th class="w-10/12 px-4 py-2">Locations (line:col)</th>
+          <th class="w-9/12 px-4 py-2">Locations (line:col)</th>
+          <th class="w-1/12 px-4 py-2">Ignore</th>
         </tr>
       </thead>
       <tbody>
         {#each error.pages as page}
           <tr>
             <td
-              class="whitespace-nowrap break-all w-2/12 border px-4 py-2
-              break-all"
+              class="whitespace-nowrap break-all w-2/12 border px-4 py-2"
               title={page.url}>
               <a class="link" href={page.url}>{truncate(80)(page.url)}</a>
             </td>
-            <td class="w-10/12 border px-4 py-2 break-all">
+            <td class="w-9/12 border px-4 py-2 break-all">
               <div class="flex flex-wrap">
                 {#each slice(0, 49, page.locations) as item}
                   <div
@@ -154,6 +186,13 @@
                   href={'#'}>
                   {page.locations.length - 50} more..
                 </a>
+              {/if}
+            </td>
+            <td class="w-1/12 border px-4 py-2 break-all text-center">
+              {#if loadingChecks[getKey(page.url, error.error)]}
+                <LoadingCircle />
+              {:else}
+                <input type="checkbox" on:click={() => toggleIgnore(page.url, error.error)} bind:checked={ignoredChecks[getKey(page.url, error.error)]} />
               {/if}
             </td>
           </tr>

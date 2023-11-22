@@ -139,6 +139,7 @@
 
   const dismiss = () => {
     show = false;
+    currentlyEditingRule = '';
     initSelectedRules();
   };
 
@@ -163,6 +164,7 @@
         saving = false;
         show = false;
         addedSuccess = true;
+        currentlyEditingRule = '';
         updateHtmlRules();
       } else {
         throw new Error('Failed to load');
@@ -335,7 +337,6 @@
           {url}
           isEditing={currentlyEditingRule === rule.rule}
           on:updateHtmlHintCustomOption={updateHtmlHintCustomOption}
-          on:saving={(e) => (saving = e.detail)}
           on:updateCurrentlyEditingRule={(e) =>
             (currentlyEditingRule = e.detail ? rule.rule : '')}
         />
@@ -350,7 +351,6 @@
           {url}
           isEditing={currentlyEditingRule === rule.rule}
           on:updateHtmlHintCustomOption={updateHtmlHintCustomOption}
-          on:saving={(e) => (saving = e.detail)}
           on:updateCurrentlyEditingRule={(e) =>
             (currentlyEditingRule = e.detail ? rule.rule : '')}
         />
