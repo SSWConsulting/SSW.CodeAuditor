@@ -42,8 +42,11 @@
 
   const emailAlertModal = async () => {
     if ($isLoggedIn) {
-      let fullUrl = convertSpecialCharUrl(value.url)
-      const res = await fetch(`${CONSTS.API}/api/getalertemailaddresses/${userApiKey}/${fullUrl}`);
+      const res = await fetch(`${CONSTS.API}/api/getalertemailaddresses/${userApiKey}`, {
+        method: "POST",
+        body: JSON.stringify({url: value.url}),
+        headers: { "Content-Type": "application/json" },
+      })
       sharedEmailAddresses = await res.json();
       showShareAlert = true;
     } else {
@@ -59,8 +62,11 @@
 
   const getPreviousScans = async () => {
     isLoading = true;
-    let fullUrl = convertSpecialCharUrl(value.url)
-    const res = await fetch(`${CONSTS.API}/api/scanSummaryFromUrl/${userApiKey}/${fullUrl}`);
+    const res = await fetch(`${CONSTS.API}/api/scanSummaryFromUrl/${userApiKey}` , {
+      method: "POST",
+      body: JSON.stringify({url: value.url}),
+      headers: { "Content-Type": "application/json" },
+    })
     if (res) {
       previousScans = await res.json();
       isLoading = false;
