@@ -139,6 +139,7 @@
 
   const dismiss = () => {
     show = false;
+    currentlyEditingRule = '';
     initSelectedRules();
   };
 
@@ -163,6 +164,7 @@
         saving = false;
         show = false;
         addedSuccess = true;
+        currentlyEditingRule = '';
         updateHtmlRules();
       } else {
         throw new Error('Failed to load');
