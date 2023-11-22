@@ -8,7 +8,7 @@
   import { CONSTS } from "../../utils/utils";
   import { navigateTo } from "svelte-router-spa";
   import { onDestroy } from "svelte";
-  import LoadingFlat from "../misccomponents/LoadingFlat.svelte";
+  import LoadingCircle from "../misccomponents/LoadingCircle.svelte";
   import Toastr from "../misccomponents/Toastr.svelte";
 
   export let value;
@@ -105,7 +105,7 @@
   </div>
   <div class="text-center my-3">
     {#if isLoading}
-      <LoadingFlat />
+      <LoadingCircle />
     {/if}
     {#if previousScans.length > 1}
       {#if previousScans[0].runId !== value.runId}
