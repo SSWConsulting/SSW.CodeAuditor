@@ -171,13 +171,18 @@ export const getLatestBuildDetails = async (api, url) => {
 };
 
 export const getAllScanSummaryFromUrl = async (api, url) => {
-	const res = await fetch(`${CONSTS.API}/api/scanSummaryFromUrl/${api}/${url}`);
+	const res = await fetch(`${CONSTS.API}/api/scanSummaryFromUrl/${api}`, {
+		method: "POST",
+		body: JSON.stringify({url}),
+		headers: { "Content-Type": "application/json" },
+		});
+
 	const result = await res.json();
 
 	if (res.ok) {
 		return result;
 	} else {
-		throw new Error('Failed to load');
+		throw new Error('Failed to retrieve all scan summaries');
 	}
 };
 

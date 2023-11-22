@@ -6,7 +6,7 @@
   import { pipe, map, flatten } from "ramda";
   import HtmlErrorsTable from "../components/htmlhintcomponents/HtmlErrorsTable.svelte";
   import Toastr from "../components/misccomponents/Toastr.svelte";
-  import { CONSTS, HTMLERRORS } from "../utils/utils.js";
+  import { CONSTS, HTMLERRORS, globMatchUrl } from "../utils/utils.js";
   import { mkConfig, generateCsv, download } from "export-to-csv";
   import { Navigate } from "svelte-router-spa";
   import LoadingFlat from "../components/misccomponents/LoadingFlat.svelte";
@@ -66,12 +66,71 @@
   };
 
   let htmlRules;
+  let customHtmlRuleOptions = [];
   const getSelectedHtmlRules = async () => {
     await promise.then(async () => {
       const res = await fetch(`${CONSTS.API}/api/config/htmlhintrulesbyrunid/${runId}`);
       htmlRules = await res.json();
+
+      await getCustomHtmlRuleOptions()
 	  });
   }
+
+  const getCustomHtmlRuleOptions = async () => {
+    await promise.then(async (summary) => {
+      if ($userSession$) {
+        const optionRes = await fetch(`${CONSTS.API}/api/config/getCustomHtmlRuleOptions/${$userSession$.apiKey}`, {
+          method: "POST",
+          body: JSON.stringify({url: summary.summary.url}),
+          headers: { "Content-Type": "application/json" },
+        })
+        const optionResult = await optionRes.json();
+        customHtmlRuleOptions = optionResult || [];
+      }
+	  });
+  };
+
+  const addIgnoredUrl = async (ignoredUrl, ruleId) => {
+    const ignoredUrls = customHtmlRuleOptions
+      .find((opt) => opt.ruleId === ruleId)?.ignoredUrls?.split(',').filter(i => i) || [];
+    ignoredUrls.push(ignoredUrl);
+    await updateIgnoredUrls(ignoredUrls, ruleId);
+  };
+
+  const removeIgnoredUrl = async (ignoredUrl, ruleId) => {
+    const ignoredUrls = customHtmlRuleOptions
+      .find((opt) => opt.ruleId === ruleId)?.ignoredUrls?.split(',').filter(i => i && !globMatchUrl(i, ignoredUrl)) || [];
+    await updateIgnoredUrls(ignoredUrls, ruleId);
+  };
+
+  const updateIgnoredUrls = async (ignoredUrls, ruleId) => {
+    if (!$userSession$) {
+      userNotLoginToast = true;
+      customHtmlRuleOptions = [];
+      return;
+    }
+
+    await promise.then(async (summary) => {
+      const res = await fetch(
+        `${CONSTS.API}/api/config/addCustomHtmlRuleOptions/${$userSession$.apiKey}`,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            ruleId,
+            url: summary.summary.url,
+            ignoredUrls: ignoredUrls.join(','),
+          }),
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+
+      if (res.ok) {
+        getCustomHtmlRuleOptions()
+      } else {
+        throw new Error('Failed to update ignored URLs');
+      }
+    });
+  };
 
   onMount(() => {
     getSelectedHtmlRules()
@@ -85,16 +144,21 @@
       <LoadingFlat />
     {:then data}
 
-    <BuildDetailsSlot 
+    <BuildDetailsSlot
+      on:getCustomHtmlRuleOptions={getCustomHtmlRuleOptions}
       {data}
       {htmlRules}
+      {customHtmlRuleOptions}
       user={$userSession$}
       componentType="Code"
     >
       <HtmlErrorsTable
         on:download={() => onDownload(data)}
+        on:addIgnoredUrl={(e) => addIgnoredUrl(e.detail.url, e.detail.id)}
+        on:removeIgnoredUrl={(e) => removeIgnoredUrl(e.detail.url, e.detail.id)}
         errors={data.htmlHint}
         codeIssues={data.codeIssues}
+        {customHtmlRuleOptions}
         {currentRoute} />  
     </BuildDetailsSlot>
     {:catch error}

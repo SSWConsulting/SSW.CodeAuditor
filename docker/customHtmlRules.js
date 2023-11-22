@@ -392,7 +392,7 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
             if (customRuleOptions && customRuleOptions.length > 0 && customRuleOptions.filter(option => option.ruleId === ruleId).length > 0) {
               optionValue = customRuleOptions.find(option => option.ruleId === ruleId).optionValue
             }
-            if (mapAttrs["href"].startsWith(optionValue.length > 0 ? optionValue : "https://ssw.com.au/rules")) {
+            if (mapAttrs["href"].startsWith(optionValue.length > 0 ? optionValue : url)) {
               if (!mapAttrs["href"].startsWith("/")) {
               reporter.warn(
                 "URLs must be formatted to direct to a url path correctly.",
@@ -444,13 +444,14 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
 
       parser.addListener("text", (event) => {
         const ruleId = "common-spelling-mistakes";
-        let optionValue = [];
+        let optionValue = customRuleOptions?.find(option => option.ruleId === ruleId)?.optionValue;
+        let customOptions = [];
         // Check if custom options exist in this rule
-        if (customRuleOptions && customRuleOptions.length > 0 && customRuleOptions.filter(option => option.ruleId === ruleId).length > 0) {
-          optionValue = customRuleOptions.find(option => option.ruleId === ruleId).optionValue.split(',');
+        if (optionValue?.length) {
+          customOptions = optionValue.split(',').filter(i => i);
         }
         var spellings = 
-          optionValue.length > 0 ? 
+          customOptions.length ? 
           optionValue :
           [
             "a.k.a",
@@ -507,6 +508,7 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
         let isInCodeBlock = false;
         let optionValue = '';
         parser.addListener("tagstart", (event) => {
+          const ruleId = "phone-numbers-without-links";
           // Check if custom options exist in this rule
           if (customRuleOptions && customRuleOptions.length > 0 && customRuleOptions.filter(option => option.ruleId === ruleId).length > 0) {
             optionValue = customRuleOptions.find(option => option.ruleId === ruleId).optionValue

@@ -11,6 +11,7 @@ const nodemailer = require("nodemailer");
 const fns = require('date-fns');
 const fetch = require('node-fetch');
 const beautify_html = require('js-beautify').html;
+const { getCustomHtmlRuleOptions } = require("./api");
 
 exports.sendAlertEmail = async (email, emailConfig, scanSummary) => {
   // create reusable transporter object using the default SMTP transport
@@ -140,30 +141,25 @@ exports.runCodeAuditor = (ignorefile, rulesfolder) => {
  * Send GET request and then perform HTML Hint check on it
  * @param {string} url - URL to scan
  */
-const runHtmlHint = async (url, startUrl, tokenApi) => {
+const runHtmlHint = async (url, rules, customRuleOptions) => {
   const HTMLHint = require("htmlhint").default;
-
-  if (tokenApi) {
-    const result = await getHTMLHintRules(tokenApi, startUrl);
+  const selectedRules = new Set(rules?.selectedRules?.split(",").filter(i => i));
+  const ignoredRules = new Set(
+    customRuleOptions
+      .filter((opt) => {
+        const ignoredUrlsList = opt.ignoredUrls?.split(',').filter(i => i) || [];
+        return ignoredUrlsList.some((ignoredUrl) => minimatch(url, ignoredUrl));
+      })
+      .map((x) => x.ruleId)
+  );
   
-    if (result && result.selectedRules?.split(",").length > 0) {
-      const selectedHtmlConfig = result.selectedRules.split(",");
-  
-      const htmlRulesConfig = Object.keys(htmlHintConfig);
-  
-      // Turn off all the rules
-      for (var i in htmlHintConfig) {
+  if (selectedRules.size) {
+    for (var i in htmlHintConfig) {
+      if (selectedRules.has(i) && !ignoredRules.has(i)) {
+        htmlHintConfig[i] = true;
+      } else {
         htmlHintConfig[i] = false;
       }
-  
-      // Add only selected rules to htmlHintConfig
-      htmlRulesConfig.forEach((x) => {
-        selectedHtmlConfig.forEach((c) => {
-          if (x === c) {
-            htmlHintConfig[x] = true;
-          }
-        });
-      });
     }
   }
 
@@ -387,11 +383,14 @@ exports.runHtmlHint = async (startUrl, scannedUrls, writeLog, tokenApi) => {
     return [...new Set(all)];
   };
 
-  const allgoodLinks = __getGoodUrls(scannedUrls);
-  writeLog(`running htmlhint on ${allgoodLinks.length} URLs`);
+  const allGoodLinks = __getGoodUrls(scannedUrls);
+  writeLog(`running htmlhint on ${allGoodLinks.length} URLs`);
+
+  const rules = await getHTMLHintRules(tokenApi, startUrl);
+  const customRuleOptions = await getCustomHtmlRuleOptions(tokenApi, startUrl);
 
   const result = await Promise.all(
-    allgoodLinks.map((x) => runHtmlHint(x, startUrl, tokenApi))
+    allGoodLinks.map((x) => runHtmlHint(x, rules, customRuleOptions))
   );
 
   const [summary, details] = getHtmlHintDetails(result);
@@ -527,50 +526,6 @@ const outputBadDataCsv = (records) => {
       },
     ],
   });
-  console.log(`"Source","Destination","Anchor","StatusCode","Status"`);
-  console.log(csvStringifier.stringifyRecords(records));
-};
-
-/**
- * Print to console the list of HTML hint issues found
- * @param {Array} htmlIssues - HtmlHint issues array
- */
-const printHtmlIssuesToConsole = (htmlIssues) => {
-  R.pipe(
-    // restructure the output of the HTMLHint
-    R.map(
-      R.applySpec({
-        url: R.prop("url"),
-        errors: R.pipe(
-          R.identity,
-          R.pipe(
-            R.prop("errors"),
-            R.converge(
-              R.zipWith((x, y) => ({
-                error: x,
-                locations: y,
-              })),
-              [R.keys, R.values]
-            )
-          )
-        ),
-      })
-    ),
-    R.tap(() => consoleBox("List of HTML Issues", "red")),
-    R.pipe(
-      R.forEach((x) => {
-        console.log(`${x.url}`);
-        R.pipe(
-          R.prop("errors"),
-          R.forEach((error) => {
-            console.log(`${error.error}`);
-            R.pipe(R.prop("locations"), R.forEach(console.log))(error);
-            console.log("");
-          })
-        )(x);
-      })
-    )
-  )(htmlIssues);
 };
 
 /**
@@ -753,10 +708,6 @@ exports.printResultsToConsole = (
     consoleBox(getLinkToBuild(runId), "green");
   } else {
     badLinks.length && outputBadDataCsv(badLinks);
-
-    // if (htmlIssues) {
-    // 	printHtmlIssuesToConsole(htmlIssues);
-    // }
   }
 };
 
@@ -863,13 +814,4 @@ exports.getFinalEval = (
   }
   consoleBox(`Errors Detected`, "red");
   return "FAIL";
-};
-
-exports.convertSpecialCharUrl = (url) => {
-  // Replace special characters in URL string
-  const specialChars = {
-    ':': '%3A',
-    '/': '%2F'
-  };
-  return url.replace(/[:/]/g, m => specialChars[m]);
 };

@@ -7,20 +7,24 @@
   import UpdateHtmlRules from "../htmlhintcomponents/UpdateHTMLRules.svelte"
   import { CONSTS } from "../../utils/utils";
   import UpdatePerfThreshold from "../lighthousecomponents/UpdatePerfThreshold.svelte";
+  import { createEventDispatcher } from "svelte";
 
   export let data;
   export let componentType;
   export let htmlRules;
   export let user;
+  export let customHtmlRuleOptions;
 
   let threshold = {};
-  let customHtmlRuleOptions = [];
   let htmlHintRulesShown;
   let loadingHtmlHintSettings;
   let scanUrl;
   let perfThresholdShown;
   let loadingPerfSettings;
   let lastBuild;
+
+  const dispatch = createEventDispatcher();
+  const getCustomHtmlRuleOptions = () => dispatch('getCustomHtmlRuleOptions');
 
   const showHtmlHintThreshold = async (summary, user) => {
     if (!user) {
@@ -30,15 +34,7 @@
     htmlHintRulesShown = true;
     loadingHtmlHintSettings = true;
     try {
-      // Retrieve custom HTML Rules input options
-      const optionRes = await fetch(`${CONSTS.API}/api/config/getCustomHtmlRuleOptions/${user.apiKey}`, {
-        method: "POST",
-        body: JSON.stringify({url: scanUrl}),
-        headers: { "Content-Type": "application/json" },
-      })
-      const optionResult = await optionRes.json();
-      customHtmlRuleOptions = optionResult || [];
-
+      getCustomHtmlRuleOptions();
       // Retrieve selected custom HTML Rules 
       const res = await fetch(
         `${CONSTS.API}/api/config/${user.apiKey}/htmlhintrules/${slug(scanUrl)}`
@@ -48,7 +44,6 @@
     } catch (error) {
       console.error("error getting threshold", error);
       threshold = {};
-      customHtmlRuleOptions = [];
     } finally {
       loadingHtmlHintSettings = false;
     }
@@ -115,6 +110,7 @@
     {threshold}
     {customHtmlRuleOptions}
     on:htmlHintThreshold={() => showHtmlHintThreshold(data.summary, user)}
+    on:updateHtmlRules={() => getCustomHtmlRuleOptions()}
   />
 {:else}
   <UpdateHtmlRules 
@@ -126,6 +122,7 @@
     threshold={null}
     {customHtmlRuleOptions}
     on:htmlHintThreshold={() => showHtmlHintThreshold(data.summary, user)}
+    on:updateHtmlRules={() => getCustomHtmlRuleOptions()}
   />
 {/if}
 

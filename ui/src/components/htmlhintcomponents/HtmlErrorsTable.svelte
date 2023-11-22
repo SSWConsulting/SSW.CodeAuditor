@@ -18,6 +18,7 @@
   export let errors = [];
   export let codeIssues = [];
   export let currentRoute;
+  export let customHtmlRuleOptions;
 
   let displayMode = 0;
   let viewUrlSource = "";
@@ -181,14 +182,20 @@
     <HtmlErrorsBySource
       {errors}
       {codeIssues}
+      {customHtmlRuleOptions}
       on:viewSource={viewPageSource}
-      on:viewCode={viewCode} />
+      on:viewCode={viewCode}
+      on:addIgnoredUrl
+      on:removeIgnoredUrl />
   {:else}
     <HtmlErrorsByReason
       {errors}
       {codeIssues}
+      {customHtmlRuleOptions}
       on:viewSource={viewPageSource}
-      on:viewCode={viewCode} />
+      on:viewCode={viewCode}
+      on:addIgnoredUrl
+      on:removeIgnoredUrl />
   {/if}
 {/if}
 

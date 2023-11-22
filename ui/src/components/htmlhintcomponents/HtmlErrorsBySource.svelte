@@ -7,24 +7,42 @@
     getCodeErrorsByFile,
     getRuleLink,
     getDisplayText,
+    globMatchUrl,
   } from "../../utils/utils.js";
   import { fade } from "svelte/transition";
   import { createEventDispatcher } from "svelte";
   import Icon from "../misccomponents/Icon.svelte";
+  import LoadingCircle from "../misccomponents/LoadingCircle.svelte";
 
   export let errors = [];
   export let codeIssues = [];
+  export let customHtmlRuleOptions = [];
   let showAllErrorLocations = false;
   let currentlySelectedUrl = '';
   let currentlySelectedKey = '';
+  let ignoredChecks = {};
+  let loadingChecks = {};
   
   $: allErrors = errors.concat(getCodeErrorsByFile(codeIssues));
   $: htmlHintIssues = getHtmlHintIssues(errors);
+  $: {
+    customHtmlRuleOptions.forEach((rule) => {
+      const ignoredUrls = rule.ignoredUrls?.split(',').filter(i => i) || [];
+      
+      allErrors.forEach((error) => {
+        if (error.errors[rule.ruleId] && ignoredUrls.some((url) => globMatchUrl(url, error.url))) {
+          ignoredChecks[getKey(error.url, rule.ruleId)] = true;
+        } else {
+          ignoredChecks[getKey(error.url, rule.ruleId)] = false;
+        }
+      });
+    });
+
+    loadingChecks = {};
+  }
   
   const dispatch = createEventDispatcher();
   const viewSource = (url, location, key) => {
-    console.log(url, location);
-
     if (htmlHintIssues.indexOf(key) >= 0) {
       dispatch("viewSource", {
         url,
@@ -51,11 +69,20 @@
       : HTMLERRORS;
 
   let hiddenRows = {};
-  const viewRule = k => {
-    window.open();
-  };
   const hideShow = key =>
     (hiddenRows[key] = key in hiddenRows ? !hiddenRows[key] : true);
+
+  const toggleIgnore = async (url, id) => {
+    loadingChecks[getKey(url, id)] = true;
+
+    if (ignoredChecks[getKey(url, id)]) {
+      dispatch('removeIgnoredUrl', { url, id });
+    } else {
+      dispatch('addIgnoredUrl', { url, id });
+    }
+  };
+
+  const getKey = (url, id) => (`${url}-${id}`);
 </script>
 
 {#each allErrors as url}
@@ -86,15 +113,15 @@
           <th class="w-2/12 px-4 py-2">
             Issues ({Object.keys(url.errors).length})
           </th>
-          <th class="w-10/12 px-4 py-2">Locations</th>
+          <th class="w-9/12 px-4 py-2">Locations</th>
+          <th class="w-1/12 px-4 py-2">Ignore</th>
         </tr>
       </thead>
       <tbody>
         {#each Object.keys(url.errors) as key}
           <tr>
             <td
-              class="whitespace-nowrap break-all w-2/12 border px-4 py-2
-              break-all">
+              class="whitespace-nowrap break-all w-2/12 border px-4 py-2">
               <i class="{ERRORS.indexOf(key) >= 0 ? 'fas fa-exclamation-circle fa-lg' : 'fas fa-exclamation-triangle fa-lg'}" style="{ERRORS.indexOf(key) >= 0 ? 'color: red' : 'color: #d69e2e'}"></i> 
               <a
                 class="hidden md:inline-block align-baseline link"
@@ -104,7 +131,7 @@
               </a>
 
             </td>
-            <td class="w-10/12 border px-4 py-2 break-all">
+            <td class="w-9/12 border px-4 py-2 break-all">
               <div class="flex flex-wrap">
                 {#each slice(0, 49, url.errors[key]) as item}
                   <div
@@ -144,6 +171,13 @@
                   href={'#'}>
                   {url.errors[key].length - 50} more..
                 </a>
+              {/if}
+            </td>
+            <td class="w-1/12 border px-4 py-2 break-all text-center">
+              {#if loadingChecks[getKey(url.url, key)]}
+                <LoadingCircle />
+              {:else}
+                <input type="checkbox" on:click={() => toggleIgnore(url.url, key)} bind:checked={ignoredChecks[getKey(url.url, key)]} />
               {/if}
             </td>
           </tr>

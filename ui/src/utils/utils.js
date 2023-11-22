@@ -131,21 +131,22 @@ export const isInIgnored = (url, list) => {
 };
 
 export const getMatchingIgnoredRules = (url, list) => {
-  function glob(pattern, input) {
-    var re = new RegExp(
-      pattern.replace(/([.?+^$[\]\\(){}|\/-])/g, "\\$1").replace(/\*/g, ".*")
-    );
-    return re.test(input);
-  }
   const date = new Date();
   return list.filter((item) => {
     const pattern = item.urlToIgnore;
-    if (glob(pattern, url)) {
+    if (globMatchUrl(pattern, url)) {
       const effectiveFrom = new Date(item.effectiveFrom);
       const timeElapsed = (date - effectiveFrom) / 86400000;
       return (item.ignoreDuration > 0 && timeElapsed < item.ignoreDuration) || item.ignoreDuration === -1;
     }
   });
+};
+
+export const globMatchUrl = (pattern, input) => {
+  var re = new RegExp(
+    pattern.replace(/([.?+^$[\]\\(){}|\/-])/g, "\\$1").replace(/\*/g, ".*")
+  );
+  return re.test(input);
 };
 
 export const getHtmlIssuesDescriptions = pipe(

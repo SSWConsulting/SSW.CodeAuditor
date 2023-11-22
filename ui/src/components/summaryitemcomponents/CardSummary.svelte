@@ -8,6 +8,8 @@
   import { CONSTS } from "../../utils/utils";
   import { navigateTo } from "svelte-router-spa";
   import { onDestroy } from "svelte";
+  import LoadingCircle from "../misccomponents/LoadingCircle.svelte";
+  import Toastr from "../misccomponents/Toastr.svelte";
 
   export let value;
   export let isHtmlHintComp = false;
@@ -17,17 +19,39 @@
   let previousScans = [];
   let sharedEmailAddresses = [];
   let userApiKey;
+  let isLoading;
+  let showToast = false;
 
   const dispatch = createEventDispatcher();
   
-  const perfThreshold = () => dispatch("perfThreshold");
-  const htmlHintThreshold = () => dispatch("htmlHintThreshold");
+  const perfThreshold = () => {
+    if ($isLoggedIn) {
+      dispatch("perfThreshold")
+    } else {
+      showToast = true;
+    }
+  };
+  
+  const htmlHintThreshold = () => {
+    if ($isLoggedIn) {
+      dispatch("htmlHintThreshold");
+    } else {
+      showToast = true;
+    }
+  };
 
   const emailAlertModal = async () => {
-    let fullUrl = convertSpecialCharUrl(value.url)
-    const res = await fetch(`${CONSTS.API}/api/getalertemailaddresses/${userApiKey}/${fullUrl}`);
-    sharedEmailAddresses = await res.json();
-    showShareAlert = true;
+    if ($isLoggedIn) {
+      const res = await fetch(`${CONSTS.API}/api/getalertemailaddresses/${userApiKey}`, {
+        method: "POST",
+        body: JSON.stringify({url: value.url}),
+        headers: { "Content-Type": "application/json" },
+      })
+      sharedEmailAddresses = await res.json();
+      showShareAlert = true;
+    } else {
+      showToast = true;
+    }
   };
 
   const navigateToLatestScan = () => {
@@ -37,9 +61,16 @@
   }
 
   const getPreviousScans = async () => {
-    let fullUrl = convertSpecialCharUrl(value.url)
-    const res = await fetch(`${CONSTS.API}/api/scanSummaryFromUrl/${userApiKey}/${fullUrl}`);
-    previousScans = await res.json();
+    isLoading = true;
+    const res = await fetch(`${CONSTS.API}/api/scanSummaryFromUrl/${userApiKey}` , {
+      method: "POST",
+      body: JSON.stringify({url: value.url}),
+      headers: { "Content-Type": "application/json" },
+    })
+    if (res) {
+      previousScans = await res.json();
+      isLoading = false;
+    }
   };
 
   const userSubscriber = userSession$.subscribe(x => {
@@ -73,6 +104,9 @@
     </div>
   </div>
   <div class="text-center my-3">
+    {#if isLoading}
+      <LoadingCircle />
+    {/if}
     {#if previousScans.length > 1}
       {#if previousScans[0].runId !== value.runId}
         <button 
@@ -92,17 +126,15 @@
         {previousScans[0].runId !== value.runId ? "Compare to latest scan" : "Compare to previous scan"}
       </button>
     {/if}
-    {#if $isLoggedIn}
-      <button
-        on:click={emailAlertModal} 
-        class="bg-white hover:bg-gray-800 hover:text-white font-semibold py-2 px-4 border rounded"
-      >
-        <i class="fas fa-paper-plane"></i> Send Email Alerts
-      </button>
-    {/if}
+    <button
+      on:click={emailAlertModal} 
+      class="bg-white hover:bg-gray-800 hover:text-white font-semibold py-2 px-4 border rounded"
+    >
+      <i class="fas fa-paper-plane"></i> Send Email Alerts
+    </button>
   </div>
   <div class="text-center lg:text-right">
-    {#if (value.buildDate && isHtmlHintComp && $isLoggedIn)}
+    {#if (value.buildDate && isHtmlHintComp)}
       <button
         on:click={htmlHintThreshold}
         class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
@@ -110,7 +142,7 @@
         <span>Enable/Disable Rules</span>
       </button>
     {/if}
-    {#if value.buildDate && isLighthouseAudit && $isLoggedIn}
+    {#if value.buildDate && isLighthouseAudit}
       <button
         on:click={perfThreshold}
         class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4
@@ -122,3 +154,7 @@
 </div>
 
 <SendAlertModal bind:show={showShareAlert} {sharedEmailAddresses} {userApiKey} url={value.url} />
+
+<Toastr bind:show={showToast}>
+  <p class="font-bold">Please Log In or Sign Up to access this feature</p>
+</Toastr>
