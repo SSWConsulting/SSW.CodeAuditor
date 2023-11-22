@@ -337,7 +337,6 @@
           {url}
           isEditing={currentlyEditingRule === rule.rule}
           on:updateHtmlHintCustomOption={updateHtmlHintCustomOption}
-          on:saving={(e) => (saving = e.detail)}
           on:updateCurrentlyEditingRule={(e) =>
             (currentlyEditingRule = e.detail ? rule.rule : '')}
         />
@@ -352,7 +351,6 @@
           {url}
           isEditing={currentlyEditingRule === rule.rule}
           on:updateHtmlHintCustomOption={updateHtmlHintCustomOption}
-          on:saving={(e) => (saving = e.detail)}
           on:updateCurrentlyEditingRule={(e) =>
             (currentlyEditingRule = e.detail ? rule.rule : '')}
         />
