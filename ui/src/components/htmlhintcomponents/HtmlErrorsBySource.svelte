@@ -36,9 +36,9 @@
           ignoredChecks[getKey(error.url, rule.ruleId)] = false;
         }
       });
-
-      loadingChecks = {};
     });
+
+    loadingChecks = {};
   }
   
   const dispatch = createEventDispatcher();
