@@ -131,8 +131,8 @@ app.post('/config/:api/ignore', async (req, res) => {
 app.put('/:api/addalertemailaddresses', async (req, res) =>
 	res.json(await addAlertEmailAddresses(req.params.api, req.body)));
 
-app.get('/getalertemailaddresses/:api/:url', async (req, res) =>
-	res.json(await getAlertEmailAddressesFromTokenAndUrl(req.params.api, req.params.url)));
+app.post('/getalertemailaddresses/:api', async (req, res) =>
+	res.json(await getAlertEmailAddressesFromTokenAndUrl(req.params.api, req.body.url)));
 
 app.delete('/deletealertemailaddress', async (req, res) =>
 	res.json(await removeAlertEmailAddress(req.body.api, req.body.rowkey)));
@@ -184,8 +184,8 @@ app.post('/latest/:api', async (req, res) => {
 	});
 });
 
-app.get('/scanSummaryFromUrl/:api/:url', async (req, res) => {
-	res.json(await getAllScanSummaryFromUrl(req.params.url, req.params.api));
+app.post('/scanSummaryFromUrl/:api', async (req, res) => {
+	res.json(await getAllScanSummaryFromUrl(req.body.url, req.params.api));
 });
 
 app.post('/comparescanlatestandsecond/:api', async (req, res) => {

@@ -90,15 +90,17 @@ exports.addHTMLHintRulesForScan = (api, url, runId, selectedRules) => {
 };
 
 exports.getAlertEmailAddresses = (api, url) => {
-  return fetch(`${endpoint}/api/getalertemailaddresses/${api}/${url}`).then(
-    (res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        throw Error("Failed to find shared email addresses");
-      }
+  return fetch(`${endpoint}/api/getalertemailaddresses/${api}`, {
+    method: "POST",
+    body: JSON.stringify({url}),
+    headers: { "Content-Type": "application/json" },
+  }).then((res) => {
+    if (res) {
+      return res.ok ? res.json() : [];
+    } else {
+      throw Error("Failed to find alert email addresses");
     }
-  );
+  });
 };
 
 exports.getAlertEmailConfig = (api) => {
@@ -114,15 +116,17 @@ exports.getAlertEmailConfig = (api) => {
 };
 
 exports.getAllScanSummaryFromUrl = (api, url) => {
-  return fetch(`${endpoint}/api/scanSummaryFromUrl/${api}/${url}`).then(
-    (res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        throw Error("Failed to retrieve scan summary");
-      }
+  return fetch(`${endpoint}/api/scanSummaryFromUrl/${api}`, {
+    method: "POST",
+    body: JSON.stringify({url}),
+    headers: { "Content-Type": "application/json" },
+  }).then((res) => {
+    if (res) {
+      return res.ok ? res.json() : [];
+    } else {
+      throw Error("Failed to retrieve scan summary");
     }
-  );
+  });
 };
 
 exports.getCustomHtmlRuleOptions = (api, url) => {

@@ -1,6 +1,6 @@
 <script>
   import LoadingFlat from "./LoadingFlat.svelte";
-  import { CONSTS, validateEmail, convertSpecialCharUrl } from "../../utils/utils";
+  import { CONSTS, validateEmail } from "../../utils/utils";
 
   export let show;
   export let url;
@@ -22,8 +22,11 @@
   };
 
   const reloadSharedEmailList = async () => {
-    let fullUrl = convertSpecialCharUrl(url)
-    const res = await fetch(`${CONSTS.API}/api/getalertemailaddresses/${userApiKey}/${fullUrl}`);
+    const res = await fetch(`${CONSTS.API}/api/getalertemailaddresses/${userApiKey}`, {
+        method: "POST",
+        body: JSON.stringify({url}),
+        headers: { "Content-Type": "application/json" },
+      })
     sharedEmailAddresses = await res.json();
   }
 

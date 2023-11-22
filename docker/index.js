@@ -24,7 +24,6 @@ const {
   processBrokenLinks,
   getFinalEval,
   sendAlertEmail,
-  convertSpecialCharUrl,
   runLighthouseReport,
   runArtilleryLoadTest
 } = require("./utils");
@@ -354,18 +353,17 @@ const processAndUpload = async (
 
   // Send alert email to shared participants
   if (args.token) {
-    let urlPathWithSpecChars = convertSpecialCharUrl(args.url)
-
-    let emailConfig = await getAlertEmailConfig(args.token)
-
-    // Get latest scan summary
-    let res = await getAllScanSummaryFromUrl(args.token, urlPathWithSpecChars)
-    let scanSummary = await res[0]
-
+    const emailConfig = await getAlertEmailConfig(args.token)
+    
     if (emailConfig) {
-      const alertEmails = await getAlertEmailAddresses(args.token, urlPathWithSpecChars)
-  
+      const alertEmails = await getAlertEmailAddresses(args.token, args.url)
+      
       if (alertEmails && alertEmails.length > 0) {
+
+        // Get latest scan summary
+        let res = await getAllScanSummaryFromUrl(args.token, args.url)
+        let scanSummary = await res[0]
+
         alertEmails.forEach(item => sendAlertEmail(item.emailAddress, emailConfig, scanSummary))
       }
     } else {
