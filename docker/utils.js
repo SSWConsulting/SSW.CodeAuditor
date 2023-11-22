@@ -526,50 +526,6 @@ const outputBadDataCsv = (records) => {
       },
     ],
   });
-  console.log(`"Source","Destination","Anchor","StatusCode","Status"`);
-  console.log(csvStringifier.stringifyRecords(records));
-};
-
-/**
- * Print to console the list of HTML hint issues found
- * @param {Array} htmlIssues - HtmlHint issues array
- */
-const printHtmlIssuesToConsole = (htmlIssues) => {
-  R.pipe(
-    // restructure the output of the HTMLHint
-    R.map(
-      R.applySpec({
-        url: R.prop("url"),
-        errors: R.pipe(
-          R.identity,
-          R.pipe(
-            R.prop("errors"),
-            R.converge(
-              R.zipWith((x, y) => ({
-                error: x,
-                locations: y,
-              })),
-              [R.keys, R.values]
-            )
-          )
-        ),
-      })
-    ),
-    R.tap(() => consoleBox("List of HTML Issues", "red")),
-    R.pipe(
-      R.forEach((x) => {
-        console.log(`${x.url}`);
-        R.pipe(
-          R.prop("errors"),
-          R.forEach((error) => {
-            console.log(`${error.error}`);
-            R.pipe(R.prop("locations"), R.forEach(console.log))(error);
-            console.log("");
-          })
-        )(x);
-      })
-    )
-  )(htmlIssues);
 };
 
 /**
@@ -752,10 +708,6 @@ exports.printResultsToConsole = (
     consoleBox(getLinkToBuild(runId), "green");
   } else {
     badLinks.length && outputBadDataCsv(badLinks);
-
-    // if (htmlIssues) {
-    // 	printHtmlIssuesToConsole(htmlIssues);
-    // }
   }
 };
 
@@ -862,13 +814,4 @@ exports.getFinalEval = (
   }
   consoleBox(`Errors Detected`, "red");
   return "FAIL";
-};
-
-exports.convertSpecialCharUrl = (url) => {
-  // Replace special characters in URL string
-  const specialChars = {
-    ':': '%3A',
-    '/': '%2F'
-  };
-  return url.replace(/[:/]/g, m => specialChars[m]);
 };
