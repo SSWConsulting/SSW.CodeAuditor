@@ -188,7 +188,7 @@
                 </a>
               {/if}
             </td>
-            <td class="w-1/12 border px-4 py-2 break-all">
+            <td class="w-1/12 border px-4 py-2 break-all text-center">
               {#if loadingChecks[getKey(page.url, error.error)]}
                 <LoadingCircle />
               {:else}
