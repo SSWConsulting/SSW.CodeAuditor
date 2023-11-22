@@ -66,7 +66,7 @@
   };
 
   let htmlRules;
-  let customHtmlRuleOptions;
+  let customHtmlRuleOptions = [];
   const getSelectedHtmlRules = async () => {
     await promise.then(async () => {
       const res = await fetch(`${CONSTS.API}/api/config/htmlhintrulesbyrunid/${runId}`);
@@ -78,13 +78,15 @@
 
   const getCustomHtmlRuleOptions = async () => {
     await promise.then(async (summary) => {
-      const optionRes = await fetch(`${CONSTS.API}/api/config/getCustomHtmlRuleOptions/${$userSession$.apiKey}`, {
-        method: "POST",
-        body: JSON.stringify({url: summary.summary.url}),
-        headers: { "Content-Type": "application/json" },
-      })
-      const optionResult = await optionRes.json();
-      customHtmlRuleOptions = optionResult || [];
+      if ($userSession$) {
+        const optionRes = await fetch(`${CONSTS.API}/api/config/getCustomHtmlRuleOptions/${$userSession$.apiKey}`, {
+          method: "POST",
+          body: JSON.stringify({url: summary.summary.url}),
+          headers: { "Content-Type": "application/json" },
+        })
+        const optionResult = await optionRes.json();
+        customHtmlRuleOptions = optionResult || [];
+      }
 	  });
   };
 
@@ -102,6 +104,12 @@
   };
 
   const updateIgnoredUrls = async (ignoredUrls, ruleId) => {
+    if (!$userSession$) {
+      userNotLoginToast = true;
+      customHtmlRuleOptions = [];
+      return;
+    }
+
     const res = await fetch(
       `${CONSTS.API}/api/config/addCustomHtmlRuleOptions/${$userSession$.apiKey}`,
       {
