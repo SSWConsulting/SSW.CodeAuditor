@@ -3,17 +3,25 @@
     
     const customRuleConfig = `
   # How to Use Custom HTML Rules Configuration
-  #### 1. Click on "Enable/Disable Rules" 
-  ![image](https://user-images.githubusercontent.com/67776356/229018349-ab11cb85-1650-41c5-b3e5-af3e81a53bc0.png)
-  **Figure: Enable/Disable Rules button**
+  #### 1. Go to your scan HTML result page, click on "Enable/Disable Rules" 
 
-  #### 2. Select which custom rules you want for your next scan  
-  ![Image](https://github.com/SSWConsulting/SSW.CodeAuditor/assets/67776356/f6d09566-0ff8-4ef8-a120-53fade615689)
+  #### 2. Select the custom rules you want to include for your next scan  
+  ![Image](https://github.com/SSWConsulting/SSW.CodeAuditor/assets/67776356/d1c7ac42-923e-42e0-a914-df4c018052e9)
   **Figure: Custom rule selection modal**
 
-  #### 3. After you run your next scan, you should only be able to see the scan results for your selected html rules
-  ![image](https://user-images.githubusercontent.com/67776356/229019594-39b9e95e-c91b-41f8-b3a4-e33d370bad0c.png)
-  **Figure: Custom rule selection modal**
+  #### 3. When you run next scan, only your selected html rules will be in effect 
+  ![image](https://github.com/SSWConsulting/SSW.CodeAuditor/assets/67776356/76ed8b0b-2bfd-4f6c-ade4-dd96ab5e9f17)
+  **Figure: Selected scanned rules**
+
+  # How to Customize HTML Rule Options
+  #### 1. Go to your scan HTML result page, click on "Enable/Disable Rules" 
+  #### 2. Any custom rule with the gear icon ⚙ allows custom options
+  ![image](https://github.com/SSWConsulting/SSW.CodeAuditor/assets/67776356/dccf8256-f005-44ad-918c-89f76e9e7862)
+  **Figure: Input option for custom values**
+  #### 3. In your next scan, your custom input options will be in effect instead of the rule's default values
+  #### 4. You can also ignore the rules on certain Urls of your choice
+  ![image](https://github.com/SSWConsulting/SSW.CodeAuditor/assets/67776356/e10795a2-13dd-449e-8a72-25566b1f1355)
+  **Figure: Input option to ignore scanning rules on certain Urls**
   `
 </script>
 

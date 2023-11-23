@@ -61,7 +61,7 @@
           </span>
           <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
             <span
-              class="header-item {currentRoute.path === '/howitworks'
+              class="header-item {currentRoute.path.includes('/howitworks')
                 ? 'textred'
                 : 'textdark'}"
             >
