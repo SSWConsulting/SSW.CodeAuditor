@@ -351,6 +351,15 @@ export const convertSpecialCharUrl = (url) => {
   return url.replace(/[:/]/g, m => specialChars[m]);
 };
 
+export const revertSpecialCharUrl = (url) => {
+  // Replace special characters in URL string
+  const specialChars = {
+    '%3A' : ':',
+    '%2F' : '/'
+  };
+ return url.replace(/%3A|%2F/gi, (matched) => specialChars[matched]);
+};
+
 export const RuleType = {
   Warning: "Warning",
   Error: "Error",
