@@ -1,5 +1,5 @@
 <script>
-  import { customHtmlHintRules, htmlHintRules, RuleType } from "../utils/utils";
+  import { htmlHintRules, customHtmlHintRules, RuleType } from "../../../constants/rules.js";
 </script>
 <style>
   .link, .text {

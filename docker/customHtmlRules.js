@@ -1,6 +1,7 @@
 const { getCustomHtmlRuleOptions } = require("./api");
 const HTMLHint = require("htmlhint").default;
 const findPhoneNumbersInText = require('libphonenumber-js').findPhoneNumbersInText;
+const { customHtmlHintRules } = require("../constants/rules.js");
 
 exports.addCustomHtmlRule = async (apiToken, url) => {
   const customRuleOptions = await getCustomHtmlRuleOptions(apiToken, url);
@@ -446,24 +447,12 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
         const ruleId = "common-spelling-mistakes";
         let optionValue = customRuleOptions?.find(option => option.ruleId === ruleId)?.optionValue;
         let customOptions = [];
+        const defaultValue = customHtmlHintRules?.find(rule => rule.rule === ruleId)?.customOptionDefaultValue || [];
         // Check if custom options exist in this rule
         if (optionValue?.length) {
           customOptions = optionValue.split(',').filter(i => i);
         }
-        var spellings = 
-          customOptions.length ? 
-          optionValue :
-          [
-            "a.k.a",
-            "A.K.A",
-            "AKA",
-            "e-mail",
-            "EMail",
-            "can not",
-            "web site",
-            "user name",
-            "task bar"
-          ];
+        const spellings = customOptions.length ? optionValue : defaultValue;
 
         if (event.raw) {
           const pageContent = event.raw;
@@ -505,10 +494,12 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
       "Checks for phone numbers that aren't in hyperlinks with a \"tel:\" prefix.",
       init: function (parser, reporter) {
         const self = this;
+        const ruleId = "phone-numbers-without-links";
         let isInCodeBlock = false;
         let optionValue = '';
+        const defaultValue = customHtmlHintRules?.find(rule => rule.rule === ruleId)?.customOptionDefaultValue || '';
+
         parser.addListener("tagstart", (event) => {
-          const ruleId = "phone-numbers-without-links";
           // Check if custom options exist in this rule
           if (customRuleOptions && customRuleOptions.length > 0 && customRuleOptions.filter(option => option.ruleId === ruleId).length > 0) {
             optionValue = customRuleOptions.find(option => option.ruleId === ruleId).optionValue
@@ -518,17 +509,19 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
             isInCodeBlock = true;
           }
         });
+
         parser.addListener("tagend", (event) => {
           const tagName = event.tagName.toLowerCase();
           if (tagName === "code") {
             isInCodeBlock = false;
           }
         });
+
         parser.addListener("text", (event) => {
           // Replace "." and "/" characters to avoid false positives when parsing phone numbers
           const text = event.raw?.replace(/\.|\//g, "_");
           if (text && event.lastEvent) {
-            const foundPhoneNumbers = findPhoneNumbersInText(text, optionValue.length > 0 ? optionValue : 'AU');
+            const foundPhoneNumbers = findPhoneNumbersInText(text, optionValue.length > 0 ? optionValue : defaultValue);
 
             foundPhoneNumbers.forEach((phone) => {
               const pageContent = event.lastEvent.raw;
