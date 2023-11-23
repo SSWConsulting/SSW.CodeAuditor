@@ -22,7 +22,7 @@
 # How to Use CodeAuditor
 Scan any website for broken links, [HTML Issues](https://htmlhint.com), [Google Lighthouse Audit](https://developers.google.com/web/tools/lighthouse) and [Artillery Load Test](https://artillery.io/) by running the following command:
 \`\`\` bash
-$ docker container run --cap-add=SYS_ADMIN sswconsulting/codeauditor ${tokenText} --url <URL>
+$ docker run sswconsulting/codeauditor ${tokenText} --url <URL>
 \`\`\`
 `;
 

@@ -45,7 +45,7 @@
           <span
             class="header-item"
           >
-            <Link to="/howitworks/customizerule">How to Customize HTML Rule set</Link>
+            <Link to="/howitworks/customizerule">How to Customize HTML Rules</Link>
           </span>
         </span>
         <span class="textdark font-sans font-bold lg:pt-0 mx-2 sm:mx-4 mt-2">
