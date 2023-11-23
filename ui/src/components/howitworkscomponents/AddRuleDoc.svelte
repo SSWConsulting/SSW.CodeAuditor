@@ -27,7 +27,7 @@
     ...
     }
   \`\`\`
-  #### 6. Go to \`\`\`ui/src/utils/utils.js\`\`\` On the last export named \`\`\`customHtmlHintRules\`\`\` add your new custom rule id to the list using the following format:
+  #### 6. Go to \`\`\`constants/rules.js\`\`\` On the last export named \`\`\`customHtmlHintRules\`\`\` add your new custom rule id to the list using the following format:
   \`\`\` js
   export const customHtmlHintRules = [
    { rule: "your-custom-rule-id" },	

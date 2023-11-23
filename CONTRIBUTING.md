@@ -120,7 +120,7 @@ E.g:
    ...
  }
 ```
-5. Go to ```ui/src/utils/utils.js```: On the last export named ```customHtmlHintRules```, add your new custom rule id to the list using the following format:
+5. Go to ```constants/rules.js```: On the last export named ```customHtmlHintRules```, add your new custom rule id to the list using the following format:
 E.g: 
 ```javascript
  export const customHtmlHintRules = [
