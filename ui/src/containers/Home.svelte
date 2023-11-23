@@ -6,27 +6,32 @@
 <div class="container mx-auto">
   <section class="text-gray-700 body-font">
     <div
-      class="container mx-auto flex px-5 py-20 items-center justify-center flex-col"
+      class="container grid grid-cols-2 gap-4 mx-auto px-5 py-24 items-center"
     >
-      <div class="text-center lg:w-2/3 w-full">
+      <div>
         <h1
           class="title-font leading-tight sm:text-4xl text-3xl mb-10 font-medium text-gray-900"
         >
-          Check out our GitHub
+          Find the gremlins in your website
         </h1>
+        <button
+          class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4 border hover:border-transparent rounded"
+          on:click={() => window.open("https://github.com/SSWConsulting/SSW.CodeAuditor", '_blank').focus()}
+        >
+          <i class="fa-brands fa-github fa-xl"></i>
+          <span class="ml-2">
+            Check out our GitHub
+          </span>
+      </button>
       </div>
-      <a
-        href="https://github.com/SSWConsulting/SSW.CodeAuditor"
-        target="_blank"
-      >
-        <img width="110" height="100" alt="hero" src="/images/githublogo.png" />
-      </a>
-      <div class="text-center w-full mt-8">
-        <h1
-          class="title-font leading-tight sm:text-4xl text-3xl mb-10 font-medium text-gray-900"
-        >
-          Find the problems/gremlins in your website
-        </h1>
+      <div>
+        <a href="/images/dashboard.png" target="_blank">
+          <img
+            class="object-cover object-center rounded bordered"
+            alt="hero"
+            src="/images/dashboard.png"
+          />
+        </a>
       </div>
     </div>
   </section>
