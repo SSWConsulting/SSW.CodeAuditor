@@ -6,22 +6,33 @@
 <div class="container mx-auto">
   <section class="text-gray-700 body-font">
     <div
-      class="container mx-auto flex px-5 py-20 items-center justify-center
-    flex-col"
+      class="container grid grid-cols-2 gap-4 mx-auto px-5 py-24 items-center"
     >
-      <div class="text-center lg:w-2/3 w-full">
-        <h1
-          class="title-font leading-tight sm:text-4xl text-3xl mb-10 font-medium text-gray-900"
+      <div>
+        <div
+          class="title-font leading-tight text-4xl mb-10 font-medium text-gray-900"
         >
-          Check out our Github
-        </h1>
+          Find the gremlins in your website
+        </div>
+        <button
+          class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4 border hover:border-transparent rounded"
+          on:click={() => window.open("https://github.com/SSWConsulting/SSW.CodeAuditor", '_blank').focus()}
+        >
+          <i class="fa-brands fa-github fa-xl"></i>
+          <span class="ml-2 text-xl">
+            Check out our GitHub
+          </span>
+      </button>
       </div>
-      <a
-        href="https://github.com/SSWConsulting/SSW.CodeAuditor"
-        target="_blank"
-      >
-        <img width="110" height="100" alt="hero" src="/images/githublogo.png" />
-      </a>
+      <div>
+        <a href="/images/dashboard.png" target="_blank">
+          <img
+            class="object-cover object-center rounded bordered"
+            alt="hero"
+            src="/images/dashboard.png"
+          />
+        </a>
+      </div>
     </div>
   </section>
 
@@ -32,11 +43,11 @@
     flex-col"
     >
       <div class="text-center lg:w-2/3 w-full">
-        <h1
-          class="title-font leading-tight sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
+        <div
+          class="title-font leading-tight text-3xl mb-4 font-medium text-gray-900"
         >
           Sign up now! It's free
-        </h1>
+        </div>
         <p class="mb-8 text-lg leading-relaxed">
           Once signed up, you will be able to unlock the following awesome
           features that allows you to take control of your code, ensuring large,
@@ -62,19 +73,139 @@
       class="container grid grid-cols-2 gap-4 mx-auto px-5 py-24 items-center"
     >
       <div>
-        <h1
-          class="title-font leading-tight sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
-        >
-          View prior scans history
-        </h1>
-        <p class="mb-8 leading-relaxed">View previous scan results.</p>
-      </div>
-      <div>
-        <a href="/images/dashboard.png" target="_blank">
+        <a href="/images/scanresult.png" target="_blank">
           <img
             class="object-cover object-center rounded bordered"
             alt="hero"
-            src="/images/dashboard.png"
+            src="/images/scanresult.png"
+          />
+        </a>
+      </div>
+      <div class="text-right">
+        <div
+          class="title-font leading-tight text-3xl mb-4 font-medium text-gray-900"
+        >
+          View scan result
+        </div>
+        <p class="mb-8 leading-relaxed">View your personal scan results.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="text-gray-700 body-font">
+    <div
+      class="container grid grid-cols-2 gap-4 mx-auto px-5 py-24 items-center"
+    >
+      <div>
+        <div
+          class="title-font leading-tight text-3xl mb-4 font-medium text-gray-900"
+        >
+          Compare to prior scans
+        </div>
+        <p class="mb-8 leading-relaxed">Compare scan results to your previous scans.</p>
+      </div>
+      <div>
+        <a href="/images/scancompare.png" target="_blank">
+          <img
+            class="object-cover object-center rounded bordered"
+            alt="hero"
+            src="/images/scancompare.png"
+          />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="text-gray-700 body-font">
+    <div
+      class="container grid grid-cols-2 gap-4 mx-auto px-5 py-24 items-center"
+    >
+      <div>
+        <a href="/images/alertemail.png" target="_blank">
+          <img
+            class="object-cover object-center rounded bordered"
+            alt="hero"
+            src="/images/alertemail.png"
+          />
+        </a>
+      </div>
+      <div class="text-right">
+        <div
+          class="title-font leading-tight text-3xl mb-4 font-medium text-gray-900"
+        >
+          Send alert emails
+        </div>
+        <p class="mb-8 leading-relaxed">Automatically send alert emails as soon as your scan is completed.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="text-gray-700 body-font">
+    <div
+      class="container grid grid-cols-2 gap-4 mx-auto px-5 py-24 items-center"
+    >
+      <div>
+        <div
+          class="title-font leading-tight text-3xl mb-4 font-medium text-gray-900"
+        >
+          Customize HTML rules
+        </div>
+        <p class="mb-8 leading-relaxed">Customize or Ignore your own personalized custom HTML rules.</p>
+      </div>
+      <div>
+        <a href="/images/rulecustomisation.png" target="_blank">
+          <img
+            class="object-cover object-center rounded bordered"
+            alt="hero"
+            src="/images/rulecustomisation.png"
+          />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="text-gray-700 body-font">
+    <div
+      class="container grid grid-cols-2 gap-4 mx-auto px-5 py-24 items-center"
+    >
+      <div>
+        <a href="/images/ignorerulelink.png" target="_blank">
+          <img
+            class="object-cover object-center rounded bordered"
+            alt="hero"
+            src="/images/ignorerulelink.png"
+          />
+        </a>
+      </div>
+      <div class="text-right">
+        <div
+          class="title-font leading-tight text-3xl mb-4 font-medium text-gray-900"
+        >
+          Ignore links on the go
+        </div>
+        <p class="mb-8 leading-relaxed">Toggle to ignore scanning your links or HTML rules right on the go.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="text-gray-700 body-font">
+    <div
+      class="container grid grid-cols-2 gap-4 mx-auto px-5 py-24 items-center"
+    >
+      <div>
+        <div
+          class="title-font leading-tight text-3xl mb-4 font-medium text-gray-900"
+        >
+          View prior scans history
+        </div>
+        <p class="mb-8 leading-relaxed">View your previous scan results.</p>
+      </div>
+      <div>
+        <a href="/images/personalscans.png" target="_blank">
+          <img
+            class="object-cover object-center rounded bordered"
+            alt="hero"
+            src="/images/personalscans.png"
           />
         </a>
       </div>
@@ -95,11 +226,11 @@
         </a>
       </div>
       <div class="text-right">
-        <h1
-          class="title-font leading-tight sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
+        <div
+          class="title-font leading-tight text-3xl mb-4 font-medium text-gray-900"
         >
           Export to CSV
-        </h1>
+        </div>
         <p class="mb-8 leading-relaxed">
           Export scan result to CSV to perform further analysis (e.g on PowerBI).
         </p>
@@ -112,21 +243,21 @@
       class="container grid grid-cols-2 gap-4 mx-auto px-5 py-24 items-center"
     >
       <div>
-        <h1
-          class="title-font leading-tight sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
+        <div
+          class="title-font leading-tight text-3xl mb-4 font-medium text-gray-900"
         >
           View Lighthouse Report
-        </h1>
+        </div>
         <p class="mb-8 leading-relaxed">
           View Lighthouse Report without leaving the app.
         </p>
       </div>
       <div>
-        <a href="/images/lighthouse2.png" target="_blank">
+        <a href="/images/lighthouse.png" target="_blank">
           <img
             class="object-cover object-center rounded bordered"
             alt="hero"
-            src="/images/lighthouse2.png"
+            src="/images/lighthouse.png"
           />
         </a>
       </div>
@@ -138,20 +269,20 @@
       class="container grid grid-cols-2 gap-4 mx-auto px-5 py-24 items-center"
     >
       <div>
-        <a href="/images/threshold.png" target="_blank">
+        <a href="/images/lighthousethreshold.png" target="_blank">
           <img
             class="object-cover object-center rounded bordered"
             alt="hero"
-            src="/images/threshold.png"
+            src="/images/lighthousethreshold.png"
           />
         </a>
       </div>
       <div class="text-right">
-        <h1
-          class="title-font leading-tight sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
+        <div
+          class="title-font leading-tight text-3xl mb-4 font-medium text-gray-900"
         >
           Set Lighthouse Threshold
-        </h1>
+        </div>
         <p class="mb-8 leading-relaxed">
           If Performance is less than 80 and SEO score is less than 100, fail
           the build.
@@ -165,21 +296,21 @@
       class="container grid grid-cols-2 gap-4 mx-auto px-5 py-24 items-center"
     >
       <div>
-        <h1
-          class="title-font leading-tight sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
+        <div
+          class="title-font leading-tight text-3xl mb-4 font-medium text-gray-900"
         >
           Ignore broken Links
-        </h1>
+        </div>
         <p class="mb-8 leading-relaxed">
           Ignored URLs will not cause build to fail.
         </p>
       </div>
       <div>
-        <a href="/images/ignore.png" target="_blank">
+        <a href="/images/ignoreUrl.png" target="_blank">
           <img
             class="object-cover object-center rounded bordered"
             alt="hero"
-            src="/images/ignore.png"
+            src="/images/ignoreUrl.png"
           />
         </a>
       </div>
@@ -200,11 +331,11 @@
         </a>
       </div>
       <div class="text-right">
-        <h1
-          class="title-font leading-tight sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
+        <div
+          class="title-font leading-tight text-3xl mb-4 font-medium text-gray-900"
         >
           View Code Errors
-        </h1>
+        </div>
         <p class="mb-8 leading-relaxed">
           View HTML code errors and Code errors without leaving the app.
         </p>
@@ -217,11 +348,11 @@
       class="container grid grid-cols-2 gap-4 mx-auto px-5 py-24 items-center"
     >
       <div>
-        <h1
-          class="title-font leading-tight sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
+        <div
+          class="title-font leading-tight text-3xl mb-4 font-medium text-gray-900"
         >
           View Artillery Load Test
-        </h1>
+        </div>
         <p class="mb-8 leading-relaxed">
           View Load Test results ran by Artillery without leaving the app.
         </p>

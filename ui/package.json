@@ -43,6 +43,7 @@
     "ramda": "^0.29.1",
     "sirv-cli": "^2.0.2",
     "slug": "^8.2.3",
+    "svelte-navigator": "^3.2.2",
     "svelte-preprocess": "^5.1.1",
     "svelte-router-spa": "^7.0.1"
   }

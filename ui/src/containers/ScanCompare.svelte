@@ -6,6 +6,7 @@
   import LoadingFlat from "../components/misccomponents/LoadingFlat.svelte";
   import { navigateTo } from "svelte-router-spa";
   import Breadcrumbs from "../components/misccomponents/Breadcrumbs.svelte";
+  import { revertSpecialCharUrl } from "../utils/utils";
 
   export let currentRoute;
   let allScans = [];
@@ -16,7 +17,7 @@
   onMount(async () => {
     allScans = await getAllScanSummaryFromUrl(
       currentRoute.namedParams.api,
-      currentRoute.namedParams.url
+      revertSpecialCharUrl(currentRoute.namedParams.url)
     );
 
     if (allScans.length > 0) {

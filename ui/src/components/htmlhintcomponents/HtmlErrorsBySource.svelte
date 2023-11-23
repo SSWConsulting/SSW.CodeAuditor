@@ -25,6 +25,7 @@
   
   $: allErrors = errors.concat(getCodeErrorsByFile(codeIssues));
   $: htmlHintIssues = getHtmlHintIssues(errors);
+  $: isLoading = !!Object.keys(loadingChecks).length;
   $: {
     customHtmlRuleOptions.forEach((rule) => {
       const ignoredUrls = rule.ignoredUrls?.split(',').filter(i => i) || [];
@@ -177,7 +178,7 @@
               {#if loadingChecks[getKey(url.url, key)]}
                 <LoadingCircle />
               {:else}
-                <input type="checkbox" on:click={() => toggleIgnore(url.url, key)} bind:checked={ignoredChecks[getKey(url.url, key)]} />
+                <input type="checkbox" disabled={isLoading} on:click={() => toggleIgnore(url.url, key)} bind:checked={ignoredChecks[getKey(url.url, key)]} />
               {/if}
             </td>
           </tr>

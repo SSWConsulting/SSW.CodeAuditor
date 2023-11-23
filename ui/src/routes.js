@@ -84,7 +84,7 @@ const routes = [
 		layout: AppLayout
 	},
 	{
-		name: '/howItWorks',
+		name: '/howItWorks/:page',
 		component: HowItWorks,
 		layout: AppLayout
 	},
