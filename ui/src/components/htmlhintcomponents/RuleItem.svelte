@@ -1,6 +1,6 @@
 <script>
   import { CONSTS } from '../../utils/utils';
-  import { RuleType, customOptionInputType } from '../../../../constants/rules.js';
+  import { RuleType, customOptionInputType } from '../../../../docker/rules.js';
   import { createEventDispatcher } from 'svelte';
   import LoadingCircle from '../misccomponents/LoadingCircle.svelte';
 

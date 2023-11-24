@@ -1,7 +1,7 @@
 const { getCustomHtmlRuleOptions } = require("./api");
 const HTMLHint = require("htmlhint").default;
 const findPhoneNumbersInText = require('libphonenumber-js').findPhoneNumbersInText;
-const { customHtmlHintRules } = require("../constants/rules.js");
+const { customHtmlHintRules } = require("./rules");
 
 exports.addCustomHtmlRule = async (apiToken, url) => {
   const customRuleOptions = await getCustomHtmlRuleOptions(apiToken, url);

@@ -22,6 +22,7 @@ COPY package*.json ./
 RUN npm install
 RUN node -v
 COPY *.js ./
+COPY constants ./constants
 
 FROM node:16-bullseye-slim
 

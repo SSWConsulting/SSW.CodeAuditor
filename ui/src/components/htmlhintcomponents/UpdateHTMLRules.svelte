@@ -10,7 +10,7 @@
   import { createEventDispatcher, onMount } from 'svelte';
   import slug from 'slug';
   import RuleItem from './RuleItem.svelte';
-  import { htmlHintRules, customHtmlHintRules } from "../../../../constants/rules.js";
+  import { htmlHintRules, customHtmlHintRules } from "../../../../docker/rules.js";
 
   export let url;
   export let show;

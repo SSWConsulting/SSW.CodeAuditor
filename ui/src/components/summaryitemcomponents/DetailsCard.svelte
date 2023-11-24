@@ -3,7 +3,7 @@
   import CodeSummary from "./CodeSummary.svelte";
   import LinkSummary from "./LinkSummary.svelte";
   import ArtillerySummary from "./ArtillerySummary.svelte";
-  import { htmlHintRules, customHtmlHintRules, RuleType } from "../../../../constants/rules.js";
+  import { htmlHintRules, customHtmlHintRules, RuleType } from "../../../../docker/rules.js";
 
   export let build = {};
   export let htmlRules;

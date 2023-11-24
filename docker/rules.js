@@ -1,17 +1,17 @@
-import { countryCodes } from './countries.js';
+const { countryCodes } = require('./countries.js');
 
-export const RuleType = {
+const RuleType = {
   Warning: 'Warning',
   Error: 'Error',
 };
 
-export const customOptionInputType = {
+const customOptionInputType = {
   dropDown: 'dropDown',
   singleTextBox: 'singleTextBox',
   multipleTextBoxes: 'multipleTextBoxes',
 };
 
-export const htmlHintRules = [
+const htmlHintRules = [
   {
     rule: 'tagname-lowercase',
     displayName: 'Tags - Tag names must be lowercase',
@@ -145,7 +145,7 @@ export const htmlHintRules = [
   },
 ];
 
-export const customHtmlHintRules = [
+const customHtmlHintRules = [
   {
     rule: 'code-block-missing-language',
     displayName: 'Syntax - Code blocks must have a language',
@@ -272,3 +272,5 @@ export const customHtmlHintRules = [
   },
   // Add new rule id below
 ];
+
+module.exports = { RuleType, customOptionInputType, htmlHintRules, customHtmlHintRules };

@@ -20,7 +20,7 @@ import {
   prepend,
   __,
 } from "ramda";
-import { customHtmlHintRules, htmlHintRules } from "../../../constants/rules.js";
+import { customHtmlHintRules, htmlHintRules } from "../../../docker/rules.js";
 
 export const truncate = (len) =>
   when(

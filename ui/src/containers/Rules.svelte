@@ -1,5 +1,5 @@
 <script>
-  import { htmlHintRules, customHtmlHintRules, RuleType } from "../../../constants/rules.js";
+  import { htmlHintRules, customHtmlHintRules, RuleType } from "../../../docker/rules.js";
 </script>
 <style>
   .link, .text {
