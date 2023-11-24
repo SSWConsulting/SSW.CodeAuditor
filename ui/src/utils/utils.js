@@ -20,6 +20,7 @@ import {
   prepend,
   __,
 } from "ramda";
+import { minimatch } from 'minimatch';
 import { customHtmlHintRules, htmlHintRules } from "../../../docker/rules.js";
 
 export const truncate = (len) =>
@@ -142,10 +143,7 @@ export const getMatchingIgnoredRules = (url, list) => {
 };
 
 export const globMatchUrl = (pattern, input) => {
-  var re = new RegExp(
-    pattern.replace(/([.?+^$[\]\\(){}|\/-])/g, "\\$1").replace(/\*/g, ".*")
-  );
-  return re.test(input);
+  return minimatch(input, pattern);
 };
 
 export const getHtmlIssuesDescriptions = pipe(
