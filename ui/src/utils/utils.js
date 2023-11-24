@@ -22,6 +22,7 @@ import {
   __,
 } from "ramda";
 import { countryCodes } from "./countries";
+import { minimatch } from 'minimatch';
 
 export const truncate = (len) =>
   when(
@@ -143,10 +144,7 @@ export const getMatchingIgnoredRules = (url, list) => {
 };
 
 export const globMatchUrl = (pattern, input) => {
-  var re = new RegExp(
-    pattern.replace(/([.?+^$[\]\\(){}|\/-])/g, "\\$1").replace(/\*/g, ".*")
-  );
-  return re.test(input);
+  return minimatch(input, pattern);
 };
 
 export const getHtmlIssuesDescriptions = pipe(
