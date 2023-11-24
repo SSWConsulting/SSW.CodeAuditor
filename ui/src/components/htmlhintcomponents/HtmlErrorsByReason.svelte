@@ -14,7 +14,7 @@
   import { fade } from "svelte/transition";
   import { createEventDispatcher } from "svelte";
   import Icon from "../misccomponents/Icon.svelte";
-  import { htmlHintRules, customHtmlHintRules } from "../../utils/utils.js";
+  import { htmlHintRules, customHtmlHintRules } from "../../../../docker/rules.js";
   import LoadingCircle from "../misccomponents/LoadingCircle.svelte";
 
   export let errors = [];

@@ -1,5 +1,6 @@
 <script>
-  import { CONSTS, RuleType, customOptionInputType } from '../../utils/utils';
+  import { CONSTS } from '../../utils/utils';
+  import { RuleType, customOptionInputType } from '../../../../docker/rules.js';
   import { createEventDispatcher } from 'svelte';
   import LoadingCircle from '../misccomponents/LoadingCircle.svelte';
 
@@ -29,19 +30,14 @@
   };
 
   const populateCustomOptions = () => {
-    if (customHtmlRuleOptions?.optionValue) {
-      if (
-        rule.customOptionInputType === customOptionInputType.multipleTextBoxes
-      ) {
-        multiInputValues = customHtmlRuleOptions.optionValue.split(',');
-      } else {
-        customOptionInput = customHtmlRuleOptions.optionValue;
-      }
+    if (rule.customOptionInputType === customOptionInputType.multipleTextBoxes) {
+      const customOptions = customHtmlRuleOptions?.optionValue ? customHtmlRuleOptions.optionValue.split(',') : (rule.customOptionDefaultValue || ['']);
+      multiInputValues = [...customOptions];
+    } else {
+      customOptionInput = customHtmlRuleOptions?.optionValue || rule.customOptionDefaultValue || '';
     }
 
-    if (customHtmlRuleOptions?.ignoredUrls) {
-      ignoredUrls = customHtmlRuleOptions.ignoredUrls.split(',');
-    }
+    ignoredUrls = customHtmlRuleOptions?.ignoredUrls ? customHtmlRuleOptions.ignoredUrls.split(',') : [''];
   };
 
   const addCustomRuleOptions = async (

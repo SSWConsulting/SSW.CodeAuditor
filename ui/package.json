@@ -38,6 +38,7 @@
     "github-markdown-css": "^5.4.0",
     "js-beautify": "^1.14.11",
     "lighthouse-viewer": "^0.1.235",
+    "minimatch": "^9.0.3",
     "pace-js": "^1.0.2",
     "query-string": "^8.1.0",
     "ramda": "^0.29.1",
