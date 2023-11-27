@@ -1,6 +1,5 @@
 const functions = require('firebase-functions');
 const express = require('express');
-const admin = require('firebase-admin');
 const R = require('ramda');
 const fetch = require('node-fetch');
 const Queue = require('better-queue');
@@ -55,7 +54,6 @@ const {
 } = require('./firestore');
 
 var cors = require('cors');
-admin.initializeApp();
 
 const app = express();
 // middlewares
