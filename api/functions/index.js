@@ -362,5 +362,5 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 	res.json(runId);
 });
 
-exports.api = functions.region('asia-east2').https.onRequest(app);
-exports.api2 = functions.region('asia-northeast1').https.onRequest(app);
+exports.api = functions.runWith({ timeoutSeconds: 540 }).region('asia-east2').https.onRequest(app);
+exports.api2 = functions.runWith({ timeoutSeconds: 540 }).region('asia-northeast1').https.onRequest(app);
