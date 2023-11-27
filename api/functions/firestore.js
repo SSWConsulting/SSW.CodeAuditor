@@ -12,14 +12,20 @@ exports.getUserIdFromApiKey = async (api) => {
 };
 
 exports.updateLastBuild = async (userId, apikey, runId) => {
-  await db.collection(CONSTANTS.users).doc(userId).set({
-    lastBuild: new Date(),
-    runId,
-  }, { merge: true });
-  await db.collection(CONSTANTS.runs).doc(runId).set({
-    apikey,
-    runId,
-  }, { merge: true });
+  await db.collection(CONSTANTS.users).doc(userId).set(
+    {
+      lastBuild: new Date(),
+      runId,
+    },
+    { merge: true }
+  );
+  await db.collection(CONSTANTS.runs).doc(runId).set(
+    {
+      apikey,
+      runId,
+    },
+    { merge: true }
+  );
 };
 
 exports.getRun = async (runId) => {
