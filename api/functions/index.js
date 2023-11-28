@@ -1,6 +1,5 @@
 const functions = require('firebase-functions');
 const express = require('express');
-const admin = require('firebase-admin');
 const R = require('ramda');
 const fetch = require('node-fetch');
 const Queue = require('better-queue');
@@ -55,7 +54,6 @@ const {
 } = require('./firestore');
 
 var cors = require('cors');
-admin.initializeApp();
 
 const app = express();
 // middlewares
@@ -364,5 +362,5 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 	res.json(runId);
 });
 
-exports.api = functions.region('asia-east2').https.onRequest(app);
-exports.api2 = functions.region('asia-northeast1').https.onRequest(app);
+exports.api = functions.runWith({ timeoutSeconds: 540 }).region('asia-east2').https.onRequest(app);
+exports.api2 = functions.runWith({ timeoutSeconds: 540 }).region('asia-northeast1').https.onRequest(app);

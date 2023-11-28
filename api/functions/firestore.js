@@ -1,45 +1,42 @@
-const admin = require('firebase-admin');
+const { initializeApp } = require('firebase-admin/app');
+const { getFirestore } = require('firebase-admin/firestore');
 const { CONSTANTS } = require('./consts');
 
-exports.getUserIdFromApiKey = (api) => {
-	return admin
-		.firestore()
-		.collection(CONSTANTS.users)
-		.where(CONSTANTS.apiKey, '==', api)
-		.get()
-		.then((x) => (x.docs.length === 1 ? x.docs[0].id : null));
+initializeApp();
+const db = getFirestore();
+
+exports.getUserIdFromApiKey = async (api) => {
+  const q = db.collection(CONSTANTS.users);
+  const users = await q.where(CONSTANTS.apiKey, '==', api).limit(1).get();
+  return users.empty ? null : users.docs[0].id;
 };
 
-exports.updateLastBuild = (userId, apikey, runId) => {
-	return admin
-		.firestore()
-		.collection(CONSTANTS.users)
-		.doc(userId)
-		.update({
-			lastBuild: new Date(),
-			runId,
-		})
-		.then(() =>
-			admin.firestore().collection(CONSTANTS.runs).doc(runId).set({
-				apikey,
-				runId,
-			})
-		);
+exports.updateLastBuild = async (userId, apikey, runId) => {
+  await db.collection(CONSTANTS.users).doc(userId).set(
+    {
+      lastBuild: new Date(),
+      runId,
+    },
+    { merge: true }
+  );
+  await db.collection(CONSTANTS.runs).doc(runId).set(
+    {
+      apikey,
+      runId,
+    },
+    { merge: true }
+  );
 };
 
-exports.getRun = (runId) =>
-	admin
-		.firestore()
-		.collection(CONSTANTS.runs)
-		.doc(runId)
-		.get()
-		.then((doc) => doc.data());
+exports.getRun = async (runId) => {
+  const doc = await db.collection(CONSTANTS.runs).doc(runId).get();
+  return doc.data();
+};
 
-exports.getAlertEmailConfig = () => {
-	return admin
-		.firestore()
-		.collection(CONSTANTS.config)
-		.doc('alertEmailConfig')
-		.get()
-		.then((doc) => doc.data())
+exports.getAlertEmailConfig = async () => {
+  const doc = await db
+    .collection(CONSTANTS.config)
+    .doc('alertEmailConfig')
+    .get();
+  return doc.data();
 };
