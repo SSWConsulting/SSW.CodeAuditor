@@ -16,6 +16,7 @@
   import Icon from "../misccomponents/Icon.svelte";
   import { htmlHintRules, customHtmlHintRules } from "../../../../docker/rules.js";
   import LoadingCircle from "../misccomponents/LoadingCircle.svelte";
+  import { tooltip } from '../misccomponents/tooltip';
 
   export let errors = [];
   export let codeIssues = [];
@@ -136,7 +137,7 @@
         <tr>
           <th class="w-2/12 px-4 py-2">Page ({error.pages.length})</th>
           <th class="w-9/12 px-4 py-2">Locations (line:col)</th>
-          <th class="w-1/12 px-4 py-2">Ignore</th>
+          <th class="w-1/12 px-4 py-2" title="Ignore URL for this rule in future scans" use:tooltip>Ignore</th>
         </tr>
       </thead>
       <tbody>

@@ -4,7 +4,7 @@
 	"scripts": {
 		"lint": "eslint .",
 		"test": "jest",
-		"serve": "firebase serve --only functions --port 5001",
+		"serve": "firebase serve -o 0.0.0.0 --only functions --port 5001",
 		"shell": "firebase functions:shell",
 		"start": "npm run shell",
 		"deploy": "firebase deploy --token $FIREBASETOKEN --only functions",
@@ -21,7 +21,7 @@
 		"cors": "^2.8.5",
 		"dotenv": "^8.6.0",
 		"express": "^4.18.2",
-		"firebase-admin": "^11.8.0",
+		"firebase-admin": "^11.11.1",
 		"firebase-functions": "^3.24.1",
 		"node-fetch": "^2.6.11",
 		"ramda": "^0.27.2",
