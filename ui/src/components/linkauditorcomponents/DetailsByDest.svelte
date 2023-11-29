@@ -25,7 +25,7 @@
     destinationsKeys = Object.keys(destinations);
 
     ignoredChecks = builds.reduce((acc, val) => {
-      acc[val.dst] = isInIgnored(val.dst, $ignoredUrls$);
+      acc[val.dst] = isInIgnored(val, $ignoredUrls$);
       return acc;
     }, {});
   }

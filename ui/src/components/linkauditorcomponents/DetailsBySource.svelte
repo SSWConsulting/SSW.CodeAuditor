@@ -23,7 +23,7 @@
     sources = groupBy(props(["src"]))(builds);
     sourcesKeys = Object.keys(sources);
     ignoredChecks = builds.reduce((acc, val) => {
-      acc[val.dst] = isInIgnored(val.dst, $ignoredUrls$);
+      acc[val.dst] = isInIgnored(val, $ignoredUrls$);
       return acc;
     }, {});
   }

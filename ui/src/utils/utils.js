@@ -134,7 +134,7 @@ export const getMatchingIgnoredRules = (url, list) => {
   const date = new Date();
   return list.filter((item) => {
     const pattern = item.urlToIgnore;
-    if (globMatchUrl(pattern, url)) {
+    if (globMatchUrl(pattern, url.src) || globMatchUrl(pattern, url.dst)) {
       const effectiveFrom = new Date(item.effectiveFrom);
       const timeElapsed = (date - effectiveFrom) / 86400000;
       return (item.ignoreDuration > 0 && timeElapsed < item.ignoreDuration) || item.ignoreDuration === -1;
