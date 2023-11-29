@@ -12,6 +12,7 @@
   export let builds = [];
   export let currentRoute;
   export let unscannableLinks;
+  export let scanUrl;
   
   let foundUnscannableLinks = [];
   foundUnscannableLinks = builds.filter(build => unscannableLinks.some(link => build.dst.includes(link)));
@@ -167,10 +168,10 @@
 
 {#if builds.length}
   {#if displayMode === 0}
-    <DetailsBySource {builds} on:ignore />
+    <DetailsBySource {builds} {scanUrl} on:ignore />
   {:else if displayMode === 1}
-    <DetailsByDest {builds} on:ignore />
+    <DetailsByDest {builds} {scanUrl} on:ignore />
   {:else}
-    <DetailsByReason {builds} on:ignore />
+    <DetailsByReason {builds} {scanUrl} on:ignore />
   {/if}
 {/if}

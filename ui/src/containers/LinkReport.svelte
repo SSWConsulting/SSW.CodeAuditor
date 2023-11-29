@@ -85,7 +85,8 @@
         on:ignore={url => showIgnore(data.buildDetails.summary.url, url, $userSession$)}
         builds={data.buildDetails ? data.buildDetails.brokenLinks : []}
         {currentRoute}
-        unscannableLinks={[]} 
+        unscannableLinks={[]}
+        scanUrl={data.buildDetails.summary.url}
       />
     </BuildDetailsSlot>
     {:catch error}
