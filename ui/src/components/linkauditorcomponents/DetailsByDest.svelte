@@ -11,6 +11,7 @@
   const dispatch = createEventDispatcher();
 
   export let builds = [];
+  export let scanUrl;
 
   const ignore = url => dispatch("ignore", url);
   let destinations;
@@ -25,7 +26,7 @@
     destinationsKeys = Object.keys(destinations);
 
     ignoredChecks = builds.reduce((acc, val) => {
-      acc[val.dst] = isInIgnored(val, $ignoredUrls$);
+      acc[val.dst] = isInIgnored(val, scanUrl, $ignoredUrls$);
       return acc;
     }, {});
   }
@@ -47,7 +48,7 @@
   const deleteIgnore = async (url) => {
     deleteUrl = url;
     loadingChecks[url] = true;
-    const rules = getMatchingIgnoredRules(url, $ignoredUrls$);
+    const rules = getMatchingIgnoredRules(url, scanUrl, $ignoredUrls$);
     try {
       for await (const rule of rules) {
         await deleteIgnoreUrl(rule, $userSession$);
