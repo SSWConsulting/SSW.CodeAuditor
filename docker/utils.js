@@ -436,23 +436,21 @@ exports.processBrokenLinks = (
         whitelistedUrls
           .filter(
             (ig) =>
-              ig.ignoreOn === ignoreOn &&
+              (ig.ignoreOn === "all" || ig.ignoreOn === ignoreOn) &&
               (+ig.ignoreDuration === -1 ||
                 diffInDaysToNow(new Date(ig.effectiveFrom)) <
                   +ig.ignoreDuration)
           )
           .map((ig) => ig.urlToIgnore)
-          .filter((ignorePattern) => minimatch(url, ignorePattern)).length > 0
+          .filter((ignorePattern) => 
+            minimatch(url.src, ignorePattern) || minimatch(url.dst, ignorePattern)
+          ).length > 0
       );
     };
 
     // return the URL only
     const all = badUrls
-      .filter(
-        (url) =>
-          isInIgnoredList(url.dst, "all", whitelistedUrls) ||
-          isInIgnoredList(url.dst, startUrl, whitelistedUrls)
-      )
+      .filter((url) => isInIgnoredList(url, startUrl))
       .map((x) => x.dst);
     return [...new Set(all)];
   };

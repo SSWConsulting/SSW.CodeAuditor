@@ -279,7 +279,7 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		...lhrSummary,
 		...atrSummary,
 		totalScanned,
-		whiteListed,
+		totalWhitelisted: whiteListed.length,
 		scanDuration,
 		url,
 		cloc,

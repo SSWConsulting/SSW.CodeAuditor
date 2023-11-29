@@ -152,7 +152,7 @@
               class="hidden"
               id="radio2"
               bind:group={ignoreOn}
-              value={url}
+              value={scanUrl}
               disabled={editing}
             />
             <label for="radio2" class:disabled={editing} class="flex items-center">
