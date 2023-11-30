@@ -8,7 +8,7 @@
   <a href="https://github.com/SSWConsulting/SSW.CodeAuditor/assets/67776356/7c995453-5b40-4ef2-94fb-0ea1feeb7182" target="_blank">
     <img
         class="object-cover object-center rounded bordered"
-        style="max-width: 85%;
+        style="max-width: 75%;
         alt="hero"
         src="https://github.com/SSWConsulting/SSW.CodeAuditor/assets/67776356/7c995453-5b40-4ef2-94fb-0ea1feeb7182"
     />
@@ -21,7 +21,7 @@
   <a href="https://github.com/SSWConsulting/SSW.CodeAuditor/assets/67776356/2e2f25a1-1c5f-4f82-afe2-72488b530666" target="_blank">
     <img
         class="object-cover object-center rounded bordered"
-        style="max-width: 85%;
+        style="max-width: 75%;
         alt="hero"
         src="https://github.com/SSWConsulting/SSW.CodeAuditor/assets/67776356/2e2f25a1-1c5f-4f82-afe2-72488b530666"
     />
