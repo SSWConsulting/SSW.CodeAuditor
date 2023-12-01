@@ -7,20 +7,24 @@
   import DetailsByReason from "./DetailsByReason.svelte";
   import { onMount } from "svelte";
   import { createEventDispatcher } from "svelte";
-  import { fade } from "svelte/transition";
 
   export let builds = [];
   export let currentRoute;
-  export let unscannableLinks;
   export let scanUrl;
-  
-  let foundUnscannableLinks = [];
-  foundUnscannableLinks = builds.filter(build => unscannableLinks.some(link => build.dst.includes(link)));
-  
-  // Filter out unscannable links
-  builds = builds.filter(build => !unscannableLinks.some(link => build.dst.includes(link)));
 
   let displayMode = 0;
+  let filterString = "";
+  let isIgnoredHidden = false;
+  let filteredBuilds = [];
+
+  $: {
+    const input = filterString.toLowerCase();
+    filteredBuilds = builds.filter(
+      x =>
+        x.src.toLowerCase().includes(input) ||
+        x.dst.toLowerCase().includes(input)
+    );
+  }
 
   const changeMode = m => {
     displayMode = m;
@@ -35,11 +39,6 @@
       changeMode(+currentRoute.queryParams.displayMode);
     }
   });
-
-  let hiddenRows = true;
-  const hideShow = () => {
-    hiddenRows = !hiddenRows
-  }
 </script>
 
 <style>
@@ -53,17 +52,10 @@
   .active:visited {
     color: #cc4141;
   }
-  .table-header {
-    text-align: right;
-    background: #eee;
-    border-style: solid;
-    border-color: #ccc;
-    border-width: 1px;
-  }
 </style>
 
 {#if builds.length}
-  <div class="my-4">
+  <div class="mt-4">
     <div
       class="bggrey text-sm textgrey leading-none border-2 border-gray-200
       rounded-full inline-flex">
@@ -102,53 +94,13 @@
       </button>
     </div>
   </div>
-{/if}
-{#if foundUnscannableLinks.length > 0}
   <div class="my-4">
-    <span class="font-bold mb-3">
-      <Icon
-          on:click={() => hideShow()}
-          cssClass="inline-block cursor-pointer">
-          {#if !hiddenRows}
-            <path d="M19 9l-7 7-7-7" />
-          {:else}
-            <path d="M9 5l7 7-7 7" />
-          {/if}
-        </Icon>
-      Unscannable Links ({foundUnscannableLinks.length}):
-    </span>
+    <input type="text" placeholder="Filter" class="w-80 rounded" bind:value={filterString} />
+    <button class="ml-2 rounded cursor-pointer" on:click={() => isIgnoredHidden = !isIgnoredHidden}>
+      <i class="{isIgnoredHidden ? 'fas fa-square-check' : 'far fa-square'}"></i>
+      <span>Hide Ignored</span>
+    </button>
   </div>
-  {#if !hiddenRows}
-    <span class="mb-3">
-      Some working links are reported as broken by CodeAuditor. They're marked as "unscannable". <a class="link hover:text-red-600" href="https://github.com/SSWConsulting/SSW.CodeAuditor/wiki/SSW-CodeAuditor-Knowledge-Base-(KB)#known-websites-that-has-anti-web-scraping-measures">Learn more on our KB.</a>
-    </span>
-    {#each foundUnscannableLinks as url}
-      <table 
-        class="table-fixed w-full md:table-auto mb-8"
-        in:fade={{ y: 100, duration: 400 }}
-        out:fade={{ y: -100, duration: 200 }}>
-        <tbody>
-          <tr>
-            <th class="table-header md:table-cell md:w-2/12 sm:px-4 py-2">Source</th>
-            <td class="w-10/12 border px-4 py-2 break-all">
-              <a class="inline-block align-baseline link" target="_blank" href={url.src}>{url.src}</a>
-            </td> 
-          </tr>
-        
-          <tr>
-            <th class="table-header md:table-cell w-2/12 sm:px-4 py-2">Anchor Text</th>
-            <td class="md:table-cell w-10/12 border px-4 py-2 break-all">{url.link || ''}</td>
-          </tr>
-          <tr>
-            <th class="table-header w-2/12 sm:px-4 py-2">Link</th> 
-            <td class="w-10/12 border px-4 py-2 break-all">
-              <a class="inline-block align-baseline link" target="_blank" href={url.dst}>{url.dst}</a>
-            </td>    
-          </tr>
-        </tbody>
-      </table>
-    {/each}
-  {/if}
 {/if}
 {#if !builds.length}
   <div class="mb-6 text-center text-xl py-8">
@@ -168,10 +120,10 @@
 
 {#if builds.length}
   {#if displayMode === 0}
-    <DetailsBySource {builds} {scanUrl} on:ignore />
+    <DetailsBySource builds={filteredBuilds} {scanUrl} {isIgnoredHidden} on:ignore />
   {:else if displayMode === 1}
-    <DetailsByDest {builds} {scanUrl} on:ignore />
+    <DetailsByDest builds={filteredBuilds} {scanUrl} {isIgnoredHidden} on:ignore />
   {:else}
-    <DetailsByReason {builds} {scanUrl} on:ignore />
+    <DetailsByReason builds={filteredBuilds} {scanUrl} {isIgnoredHidden} on:ignore />
   {/if}
 {/if}
