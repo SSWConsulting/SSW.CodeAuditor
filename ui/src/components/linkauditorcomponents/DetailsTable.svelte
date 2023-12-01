@@ -22,7 +22,8 @@
     filteredBuilds = builds.filter(
       x =>
         x.src.toLowerCase().includes(input) ||
-        x.dst.toLowerCase().includes(input)
+        x.dst.toLowerCase().includes(input) ||
+        x.link.toLowerCase().includes(input)
     );
   }
 
