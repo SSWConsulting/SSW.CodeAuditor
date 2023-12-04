@@ -362,5 +362,44 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 	res.json(runId);
 });
 
+app.get('/testing/randomizeHtmlPages/:pagecontent', async (req, res) => {
+	try {
+	  // You can customize the HTML template here if needed
+	  const htmlTemplate = `
+		<!DOCTYPE html>
+		<html lang="en">
+		<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title>Markdown in HTML</title>
+			<link rel="stylesheet" href="/styles/main.css">
+		</head>
+		<body>
+			<script>
+			// Example Markdown content
+			const markdownContent = '# Hello, *Markdown*!';
+			
+			// Convert Markdown to HTML
+			const htmlContent = marked(markdownContent);
+		
+			// Insert the HTML content into the div
+			document.getElementById('markdown-content').innerHTML = htmlContent;
+			</script>
+			<h1>Testing!!!</h1>
+			<h3>Content down here</h3>
+			<div id="markdown-content">
+				<!-- Your Markdown content will be inserted here dynamically -->
+			</div>
+		</body>
+		</html>
+	  `;
+  
+	  res.send(htmlTemplate);
+	} catch (error) {
+	  console.error(error);
+	  res.status(500).send('Internal Server Error');
+	}
+  });
+
 exports.api = functions.runWith({ timeoutSeconds: 540 }).region('asia-east2').https.onRequest(app);
 exports.api2 = functions.runWith({ timeoutSeconds: 540 }).region('asia-northeast1').https.onRequest(app);
