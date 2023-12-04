@@ -371,25 +371,20 @@ app.get('/testing/randomizeHtmlPages/:pagecontent', async (req, res) => {
 		<head>
 			<meta charset="UTF-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-			<title>Markdown in HTML</title>
+			<title>Test Sites</title>
 			<link rel="stylesheet" href="/styles/main.css">
 		</head>
 		<body>
-			<script>
-			// Example Markdown content
-			const markdownContent = '# Hello, *Markdown*!';
-			
-			// Convert Markdown to HTML
-			const htmlContent = marked(markdownContent);
-		
-			// Insert the HTML content into the div
-			document.getElementById('markdown-content').innerHTML = htmlContent;
-			</script>
-			<h1>Testing!!!</h1>
-			<h3>Content down here</h3>
-			<div id="markdown-content">
-				<!-- Your Markdown content will be inserted here dynamically -->
-			</div>
+			<h1>Testing Page!!!</h1>
+			<h1>Links to test scraping function:</h1>
+			<ul>
+				<li><a href="https://htmlhint.com">HTML Hint</a></li>
+				<li><a href="https://github.com">GitHub</a></li>
+				<li><a href="https://ssw.com.au/">SSW</a></li>
+			</ul>
+			<h1>Sample misspelling terms to test HTML scanning function: </h1>
+			<p>scrum, sprint, product owner, scrum master, product backlog, sprint review, sprint planning, sprint retrospective, sprint retro, specification review, spec review</p>
+			<p>a.k.a A.K.A AKA e-mail EMail can not web site user name task bar</p>
 		</body>
 		</html>
 	  `;
