@@ -6,6 +6,7 @@
   import AddRuleDoc from "../components/howitworkscomponents/AddRuleDoc.svelte";
   import CustomizeRuleDoc from "../components/howitworkscomponents/CustomizeRuleDoc.svelte";
   import ScanCompareDoc from "../components/howitworkscomponents/ScanCompareDoc.svelte";
+  import AddWorkflowDoc from "../components/howitworkscomponents/AddWorkflowDoc.svelte";
 </script>
 
 <div class="container grid grid-cols-7 mx-auto">
@@ -55,6 +56,13 @@
             <Link to="/howitworks/addingcustomrule">How to Add custom HTML Rule</Link>
           </span>
         </span>
+        <span class="textdark font-sans font-bold lg:pt-0 mx-2 sm:mx-4 mt-2">
+          <span
+            class="header-item"
+          >
+            <Link to="/howitworks/addingworkflow">How to Integrate CodeAuditor Workflow</Link>
+          </span>
+        </span>
       </div>
     </div>
     <div class="col-span-6">
@@ -81,6 +89,10 @@
 
         <Route path="/howitworks/addingcustomrule">
           <AddRuleDoc />
+        </Route>
+
+        <Route path="/howitworks/addingworkflow">
+          <AddWorkflowDoc />
         </Route>
 
         <Route>

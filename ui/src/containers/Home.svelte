@@ -8,21 +8,32 @@
     <div
       class="container grid grid-cols-2 gap-4 mx-auto px-5 py-24 items-center"
     >
-      <div>
+      <div class="flex flex-col">
         <div
-          class="title-font leading-tight text-4xl mb-10 font-medium text-gray-900"
+          class="title-font leading-tight text-4xl mb-12 font-medium text-gray-900"
         >
           Find the gremlins in your website
         </div>
-        <button
-          class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4 border hover:border-transparent rounded"
-          on:click={() => window.open("https://github.com/SSWConsulting/SSW.CodeAuditor", '_blank').focus()}
-        >
-          <i class="fa-brands fa-github fa-xl"></i>
-          <span class="ml-2 text-xl">
-            Check out our GitHub
-          </span>
-      </button>
+        <div class="mb-6">
+          <button
+            class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4 border hover:border-transparent rounded"
+            on:click={() => window.open("https://github.com/SSWConsulting/SSW.CodeAuditor", '_blank').focus()}
+          >
+            <i class="fa-brands fa-github fa-xl"></i>
+            <span class="ml-2 text-xl">
+              Check out our GitHub
+            </span>
+          </button>
+        </div>
+        <div class="mb-8">
+          <a 
+            class="link text-xl cursor-pointer"
+            target="_blank"
+            href="https://github.com/marketplace/actions/codeauditor-workflow"
+          >
+            Integrate CodeAuditor into your build pipeline
+          </a>
+        </div>
       </div>
       <div>
         <a href="/images/dashboard.png" target="_blank">

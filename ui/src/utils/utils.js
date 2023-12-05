@@ -126,15 +126,15 @@ export const getLoadThresholdResult = (value) => ({
   errors: value.errors,
 });
 
-export const isInIgnored = (url, list) => {
-  return getMatchingIgnoredRules(url, list).length > 0;
+export const isInIgnored = (url, scanUrl, list) => {
+  return getMatchingIgnoredRules(url, scanUrl, list).length > 0;
 };
 
-export const getMatchingIgnoredRules = (url, list) => {
+export const getMatchingIgnoredRules = (url, scanUrl, list) => {
   const date = new Date();
   return list.filter((item) => {
     const pattern = item.urlToIgnore;
-    if (globMatchUrl(pattern, url)) {
+    if ((item.ignoreOn === "all" || item.ignoreOn === scanUrl) && (globMatchUrl(pattern, url.src) || globMatchUrl(pattern, url.dst))) {
       const effectiveFrom = new Date(item.effectiveFrom);
       const timeElapsed = (date - effectiveFrom) / 86400000;
       return (item.ignoreDuration > 0 && timeElapsed < item.ignoreDuration) || item.ignoreDuration === -1;
