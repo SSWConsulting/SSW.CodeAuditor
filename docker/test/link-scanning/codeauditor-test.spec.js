@@ -4,7 +4,7 @@ const { runBrokenLinkCheck, readCsv } = require("../../utils")
 const { htmlHintConfig, fetchHtml } = require("../../api");
 const { addCustomHtmlRule } = require("../../customHtmlRules");
 
-let testUrls = "http://127.0.0.1:5001/sswlinkauditor-c1131/asia-east2/api/testing/randomizeHtmlPages/content";
+let testUrls = "https://asia-east2-sswlinkauditor-c1131.cloudfunctions.net/api/testing/randomizeHtmlPages/content";
 
 before(async () => {
   await addCustomHtmlRule();
@@ -12,18 +12,18 @@ before(async () => {
 
 describe(`Test CodeAuditor Run`, () => {
   it('Test CodeAuditor run', async () => {
-    // Scanning broken links
+    // Test Scanning links
     const [result, error] = runBrokenLinkCheck(testUrls);
     if (error) {
       console.log(`Error scanning broken links: ${error}`);
     }
     const scanResults = await readCsv("./all_links.csv");
     
-    // Check HTML Errors/Warnings
+    // Test Checking HTML Errors/Warnings
     let html = await fetchHtml(testUrls);
     const htmlHintResult = HTMLHint.verify(html, htmlHintConfig);
 
-    expect(scanResults.length).not.to.be(0);
-    expect(htmlHintResult.length).not.to.be(0);
+    expect(scanResults.length).to.be(5);
+    expect(htmlHintResult.length).to.be(21);
   }).timeout(10000)
 })
