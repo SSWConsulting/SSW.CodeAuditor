@@ -2,7 +2,6 @@ const expect = require('expect.js')
 const HTMLHint = require("htmlhint").default;
 const { runBrokenLinkCheck, readCsv } = require("../../utils")
 const { htmlHintConfig, fetchHtml } = require("../../api");
-const { addCustomHtmlRule } = require("../../customHtmlRules");
 
 let testUrls = "https://asia-east2-sswlinkauditor-c1131.cloudfunctions.net/api/testing/statichtmlpage";
 
