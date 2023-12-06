@@ -5,13 +5,7 @@ const ruldId = 'meta-tag-must-not-redirect'
 
 const ruleOptions = {}
 
-const {addCustomHtmlRule} = require('../customHtmlRules')
-
 ruleOptions[ruldId] = true
-
-before(async () => {
-  await addCustomHtmlRule();
-});
 
 describe(`Rules: ${ruldId}`, () => {
   it('Meta tags that does not refresh should not result in an error', () => {

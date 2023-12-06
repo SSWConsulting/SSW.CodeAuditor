@@ -5,13 +5,7 @@ const ruldId = "url-must-be-formatted-correctly";
 
 const ruleOptions = {};
 
-const { addCustomHtmlRule } = require("../customHtmlRules");
-
 ruleOptions[ruldId] = true;
-
-before(async () => {
-  await addCustomHtmlRule();
-});
 
 describe(`Rules: ${ruldId}`, () => {
   it("URL with full stop at the end should result in an error", () => {

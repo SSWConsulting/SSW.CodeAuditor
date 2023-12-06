@@ -5,13 +5,7 @@ const ruleId = "common-spelling-mistakes";
 
 const ruleOptions = {};
 
-const { addCustomHtmlRule } = require("../customHtmlRules");
-
 ruleOptions[ruleId] = true;
-
-before(async () => {
-  await addCustomHtmlRule();
-});
 
 describe(`Rules: ${ruleId}`, () => {
   it("terms used correctly should not result in an error", () => {

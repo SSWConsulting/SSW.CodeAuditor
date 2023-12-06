@@ -6,10 +6,6 @@ const { addCustomHtmlRule } = require("../../customHtmlRules");
 
 let testUrls = "https://asia-east2-sswlinkauditor-c1131.cloudfunctions.net/api/testing/statichtmlpage";
 
-before(async () => {
-  await addCustomHtmlRule();
-});
-
 describe(`Test CodeAuditor Run`, () => {
   it('Test CodeAuditor run', async () => {
     // Test Scanning links
@@ -24,6 +20,6 @@ describe(`Test CodeAuditor Run`, () => {
     const htmlHintResult = HTMLHint.verify(html, htmlHintConfig);
 
     expect(scanResults.length).to.be(5);
-    expect(htmlHintResult.length).to.be(21);
+    expect(htmlHintResult.length).to.be(22);
   }).timeout(10000)
 })
