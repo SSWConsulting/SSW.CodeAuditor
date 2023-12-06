@@ -362,7 +362,7 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 	res.json(runId);
 });
 
-app.get('/testing/randomizeHtmlPages/:pagecontent', async (req, res) => {
+app.get('/testing/statichtmlpage', async (req, res) => {
 	try {
 	  // You can customize the HTML template here if needed
 	  const htmlTemplate = `
