@@ -5,13 +5,7 @@ const ruldId = 'url-must-not-have-click-here'
 
 const ruleOptions = {}
 
-const {addCustomHtmlRule} = require('../customHtmlRules')
-
 ruleOptions[ruldId] = true
-
-before(async () => {
-  await addCustomHtmlRule();
-});
 
 describe(`Rules: ${ruldId}`, () => {
   it('URL text without words click here should not result in an error', () => {

@@ -5,13 +5,7 @@ const ruldId = 'anchor-names-must-be-valid'
 
 const ruleOptions = {}
 
-const {addCustomHtmlRule} = require('../customHtmlRules')
-
 ruleOptions[ruldId] = true
-
-before(async () => {
-  await addCustomHtmlRule();
-});
 
 describe(`Rules: ${ruldId}`, () => {
   it('Anchor name starts with letter and contains no space should not result in an error', () => {

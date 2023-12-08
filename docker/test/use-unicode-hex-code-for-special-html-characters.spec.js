@@ -5,13 +5,7 @@ const ruldId = "use-unicode-hex-code-for-special-html-characters";
 
 const ruleOptions = {};
 
-const { addCustomHtmlRule } = require("../customHtmlRules");
-
 ruleOptions[ruldId] = true;
-
-before(async () => {
-  await addCustomHtmlRule();
-});
 
 describe(`Rules: ${ruldId}`, () => {
   it("Non code tag with special char should result in an error", () => {

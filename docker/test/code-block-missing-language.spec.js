@@ -5,13 +5,7 @@ const ruldId = 'code-block-missing-language'
 
 const ruleOptions = {}
 
-const {addCustomHtmlRule} = require('../customHtmlRules')
-
 ruleOptions[ruldId] = true
-
-before(async () => {
-  await addCustomHtmlRule();
-});
 
 describe(`Rules: ${ruldId}`, () => {
   it('Code block with data language specifier should not result in an error', () => {

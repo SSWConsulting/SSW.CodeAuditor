@@ -5,13 +5,7 @@ const ruldId = 'font-tag-must-not-be-used'
 
 const ruleOptions = {}
 
-const {addCustomHtmlRule} = require('../customHtmlRules')
-
 ruleOptions[ruldId] = true
-
-before(async () => {
-  await addCustomHtmlRule();
-});
 
 describe(`Rules: ${ruldId}`, () => {
   it('Anything that is not font tag should not result in an error', () => {

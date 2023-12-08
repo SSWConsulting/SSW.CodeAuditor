@@ -5,13 +5,7 @@ const ruldId = "figure-must-use-the-right-code";
 
 const ruleOptions = {};
 
-const { addCustomHtmlRule } = require("../customHtmlRules");
-
 ruleOptions[ruldId] = true;
-
-before(async () => {
-  await addCustomHtmlRule();
-});
 
 describe(`Rules: ${ruldId}`, () => {
   it("Figures not wrapped in figcaption must result in an error", () => {

@@ -5,13 +5,7 @@ const ruldId = 'page-must-not-show-email-addresses'
 
 const ruleOptions = {}
 
-const {addCustomHtmlRule} = require('../customHtmlRules')
-
 ruleOptions[ruldId] = true
-
-before(async () => {
-  await addCustomHtmlRule();
-});
 
 describe(`Rules: ${ruldId}`, () => {
   it('Page that does not show email addresses should not result in an error', () => {
