@@ -5,13 +5,7 @@ const ruldId = "grammar-scrum-terms";
 
 const ruleOptions = {};
 
-const { addCustomHtmlRule } = require("../customHtmlRules");
-
 ruleOptions[ruldId] = true;
-
-before(async () => {
-  await addCustomHtmlRule();
-});
 
 describe(`Rules: ${ruldId}`, () => {
   it("Scrum terms that are cased correctly should not result in an error", () => {

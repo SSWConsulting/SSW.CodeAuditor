@@ -1,19 +1,13 @@
 const expect = require("expect.js");
 const HTMLHint = require("htmlhint").default;
 
-const ruldId = "detect-absolute-references-url-path-correctly";
+const ruleId = "detect-absolute-references-url-path-correctly";
 
 const ruleOptions = {};
 
-const { addCustomHtmlRule } = require("../customHtmlRules");
+ruleOptions[ruleId] = true;
 
-ruleOptions[ruldId] = true;
-
-before(async () => {
-  await addCustomHtmlRule();
-});
-
-describe(`Rules: ${ruldId}`, () => {
+describe(`Rules: ${ruleId}`, () => {
   it("Bad example should result in an error", () => {
     const code = '<a href="https://ssw.com.au/rules/when-you-use-mentions-in-a-pbi/" />';
     const messages = HTMLHint.verify(code, ruleOptions);

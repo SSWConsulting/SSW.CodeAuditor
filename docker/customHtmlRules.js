@@ -4,7 +4,7 @@ const findPhoneNumbersInText = require('libphonenumber-js').findPhoneNumbersInTe
 const { customHtmlHintRules } = require("./rules");
 
 exports.addCustomHtmlRule = async (apiToken, url) => {
-  const customRuleOptions = await getCustomHtmlRuleOptions(apiToken, url);
+  const customRuleOptions = apiToken && url ? await getCustomHtmlRuleOptions(apiToken, url) : [];
 
   HTMLHint.addRule({
     id: "code-block-missing-language",

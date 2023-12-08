@@ -5,13 +5,7 @@ const ruldId = 'link-must-not-show-unc'
 
 const ruleOptions = {}
 
-const {addCustomHtmlRule} = require('../customHtmlRules')
-
 ruleOptions[ruldId] = true
-
-before(async () => {
-  await addCustomHtmlRule();
-});
 
 describe(`Rules: ${ruldId}`, () => {
   it('Href that does not show UNC should not result in an error', () => {

@@ -5,8 +5,6 @@ const ruleId = "phone-numbers-without-links";
 
 const ruleOptions = {};
 
-const { addCustomHtmlRule } = require("../customHtmlRules");
-
 ruleOptions[ruleId] = true;
 
 const phoneNumbers = [
@@ -26,10 +24,6 @@ const nonPhoneNumbers = [
   "20231024.16",
   "20231102.4"
 ];
-
-before(async () => {
-  await addCustomHtmlRule();
-});
 
 describe(`Rules: ${ruleId}`, () => {
 
