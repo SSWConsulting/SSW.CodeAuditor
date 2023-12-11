@@ -152,21 +152,21 @@ const runHtmlHint = async (url, rules, customRuleOptions) => {
       })
       .map((x) => x.ruleId)
   );
-  
-  if (selectedRules.size) {
-    for (var i in htmlHintConfig) {
-      if (selectedRules.has(i) && !ignoredRules.has(i)) {
-        htmlHintConfig[i] = true;
-      } else {
-        htmlHintConfig[i] = false;
-      }
-    }
-  }
 
   try {
     let html = await fetchHtml(url);
   
     html = beautify_html(html, { indent_size: 2, space_in_empty_paren: true });
+
+    if (selectedRules.size) {
+      for (var i in htmlHintConfig) {
+        if (selectedRules.has(i) && !ignoredRules.has(i)) {
+          htmlHintConfig[i] = true;
+        } else {
+          htmlHintConfig[i] = false;
+        }
+      }
+    }
 
     return R.pipe(
       (html) => HTMLHint.verify(html, htmlHintConfig),
