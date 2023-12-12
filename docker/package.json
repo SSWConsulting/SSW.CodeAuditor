@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "mocha --recursive --require test/hooks.js"
+		"test": "mocha --recursive --require test/html-rules-testing/hooks.js"
 	},
 	"author": "",
 	"license": "ISC",

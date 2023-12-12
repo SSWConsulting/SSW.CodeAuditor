@@ -1,4 +1,4 @@
-const { addCustomHtmlRule } = require('../customHtmlRules');
+const { addCustomHtmlRule } = require('../../customHtmlRules');
 
 exports.mochaHooks = {
   async beforeAll() {
