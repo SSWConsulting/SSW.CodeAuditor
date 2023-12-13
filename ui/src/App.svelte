@@ -22,9 +22,6 @@
     measurementId: "G-2EFQW0NCSJ",
   });
 
-  // Initialize Firebase performance monitoring
-  const perf = firebase.performance();
-
   firebase.auth().onAuthStateChanged((user) => loginCompleted(user));
   // handle error from OAUTH redirect
   firebase
