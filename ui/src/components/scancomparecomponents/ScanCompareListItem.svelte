@@ -1,6 +1,16 @@
 <script>
+  import { createEventDispatcher, onMount } from "svelte";
   export let value;
   export let comparisonDifferences = {};
+
+  const dispatch = createEventDispatcher();
+  const getBrokenLinkDetails = () => dispatch('getBrokenLinkDetails', { runId: value.runId });
+  
+  onMount(() => {
+    getBrokenLinkDetails();
+  })
+  
+  $: value, getBrokenLinkDetails();
 
   function numberWithCommas(x) {
     if (x) {
@@ -24,7 +34,7 @@
     <span class="textgrey">{numberWithCommas(Math.abs(comparisonDifferences.brokenLinksDifference))}</span>
     {/if}
   </div>
-  <h3 class="col-span-2 font-bold font-sans textgrey">Broken Links {value.totalUniqueBrokenLinksExisting !== undefined ? `(${value.totalUniqueBrokenLinksExisting || 0} Existing)` : ''}</h3>
+  <h3 class="col-span-2 font-bold font-sans textgrey">Broken Links</h3>
 </div>
 
 <div class="grid grid-cols-2 grid-rows-2 text-start font-sans font-bold my-4">
