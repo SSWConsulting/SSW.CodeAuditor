@@ -174,6 +174,10 @@
     {:else}
     <div class="grid grid-cols-1 gap-y-4 py-6">
       <div class="float-left">
+        The Latest Scan contains <strong>{checkExistingBrokenLinks(latestScanBrokenLinks, secondLatestScanBrokenLinks).length}</strong> unfixed broken links 
+        and <strong>{checkNewBrokenLinks(latestScanBrokenLinks, secondLatestScanBrokenLinks).length}</strong> new broken links
+      </div>
+      <div class="float-left">
         <button
           on:click={() => downloadCSV(checkExistingBrokenLinks(latestScanBrokenLinks, secondLatestScanBrokenLinks))}
           title="Download CSV"
