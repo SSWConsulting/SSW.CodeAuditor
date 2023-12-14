@@ -111,7 +111,7 @@ export const deleteIgnoreUrl = async (url, user) => {
 	try {
 		await fetch(
 			`${CONSTS.API}/api/config/${user.apiKey}/ignore/${
-				slug(url.urlToIgnore) + '_' + slug(url.ignoreOn)
+				slug(url.urlToIgnore, {lower: false}) + '_' + slug(url.ignoreOn)
 			}`,
 			{
 				method: 'DELETE',
