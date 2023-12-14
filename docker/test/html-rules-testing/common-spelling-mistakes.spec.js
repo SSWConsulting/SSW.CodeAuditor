@@ -20,6 +20,12 @@ describe(`Rules: ${ruleId}`, () => {
     expect(messages.length).to.be(9);
   });
 
+  it("terms used incorrectly should result in an error", () => {
+    const code = "<p>can notice, can note</p>";
+    const messages = HTMLHint.verify(code, ruleOptions);
+    expect(messages.length).to.be(0);
+  });
+
   it("long string contains the character should not result in an error", () => {
     const code = `<div>wgARCAAKABQDASIAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAAAAIDBAX/xAAUAQE</div>`;
     const messages = HTMLHint.verify(code, ruleOptions);
