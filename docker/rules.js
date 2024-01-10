@@ -201,6 +201,12 @@ const customHtmlHintRules = [
       'web site',
       'user name',
       'task bar',
+      'log-on',
+      'logon',
+      'log-in',
+      'login',
+      'signin',
+      'sign-in',
     ],
   },
   {
