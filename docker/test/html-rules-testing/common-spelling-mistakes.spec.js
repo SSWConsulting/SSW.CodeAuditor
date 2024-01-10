@@ -9,15 +9,15 @@ ruleOptions[ruleId] = true;
 
 describe(`Rules: ${ruleId}`, () => {
   it("terms used correctly should not result in an error", () => {
-    const code = "<p>aka email cannot website username taskbar</p>";
+    const code = "<p>aka email cannot website username taskbar sign in log in log on</p>";
     const messages = HTMLHint.verify(code, ruleOptions);
     expect(messages.length).to.be(0);
   });
 
   it("terms used incorrectly should result in an error", () => {
-    const code = "<p>a.k.a A.K.A AKA e-mail EMail can not web site user name task bar</p>";
+    const code = "<p>a.k.a A.K.A AKA e-mail EMail can not web site user name task bar signin sign-in login log-in logon log-on</p>";
     const messages = HTMLHint.verify(code, ruleOptions);
-    expect(messages.length).to.be(9);
+    expect(messages.length).to.be(15);
   });
 
   it("terms used incorrectly should result in an error", () => {
