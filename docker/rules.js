@@ -270,6 +270,12 @@ const customHtmlHintRules = [
     ruleLink: 'https://rules.sonarsource.com/html/RSPEC-1094',
     type: RuleType.Warning,
   },
+  {
+    rule: 'auth-terms-spelling-mistakes',
+    displayName: 'Content - Do you use right terms for user authentication?',
+    ruleLink: 'https://www.ssw.com.au/rules/user-authentication-terms/',
+    type: RuleType.Warning,
+  },
   // Add new rule id below
 ];
 

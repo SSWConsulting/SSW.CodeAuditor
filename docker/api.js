@@ -182,4 +182,5 @@ exports.htmlHintConfig = {
   "use-unicode-hex-code-for-special-html-characters": true,
   "common-spelling-mistakes": true,
   "phone-numbers-without-links": true,
+  "auth-terms-spelling-mistakes": true,
 };
