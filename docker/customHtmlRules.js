@@ -547,5 +547,55 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
         });
       },
   });
+
+  HTMLHint.addRule({
+    id: "auth-terms-spelling-mistakes",
+    description:
+      "Checks common authentication terms.",
+    init: function (parser, reporter) {
+      var self = this;
+
+      parser.addListener("text", (event) => {
+        const spellings = [
+          'log on',
+          'logon',
+          'log in',
+          'Log on',
+          'Logon',
+          'Log in',
+        ];
+        if (event.raw) {
+          const pageContent = event.raw;
+          if (event.lastEvent) {
+            if (
+              event.lastEvent.tagName !== "a" && 
+              event.lastEvent.tagName !== "meta" && 
+              event.lastEvent.tagName !== "link" && 
+              event.lastEvent.tagName !== "script" && 
+              event.lastEvent.tagName !== "svg"
+            ) {
+              spellings.forEach((i) => {
+                var contentIndex = pageContent.indexOf(i);
+
+                let regex = new RegExp("\\b" + i + "\\b");
+                
+                const col = event.col + contentIndex;
+                
+                if ((regex.test(pageContent))) {
+                  reporter.warn(
+                    "Incorrect terms: '" + i + "'.",
+                    event.line,
+                    col,
+                    self,
+                    event.raw
+                  );
+                }
+              });
+            }
+          }
+        }
+      });
+    },
+  });
   // Add new custom rule below
 };
