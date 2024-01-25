@@ -65,7 +65,7 @@
     if (ignoredChecks[url.dst]) {
       await deleteIgnore(url);
     } else {
-      ignore(url.dst);
+      ignore(url);
     }
   };
 </script>
