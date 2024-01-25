@@ -135,7 +135,7 @@
                   {#if loadingChecks[val.dst]}
                     <LoadingCircle />
                   {:else}
-                    <input type="checkbox" on:click={() => toggleIgnore(val.dst)} bind:checked={ignoredChecks[val.dst]} />
+                    <input type="checkbox" on:click={() => toggleIgnore(val)} bind:checked={ignoredChecks[val.dst]} />
                   {/if}
                 </td>
               </tr>
