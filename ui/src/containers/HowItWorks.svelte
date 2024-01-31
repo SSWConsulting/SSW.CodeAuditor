@@ -7,27 +7,30 @@
   import CustomizeRuleDoc from "../components/howitworkscomponents/CustomizeRuleDoc.svelte";
   import ScanCompareDoc from "../components/howitworkscomponents/ScanCompareDoc.svelte";
   import AddWorkflowDoc from "../components/howitworkscomponents/AddWorkflowDoc.svelte";
+
+  export let currentRoute; 
+
 </script>
 
 <div class="container grid grid-cols-7 mx-auto">
   <Router>
     <div class="col-span-1">
       <div class="flex flex-col mt-8">
-        <span class="textdark font-sans font-bold lg:pt-0 mx-2 sm:mx-4">
+        <span class="{currentRoute.path === '/howitworks' ? 'textred' : 'textdark'} font-sans font-bold lg:pt-0 mx-2 sm:mx-4">
           <span
             class="header-item"
           >
             <Link to="/howitworks">Getting Started</Link>
           </span>
         </span>
-        <span class="textdark font-sans font-bold lg:pt-0 mx-2 sm:mx-4 mt-2">
+        <span class="{currentRoute.path === '/howitworks/howtouse' ? 'textred' : 'textdark'} font-sans font-bold lg:pt-0 mx-2 sm:mx-4 mt-2">
           <span
             class="header-item"
           >
             <Link to="/howitworks/howtouse">How to run a Scan</Link>
           </span>
         </span>
-        <span class="textdark font-sans font-bold lg:pt-0 mx-2 sm:mx-4 mt-2">
+        <span class="{currentRoute.path === '/howitworks/sendalertemails' ? 'textred' : 'textdark'} font-sans font-bold lg:pt-0 mx-2 sm:mx-4 mt-2">
           <span
             class="header-item"
           >
@@ -35,28 +38,28 @@
           </span>
         </span>
 
-        <span class="textdark font-sans font-bold lg:pt-0 mx-2 sm:mx-4 mt-2">
+        <span class="{currentRoute.path === '/howitworks/scancompare' ? 'textred' : 'textdark'} font-sans font-bold lg:pt-0 mx-2 sm:mx-4 mt-2">
           <span
             class="header-item"
           >
             <Link to="/howitworks/scancompare">How to Compare between Scans</Link>
           </span>
         </span>
-        <span class="textdark font-sans font-bold lg:pt-0 mx-2 sm:mx-4 mt-2">
+        <span class="{currentRoute.path === '/howitworks/customizerule' ? 'textred' : 'textdark'} font-sans font-bold lg:pt-0 mx-2 sm:mx-4 mt-2">
           <span
             class="header-item"
           >
             <Link to="/howitworks/customizerule">How to Customize HTML Rules</Link>
           </span>
         </span>
-        <span class="textdark font-sans font-bold lg:pt-0 mx-2 sm:mx-4 mt-2">
+        <span class="{currentRoute.path === '/howitworks/addingcustomrule' ? 'textred' : 'textdark'} font-sans font-bold lg:pt-0 mx-2 sm:mx-4 mt-2">
           <span
             class="header-item"
           >
             <Link to="/howitworks/addingcustomrule">How to Add custom HTML Rule</Link>
           </span>
         </span>
-        <span class="textdark font-sans font-bold lg:pt-0 mx-2 sm:mx-4 mt-2">
+        <span class="{currentRoute.path === '/howitworks/addingworkflow' ? 'textred' : 'textdark'} font-sans font-bold lg:pt-0 mx-2 sm:mx-4 mt-2">
           <span
             class="header-item"
           >
