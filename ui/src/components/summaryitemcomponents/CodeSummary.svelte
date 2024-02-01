@@ -32,7 +32,7 @@
     </div>
   {/if}
 
-  {#if codeSummary.htmlWarnings || codeSummary.htmlErrors}
+  {#if codeSummary.htmlWarnings !== null || codeSummary.htmlErrors !== null}
   <div class="col-span-1">
     <span class="block whitespace-nowrap font-sans">
       <i class="fas fa-exclamation-triangle" style="color: #d69e2e"></i>
