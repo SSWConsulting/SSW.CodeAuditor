@@ -32,6 +32,6 @@
 		"yargs": "^15.4.1"
 	},
 	"devDependencies": {
-		"artillery": "^2.0.4"
+		"artillery": "^1.7.9"
 	}
 }
