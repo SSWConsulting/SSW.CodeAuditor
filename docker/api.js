@@ -172,7 +172,7 @@ exports.htmlHintConfig = {
   "meta-tag-must-not-redirect": true,
   "font-tag-must-not-be-used": true,
   "url-must-not-have-space": true,
-  "url-must-not-have-click-here": true,
+  "link-must-be-descriptive": true,
   "page-must-not-show-email-addresses": true,
   "link-must-not-show-unc": true,
   "url-must-be-formatted-correctly": true,
