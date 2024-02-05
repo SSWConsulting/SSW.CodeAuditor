@@ -266,7 +266,7 @@ exports.runArtilleryLoadTest = (url, writeLog) => {
   writeLog(`start artillery`);
   try {
     const rs = execSync(
-      `./node_modules/.bin/artillery quick -d 20 -r 10 -k -o artilleryOut.json "${url}"`
+      `./node_modules/.bin/artillery quick --count 20 --num 100 -k -o artilleryOut.json "${url}"`
     ).toString();
     writeLog(`artillery check finished`, rs);
   } catch (e) {
