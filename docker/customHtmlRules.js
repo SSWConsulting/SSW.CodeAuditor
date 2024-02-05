@@ -202,23 +202,37 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
   });
 
   HTMLHint.addRule({
-    id: "url-must-not-have-click-here",
-    description: "URLs must not use word click here.",
+    id: "link-must-be-descriptive",
+    description: "Links must be descriptive.",
     init: function (parser, reporter) {
       var self = this;
+
+      var badLinkTerms = [
+        "click here",
+        "read this",
+        "more",
+        "link",
+        "this",
+        "here",
+        "http://",
+        "https://",
+        "www.",
+      ]
 
       parser.addListener("all", (event) => {
         if (event.tagName === "a") {
           if (event.lastEvent.raw) {
-            if (event.lastEvent.raw.toLowerCase() === "click here") {
-              reporter.warn(
-                "URLs must not use word click here.",
-                event.line,
-                event.col,
-                self,
-                event.raw
-              );
-            }
+            badLinkTerms.forEach(term => {
+              if (event.lastEvent.raw.toLowerCase() === term) {
+                reporter.warn(
+                  "Links must be descriptive.",
+                  event.line,
+                  event.col,
+                  self,
+                  event.raw
+                );
+              }
+            })
           }
         }
       });

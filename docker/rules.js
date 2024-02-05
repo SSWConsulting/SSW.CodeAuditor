@@ -172,9 +172,9 @@ const customHtmlHintRules = [
     type: RuleType.Warning,
   },
   {
-    rule: 'url-must-not-have-click-here',
-    displayName: 'Content - Do not use the words ‘click here’',
-    ruleLink: 'https://www.ssw.com.au/rules/relevant-words-on-links',
+    rule: 'link-must-be-descriptive',
+    displayName: 'Content - Links must be descriptive',
+    ruleLink: 'https://www.ssw.com.au/rules/descriptive-links/',
     type: RuleType.Warning,
   },
   {
@@ -226,6 +226,12 @@ const customHtmlHintRules = [
     type: RuleType.Error,
   },
   {
+    rule: 'auth-terms-spelling-mistakes',
+    displayName: 'Content - Do you use right terms for user authentication?',
+    ruleLink: 'https://www.ssw.com.au/rules/user-authentication-terms/',
+    type: RuleType.Warning,
+  },
+  {
     rule: 'anchor-names-must-be-valid',
     displayName: 'Links - Anchor links’ names must be valid',
     ruleLink: 'https://www.ssw.com.au/rules/chose-efficient-anchor-names',
@@ -265,12 +271,6 @@ const customHtmlHintRules = [
     rule: 'meta-tag-must-not-redirect',
     displayName: 'Header - Must not refresh or redirect',
     ruleLink: 'https://rules.sonarsource.com/html/RSPEC-1094',
-    type: RuleType.Warning,
-  },
-  {
-    rule: 'auth-terms-spelling-mistakes',
-    displayName: 'Content - Do you use right terms for user authentication?',
-    ruleLink: 'https://www.ssw.com.au/rules/user-authentication-terms/',
     type: RuleType.Warning,
   },
   // Add new rule id below
