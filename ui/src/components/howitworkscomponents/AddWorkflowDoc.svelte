@@ -22,7 +22,8 @@
 
 | name         | required | type  | description |
 | ------------ | ---      | ------ | ----------- |
-| GitHub_Token        | yes      | string | Your GitHub personal access token used to fetch data. Pass a secret by for instance using 'secrets.GH_TOKEN'. [Go here](https://github.com/settings/tokens/new?scopes=read:user) to generate one
+| GitHub_Token        | yes      | string | Your repo default GitHub token i.e. using "\${{ github.token }}"
+| | | | Make sure you grant the [token permission](https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs) to create issue
 | token     | yes      | string | Your personal CodeAuditor token that can be found on CodeAuditor's How It Works page
 | url       | yes      | string | The url used on your CodeAuditor scan
 
@@ -31,24 +32,22 @@
 \`\`\` yml
 name: Test CodeAuditor Workflow
 
-on:
-  workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions: 
+      issues: write
     steps:
       - uses: actions/checkout@v3
-      - name: CodeAuditor Workflow
-        uses: SSWConsulting/codeauditor-scan-site@1.0.0
+      - name: CodeAuditor Feedback Loop Workflow
+        uses: tombui99/codeauditor-github-workflow@v1.0.0
         with:
-          # Your Scan URL
-          url: $\{{ vars.SCANURL }}
           # Your CodeAuditor token
-          token: $\{{ secrets.CODEAUDITORTOKEN }}
+          token: \${{ secrets.CODEAUDITORTOKEN }}
+          # Your Scan URL
+          url: \${{ vars.SCANURL }}
           # Your GitHub Token
-          GitHub_Token: $\{{ secrets.GH_TOKEN }}
-
+          GitHub_Token: \${{ github.token }}
 \`\`\`
 `
 </script>
