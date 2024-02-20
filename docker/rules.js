@@ -192,12 +192,12 @@ const customHtmlHintRules = [
     customOptionsMessage: 'Please enter the terms to be reported:',
     customOptionInputType: customOptionInputType.multipleTextBoxes,
     customOptionDefaultValue: [
-      'e-mail ',
-      'EMail ',
-      'can not ',
-      'web site ',
-      'user name ',
-      'task bar ',
+      'e-mail',
+      'EMail',
+      'can not',
+      'web site',
+      'user name',
+      'task bar',
     ],
   },
   {
