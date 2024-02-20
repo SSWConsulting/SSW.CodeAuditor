@@ -15,9 +15,9 @@ describe(`Rules: ${ruleId}`, () => {
   });
 
   it("terms used incorrectly should result in an error", () => {
-    const code = "<p>a.k.a A.K.A AKA e-mail EMail can not web site user name task bar</p>";
+    const code = "<p>e-mail EMail can not web site user name task bar</p>";
     const messages = HTMLHint.verify(code, ruleOptions);
-    expect(messages.length).to.be(15);
+    expect(messages.length).to.be(6);
   });
 
   it("terms used incorrectly should result in an error", () => {

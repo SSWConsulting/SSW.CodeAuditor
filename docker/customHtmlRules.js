@@ -44,17 +44,17 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
 
       parser.addListener("text", (event) => {
         var scrumTerms = [
-          "scrum ",
-          "sprint ",
-          "product owner ",
-          "scrum master ",
-          "product backlog ",
-          "sprint review ",
-          "sprint planning ",
-          "sprint retrospective ",
-          "sprint retro ",
-          "specification review ",
-          "spec review "
+          "scrum",
+          "sprint",
+          "product owner",
+          "scrum master",
+          "product backlog",
+          "sprint review",
+          "sprint planning",
+          "sprint retrospective",
+          "sprint retro",
+          "specification review",
+          "spec review"
         ];
 
         if (event.raw) {
@@ -571,12 +571,12 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
 
       parser.addListener("text", (event) => {
         const spellings = [
-          'log on ',
-          'logon ',
-          'log in ',
-          'Log on ',
-          'Logon ',
-          'Log in ',
+          'log on',
+          'logon',
+          'log in',
+          'Log on',
+          'Logon',
+          'Log in',
         ];
         if (event.raw) {
           const pageContent = event.raw;
