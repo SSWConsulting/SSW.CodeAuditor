@@ -419,7 +419,7 @@ exports.processBrokenLinks = (
       // Filter out successful 2xx status code range (200-299) as well as 429, 403 and 503 (related to server access, not broken)
       .filter((url) => {
         const code = parseInt(url?.StatusCode);
-        return code >= 0 && code !== 429 && code !== 403 && code !== 503 && (code < 200 || code > 399);
+        return code >= 0 && code !== 429 && code !== 403 && code !== 503 && code !== 504 && (code < 200 || code > 399);
       })
       .map((x) => ({
         src: x.Source || "",
