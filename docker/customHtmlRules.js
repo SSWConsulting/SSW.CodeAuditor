@@ -65,7 +65,8 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
               event.lastEvent.tagName !== "meta" && 
               event.lastEvent.tagName !== "link" && 
               event.lastEvent.tagName !== "script" && 
-              event.lastEvent.tagName !== "svg"
+              event.lastEvent.tagName !== "svg" &&
+              event.lastEvent.tagName !== "figcaption"
             ) {
               scrumTerms.forEach((i) => {
                 var contentIndex = pageContent.indexOf(i);
@@ -476,7 +477,8 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
               event.lastEvent.tagName !== "meta" && 
               event.lastEvent.tagName !== "link" && 
               event.lastEvent.tagName !== "script" && 
-              event.lastEvent.tagName !== "svg"
+              event.lastEvent.tagName !== "svg" &&
+              event.lastEvent.tagName !== "figcaption"
             ) {
               spellings.forEach((i) => {
                 var contentIndex = pageContent.indexOf(i);
@@ -586,7 +588,8 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
               event.lastEvent.tagName !== "meta" && 
               event.lastEvent.tagName !== "link" && 
               event.lastEvent.tagName !== "script" && 
-              event.lastEvent.tagName !== "svg"
+              event.lastEvent.tagName !== "svg" &&
+              event.lastEvent.tagName !== "figcaption"
             ) {
               spellings.forEach((i) => {
                 var contentIndex = pageContent.indexOf(i);
