@@ -1,0 +1,20 @@
+{
+  "name": "markdownauditor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "htmlhint": "^0.11.0",
+    "libphonenumber-js": "^1.10.55",
+    "marked": "^12.0.0",
+    "node-fetch": "^2.7.0",
+    "slug": "^8.2.3",
+		"yargs": "^15.4.1"
+  }
+}
