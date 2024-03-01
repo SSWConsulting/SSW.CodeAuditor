@@ -86,6 +86,15 @@
               <Navigate to="/rules" styles="hover:no-underline">Rules</Navigate>
             </span>
           </span>
+          <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
+            <span
+              class="header-item {currentRoute.path === '/aboutus'
+                ? 'textred'
+                : 'textdark'}"
+            >
+              <Navigate to="/aboutus" styles="hover:no-underline">About Us</Navigate>
+            </span>
+          </span>
         </div>
         {#if $isLoggedIn}
           <div class="lg:mt-1 mx-4 lg:mx-0 mt-4 md:mt-2">
