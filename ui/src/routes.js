@@ -74,7 +74,8 @@ const routes = [
 		layout: AppLayout
 	},
 	{
-		name: '/error',
+		name: '404',
+		path: '404',
 		component: ErrorPage,
 		layout: AppLayout
 	},
