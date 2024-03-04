@@ -35,7 +35,7 @@
       getDifferences();
       loading = false;
     } else {
-      navigateTo('/error')
+      navigateTo('/404')
     }
   });
 
