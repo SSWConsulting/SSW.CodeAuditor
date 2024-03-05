@@ -1,4 +1,5 @@
 <script>
+  import { navigateTo } from "svelte-router-spa";
 </script>
 <div class="container mx-auto">
   <div class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
@@ -19,18 +20,6 @@
       <p>
         The secondary primary challenge stemmed from the management of false positive occurrences, exacerbating the complexity of error fixing within our process.
       </p>
-      <div style="display: inline-flex">
-        <a href="https://ssw.com.au/">
-          <img width="129" alt="image" src="/images/SSW-Logo.png">
-        </a>
-        <a href="https://ssw.com.au/people">
-          <img width="255" alt="image" src="/images/SSW-People-Logo.png">
-        </a>
-        <a href="https://ssw.com.au/rules">
-          <img width="240" alt="image" src="/images/SSW-Rules-Logo.png">
-        </a>
-      </div>
-      <h2 class="textred">We make complicated things simple</h2>
       <p>
         Managing the substantial volume of content within SSW Rules presented a formidable challenge. It necessitated the 
         allocation of additional resources and processing power to CodeAuditor's scan engine to ensure more consistent and stable scan runs. 
@@ -54,7 +43,18 @@
           Hence, we had to categorize the custom rules according to each framework, discerning which rules are applicable to Gatsby or NextJS, with the aim of mitigating false positive.
         </li>
       </ul> 
-      <h2 class="textred">Result</h2>
+      <div style="display: inline-flex">
+        <a href="https://ssw.com.au/">
+          <img width="129" alt="image" src="/images/SSW-Logo.png">
+        </a>
+        <a href="https://ssw.com.au/people">
+          <img width="255" alt="image" src="/images/SSW-People-Logo.png">
+        </a>
+        <a href="https://ssw.com.au/rules">
+          <img width="240" alt="image" src="/images/SSW-Rules-Logo.png">
+        </a>
+      </div>
+      <h2 class="textred">Problems Solved</h2>
       <p>
         Despite the significant volume of broken links and code warnings/errors found in these sites, the team diligently addressed each instance, ignoring false positives 
         and appropriately categorizing custom rules within their respective frameworks.
@@ -62,6 +62,21 @@
       <p>
         As a result of these efforts, recent scan results indicate the absence of any remaining broken links or code errors within SSW People and Rules.
       </p>
+      <a href="/images/perfect-scan-result-report.png" target="_blank">
+        <img
+          class="object-cover object-center rounded bordered"
+          alt="hero"
+          src="/images/perfect-scan-result-report.png"
+        />
+      </a>
+      <p><strong>Figure: Scan result on SSW Rules without any broken link and code errors/warnings</strong></p>
+      <h3>Want to find and fix your website code problems?
+      </h3>
+      <button 
+        type="button"
+        on:click={() => {navigateTo("/")}} 
+        class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4 border hover:border-transparent rounded"
+      >Get Started with CodeAuditor</button>
     </article>
   </div>
 </div>
