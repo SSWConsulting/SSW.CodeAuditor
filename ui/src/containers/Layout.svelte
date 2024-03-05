@@ -36,7 +36,7 @@
 
 <body class="flex flex-col min-h-screen">
   <main class="grow">
-    <nav class="items-center justify-between p-4 lg:h-24 bggrey mb-4">
+    <nav class="items-center justify-between p-4 bggrey mb-4">
       <div class="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-1 items-center text-center">
         <div class="mx-auto">
           <Navigate to="/">
@@ -50,15 +50,6 @@
         <div
           class="md:block justify-evenly pt-4 lg:pt-0 overflow-hidden"
         >
-          <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
-            <span
-              class="header-item {currentRoute.path === '/'
-                ? 'textred'
-                : 'textdark'}"
-            >
-              <Navigate to="/" styles="hover:no-underline">Home</Navigate>
-            </span>
-          </span>
           <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
             <span
               class="header-item {currentRoute.path.includes('/howitworks')
@@ -84,6 +75,15 @@
                 : 'textdark'}"
             >
               <Navigate to="/rules" styles="hover:no-underline">Rules</Navigate>
+            </span>
+          </span>
+          <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
+            <span
+              class="header-item {currentRoute.path === '/aboutus'
+                ? 'textred'
+                : 'textdark'}"
+            >
+              <Navigate to="/about" styles="hover:no-underline">About</Navigate>
             </span>
           </span>
         </div>
@@ -367,7 +367,7 @@
     max-width: 1280px;
   }
   img {
-    max-width: 400px;
+    max-width: 360px;
     height: auto;
   }
   footer {
