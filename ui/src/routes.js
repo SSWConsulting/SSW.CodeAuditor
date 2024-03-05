@@ -14,7 +14,7 @@ import ArtilleryReport from './containers/ArtilleryReport.svelte';
 import AppLayout from './containers/Layout.svelte';
 import ScanCompare from './containers/ScanCompare.svelte';
 import ErrorPage from './containers/ErrorPage.svelte';
-import AboutUs from './containers/AboutUs.svelte';
+import About from './containers/About.svelte';
 import CaseStudy from './containers/CaseStudy.svelte';
 
 const routes = [
@@ -46,12 +46,12 @@ const routes = [
 		layout: AppLayout
 	},
 	{
-		name: '/aboutus',
-		component: AboutUs,
+		name: '/about',
+		component: About,
 		layout: AppLayout
 	},
 	{
-		name: '/aboutus/casestudy/:project',
+		name: '/about/case-study/:project',
 		component: CaseStudy,
 		layout: AppLayout
 	},
@@ -86,7 +86,8 @@ const routes = [
 		layout: AppLayout
 	},
 	{
-		name: '/error',
+		name: '404',
+		path: '404',
 		component: ErrorPage,
 		layout: AppLayout
 	},

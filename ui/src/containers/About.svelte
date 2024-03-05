@@ -13,6 +13,7 @@
       </p>
       <p>
         We deliver scalable and extensible custom solutions with the future in mind. Our solutions improve businesses' bottom lines, with real time savings and long-term value. We will provide you with the competitive advantage you need.
+        <a href="https://ssw.com.au/company/about-us">Learn more about SSW.</a>
       </p>
       <h1>
         About CodeAuditor
@@ -63,7 +64,7 @@
       </div>
       <button 
         type="button"
-        on:click={() => {navigateTo("/aboutus/casestudy/ssw")}} 
+        on:click={() => {navigateTo("/about/case-study/ssw")}} 
         class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4 border hover:border-transparent rounded"
       >
         Read the case study

@@ -8,7 +8,8 @@
       <p>
         SSW presents an extensive range of products encompassing web applications with server-side rendering and static website generation,
         making them particularly well-suited for integration with CodeAuditor's scanning capabilities. Notable among these products are 
-        <strong>SSW Rules, SSW People</strong> and <strong>SSW Website</strong>. However, these platforms consist of a multitude of pages with numerous links, 
+        <a href="https://ssw.com.au/rules">SSW Rules</a>, <a href="https://ssw.com.au/people">SSW People</a> and 
+        <a href="https://ssw.com.au">SSW Website</a>. However, these platforms consist of a multitude of pages with numerous links, 
         particularly SSW Rules, which poses a significant challenge for CodeAuditor's scanning process. 
       </p>
       <p>
@@ -20,13 +21,13 @@
       </p>
       <div style="display: inline-flex">
         <a href="https://ssw.com.au/">
-          <img width="129" alt="image" src="https://github.com/SSWConsulting/SSW.CodeAuditor/assets/67776356/6c077ba5-111c-4e00-9067-f1f7cc3c5685">
+          <img width="129" alt="image" src="/images/SSW-Logo.png">
         </a>
         <a href="https://ssw.com.au/people">
-          <img width="255" alt="image" src="https://github.com/SSWConsulting/SSW.CodeAuditor/assets/67776356/8bce71b8-6f00-4253-8075-bd7353b27646">
+          <img width="255" alt="image" src="/images/SSW-People-Logo.png">
         </a>
         <a href="https://ssw.com.au/rules">
-          <img width="236" alt="image" src="https://github.com/SSWConsulting/SSW.CodeAuditor/assets/67776356/08771e12-7cbe-456e-8264-b1aeff3ca187">
+          <img width="240" alt="image" src="/images/SSW-Rules-Logo.png">
         </a>
       </div>
       <h2 class="textred">We make complicated things simple</h2>
