@@ -1,6 +1,7 @@
 <script>
   import { navigateTo } from "svelte-router-spa";
 </script>
+
 <div class="container mx-auto">
   <div class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
     <article class="markdown-body">
@@ -43,7 +44,7 @@
           Hence, we had to categorize the custom rules according to each framework, discerning which rules are applicable to Gatsby or NextJS, with the aim of mitigating false positive.
         </li>
       </ul> 
-      <div style="display: inline-flex">
+      <div class="logo">
         <a href="https://ssw.com.au/">
           <img width="129" alt="image" src="/images/SSW-Logo.png">
         </a>
@@ -70,13 +71,22 @@
         />
       </a>
       <p><strong>Figure: Scan result on SSW Rules without any broken link and code errors/warnings</strong></p>
-      <h3>Want to find and fix your website code problems?
-      </h3>
-      <button 
-        type="button"
-        on:click={() => {navigateTo("/")}} 
-        class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4 border hover:border-transparent rounded"
-      >Get Started with CodeAuditor</button>
+      <div class="mt-20 mb-20">
+        <h3>Want to find and fix your website code problems?
+        </h3>
+        <button 
+          type="button"
+          on:click={() => {navigateTo("/")}} 
+          class="bgred hover:bg-red-800 text-white font-semibold py-2 px-4 border hover:border-transparent rounded"
+        >Get Started with CodeAuditor</button>
+      </div>
+      <div></div>
     </article>
   </div>
 </div>
+
+<style>
+  .markdown-body a {
+    color: #cc4141
+  }
+</style>

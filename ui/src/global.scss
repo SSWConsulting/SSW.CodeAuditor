@@ -144,3 +144,9 @@ button:focus {
   transition: opacity 0.2s ease;
   z-index: 3000;
 }
+
+.logo {
+  display: flex; 
+  justify-content: space-around; 
+  margin: 2rem 0
+}
