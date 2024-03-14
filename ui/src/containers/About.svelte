@@ -1,7 +1,30 @@
 <script>
   import { navigateTo } from "svelte-router-spa";
+  import Icon from "../components/misccomponents/Icon.svelte";
+
 </script>
 <div class="container mx-auto">
+  <div>
+    <p class="hidden md:block text-sm textdark pb-3 pt-4">
+      <a
+        class="inline-block align-baseline text-blue hover:text-blue-darker"
+        href="/">
+        Home
+      </a>
+      <Icon cssClass="inline-block" height="20" width="20">
+        <path d="M9 5l7 7-7 7" />
+      </Icon>
+      <a
+        class="inline-block align-baseline text-blue hover:text-blue-darker"
+        href="/about">
+        About
+      </a>
+      <Icon cssClass="inline-block" height="20" width="20">
+        <path d="M9 5l7 7-7 7" />
+      </Icon>
+    </p>
+  </div>
+
   <div class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
     <article class="markdown-body">
       <h1>About SSW</h1>
