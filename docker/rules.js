@@ -198,6 +198,10 @@ const customHtmlHintRules = [
       'web site',
       'user name',
       'task bar',
+      'Ok',
+      'Okay',
+      'okay',
+      'o.k',
     ],
   },
   {
