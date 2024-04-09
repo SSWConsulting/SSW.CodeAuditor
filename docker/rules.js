@@ -201,6 +201,7 @@ const customHtmlHintRules = [
       'Ok',
       'Okay',
       'okay',
+      'o.k',
     ],
   },
   {
