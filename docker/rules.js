@@ -277,12 +277,6 @@ const customHtmlHintRules = [
     ruleLink: 'https://rules.sonarsource.com/html/RSPEC-1094',
     type: RuleType.Warning,
   },
-  {
-    rule: 'favicon-must-be-added',
-    displayName: 'Header - Must include favicon',
-    ruleLink: 'https://www.ssw.com.au/rules/favicon/',
-    type: RuleType.Warning,
-  },
   // Add new rule id below
 ];
 

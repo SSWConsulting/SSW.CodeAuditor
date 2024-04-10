@@ -614,46 +614,5 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
       });
     },
   });
-
-  HTMLHint.addRule({
-    id: "favicon-must-be-added",
-    description:
-      "Detect missing favicon in your website.",
-    init: function (parser, reporter) {
-      var self = this;
-
-      let headBegin = false;
-  
-      parser.addListener("tagstart", (event) => {
-        let tagName = event.tagName.toLowerCase(),
-        mapAttrs = parser.getMapAttrs(event.attrs);
-        if (tagName === 'head') {
-          headBegin = true
-        } 
-        
-        if (headBegin && tagName === 'link') {
-          if (mapAttrs["rel"]) {
-            if (!mapAttrs["rel"].includes('icon')) {
-              reporter.warn(
-                "Page must include favicon.",
-                event.line,
-                event.col,
-                self,
-                event.raw
-              );  
-            }
-          } else {
-            reporter.warn(
-              "Page must include favicon.",
-              event.line,
-              event.col,
-              self,
-              event.raw
-            );
-          }
-        } 
-      });
-    },
-  });
   // Add new custom rule below
 };

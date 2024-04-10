@@ -183,5 +183,4 @@ exports.htmlHintConfig = {
   "common-spelling-mistakes": true,
   "phone-numbers-without-links": true,
   "auth-terms-spelling-mistakes": true,
-  "favicon-must-be-added": true
 };
