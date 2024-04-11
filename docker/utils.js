@@ -13,6 +13,24 @@ const fetch = require('node-fetch');
 const beautify_html = require('js-beautify').html;
 const { getCustomHtmlRuleOptions } = require("./api");
 
+exports.CONSTANTS = {
+  NoFavIconMsg: 'No favicon found',
+  FoundFavIconMsg: 'Favicon found'
+};
+
+exports.handleNoFavIcon = (result) => {
+  // Check if array contains an item with message: 'Found'
+  let foundItem = result.find(item => item.message === this.CONSTANTS.FoundFavIconMsg);
+
+  if (foundItem) {
+    // If favicon found, remove all 'Not Found' items and 'Found' itself
+    return result.filter(item => item.message !== this.CONSTANTS.FoundFavIconMsg && item.message !== this.CONSTANTS.NoFavIconMsg);
+  } else {
+    // If favicon not found, return as it is
+    return result
+  }
+}
+
 exports.sendAlertEmail = async (email, emailConfig, scanSummary) => {
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
@@ -172,7 +190,6 @@ const runHtmlHint = async (url, rules, customRuleOptions) => {
       (html) => HTMLHint.verify(html, htmlHintConfig),
       R.map((x) => {
         delete x.evidence;
-        delete x.message;
         delete x.raw;
         const error = {
           ...x,
@@ -389,14 +406,18 @@ exports.runHtmlHint = async (startUrl, scannedUrls, writeLog, tokenApi) => {
   const rules = await getHTMLHintRules(tokenApi, startUrl);
   const customRuleOptions = await getCustomHtmlRuleOptions(tokenApi, startUrl);
 
-  const result = await Promise.all(
+  let result = await Promise.all(
     allGoodLinks.map((x) => runHtmlHint(x, rules, customRuleOptions))
   );
 
-  const [summary, details] = getHtmlHintDetails(result);
-  writeLog("summary of html issues found", summary);
-  writeLog("details of html issues", JSON.stringify(details, null, 2));
-  return [summary, details];
+  if (result) {
+    result = this.handleNoFavIcon(result[0])
+
+    const [summary, details] = getHtmlHintDetails(result);
+    writeLog("summary of html issues found", summary);
+    writeLog("details of html issues", JSON.stringify(details, null, 2));
+    return [summary, details];
+  }
 };
 
 /**
