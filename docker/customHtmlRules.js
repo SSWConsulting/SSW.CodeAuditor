@@ -2,6 +2,7 @@ const { getCustomHtmlRuleOptions } = require("./api");
 const HTMLHint = require("htmlhint").default;
 const findPhoneNumbersInText = require('libphonenumber-js').findPhoneNumbersInText;
 const { customHtmlHintRules } = require("./rules");
+const { CONSTANTS } = require("./utils")
 
 exports.addCustomHtmlRule = async (apiToken, url) => {
   const customRuleOptions = apiToken && url ? await getCustomHtmlRuleOptions(apiToken, url) : [];
@@ -633,18 +634,26 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
         
         if (headBegin && tagName === 'link') {
           if (mapAttrs["rel"]) {
-            if (!mapAttrs["rel"].includes('icon')) {
+            if (mapAttrs["rel"].includes('icon')) {
               reporter.warn(
-                "Page must include favicon.",
+                CONSTANTS.FoundFavIconMsg,
                 event.line,
                 event.col,
                 self,
                 event.raw
-              );  
+              );
+            } else {
+              reporter.warn(
+                CONSTANTS.NoFavIconMsg,
+                event.line,
+                event.col,
+                self,
+                event.raw
+              );
             }
           } else {
             reporter.warn(
-              "Page must include favicon.",
+              CONSTANTS.NoFavIconMsg,
               event.line,
               event.col,
               self,
