@@ -79,11 +79,16 @@
           </span>
           <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
             <span
-              class="header-item {currentRoute.path === '/aboutus'
+              class="header-item {currentRoute.path === '/about'
                 ? 'textred'
                 : 'textdark'}"
             >
               <Navigate to="/about" styles="hover:no-underline">About</Navigate>
+            </span>
+          </span>
+          <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
+            <span>
+              <a target="_blank" href="https://ssw.com.au/company/contact-us" styles="hover:no-underline">Contact SSW</a>
             </span>
           </span>
         </div>
