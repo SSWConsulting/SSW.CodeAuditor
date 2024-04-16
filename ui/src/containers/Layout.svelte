@@ -87,8 +87,8 @@
             </span>
           </span>
           <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
-            <span>
-              <a target="_blank" href="https://ssw.com.au/company/contact-us" styles="hover:no-underline">Contact SSW</a>
+            <span class="header-item cursor-pointer">
+              <a target="_blank" href="https://ssw.com.au/company/contact-us" style="text-decoration: none">Contact SSW</a>
             </span>
           </span>
         </div>
