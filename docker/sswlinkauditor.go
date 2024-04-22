@@ -63,10 +63,12 @@ func getClient() *http.Client {
 }
 
 func addClientHeaders(r *http.Request) {
-    r.Header.Add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36")
-	r.Header.Set("Cache-Control", "no-cache")
-	r.Header.Set("Connection", "keep-alive")
-	r.Header.Set("Accept-Encoding", "*")
+	if r != nil {
+		r.Header.Add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36")
+		r.Header.Set("Cache-Control", "no-cache")
+		r.Header.Set("Connection", "keep-alive")
+		r.Header.Set("Accept-Encoding", "*")
+	}
 }
 
 func check(link Link, linkch chan LinkStatus, number int) {
@@ -78,8 +80,10 @@ func check(link Link, linkch chan LinkStatus, number int) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	r, e := http.NewRequestWithContext(ctx, "GET", link.url, nil)
-	addClientHeaders(r)
-	r.Header.Add("Accept", "*/*")
+	if r != nil {
+		addClientHeaders(r)
+		r.Header.Add("Accept", "*/*")
+	}
 	dnsErr := new(net.DNSError)
 
 	if e != nil {
