@@ -413,7 +413,7 @@ app.post('/createReportIssue', async (req, res) => {
 		res.send(`Failed to create issue report: ${err.message}`);
 	});
 	if (resp.ok) {
-		res.send(`GitHub Issue Report created for scan on ${url}`)
+		res.send(`GitHub Issue Report created`)
 	}
 })
 
