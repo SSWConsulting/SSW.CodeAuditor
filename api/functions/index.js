@@ -396,5 +396,26 @@ app.get('/testing/statichtmlpage', async (req, res) => {
 	}
   });
 
+app.post('/createReportIssue', async (req, res) => {
+	const url = req.body.url;
+	const resp = await fetch(`https://api.github.com/repos/SSWConsulting/codeauditor-scan-site/issues`,
+	{
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${process.env.WORKFLOW_ACCESS_TOKEN}`
+		},
+		body: JSON.stringify({
+			"title": `🐛 Workflow Run Fails on ${url}`,
+			"body": `## Workflow scan fails on ${url} \n - [ ] Please Investigate and Fix`
+		})
+	}).catch((err) => {
+		res.send(`Failed to create issue report: ${err.message}`);
+	});
+	if (resp.ok) {
+		res.send(`GitHub Issue Report created for scan on ${url}`)
+	}
+})
+
 exports.api = functions.runWith({ timeoutSeconds: 540 }).region('asia-east2').https.onRequest(app);
 exports.api2 = functions.runWith({ timeoutSeconds: 540 }).region('asia-northeast1').https.onRequest(app);

@@ -56,6 +56,7 @@ jobs:
           touch .env
           echo AZURE_STORAGE_ACCOUNT=${{ secrets.AZURE_STORAGE_ACCOUNT }} >> .env
           echo AZURE_STORAGE_ACCESS_KEY=${{ secrets.AZURE_STORAGE_ACCESS_KEY }} >> .env 
+          echo WORKFLOW_ACCESS_TOKEN=${{ secrets.WORKFLOW_ACCESS_TOKEN }} >> .env
           echo MAX_SCAN_SIZE=${{ vars.MAX_SCAN_SIZE }} >> .env 
       - name: Deploy Function to Staging
         env:
