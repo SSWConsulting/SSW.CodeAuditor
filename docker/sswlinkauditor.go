@@ -336,6 +336,9 @@ func main() {
 			allUrls[status.url] = status
 		}
 
+		// Pause for 3 milliseconds before each job completes
+		time.Sleep(3 * time.Millisecond)
+
 	}
 
 	elapse := time.Since(start)
