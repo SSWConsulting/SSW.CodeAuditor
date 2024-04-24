@@ -267,7 +267,7 @@ exports.runBrokenLinkCheck = (url, maxthread) => {
   try {
     const comand = maxthread
       ? `./sswlinkauditor ${url} ${maxthread}`
-      : `./sswlinkauditor ${url}`;
+      : `./sswlinkauditor ${url} 100`; // Default maxthread to 100 (Golang default is 10000) 
     return [execSync(comand, { maxBuffer: 20000 * 1024 }).toString(), null];
   } catch (error) {
     return [null, error.message];
