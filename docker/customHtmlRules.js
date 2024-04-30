@@ -320,7 +320,7 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
         var tagName = event.tagName.toLowerCase(),
           mapAttrs = parser.getMapAttrs(event.attrs);
         if (tagName === "a") {
-          if (mapAttrs["href"]) {
+          if (mapAttrs["href"] && mapAttrs["href"] !== "/") {
             if (
               mapAttrs["href"].substr(mapAttrs["href"].length - 1) === "/" ||
               mapAttrs["href"].substr(mapAttrs["href"].length - 1) === "."
