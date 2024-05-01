@@ -148,6 +148,7 @@ exports.htmlHintConfig = {
   "code-block-missing-language": true,
   "tagname-lowercase": true,
   "attr-lowercase": true,
+  "attr-lowercase": ['viewBox'],
   "attr-value-double-quotes": true,
   "attr-value-not-empty": true,
   "attr-no-duplication": true,

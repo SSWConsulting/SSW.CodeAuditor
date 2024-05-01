@@ -20,6 +20,12 @@ describe(`Rules: ${ruldId}`, () => {
     expect(messages.length).to.be(1);
   });
 
+  it('URL with only "/" should not result in an error', () => {
+    const code = '<a href="/" />';
+    const messages = HTMLHint.verify(code, ruleOptions);
+    expect(messages.length).to.be(0);
+  });
+
   it("Correctly formatted URL with space should not result any error", () => {
     const code = '<a href="www.ssw.com.au/This is a rule" />';
     const messages = HTMLHint.verify(code, ruleOptions);
