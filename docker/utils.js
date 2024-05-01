@@ -52,12 +52,34 @@ exports.sendAlertEmail = async (email, emailConfig, scanSummary) => {
   });
 }
 
+const wrapText = (text, width, color) => {
+  let wrappedText = '';
+  let line = '';
+  const words = Array.isArray(text) ? text : text.split(' ');
+
+  for (let word of words) {
+      if ((line + word).length > width) {
+          wrappedText += line.trim() + '\n';
+          line = '';
+      }
+      line += word + ' ';
+  }
+
+  // Add any remaining text
+  if (line.length > 0) {
+      wrappedText += line.trim();
+  }
+
+  return chalk[color](wrappedText);
+}
+
 const consoleBox = (text, color) =>
   console.log(
-    boxen(chalk[color](text), {
+    boxen(wrapText(text, 70, color), {
       padding: 1,
       borderStyle: "single",
       borderColor: color,
+      textWrap: 'wrap', 
     })
   );
 
