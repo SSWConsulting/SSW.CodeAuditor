@@ -64,7 +64,7 @@ func getClient() *http.Client {
 
 func addClientHeaders(r *http.Request) {
 	if r != nil {
-		r.Header.Add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36")
+		r.Header.Add("User-Agent", "Mozilla/5.0 (compatible; SSWCodeAuditor; +https://codeauditor.com/)")
 		r.Header.Set("Cache-Control", "no-cache")
 		r.Header.Set("Connection", "keep-alive")
 		r.Header.Set("Accept-Encoding", "*")
@@ -335,6 +335,9 @@ func main() {
 			fmt.Println("DONE", crawling, status.url)
 			allUrls[status.url] = status
 		}
+
+		// Pause for 3 milliseconds before each job completes
+		time.Sleep(3 * time.Millisecond)
 
 	}
 
