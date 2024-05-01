@@ -399,7 +399,9 @@ app.get('/testing/statichtmlpage', async (req, res) => {
 app.post('/createReportIssue', async (req, res) => {
 	const url = req.body.url;
 	const dateReported = req.body.dateReported;
-	const resp = await fetch(`https://api.github.com/repos/SSWConsulting/codeauditor-scan-site/issues`,
+	const workflowId = req.body.workflowId;
+	const jobStatus = req.body.jobStatus;
+	const resp = await fetch(`https://api.github.com/repos/SSWConsulting/CodeAuditorErrorLog/issues`,
 	{
 		method: 'POST',
 		headers: {
@@ -408,7 +410,7 @@ app.post('/createReportIssue', async (req, res) => {
 		},
 		body: JSON.stringify({
 			"title": `🐛 Workflow Run Fails on ${url}`,
-			"body": `## Workflow fails on ${url} at ${dateReported} \n - [ ] Please Investigate and Fix`
+			"body": `## Workflow run fails \n URL: ${url} \n Workflow Id: ${workflowId} \n Date: ${dateReported} \n Job Status: ${jobStatus} \n - [ ] Please Investigate and Fix`
 		})
 	}).catch((err) => {
 		res.send(`Failed to create issue report: ${err.message}`);
