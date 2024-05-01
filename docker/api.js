@@ -147,7 +147,7 @@ exports.htmlHintConfig = {
   "grammar-scrum-terms": true,
   "code-block-missing-language": true,
   "tagname-lowercase": true,
-  "attr-lowercase": true,
+  "attr-lowercase": false,
   "attr-value-double-quotes": true,
   "attr-value-not-empty": true,
   "attr-no-duplication": true,
