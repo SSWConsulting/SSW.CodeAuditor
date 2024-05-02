@@ -230,7 +230,7 @@
             <a
               class="footer-link"
               target="_blank"
-              href="https://www.youtube.com/user/sswtechtalks"
+              href="https://www.youtube.com/@codeauditor"
               title="SSW on YouTube"
             >
               <svg
