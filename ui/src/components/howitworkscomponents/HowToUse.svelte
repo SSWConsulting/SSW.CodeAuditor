@@ -24,6 +24,22 @@ Scan any website for broken links, [HTML Issues](https://htmlhint.com), [Google 
 \`\`\` bash
 $ docker run sswconsulting/codeauditor ${tokenText} --url <URL>
 \`\`\`
+Optional setting you can add to a run:
+
+Add this flag to set the maximum number of threads if you don't want CodeAuditor to constantly send too many http requests (Golang default is 10000):
+\`\`\` bash
+--maxthread <int>
+\`\`\`
+
+Add this flag if you don't want to upload your scan publicly:
+\`\`\` bash
+--private
+\`\`\`
+
+Add this flag if you want to see the full log of the scan:
+\`\`\` bash
+--debug
+\`\`\`
 `;
 
     instructionSteps = `
