@@ -396,5 +396,32 @@ app.get('/testing/statichtmlpage', async (req, res) => {
 	}
   });
 
+app.post('/createReportIssue', async (req, res) => {
+	const url = req.body.url;
+	const dateReported = req.body.dateReported;
+	const repository = req.body.repository;
+	const triggeringActor = req.body.triggeringActor;
+	const repository_owner = req.body.repository_owner;
+	const CodeAuditorToken = req.body.CodeAuditorToken;
+	const workflowURL = req.body.workflowURL;
+	const resp = await fetch(`https://api.github.com/repos/SSWConsulting/CodeAuditorErrorLog/issues`,
+	{
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${process.env.WORKFLOW_ACCESS_TOKEN}`
+		},
+		body: JSON.stringify({
+			"title": `🐛 Workflow Run Fails on ${url}`,
+			"body": `## Workflow run fails \n URL: ${url} \n Date: ${dateReported} \n Workflow URL: ${workflowURL} \n CodeAuditor Token: ${CodeAuditorToken} \n Repository: ${repository} \n Triggering Actor: ${triggeringActor} \n Repository Owner: ${repository_owner} \n - [ ] Please Investigate and Fix`
+		})
+	}).catch((err) => {
+		res.send(`Failed to create issue report: ${err.message}`);
+	});
+	if (resp.ok) {
+		res.send(`GitHub Issue Report created`)
+	}
+})
+
 exports.api = functions.runWith({ timeoutSeconds: 540 }).region('asia-east2').https.onRequest(app);
 exports.api2 = functions.runWith({ timeoutSeconds: 540 }).region('asia-northeast1').https.onRequest(app);
