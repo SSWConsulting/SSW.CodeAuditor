@@ -34,7 +34,7 @@
     "date-fns": "^2.30.0",
     "export-to-csv": "^1.2.1",
     "firebase": "^10.6.0",
-    "firebase-tools": "^13.0.3",
+    "firebase-tools": "^13.6.0",
     "github-markdown-css": "^5.4.0",
     "js-beautify": "^1.14.11",
     "lighthouse-viewer": "^0.1.235",
