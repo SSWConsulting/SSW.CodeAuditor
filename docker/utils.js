@@ -850,9 +850,7 @@ exports.getFinalEval = (
     codeAuditorIssues.filter((x) => !!x.error).length === 0 &&
     htmlErrors.length === 0
   ) {
-    consoleBox(`No Errors Detected`, "green");
     return "PASS";
   }
-  consoleBox(`Errors Detected`, "red");
   return "FAIL";
 };
