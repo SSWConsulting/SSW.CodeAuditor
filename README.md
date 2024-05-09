@@ -25,11 +25,52 @@ SSW CodeAuditor is a code and link analysis tool that allows users to identify b
 
 1. Sign up for free at https://codeauditor.com and get your token
 2. Make sure [Docker](https://docs.docker.com/desktop/) is installed and running on your local machine
-3. Use the token from step 1 and run a command from the [Homepage](https://codeauditor.com/) 
+3. Use the token from step 1 and run the follow Docker command
+``` bash
+docker run sswconsulting/codeauditor <YourToken> --url <URL>
+```
 
 <p align='center'>
 <img src='https://user-images.githubusercontent.com/67776356/90726194-aa9cd280-e304-11ea-805c-d8780088d691.gif' width='700' alt='npm start' />
 </p>
+
+## CodeAuditor Workflow
+
+Additionally, you can also use CodeAuditor Workflow on GitHub Marketplace and run it as part of your GitHub Action simply by following the steps from [CodeAuditor Workflow](https://github.com/marketplace/actions/codeauditor-workflow)
+
+Make sure you specifying the following inputs:
+
+| name         | required | type  | description |
+| ------------ | ---      | ------ | ----------- |
+| GitHub_Token        | yes      | string | Your repo default GitHub token i.e. using "\${{ github.token }}"
+| | | | Make sure you grant the [token permission](https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs) to create issue
+| token     | yes      | string | Your personal CodeAuditor token that can be found on CodeAuditor's How It Works page
+| url       | yes      | string | The url used on your CodeAuditor scan
+| AlertIssue       | no      | boolean | Set to "true" if you want to switch on issue alert feature
+| GoMaxthread       | no      | number | Set the maximum number of threads for Golang web scraping (Default is 100)
+
+**Example usage**
+
+``` yml
+name: Test CodeAuditor Workflow
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions: 
+      issues: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: CodeAuditor Feedback Loop Workflow
+        uses: tombui99/codeauditor-github-workflow@v1.0.0
+        with:
+          # Your CodeAuditor token
+          token: \${{ secrets.CODEAUDITORTOKEN }}
+          # Your Scan URL
+          url: \${{ vars.SCANURL }}
+          # Your GitHub Token
+          GitHub_Token: \${{ github.token }}
+```
 
 ## To start developing CodeAuditor:
 We always welcome contributions. If you are interested in contributing, please take a look at our [CONTRIBUTING](./CONTRIBUTING.md) guide
