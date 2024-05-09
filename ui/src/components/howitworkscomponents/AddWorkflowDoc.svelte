@@ -26,6 +26,7 @@
 | | | | Make sure you grant the [token permission](https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs) to create issue
 | token     | yes      | string | Your personal CodeAuditor token that can be found on CodeAuditor's How It Works page
 | url       | yes      | string | The url used on your CodeAuditor scan
+| GoMaxthread |	no | number	| Set the maximum number of threads for Golang web scraping (Default is 100)
 
 ## Example usage
 

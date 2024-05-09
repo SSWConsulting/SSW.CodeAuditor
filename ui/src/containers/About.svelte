@@ -45,7 +45,7 @@
         What is CodeAuditor?
       </h3>
       <p>
-        CodeAuditor is a tool that automatically scans your website and its code to check
+        CodeAuditor is a tool that automatically scans your website and its code to check:
       </p>
       <ul class="list-disc">
         <li>Find broken Links - Links to pages which do not work</li>
