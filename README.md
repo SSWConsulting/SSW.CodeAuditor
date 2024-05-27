@@ -75,6 +75,18 @@ jobs:
 ## To start developing CodeAuditor:
 We always welcome contributions. If you are interested in contributing, please take a look at our [CONTRIBUTING](./CONTRIBUTING.md) guide
 
+### Table of Content
+
+1. [General](CONTRIBUTING.md#General)
+2. [System Pre-reqs](CONTRIBUTING.md#system-pre-reqs)
+3. [Required Tools](CONTRIBUTING.md#required-tools)
+4. [Change flow](CONTRIBUTING.md#change-flow)
+5. [Definition of Done](CONTRIBUTING.md#definition-of-done)
+6. [Deployment](CONTRIBUTING.md#Deployment)
+7. [Running the Project](CONTRIBUTING.md#Running-the-Project)
+8. [Testing your changes locally](CONTRIBUTING.md#Testing-your-changes-locally)
+8. [Adding your own custom HTML rule](CONTRIBUTING.md#Adding-your-own-custom-HTML-rule)
+
 ## Technologies used in CodeAuditor
 
 ### Front End:

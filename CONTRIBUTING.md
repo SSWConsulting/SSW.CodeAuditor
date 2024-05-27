@@ -44,7 +44,9 @@ The general flow for making a change to the script host is:
 
 ## Deployment
 
-🚀 Once your Pull Request has been approved, your changes will get deployed to production automatically
+🚀 Once your Pull Request has been approved and merged to ```staging``` branch, your changes will get deployed to Staging site automatically
+
+🚀 Once you are happy with the changes on Staging site, merge ```staging``` to ```main``` branch and your changes in Staging will get deployed to Production site automatically
 
 ## Running the Project
 
