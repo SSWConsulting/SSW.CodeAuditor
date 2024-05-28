@@ -7,7 +7,8 @@
 ## System Pre-reqs
 
  - OS
-    - Windows 10 (suggested)
+    - Windows 11
+    - Mac OS Sonoma
  - Language runtimes
     - Javascript
  - Editor
@@ -21,7 +22,7 @@
 
 The general flow for making a change to the script host is:
 1. 👍🏻 Make sure your Github account is in SSW Organization
-2. 🍴 Clone the repo (clone the project via `git clone <clone url here>`
+2. 🍴 Clone the repo (clone the project via `git clone https://github.com/SSWConsulting/SSW.CodeAuditor.git`
 3. 🌳 Create a branch for your change (generally use dev) (`git checkout -b my-change`)
 4. 🛠 Make your change
 5. ✔️ Test your changes
@@ -66,11 +67,11 @@ Once you are confident that the changes on the Staging site are stable and meet 
 
 #### Step 6: Monitor Production Deployment
 
-After the deployment to Production, monitor the site closely to ensure that the deployment was successful and that everything is working smoothly. Check for any errors or issues that might have slipped through the Staging testing phase. Address any problems immediately to maintain the stability and reliability of the Production site.
+After the deployment to Production, monitor the site closely on Firebase Console to ensure that the deployment was successful and that everything is working smoothly. Check for any errors or issues that might have slipped through the Staging testing phase. Address any problems immediately to maintain the stability and reliability of the Production site.
 
 ## Running the Project
 
-1. Chat with @tombui99 to setup the `env` files locally for the UI and API
+1. Go to SSW Keeper and look for "SSW CodeAuditor Secrets" to find the values for the `env` files for both the UI and API.
 
 2. To run the web UI, open your terminal in Visual Studio or Visual Studio Code and type the following:  
 ``` bash
