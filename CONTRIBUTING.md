@@ -7,7 +7,8 @@
 ## System Pre-reqs
 
  - OS
-    - Windows 10 (suggested)
+    - Windows 11
+    - Mac OS Sonoma
  - Language runtimes
     - Javascript
  - Editor
@@ -15,13 +16,13 @@
     
 ## Required Tools
 - Install nodejs via [NodeJs](https://nodejs.org/en/) (required versions: ^8.10.0 or ^10.13.0 or >=11.10.1)
-- Install Docker for Windows via [Docker for Windows](https://docs.docker.com/docker-for-windows/)
+- Install Docker Desktop via [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 ## Change flow
 
 The general flow for making a change to the script host is:
 1. 👍🏻 Make sure your Github account is in SSW Organization
-2. 🍴 Clone the repo (clone the project via `git clone <clone url here>`
+2. 🍴 Clone the repo (clone the project via `git clone https://github.com/SSWConsulting/SSW.CodeAuditor.git`
 3. 🌳 Create a branch for your change (generally use dev) (`git checkout -b my-change`)
 4. 🛠 Make your change
 5. ✔️ Test your changes
@@ -44,13 +45,33 @@ The general flow for making a change to the script host is:
 
 ## Deployment
 
-🚀 Once your Pull Request has been approved and merged to ```staging``` branch, your changes will get deployed to Staging site automatically
+#### Step 1: Create and Submit a Pull Request
 
-🚀 Once you are happy with the changes on Staging site, merge ```staging``` to ```main``` branch and your changes in Staging will get deployed to Production site automatically
+The first step in our deployment process is to ensure that all changes are properly reviewed before they are deployed. When you are ready to submit your changes, create a Pull Request (PR) from your feature branch. It is crucial to set the base branch of your PR to ```staging```. This ensures that your changes are first deployed to our Staging environment, where they can be thoroughly tested.
+
+#### Step 2: Approval and Merge to Staging
+
+Once your Pull Request is created, it will go through a review process. During this time, your team members will review the code, provide feedback, and request any necessary changes. After your PR has been approved, it is ready to be merged into the ```staging``` branch.
+
+#### Step 3: Automatic Deployment to Staging via GitHub Workflow
+
+As soon as your changes are merged into the ```staging``` branch, our CI/CD pipeline kicks in. We have set up a GitHub Workflow that listens for changes to the staging branch. This workflow will automatically deploy the latest code from the ```staging``` branch to our Staging site hosted on Firebase. This automated process ensures that the Staging environment is always up-to-date with the latest changes, providing a consistent platform for testing.
+
+#### Step 4: Verify Changes on Staging Site
+
+With the changes deployed to the Staging site, the next step is to verify that everything is functioning as expected. Take the time to thoroughly test your changes in the Staging environment. This might include running automated tests, performing manual testing, and validating that new features work as intended and that no regressions have been introduced.
+
+#### Step 5: Merge Staging to Main for Production Deployment
+
+Once you are confident that the changes on the Staging site are stable and meet all the requirements, it's time to deploy them to Production. To do this, merge the ```staging``` branch into the ```main``` branch. This merge will trigger another GitHub Workflow configured to deploy the code from the ```main``` branch to our Production site on Firebase. This automatic deployment ensures that the latest stable code is live on Production without any manual intervention.
+
+#### Step 6: Monitor Production Deployment
+
+After the deployment to Production, monitor the site closely on Firebase Console to ensure that the deployment was successful and that everything is working smoothly. Check for any errors or issues that might have slipped through the Staging testing phase. Address any problems immediately to maintain the stability and reliability of the Production site.
 
 ## Running the Project
 
-1. Chat with @tombui99 to setup the `env` files locally for the UI and API
+1. Go to SSW Keeper and look for "SSW CodeAuditor Secrets" to find the values for the `env` files for both the UI and API.
 
 2. To run the web UI, open your terminal in Visual Studio or Visual Studio Code and type the following:  
 ``` bash
@@ -65,7 +86,8 @@ $ cd docker
 $ docker build -t sswconsulting/codeauditor .
 ```
 
-4. To run the Firebase API, first you need to login to Firebase, chat with @tombui99 to grant you access
+4. To run the Firebase API, first you need to login to Firebase, chat with the Sysadmin or CodeAuditor team to grant you access to Firebase Console
+   
 Type the following in your terminal:
 ``` bash
 $ npm i -g firebase-tools
