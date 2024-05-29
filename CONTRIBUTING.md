@@ -16,7 +16,7 @@
     
 ## Required Tools
 - Install nodejs via [NodeJs](https://nodejs.org/en/) (required versions: ^8.10.0 or ^10.13.0 or >=11.10.1)
-- Install Docker for Windows via [Docker for Windows](https://docs.docker.com/docker-for-windows/)
+- Install Docker Desktop via [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 ## Change flow
 
@@ -86,7 +86,8 @@ $ cd docker
 $ docker build -t sswconsulting/codeauditor .
 ```
 
-4. To run the Firebase API, first you need to login to Firebase, chat with @tombui99 to grant you access
+4. To run the Firebase API, first you need to login to Firebase, chat with the Sysadmin or CodeAuditor team to grant you access to Firebase Console
+   
 Type the following in your terminal:
 ``` bash
 $ npm i -g firebase-tools
