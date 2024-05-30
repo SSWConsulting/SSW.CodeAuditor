@@ -15,7 +15,7 @@
     - Visual Studio or Visual Studio Code (latest version recommended)
     
 ## Required Tools
-- Install nodejs via [NodeJs](https://nodejs.org/en/) (required versions: ^8.10.0 or ^10.13.0 or >=11.10.1)
+- Install nodejs via [NodeJs](https://nodejs.org/en/) (required versions: >=16.20.1)
 - Install Docker Desktop via [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 ## Change flow
