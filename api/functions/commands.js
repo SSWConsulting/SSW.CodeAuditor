@@ -176,8 +176,8 @@ exports.addCustomHtmlRuleOptions = (api, data) => {
 exports.uploadLighthouseReport = (runId, lhr) =>
 	uploadBlob(BLOB.lhr, `${runId}.json`, JSON.stringify(lhr));
 
-exports.uploadArtilleryReport = (runId, atr) =>
-	uploadBlob(BLOB.atr, `${runId}.json`, JSON.stringify(atr));
+exports.uploadK6Report = (runId, k6Report) =>
+	uploadBlob(BLOB.k6Report, `${runId}.json`, JSON.stringify(k6Report));
 
 exports.uploadHtmlHintReport = (runId, htmlIssues) =>
 	uploadBlob(BLOB.htmlhint, `${runId}.json`, JSON.stringify(htmlIssues));

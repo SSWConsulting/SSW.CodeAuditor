@@ -12,7 +12,7 @@ const {
 	deleteIgnoreUrl,
 	updateConfig,
 	uploadLighthouseReport,
-	uploadArtilleryReport,
+	uploadK6Report,
 	uploadHtmlHintReport,
 	addPerformanceThreshold,
 	addLoadThreshold,
@@ -209,7 +209,7 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		scanDuration,
 		url,
 		lhr,
-		atr,
+		k6Report,
 		whiteListed,
 		cloc,
 		code,
@@ -226,26 +226,6 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 			accessibilityScore: lhr.categories.accessibility.score,
 			bestPracticesScore: lhr.categories['best-practices'].score,
 			seoScore: lhr.categories.seo.score
-		};
-	}
-
-	let atrSummary;
-	if (atr) {
-		atrSummary = {
-			timestamp: atr.aggregate.timestamp,
-			scenariosCreated: atr.aggregate.scenariosCreated,
-			scenariosCompleted: atr.aggregate.scenariosCompleted,
-			requestsCompleted: atr.aggregate.requestsCompleted,
-			rpsCount: atr.aggregate.rps.count,
-			latencyMax: atr.aggregate.latency.max,
-			latencyMin: atr.aggregate.latency.min,
-			latencyMedian: atr.aggregate.latency.median,
-			latencyP95: atr.aggregate.latency.p95,
-			latencyP99: atr.aggregate.latency.p99,
-			scenarioDurationMedian: atr.aggregate.scenarioDuration.median,
-			scenarioDurationP95: atr.aggregate.scenarioDuration.p95,
-			scenarioDurationP99: atr.aggregate.scenarioDuration.p99,
-			errors: Object.keys(atr.aggregate.errors).length
 		};
 	}
 
@@ -277,7 +257,6 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 	// insert summary first
 	const payload = {
 		...lhrSummary,
-		...atrSummary,
 		totalScanned,
 		totalWhitelisted: whiteListed.length,
 		scanDuration,
@@ -307,10 +286,10 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		console.log('uploading Lighthouse report to Blob storage - completed');
 	}
 
-	if (atr) {
-		console.log('uploading Artillery report to Blob storage');
-		await uploadArtilleryReport(runId, atr);
-		console.log('uploading Artillery report to Blob storage - completed');
+	if (k6Report) {
+		console.log('uploading k6 report to Blob storage');
+		await uploadK6Report(runId, k6Report);
+		console.log('uploading k6 report to Blob storage - completed');
 	}
 
 	if (htmlIssues) {
