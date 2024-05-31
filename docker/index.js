@@ -206,7 +206,10 @@ const processAndUpload = async (
   }
 
   if (args.k6) {
-    await readK6Results(K6RESULT, writeLog).then(val => k6Report = val);
+    await readK6Results(K6RESULT, writeLog).then(val => {
+      k6Report = val[0];
+      k6ReportSummary = val[1];
+    });
   }
 
   if (args.htmlhint) {
@@ -295,6 +298,7 @@ const processAndUpload = async (
   printResultsToConsole(
     results,
     lhrSummary,
+    k6ReportSummary,
     runId,
     badUrls,
     whiteListed,

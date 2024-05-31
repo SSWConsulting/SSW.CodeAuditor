@@ -370,7 +370,8 @@ exports.readK6Results = async (folder, writeLog) => {
           mean: values.total / values.count
         };
       }
-      resolve(k6Report);
+      const k6ReportSummary = k6Report.iteration_duration;
+      resolve([k6Report, k6ReportSummary]);
     });
 
     rl.on('error', (error) => {
@@ -618,6 +619,7 @@ const outputBadDataCsv = (records) => {
 exports.printResultsToConsole = (
   scannedUrls,
   lh,
+  k6ReportSummary,
   runId,
   badLinks,
   ignored,
@@ -625,6 +627,23 @@ exports.printResultsToConsole = (
   duration,
 ) => {
   let lhScaled;
+
+  if (k6ReportSummary) {
+    let strCount = "K6 Load Test Count: ";
+    let strMin = "K6 Load Test Min: ";
+    let strMax = "K6 Load Test Max: ";
+
+    let count = chalk(
+      `${strCount.padEnd(10)} ${k6ReportSummary.count.toString().padEnd(20)}`
+    );
+    let min = chalk(
+      `${strMin.padEnd(10)} ${k6ReportSummary.min.toString().padEnd(20)}`
+    );
+    let max = chalk(
+      `${strMax.padEnd(10)} ${k6ReportSummary.max.toString().padEnd(20)}`
+    );
+    consoleBox([count, min, max], "green");
+  }
 
   if (lh) {
     // output Lighthouse Score Box
