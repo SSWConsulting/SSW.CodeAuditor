@@ -229,6 +229,15 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		};
 	}
 
+	let k6ReportSummary;
+	if (k6Report) {
+		k6ReportSummary = {
+			k6Count: k6Report.iteration_duration.count,
+			k6Min: k6Report.iteration_duration.min,
+			k6Max: k6Report.iteration_duration.max,
+		}
+	}
+
 	const apikey = req.params.api;
 	const buildId = req.params.buildId;
 	const runId = newGuid();
@@ -257,6 +266,7 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 	// insert summary first
 	const payload = {
 		...lhrSummary,
+		...k6ReportSummary,
 		totalScanned,
 		totalWhitelisted: whiteListed.length,
 		scanDuration,

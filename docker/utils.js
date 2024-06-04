@@ -308,7 +308,7 @@ exports.runK6LoadTest = (url, writeLog) => {
   const scriptPath = path.resolve(__dirname, './k6-scripts/test.js');
   const resultPath = path.resolve(__dirname, './LoadTestResults.json');
 
-  const command = `k6 run --vus 10 --duration 4s --out json=${resultPath} ${scriptPath} -e TEST_URL=${url}`;
+  const command = `k6 run --vus 10 --duration 10s --out json=${resultPath} ${scriptPath} -e TEST_URL=${url}`;
 
   try {
     const output = execSync(command, { stdio: 'pipe' }).toString();

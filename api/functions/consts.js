@@ -21,7 +21,7 @@ exports.TABLE = {
 // blob storage names cannot have uppercase or numbers
 exports.BLOB = {
 	lhr: 'lhr',
-	k6Report: 'k6Report',
+	k6Report: 'k6report',
 	htmlhint: 'htmlhint',
 	codeAuditor: 'codeauditor',
 };
