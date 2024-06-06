@@ -11,6 +11,7 @@ import HowItWorks from './containers/HowItWorks.svelte';
 import Rules from './containers/Rules.svelte';
 import LighthouseReport from './containers/LighthouseReport.svelte';
 import ArtilleryReport from './containers/ArtilleryReport.svelte';
+import K6Report from './containers/K6Report.svelte';
 import AppLayout from './containers/Layout.svelte';
 import ScanCompare from './containers/ScanCompare.svelte';
 import ErrorPage from './containers/ErrorPage.svelte';
@@ -68,6 +69,11 @@ const routes = [
 	{
 		name: '/artillery/:id',
 		component: ArtilleryReport,
+		layout: AppLayout
+	},
+	{
+		name: '/k6/:id',
+		component: K6Report,
 		layout: AppLayout
 	},
 	{

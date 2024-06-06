@@ -66,11 +66,24 @@
       </Navigate>
     </span>
   </li>
-  <li class="mr-1" class:-mb-px={displayMode === 'Artillery'}>
-    <span class={baseClass + (displayMode === 'Artillery' ? active : '')}>
-      <Navigate to={'/artillery/' + build.summary.runId}>
-        Artillery Load Test
-      </Navigate>
-    </span>
-  </li>
+
+  {#if build.summary.latencyP95 !== undefined}
+    <li class="mr-1" class:-mb-px={displayMode === 'Artillery'}>
+      <span class={baseClass + (displayMode === 'Artillery' ? active : '')}>
+        <Navigate to={'/artillery/' + build.summary.runId}>
+          Artillery Load Test
+        </Navigate>
+      </span>
+    </li>
+  {/if}
+
+  {#if build.summary.k6Count !== undefined}
+    <li class="mr-1" class:-mb-px={displayMode === 'K6'}>
+      <span class={baseClass + (displayMode === 'K6' ? active : '')}>
+        <Navigate to={'/k6/' + build.summary.runId}>
+          K6 Load Test
+        </Navigate>
+      </span>
+    </li>
+  {/if}
 </ul>

@@ -47,18 +47,6 @@ exports.getPerfThreshold = (api, url) => {
   );
 };
 
-exports.getLoadThreshold = (api, url) => {
-  return fetch(`${endpoint}/api/config/${api}/loadthreshold/${slug(url)}`).then(
-    (res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        throw Error("Failed to load artillery threshold config");
-      }
-    }
-  );
-};
-
 exports.getHTMLHintRules = (api, url) => {
   return fetch(`${endpoint}/api/config/${api}/htmlhintrules/${slug(url)}`).then(
     (res) => {

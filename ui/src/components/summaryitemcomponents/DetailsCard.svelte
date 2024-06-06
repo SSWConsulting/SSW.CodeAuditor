@@ -2,6 +2,7 @@
   import LighthouseSummary from "./LighthouseSummary.svelte";
   import CodeSummary from "./CodeSummary.svelte";
   import LinkSummary from "./LinkSummary.svelte";
+  import K6Summary from "./K6Summary.svelte";
   import ArtillerySummary from "./ArtillerySummary.svelte";
   import { htmlHintRules, customHtmlHintRules, RuleType } from "../../../../docker/rules.js";
 
@@ -96,13 +97,24 @@
             <LighthouseSummary value={val} />
           </div>
         {/if}
-  
-        <div class="md:row-span-1 text-sm my-2">
-          <h2>
-            <span class="font-bold font-sans textgrey">ARTILLERY LOAD TEST</span>
-          </h2>
-          <ArtillerySummary value={val} />
-        </div>
+        
+        {#if val.k6Count !== undefined}
+          <div class="md:row-span-1 text-sm my-2">
+            <h2>
+              <span class="font-bold font-sans textgrey">K6 LOAD TEST</span>
+            </h2>
+            <K6Summary value={val} />
+          </div>
+        {/if}
+        
+        {#if val.latencyP95 !== undefined}
+          <div class="md:row-span-1 text-sm my-2">
+            <h2>
+              <span class="font-bold font-sans textgrey">ARTILLERY LOAD TEST</span>
+            </h2>
+            <ArtillerySummary value={val} />
+          </div>
+        {/if}
       </div>
       <div></div>
     </div>

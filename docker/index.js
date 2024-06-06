@@ -1,6 +1,5 @@
 const chalk = require("chalk");
 const yargs = require("yargs");
-const fetch = require("node-fetch");
 const {
   getConfigs,
   getPerfThreshold,
@@ -15,7 +14,6 @@ const {
 const {
   printTimeDiff,
   readLighthouseReport,
-  readArtilleryReport,
   consoleBox,
   readCsv,
   printResultsToConsole,
@@ -25,13 +23,14 @@ const {
   getFinalEval,
   sendAlertEmail,
   runLighthouseReport,
-  runArtilleryLoadTest
+  runK6LoadTest,
+  readK6Results
 } = require("./utils");
 const { htmlHintConfig } = require("./api");
 const { addCustomHtmlRule } = require("./customHtmlRules");
 
 const LIGHTHOUSEFOLDER = "./lhr.json";
-const ARTILLERYFOLDER = "./artilleryOut.json";
+const K6RESULT = "./LoadTestResults.json";
 
 const PACKAGE_CONFIG = require('./package-lock.json');
 
@@ -96,8 +95,8 @@ const _getAgrs = () => {
       type: "boolean",
       default: true,
     })
-    .option("artillery", {
-      describe: "Include Artillery test",
+    .option("k6", {
+      describe: "Include k6 load test",
       type: "boolean",
       default: true,
     })
@@ -137,28 +136,9 @@ const main = async () => {
     await runLighthouseReport(options.url);
   }
 
-  // Artillery
-  if (options.artillery) {
-    // Check if cookie is configured correctly to run Artillery
-    let setCookieValue = await fetch(options.url).then((res) => {
-      return res.headers.get('set-cookie');
-    });
-  
-    if (setCookieValue) {
-      let setCookieObj = {};
-      setCookieValue.split(/\s*;\s*/).forEach(pair => {
-        pair = pair.split(/\s*=\s*/);
-        setCookieObj[pair[0]] = pair.splice(1).join('=');
-      });
-      // if cookie domain does not match URL or cookie uses Azure ARRAffinity then Load Test will fail
-      if ((setCookieObj.Domain !== options.url) || (setCookieObj.ARRAffinity)) {
-        consoleBox("Artillery Test will fail because the Cookie in this URL does not match its Host domain or Cookie uses Azure ARRAffinity\nSee https://github.com/SSWConsulting/SSW.CodeAuditor/wiki/SSW-CodeAuditor-Knowledge-Base-(KB)#why-artillery-load-test-might-fail-on-your-url-and-how-you-can-fix-it to see how you can fix your website cookie setting to run Artillery Load Test", "red")
-      } else {
-        runArtilleryLoadTest(options.url, writeLog)   
-      }
-    } else {
-      runArtilleryLoadTest(options.url, writeLog)  
-    }
+  // k6 Load Test
+  if (options.k6) {
+    runK6LoadTest(options.url, writeLog)   
   }
 
   writeLog(
@@ -207,8 +187,7 @@ const processAndUpload = async (
   let loadThreshold;
   let lhrSummary;
   let lhr;
-  let atr;
-  let atrSummary;
+  let k6Report = {};
   let runId;
   let htmlIssuesSummary = null;
   let htmlIssues = null;
@@ -226,8 +205,11 @@ const processAndUpload = async (
     [lhr, lhrSummary] = readLighthouseReport(LIGHTHOUSEFOLDER, writeLog);
   }
 
-  if (args.artillery) {
-    [atr, atrSummary] = readArtilleryReport(ARTILLERYFOLDER, writeLog);
+  if (args.k6) {
+    await readK6Results(K6RESULT, writeLog).then(val => {
+      k6Report = val[0];
+      k6ReportSummary = val[1];
+    });
   }
 
   if (args.htmlhint) {
@@ -263,20 +245,9 @@ const processAndUpload = async (
         console.error("failed to load perfthreshold");
       }
     }
-
-    if (args.artillery) {
-      writeLog(`getting load test threshold for `, args.url);
-      try {
-        loadThreshold = await getLoadThreshold(args.token, args.url);
-        loadThreshold && writeLog(`Load Test Threshold`, loadThreshold);
-      } catch (error) {
-        console.error("failed to load loadThreshold");
-      }
-    }
   }
 
   let finalEval = getFinalEval(
-    atrSummary,
     lhrSummary,
     badUrls,
     codeAuditor,
@@ -308,7 +279,7 @@ const processAndUpload = async (
         badUrls,
         whiteListed,
         lhr,
-        atr,
+        k6Report,
         cloc: cloc,
         code: codeAuditor,
         htmlIssuesSummary,
@@ -327,12 +298,12 @@ const processAndUpload = async (
   printResultsToConsole(
     results,
     lhrSummary,
+    k6ReportSummary,
     runId,
     badUrls,
     whiteListed,
     htmlIssuesSummary,
-    took,
-    atrSummary
+    took
   );
 
   // Upload selected HTMLHint Rules to the scan

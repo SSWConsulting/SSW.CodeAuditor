@@ -2,6 +2,7 @@
   import CodeSummary from "../summaryitemcomponents/CodeSummary.svelte";
   import LinkSummary from "../summaryitemcomponents/LinkSummary.svelte";
   import LighthouseSummary from "../summaryitemcomponents/LighthouseSummary.svelte";
+  import K6Summary from "../summaryitemcomponents/K6Summary.svelte";
   import ArtillerySummary from "../summaryitemcomponents/ArtillerySummary.svelte";
   import { navigateTo } from "svelte-router-spa";
   import { format } from "date-fns";
@@ -95,13 +96,25 @@
           <CodeSummary value={val} />
         </div>
 
-        <div
-          class="row-span-1 col-span-4 text-sm my-2">
-          <h2>
-            <span class="font-bold font-sans textgrey">LOAD TEST</span>
-          </h2>
-          <ArtillerySummary value={val} />
-        </div>
+        {#if val.k6Count !== undefined}
+          <div
+            class="row-span-1 col-span-4 text-sm my-2">
+            <h2>
+              <span class="font-bold font-sans textgrey">K6 LOAD TEST</span>
+            </h2>
+            <K6Summary value={val} />
+          </div>
+        {/if}
+        
+        {#if val.latencyP95 !== undefined}
+          <div
+            class="row-span-1 col-span-4 text-sm my-2">
+            <h2>
+              <span class="font-bold font-sans textgrey">ARTILLERY LOAD TEST</span>
+            </h2>
+            <ArtillerySummary value={val} />
+          </div>
+        {/if}
 
         {#if val.performanceScore}
           <div

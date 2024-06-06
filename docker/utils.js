@@ -12,6 +12,8 @@ const fns = require('date-fns');
 const fetch = require('node-fetch');
 const beautify_html = require('js-beautify').html;
 const { getCustomHtmlRuleOptions } = require("./api");
+const path = require('path');
+const readline = require('readline');
 
 exports.CONSTANTS = {
   NoFavIconMsg: 'No favicon found',
@@ -297,21 +299,87 @@ exports.runBrokenLinkCheck = (url, maxthread) => {
 };
 
 /**
- * run Artillery Load Test
+ * run k6 Load Test
  * @param {func} writeLog - logging method
  * @param {string} url - URL to run
  */
-exports.runArtilleryLoadTest = (url, writeLog) => {
-  writeLog(`start artillery`);
+exports.runK6LoadTest = (url, writeLog) => {
+  writeLog('Running k6 load test')
+  const scriptPath = path.resolve(__dirname, './k6-scripts/test.js');
+  const resultPath = path.resolve(__dirname, './LoadTestResults.json');
+
+  const command = `k6 run --vus 10 --duration 10s --out json=${resultPath} ${scriptPath} -e TEST_URL=${url}`;
+
   try {
-    const rs = execSync(
-      `./node_modules/.bin/artillery quick -d 20 -r 10 -k -o artilleryOut.json "${url}"`
-    ).toString();
-    writeLog(`artillery check finished`, rs);
-  } catch (e) {
-    writeLog(`artillery check failed`, e);
+    const output = execSync(command, { stdio: 'pipe' }).toString();
+  } catch (error) {
+    writeLog(`k6 process error: ${error.message}`);
   }
 }
+
+/**
+ * parse Lighthouse Report
+ * @param {string} folder - lhr file
+ * @param {func} writeLog - logging method
+ */
+exports.readK6Results = async (folder, writeLog) => {
+  if (!fs.existsSync(folder)) {
+    console.log(
+      'ERROR => No k6 report found'
+    );
+    return [null, null];
+  }
+
+  writeLog(`Reading k6 report files`);
+
+  const input = fs.createReadStream(folder);
+  const rl = readline.createInterface({ input });
+  const metrics = {};
+
+  rl.on('line', (line) => {
+    try {
+      const data = JSON.parse(line);
+      if (!metrics[data.metric]) {
+        metrics[data.metric] = {
+          count: 0,
+          total: 0,
+          min: Infinity,
+          max: -Infinity,
+        };
+      }
+
+      const metric = metrics[data.metric];
+      metric.count += 1;
+      metric.total += data.data.value;
+      if (data.data.value < metric.min) metric.min = data.data.value;
+      if (data.data.value > metric.max) metric.max = data.data.value;
+    } catch (err) {
+      writeLog(`Error parsing line: ${err.message}`);
+    }
+  });
+  
+  return new Promise((resolve, reject) => {;
+    rl.on('close', () => {
+      const k6Report = {};
+      for (const [metric, values] of Object.entries(metrics)) {
+        k6Report[metric] = {
+          count: values.count,
+          total: values.total,
+          min: values.min,
+          max: values.max,
+          mean: values.total / values.count
+        };
+      }
+      const k6ReportSummary = k6Report.iteration_duration;
+      resolve([k6Report, k6ReportSummary]);
+    });
+
+    rl.on('error', (error) => {
+      writeLog(`Error reading file: ${error.message}`);
+      reject(error);
+    });
+  });
+};
 
 /**
  * run Lighthouse Report
@@ -367,41 +435,6 @@ exports.readLighthouseReport = (folder, writeLog) => {
     seoScore: lhr.categories.seo.score,
   };
   return [lhr, lhrSummary];
-};
-
-/**
- * parse Artillery Report
- * @param {string} folder - Artillery report file
- * @param {func} writeLog - logging method
- */
-exports.readArtilleryReport = (folder, writeLog) => {
-  if (!fs.existsSync(folder)) {
-    console.log("ERROR => No Artillery report found");
-    return [null, null];
-  }
-
-  writeLog(`Reading Artillery report files`);
-
-  const atr = JSON.parse(fs.readFileSync(`artilleryOut.json`).toString());
-
-  const atrSummary = {
-    timestamp: atr.aggregate.timestamp,
-    scenariosCreated: atr.aggregate.scenariosCreated,
-    scenariosCompleted: atr.aggregate.scenariosCompleted,
-    requestsCompleted: atr.aggregate.requestsCompleted,
-    rpsCount: atr.aggregate.rps.count,
-    latencyMin: atr.aggregate.latency.min,
-    latencyMax: atr.aggregate.latency.max,
-    latencyMedian: atr.aggregate.latency.median,
-    latencyP95: atr.aggregate.latency.p95,
-    latencyP99: atr.aggregate.latency.p99,
-    scenarioDurationMedian: atr.aggregate.scenarioDuration.median,
-    scenarioDurationP95: atr.aggregate.scenarioDuration.p95,
-    scenarioDurationP99: atr.aggregate.scenarioDuration.p99,
-    errors: Object.keys(atr.aggregate.errors).length,
-  };
-
-  return [atr, atrSummary];
 };
 
 /**
@@ -586,14 +619,31 @@ const outputBadDataCsv = (records) => {
 exports.printResultsToConsole = (
   scannedUrls,
   lh,
+  k6ReportSummary,
   runId,
   badLinks,
   ignored,
   htmlIssuesSummary,
   duration,
-  atrSummary
 ) => {
   let lhScaled;
+
+  if (k6ReportSummary) {
+    let strCount = "K6 Load Test Count: ";
+    let strMin = "K6 Load Test Min: ";
+    let strMax = "K6 Load Test Max: ";
+
+    let count = chalk(
+      `${strCount.padEnd(10)} ${k6ReportSummary.count.toString().padEnd(20)}`
+    );
+    let min = chalk(
+      `${strMin.padEnd(10)} ${k6ReportSummary.min.toString().padEnd(20)}`
+    );
+    let max = chalk(
+      `${strMax.padEnd(10)} ${k6ReportSummary.max.toString().padEnd(20)}`
+    );
+    consoleBox([count, min, max], "green");
+  }
 
   if (lh) {
     // output Lighthouse Score Box
@@ -635,68 +685,6 @@ exports.printResultsToConsole = (
     );
 
     consoleBox([avg, performance, bestPractice, seo], "green");
-  }
-
-  if (atrSummary) {
-    // Output Artillery report
-    let strTime = "Timestamp: ";
-    let strScenCreated = "Scenarios Created: ";
-    let strScenCompleted = "Scenarios Completed: ";
-    let strReqCompleted = "Requests Completed: ";
-    let strLatencyMedian = "Latency Median: ";
-    let strLatencyMin = "Latency Min: ";
-    let strLatencyMax = "Latency Max: ";
-    let strLatencyP95 = "Latency P95: ";
-    let strLatencyP99 = "Latency P99: ";
-    let strRps = "RPS: ";
-    let strScenarioDurationMedian = "Scenario Duration Median: ";
-    let strScenarioDurationP95 = "Scenario Duration P95: ";
-    let strScenarioDurationP99 = "Scenario Duration P99: ";
-    let strErrors = "Errors: ";
-
-    let timestamp = chalk(`${strTime} ${atrSummary.timestamp}`);
-    let scenCreated = chalk(`${strScenCreated} ${atrSummary.scenariosCreated}`);
-    let scenCompleted = chalk(
-      `${strScenCompleted} ${atrSummary.scenariosCompleted}`
-    );
-    let reqCompleted = chalk(
-      `${strReqCompleted} ${atrSummary.requestsCompleted}`
-    );
-    let latencyMax = chalk(`${strLatencyMax} ${atrSummary.latencyMax}`);
-    let latencyMin = chalk(`${strLatencyMin} ${atrSummary.latencyMin}`);
-    let latencyMedian = chalk(
-      `${strLatencyMedian} ${atrSummary.latencyMedian}`
-    );
-    let latencyP95 = chalk(`${strLatencyP95} ${atrSummary.latencyP95}`);
-    let latencyP99 = chalk(`${strLatencyP99} ${atrSummary.latencyP99}`);
-    let rps = chalk(`${strRps} ${atrSummary.rpsCount}`);
-    let scenarioDurationMedian = chalk(
-      `${strScenarioDurationMedian} ${atrSummary.scenarioDurationMedian}`
-    );
-    let scenarioDurationP95 = chalk(
-      `${strScenarioDurationP95} ${atrSummary.scenarioDurationP95}`
-    );
-    let scenarioDurationP99 = chalk(
-      `${strScenarioDurationP99} ${atrSummary.scenarioDurationP99}`
-    );
-    let errors = chalk(`${strErrors} ${atrSummary.errors}`);
-
-    consoleBox([
-      timestamp,
-      scenCreated,
-      scenCompleted,
-      reqCompleted,
-      latencyMax,
-      latencyMin,
-      latencyMedian,
-      latencyP95,
-      latencyP99,
-      rps,
-      scenarioDurationMedian,
-      scenarioDurationP95,
-      scenarioDurationP99,
-      errors,
-    ], "green");
   }
 
   // output htmlhint summary
@@ -754,7 +742,6 @@ exports.printResultsToConsole = (
 
 /**
  * Get Pass/Fail Evaluation
- * @param {array} atrSummary - Artillery data
  * @param {array} lh - lighthouse data
  * @param {array} badLinks - list of broken links
  * @param {array} codeAuditorIssues - List of Code Auditor Issues
@@ -763,7 +750,6 @@ exports.printResultsToConsole = (
  * @param {object} reqLoadThres - required load threshold param
  */
 exports.getFinalEval = (
-  atrSummary,
   lh,
   badLinks,
   codeAuditorIssues,
@@ -814,23 +800,6 @@ exports.getFinalEval = (
         "red"
       );
       failedThreshold = true;
-    }
-  }
-
-  // check if pass load test threshold or not
-  let failedLoadThres = false;
-  if (reqLoadThres) {
-    if (
-      (reqLoadThres.latencyMedian &&
-        atrSummary.latencyMedian < reqLoadThres.latencyMedian) ||
-      (reqLoadThres.latencyP95 &&
-        atrSummary.latencyP95 < reqLoadThres.latencyP95) ||
-      (reqLoadThres.latencyP99 &&
-        atrSummary.latencyP99 < reqLoadThres.latencyP99) ||
-      (reqLoadThres.errors && atrSummary.errors < reqLoadThres.errors)
-    ) {
-      consoleBox(`!!! FAILED Load Threshold`, "red");
-      failedLoadThres = true;
     }
   }
 
