@@ -123,7 +123,7 @@
       {#if htmlRules?.selectedRules}
         <div class="mb-2">
           <span class="cursor-pointer" on:click={handleClick} on:keydown={handleClick}>
-            <p class="inline">HTML Rules Scanned: {htmlRules.selectedRules.split(/[,]+/).length} / {totalRulesCount}</p>
+            <p class="inline">HTML Rules Scanned: {enabledRules.length} / {totalRulesCount}</p>
             <span type="button" class="inline" >
             {#if isCollapsedRules}
               <i class="fas fa-angle-up"></i>
