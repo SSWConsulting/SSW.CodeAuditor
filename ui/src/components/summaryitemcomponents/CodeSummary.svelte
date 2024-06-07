@@ -32,6 +32,17 @@
     </div>
   {/if}
 
+  {#if codeSummary.selectedHtmlHintRulesCount}
+    <div class="col-span-1">
+      <span class="block whitespace-nowrap font-sans">Rules</span>
+      <span
+        class="font-sans font-bold block lg:inline-block"
+        title="Number of rules enabled">
+        {codeSummary.selectedHtmlHintRulesCount} / {codeSummary.totalHtmlHintRulesCount}
+      </span>
+    </div>
+  {/if}
+
   {#if codeSummary.htmlWarnings !== null || codeSummary.htmlErrors !== null}
   <div class="col-span-1">
     <span class="block whitespace-nowrap font-sans">
