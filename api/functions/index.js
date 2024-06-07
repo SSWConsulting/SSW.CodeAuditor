@@ -213,6 +213,7 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		whiteListed,
 		cloc,
 		code,
+		selectedHtmlHintRules,
 		htmlIssuesSummary,
 		htmlIssues,
 		isPrivate,
@@ -283,6 +284,7 @@ app.post('/scanresult/:api/:buildId', async (req, res) => {
 		htmlErrors: htmlErrors ? htmlErrors : 0,
 		codeIssues: getCodeErrorSummary(code),
 		htmlIssuesList,
+		selectedHtmlHintRules,
 		isPrivate,
 		finalEval,
 		buildVersion

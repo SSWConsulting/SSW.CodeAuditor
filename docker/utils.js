@@ -466,12 +466,13 @@ exports.runHtmlHint = async (startUrl, scannedUrls, writeLog, tokenApi) => {
   );
 
   if (result) {
-    result = this.handleNoFavIcon(result[0])
+    result = this.handleNoFavIcon(result[0]);
+    const selectedRules = rules?.selectedRules ?? Object.keys(htmlHintConfig).join(",");
 
     const [summary, details] = getHtmlHintDetails(result);
     writeLog("summary of html issues found", summary);
     writeLog("details of html issues", JSON.stringify(details, null, 2));
-    return [summary, details];
+    return [summary, details, selectedRules];
   }
 };
 
