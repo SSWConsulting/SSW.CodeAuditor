@@ -194,6 +194,7 @@ const processAndUpload = async (
   let whiteListed = [];
   let allBadUrls = [];
   let badUrls = [];
+  let selectedHtmlHintRules;
 
   const results = await readCsv(file);
 
@@ -218,7 +219,7 @@ const processAndUpload = async (
     } else {
       await addCustomHtmlRule();
     };
-    [htmlIssuesSummary, htmlIssues] = await runHtmlHint(
+    [htmlIssuesSummary, htmlIssues, selectedHtmlHintRules] = await runHtmlHint(
       args.url,
       results,
       writeLog,
@@ -282,16 +283,28 @@ const processAndUpload = async (
         k6Report,
         cloc: cloc,
         code: codeAuditor,
+        selectedHtmlHintRules,
         htmlIssuesSummary,
         htmlIssues,
         isPrivate: args.private,
         finalEval,
-        buildVersion: PACKAGE_CONFIG.version
+        buildVersion: PACKAGE_CONFIG.version,
       });
     } catch (error) {
       console.error(
         `Error: Unable to push data to dashboard service => ${error.message}`
       );
+    }
+  }
+
+  // Upload selected HTMLHint Rules to the scan
+  if (args.htmlhint && selectedHtmlHintRules?.length > 0 && args.token && runId) {
+    const res = await addHTMLHintRulesForScan(args.token, args.url, runId, selectedHtmlHintRules)
+
+    if (res) {
+      console.log('Uploaded selected HTMLHint Rules successfully');
+    } else {
+      throw new Error("Failed to add custom html rules for each scan");
     }
   }
 
@@ -305,22 +318,6 @@ const processAndUpload = async (
     htmlIssuesSummary,
     took
   );
-
-  // Upload selected HTMLHint Rules to the scan
-  if (args.htmlhint && args.token && runId) {
-    const result = await getHTMLHintRules(args.token, args.url);
-    const selectedRules = result?.selectedRules ?? Object.keys(htmlHintConfig).join(",");
-
-    if (selectedRules?.length > 0) {
-      const res = await addHTMLHintRulesForScan(args.token, args.url, runId, selectedRules)
-  
-      if (res) {
-        console.log('Uploaded selected HTMLHint Rules successfully');
-      } else {
-        throw new Error("Failed to add custom html rules for each scan");
-      }
-    }
-  }
 
   // Send alert email to shared participants
   if (args.token) {
