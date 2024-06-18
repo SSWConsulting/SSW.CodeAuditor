@@ -232,6 +232,19 @@ export const getCodeSummary = (value) => {
         "HTML Issues:\n" + getHtmlIssuesDescriptions(value.htmlIssuesList),
     };
   }
+
+  if (value.selectedHtmlHintRules) {
+    const selectedRules = value.selectedHtmlHintRules.split(",");
+    const selectedCount = selectedRules.filter((rule) => htmlHintRules.find(x => x.rule === rule) || customHtmlHintRules.find(x => x.rule === rule)).length;
+    const totalRulesCount = htmlHintRules.length + customHtmlHintRules.length;
+
+    summary = {
+      ...summary,
+      selectedHtmlHintRulesCount: selectedCount,
+      totalHtmlHintRulesCount: totalRulesCount,
+    };
+  }
+
   return summary;
 };
 export const HTMLERRORS = [

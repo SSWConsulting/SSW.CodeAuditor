@@ -2,6 +2,7 @@
   import LighthouseSummary from "./LighthouseSummary.svelte";
   import CodeSummary from "./CodeSummary.svelte";
   import LinkSummary from "./LinkSummary.svelte";
+  import K6Summary from "./K6Summary.svelte";
   import ArtillerySummary from "./ArtillerySummary.svelte";
   import { htmlHintRules, customHtmlHintRules, RuleType } from "../../../../docker/rules.js";
 
@@ -10,6 +11,14 @@
   let val = build.summary;
 
   let isCollapsedRules = false
+
+  let totalRulesCount = htmlHintRules.length + customHtmlHintRules.length;
+  let enabledRules = [];
+  let disabledRules = [];
+
+  $: if (htmlRules?.selectedRules) {
+    initSelectedRules();
+  }
 
   function handleClick() {
     isCollapsedRules = !isCollapsedRules
@@ -20,7 +29,13 @@
     let selectedCustomHtmlHintRules = rules.map(rule => customHtmlHintRules.find(x => x.rule === rule));
     let allSelectedRuleLog = selectedHtmlHintRules.concat(selectedCustomHtmlHintRules).filter(x => x);
     let allHtmlRules = htmlHintRules.concat(customHtmlHintRules)
-    return allHtmlRules.map(rule => ({...rule, isRuleEnabled: allSelectedRuleLog.includes(rule)})).sort((a) => a.isRuleEnabled ? -1 : 1);
+    return allHtmlRules.map(rule => ({...rule, isRuleEnabled: allSelectedRuleLog.includes(rule)}));
+  };
+
+  const initSelectedRules = () => {
+    const rules = formatHtmlRule(htmlRules.selectedRules.split(/[,]+/));
+    enabledRules = rules.filter(rule => rule.isRuleEnabled);
+    disabledRules = rules.filter(rule => !rule.isRuleEnabled);
   };
 </script>
 
@@ -82,13 +97,24 @@
             <LighthouseSummary value={val} />
           </div>
         {/if}
-  
-        <div class="md:row-span-1 text-sm my-2">
-          <h2>
-            <span class="font-bold font-sans textgrey">ARTILLERY LOAD TEST</span>
-          </h2>
-          <ArtillerySummary value={val} />
-        </div>
+        
+        {#if val.k6Count !== undefined}
+          <div class="md:row-span-1 text-sm my-2">
+            <h2>
+              <span class="font-bold font-sans textgrey">K6 LOAD TEST</span>
+            </h2>
+            <K6Summary value={val} />
+          </div>
+        {/if}
+        
+        {#if val.latencyP95 !== undefined}
+          <div class="md:row-span-1 text-sm my-2">
+            <h2>
+              <span class="font-bold font-sans textgrey">ARTILLERY LOAD TEST</span>
+            </h2>
+            <ArtillerySummary value={val} />
+          </div>
+        {/if}
       </div>
       <div></div>
     </div>
@@ -97,7 +123,7 @@
       {#if htmlRules?.selectedRules}
         <div class="mb-2">
           <span class="cursor-pointer" on:click={handleClick} on:keydown={handleClick}>
-            <p class="inline">HTML Rules Scanned: {htmlRules.selectedRules.split(/[,]+/).length}</p>
+            <p class="inline">HTML Rules Scanned: {enabledRules.length} / {totalRulesCount}</p>
             <span type="button" class="inline" >
             {#if isCollapsedRules}
               <i class="fas fa-angle-up"></i>
@@ -109,22 +135,43 @@
         </div>
         {#if isCollapsedRules}
           <ul>
-          {#each formatHtmlRule(htmlRules.selectedRules.split(/[,]+/)) as rule}
+            <li class="mt-2 font-bold">Enabled:</li>
+
+          {#each enabledRules as rule}
             <li>
-              <i class="status-icon {rule.isRuleEnabled ? 'fas fa-check' : 'fas fa-xmark'}" style="{!rule.isRuleEnabled ? 'color: red' : ''}"></i>
+              <i class="status-icon fas fa-check"></i>
               <i 
                 class="fas fa-md {rule.type === RuleType.Error ? 'fa-exclamation-circle' : 'fa-exclamation-triangle'}"
                 style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"
               ></i>
               <a
                 target="_blank"
-                class="{rule.ruleLink ? 'link' : 'hover:no-underline cursor-text'} {!rule.isRuleEnabled ? 'textred disabled-link' : ''} inline-block align-baseline"  
+                class="{rule.ruleLink ? 'link' : 'hover:no-underline cursor-text'} inline-block align-baseline"  
                 href="{rule.ruleLink}"
               >
                 {rule.displayName}
               </a>
             </li>
           {/each}
+
+          <li class="mt-2 font-bold">Disabled:</li>
+
+          {#each disabledRules as rule}
+          <li>
+            <i class="status-icon fas fa-xmark" style="color: red"></i>
+            <i 
+              class="fas fa-md {rule.type === RuleType.Error ? 'fa-exclamation-circle' : 'fa-exclamation-triangle'}"
+              style="{rule.type === RuleType.Error ? 'color: red' : 'color: #d69e2e'}"
+            ></i>
+            <a
+              target="_blank"
+              class="{rule.ruleLink ? 'link' : 'hover:no-underline cursor-text'} textred disabled-link inline-block align-baseline"  
+              href="{rule.ruleLink}"
+            >
+              {rule.displayName}
+            </a>
+          </li>
+        {/each}
           </ul>
         {/if}
       {/if}

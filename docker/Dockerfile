@@ -33,6 +33,12 @@ WORKDIR /home/lhci/app
 # copy tools
 COPY --from=builder /go/bin/sswlinkauditor /home/lhci/app/sswlinkauditor
 
+# Install k6
+RUN apt-get update && apt-get install -y wget gnupg
+RUN wget -q https://dl.k6.io/key.gpg -O- | apt-key add -
+RUN echo "deb https://dl.k6.io/deb stable main" | tee -a /etc/apt/sources.list
+RUN apt-get update && apt-get install -y k6
+
 # main nodejs app
 COPY --from=nodeBuilder /usr/src/app /home/lhci/app
 
