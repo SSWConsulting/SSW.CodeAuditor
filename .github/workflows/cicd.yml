@@ -1,0 +1,57 @@
+name: CICD (Staging, Prod)
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - .gitignore
+      - README.md
+      - README_DOCKER.md
+      - CONTRIBUTING.md
+  
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  
+  test-build:
+    uses: ./.github/workflows/test-build.yml
+    secrets: inherit
+
+  staging-approval-gate:
+    needs: test-build
+    environment: staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: approved
+        env: 
+          ENV_NAME: Staging
+        run: write-host "Approve for $($env.ENV_NAME)"
+    
+  staging-deploy:
+    needs: staging-approval-gate
+    uses: ./.github/workflows/deploy-environment.yml
+    with:
+      environment: Staging
+    secrets: inherit
+
+  prod-approval-gate:
+    needs: staging-deploy
+    environment: prod
+    runs-on: ubuntu-latest
+    steps:
+      - name: approved
+        env: 
+          ENV_NAME: Production
+        run: write-host "Approve for $($env.ENV_NAME)"
+    
+  prod-deploy:
+    needs: prod-approval-gate
+    uses: ./.github/workflows/deploy-environment.yml
+    with:
+      environment: Production
+    secrets: inherit

@@ -1,0 +1,37 @@
+name: "Deploy Environment"
+
+on:
+  workflow_call:
+    inputs: 
+      environment:
+        description: "Name of the environment to deploy"
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  deploy-infra:
+    uses: ./.github/workflows/deploy-ui.yml
+    with:
+      environment: ${{ inputs.environment }}
+    secrets: inherit
+
+  deploy-webapi:
+    needs: deploy-infra
+    uses: ./.github/workflows/deploy-api.yml
+    with:
+      environment: ${{ inputs.environment }}
+    secrets: inherit
+
+  deploy-docker:
+    if: inputs.environment == 'Production'
+    needs: deploy-infra
+    uses: ./.github/workflows/deploy-docker.yml
+    secrets: inherit
