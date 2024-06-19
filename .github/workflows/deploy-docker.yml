@@ -12,7 +12,7 @@ defaults:
     shell: pwsh
 
 jobs:
-  deploy-ui:
+  deploy-docker:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

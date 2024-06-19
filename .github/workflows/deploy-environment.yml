@@ -17,13 +17,13 @@ defaults:
     shell: pwsh
 
 jobs:
-  deploy-infra:
+  deploy-ui:
     uses: ./.github/workflows/deploy-ui.yml
     with:
       environment: ${{ inputs.environment }}
     secrets: inherit
 
-  deploy-webapi:
+  deploy-api:
     needs: deploy-infra
     uses: ./.github/workflows/deploy-api.yml
     with:

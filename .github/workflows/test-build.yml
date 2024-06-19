@@ -12,7 +12,7 @@ defaults:
     shell: pwsh
 
 jobs:
-  deploy-ui:
+  test-build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
