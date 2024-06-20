@@ -24,7 +24,7 @@ jobs:
 
   staging-approval-gate:
     needs: test-build
-    environment: staging
+    environment: Staging
     runs-on: ubuntu-latest
     steps:
       - name: approved
@@ -41,7 +41,7 @@ jobs:
 
   prod-approval-gate:
     needs: staging-deploy
-    environment: prod
+    environment: Production
     runs-on: ubuntu-latest
     steps:
       - name: approved
