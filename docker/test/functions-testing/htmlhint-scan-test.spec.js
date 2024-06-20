@@ -1,5 +1,5 @@
 const expect = require('expect.js')
-const HTMLHint = require("htmlhint").default;
+const { HTMLHint } = require("htmlhint");
 const { htmlHintConfig } = require("../../api");
 
 const testHTML = `

@@ -1,5 +1,5 @@
 const expect = require('expect.js')
-const HTMLHint = require("htmlhint").default;
+const { HTMLHint } = require("htmlhint");
 
 const ruldId = 'link-must-not-show-unc'
 

@@ -1,5 +1,5 @@
 const expect = require("expect.js");
-const HTMLHint = require("htmlhint").default;
+const { HTMLHint } = require("htmlhint");
 
 const ruleId = "detect-absolute-references-url-path-correctly";
 
