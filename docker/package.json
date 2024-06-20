@@ -6,6 +6,9 @@
 	"scripts": {
 		"test": "mocha --recursive --require test/html-rules-testing/hooks.js"
 	},
+	"engines": {
+		"node": "20.x"
+	},
 	"author": "",
 	"license": "ISC",
 	"dependencies": {

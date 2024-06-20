@@ -10,6 +10,9 @@
     "count": "npx cloc --force-lang=\"HTML\",svelte src",
     "start": "sirv public --single -p 4200"
   },
+  "engines": {
+    "node": "20.x"
+  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.4",
     "@rollup/plugin-node-resolve": "^15.2.1",

@@ -12,7 +12,7 @@
 		"logs": "firebase functions:log"
 	},
 	"engines": {
-		"node": "14"
+		"node": "20.x"
 	},
 	"dependencies": {
 		"@azure/data-tables": "^13.2.2",
