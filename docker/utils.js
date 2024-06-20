@@ -184,7 +184,7 @@ exports.runCodeAuditor = (ignorefile, rulesfolder) => {
  * @param {string} url - URL to scan
  */
 const runHtmlHint = async (url, rules, customRuleOptions) => {
-  const HTMLHint = require("htmlhint").default;
+  const { HTMLHint } = require("htmlhint");
   const selectedRules = new Set(rules?.selectedRules?.split(",").filter(i => i));
   const ignoredRules = new Set(
     customRuleOptions
