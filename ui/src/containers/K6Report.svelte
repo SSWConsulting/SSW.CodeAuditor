@@ -16,13 +16,15 @@
   let promise = getBuildDetails(currentRoute.namedParams.id);
   let userNotLoginToast;
 
+  const reportUrl = `${CONSTS.BlobURL}/k6report/${currentRoute.namedParams.id}.json`;
+
   const download = () => {
-    window.location.href = `${CONSTS.BlobURL}/atr/${currentRoute.namedParams.run}.json`;
+    window.location.href = reportUrl;
   };
 
   let k6Result = {};
-  const getK6Result = async (path) => {
-    await fetch(`${CONSTS.BlobURL}/k6report/${path}.json`)
+  const getK6Result = async () => {
+    await fetch(reportUrl)
       .then((x) => x.json())
       .then((res) => {
         k6Result = res;
@@ -30,7 +32,7 @@
     return k6Result;
   };
 
-  let getK6Data = getK6Result(currentRoute.namedParams.id);
+  let getK6Data = getK6Result();
 </script>
 
 <div class="container mx-auto">
