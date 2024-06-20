@@ -11,7 +11,7 @@
     "start": "sirv public --single -p 4200"
   },
   "engines": {
-    "node": "20.x"
+    "node": "20"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.4",

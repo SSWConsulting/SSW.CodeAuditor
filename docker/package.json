@@ -7,7 +7,7 @@
 		"test": "mocha --recursive --require test/html-rules-testing/hooks.js"
 	},
 	"engines": {
-		"node": "20.x"
+		"node": "20"
 	},
 	"author": "",
 	"license": "ISC",
