@@ -32,6 +32,4 @@ jobs:
   deploy-docker:
     if: inputs.environment == 'Production'
     uses: ./.github/workflows/template-deploy-docker.yml
-    with:
-      environment: ${{ inputs.environment }}
     secrets: inherit
