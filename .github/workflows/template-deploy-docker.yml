@@ -2,6 +2,11 @@ name: "Deploy Docker"
 
 on:
   workflow_call:
+    inputs:
+      environment:
+        description: "Name of the environment to deploy"
+        required: true
+        type: string
 
 permissions:
   id-token: write
@@ -14,6 +19,7 @@ defaults:
 jobs:
   deploy-docker:
     runs-on: ubuntu-latest
+    environment: ${{inputs.environment}}
     steps:
       - uses: actions/checkout@v2
 

@@ -21,36 +21,16 @@ jobs:
   test-build:
     uses: ./.github/workflows/template-test-build.yml
     secrets: inherit
-
-  staging-approval-gate:
-    needs: test-build
-    environment: Staging
-    runs-on: ubuntu-latest
-    steps:
-      - name: approved
-        env: 
-          ENV_NAME: Staging
-        run: write-host "Approve for $($env.ENV_NAME)"
     
   staging-deploy:
-    needs: staging-approval-gate
+    needs: test-build
     uses: ./.github/workflows/template-deploy-environment.yml
     with:
       environment: Staging
     secrets: inherit
-
-  prod-approval-gate:
-    needs: staging-deploy
-    environment: Production
-    runs-on: ubuntu-latest
-    steps:
-      - name: approved
-        env: 
-          ENV_NAME: Production
-        run: write-host "Approve for $($env.ENV_NAME)"
     
   prod-deploy:
-    needs: prod-approval-gate
+    needs: staging-deploy
     uses: ./.github/workflows/template-deploy-environment.yml
     with:
       environment: Production
