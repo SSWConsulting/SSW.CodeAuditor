@@ -318,8 +318,8 @@ exports.runK6LoadTest = (url, writeLog) => {
 }
 
 /**
- * parse Lighthouse Report
- * @param {string} folder - lhr file
+ * parse k6 Report
+ * @param {string} folder - k6 file
  * @param {func} writeLog - logging method
  */
 exports.readK6Results = async (folder, writeLog) => {
