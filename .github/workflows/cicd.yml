@@ -19,7 +19,7 @@ defaults:
 jobs:
   
   test-build:
-    uses: ./.github/workflows/test-build.yml
+    uses: ./.github/workflows/template-test-build.yml
     secrets: inherit
 
   staging-approval-gate:
@@ -34,7 +34,7 @@ jobs:
     
   staging-deploy:
     needs: staging-approval-gate
-    uses: ./.github/workflows/deploy-environment.yml
+    uses: ./.github/workflows/template-deploy-environment.yml
     with:
       environment: Staging
     secrets: inherit
@@ -51,7 +51,7 @@ jobs:
     
   prod-deploy:
     needs: prod-approval-gate
-    uses: ./.github/workflows/deploy-environment.yml
+    uses: ./.github/workflows/template-deploy-environment.yml
     with:
       environment: Production
     secrets: inherit
