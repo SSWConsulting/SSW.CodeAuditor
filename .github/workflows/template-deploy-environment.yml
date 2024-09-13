@@ -24,7 +24,6 @@ jobs:
     secrets: inherit
 
   deploy-api:
-    needs: deploy-ui
     uses: ./.github/workflows/template-deploy-api.yml
     with:
       environment: ${{ inputs.environment }}
@@ -32,6 +31,5 @@ jobs:
 
   deploy-docker:
     if: inputs.environment == 'Production'
-    needs: deploy-api
     uses: ./.github/workflows/template-deploy-docker.yml
     secrets: inherit
