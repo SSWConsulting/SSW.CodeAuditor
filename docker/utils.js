@@ -184,7 +184,7 @@ exports.runCodeAuditor = (ignorefile, rulesfolder) => {
  * @param {string} url - URL to scan
  */
 const runHtmlHint = async (url, rules, customRuleOptions) => {
-  const HTMLHint = require("htmlhint").default;
+  const { HTMLHint } = require("htmlhint");
   const selectedRules = new Set(rules?.selectedRules?.split(",").filter(i => i));
   const ignoredRules = new Set(
     customRuleOptions
@@ -318,8 +318,8 @@ exports.runK6LoadTest = (url, writeLog) => {
 }
 
 /**
- * parse Lighthouse Report
- * @param {string} folder - lhr file
+ * parse k6 Report
+ * @param {string} folder - k6 file
  * @param {func} writeLog - logging method
  */
 exports.readK6Results = async (folder, writeLog) => {
