@@ -5,34 +5,7 @@ on:
     branches: [main, staging]
 
 jobs:
+  
   build:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: 'package.json'
-      - name: Test Svelte build
-        run: |
-          cd ui
-          npm i
-          npm run build
-      - name: Test Firebase API build
-        run: |
-          cd api/functions
-          npm i
-          npm run lint
-      - name: Install Latest Docker
-        run: |
-          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu  $(lsb_release -cs)  stable"
-          sudo apt-get update
-          sudo apt-get install docker-ce
-      - name: Check Docker Version
-        run: docker --version
-      - name: Test Docker build
-        run: |
-          cd docker
-          docker build -t sswconsulting/codeauditor .
+    uses: ./.github/workflows/template-test-build.yml
+    secrets: inherit
