@@ -21,15 +21,15 @@ exports.CONSTANTS = {
 };
 
 exports.handleNoFavIcon = (result) => {
-  // Check if array contains an item with message: 'Found'
-  let foundItem = result.find(item => item.message === this.CONSTANTS.FoundFavIconMsg);
+  // Get root result
+  if (result[0]?.length) {
+    // Check if array contains an item with message: 'Found'
+    let foundItem = result[0].find(item => item.message === this.CONSTANTS.FoundFavIconMsg);
 
-  if (foundItem) {
-    // If favicon found, remove all 'Not Found' items and 'Found' itself
-    return result.filter(item => item.message !== this.CONSTANTS.FoundFavIconMsg && item.message !== this.CONSTANTS.NoFavIconMsg);
-  } else {
-    // If favicon not found, return as it is
-    return result
+    if (foundItem) {
+      // If favicon found, remove all 'Not Found' items and 'Found' itself
+      result[0] = result[0].filter(item => item.message !== this.CONSTANTS.FoundFavIconMsg && item.message !== this.CONSTANTS.NoFavIconMsg);
+    }
   }
 }
 
@@ -183,7 +183,7 @@ exports.runCodeAuditor = (ignorefile, rulesfolder) => {
  * Send GET request and then perform HTML Hint check on it
  * @param {string} url - URL to scan
  */
-const runHtmlHint = async (url, rules, customRuleOptions) => {
+const runHtmlHint = async (url, rules, customRuleOptions, writeLog) => {
   const { HTMLHint } = require("htmlhint");
   const selectedRules = new Set(rules?.selectedRules?.split(",").filter(i => i));
   const ignoredRules = new Set(
@@ -225,7 +225,8 @@ const runHtmlHint = async (url, rules, customRuleOptions) => {
       })
     )(html);
   } catch (error) {
-    return null;
+    writeLog(`Error fetching URL: ${url} - ${error.message}`);
+    return [];
   }
 };
 
@@ -462,11 +463,11 @@ exports.runHtmlHint = async (startUrl, scannedUrls, writeLog, tokenApi) => {
   const customRuleOptions = await getCustomHtmlRuleOptions(tokenApi, startUrl);
 
   let result = await Promise.all(
-    allGoodLinks.map((x) => runHtmlHint(x, rules, customRuleOptions))
+    allGoodLinks.map((x) => runHtmlHint(x, rules, customRuleOptions, writeLog))
   );
 
   if (result) {
-    result = this.handleNoFavIcon(result[0]);
+    this.handleNoFavIcon(result);
     const selectedRules = rules?.selectedRules ?? Object.keys(htmlHintConfig).join(",");
 
     const [summary, details] = getHtmlHintDetails(result);
