@@ -47,23 +47,23 @@ The general flow for making a change to the script host is:
 
 #### Step 1: Create and Submit a Pull Request
 
-The first step in our deployment process is to ensure that all changes are properly reviewed before they are deployed. When you are ready to submit your changes, create a Pull Request (PR) from your feature branch. It is crucial to set the base branch of your PR to ```staging```. This ensures that your changes are first deployed to our Staging environment, where they can be thoroughly tested.
+The first step in our deployment process is to ensure that all changes are properly reviewed before they are deployed. When you are ready to submit your changes, create a Pull Request (PR) from your feature branch.
 
-#### Step 2: Approval and Merge to Staging
+#### Step 2: Approval and Merge to Main
 
-Once your Pull Request is created, it will go through a review process. During this time, your team members will review the code, provide feedback, and request any necessary changes. After your PR has been approved, it is ready to be merged into the ```staging``` branch.
+Once your Pull Request is created, it will go through a review process. During this time, your team members will review the code, provide feedback, and request any necessary changes. After your PR has been approved, it is ready to be merged into the ```main``` branch.
 
-#### Step 3: Automatic Deployment to Staging via GitHub Workflow
+#### Step 3: Deployment to Staging via GitHub Workflow
 
-As soon as your changes are merged into the ```staging``` branch, our CI/CD pipeline kicks in. We have set up a GitHub Workflow that listens for changes to the staging branch. This workflow will automatically deploy the latest code from the ```staging``` branch to our Staging site hosted on Firebase. This automated process ensures that the Staging environment is always up-to-date with the latest changes, providing a consistent platform for testing.
+As soon as your changes are merged into the ```main``` branch, our CI/CD pipeline kicks in. We have set up a GitHub Workflow that listens for changes to the ```main``` branch and will build and deploy to our Staging and Production environments pending approval. This will first trigger an approval request to the project admins to deploy to Staging. Once approved, the changes will be deployed to the Staging site on Firebase.
 
 #### Step 4: Verify Changes on Staging Site
 
 With the changes deployed to the Staging site, the next step is to verify that everything is functioning as expected. Take the time to thoroughly test your changes in the Staging environment. This might include running automated tests, performing manual testing, and validating that new features work as intended and that no regressions have been introduced.
 
-#### Step 5: Merge Staging to Main for Production Deployment
+#### Step 5: Deployment to Production via GitHub Workflow
 
-Once you are confident that the changes on the Staging site are stable and meet all the requirements, it's time to deploy them to Production. To do this, merge the ```staging``` branch into the ```main``` branch. This merge will trigger another GitHub Workflow configured to deploy the code from the ```main``` branch to our Production site on Firebase. This automatic deployment ensures that the latest stable code is live on Production without any manual intervention.
+Once you are confident that the changes on the Staging site are stable and meet all the requirements, it's time to deploy them to Production. To do this, a project admin will need to approve the next gated deployment in the GitHub Workflow. This approval will trigger a deployment to our Production site on Firebase and update the Docker image.
 
 #### Step 6: Monitor Production Deployment
 

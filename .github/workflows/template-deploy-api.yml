@@ -1,0 +1,51 @@
+name: "Deploy API"
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: "Name of the environment to deploy"
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  deploy-api:
+    runs-on: ubuntu-latest
+    environment: ${{inputs.environment}}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: 'package.json'
+
+      - name: Install Firebase-tools
+        run: npm i firebase-tools -g
+
+      - name: Create env file for NodeJS app
+        run: |
+          cd api/functions
+          touch .env
+          echo AZURE_STORAGE_ACCOUNT=${{ secrets.AZURE_STORAGE_ACCOUNT }} >> .env
+          echo AZURE_STORAGE_ACCESS_KEY=${{ secrets.AZURE_STORAGE_ACCESS_KEY }} >> .env 
+          echo WORKFLOW_ACCESS_TOKEN=${{ secrets.WORKFLOW_ACCESS_TOKEN }} >> .env
+          echo MAX_SCAN_SIZE=${{ vars.MAX_SCAN_SIZE }} >> .env 
+
+      - name: Deploy API to Firebase
+        env:
+          FIREBASETOKEN: ${{ secrets.FIREBASETOKEN }}
+        run: |
+          cd api/functions
+          firebase use ${{ vars.FIREBASE_PROJECT }} --token ${{ secrets.FIREBASETOKEN }}
+          firebase projects:list --token ${{ secrets.FIREBASETOKEN }}
+          npm i
+          firebase deploy --token ${{ secrets.FIREBASETOKEN }} --only functions 
