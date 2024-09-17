@@ -1,5 +1,5 @@
 const { getCustomHtmlRuleOptions } = require("./api");
-const { HTMLHint } = require("htmlhint");
+const HTMLHint = require("htmlhint").default;
 const findPhoneNumbersInText = require('libphonenumber-js').findPhoneNumbersInText;
 const { customHtmlHintRules } = require("./rules");
 const { CONSTANTS } = require("./utils")

@@ -1,5 +1,5 @@
 const expect = require('expect.js')
-const { HTMLHint } = require("htmlhint"); 
+const HTMLHint = require("htmlhint").default; 
 const { handleNoFavIcon } = require("../../utils")
 
 
@@ -18,8 +18,9 @@ describe(`Rules: ${ruldId}`, () => {
         <link rel="second" />
         <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
       </head>`
-    const messages = HTMLHint.verify(code, ruleOptions)
-    expect(handleNoFavIcon(messages).length).to.be(0)
+    let messages = [HTMLHint.verify(code, ruleOptions)]
+    handleNoFavIcon(messages)
+    expect(messages[0].length).to.be(0)
   })
 
   it('Page without favicon must be reported', () => {
@@ -30,8 +31,9 @@ describe(`Rules: ${ruldId}`, () => {
         <link rel="second" />
         <link rel="shortcut" href="/images/favicon.ico" type="image/x-icon" />
       </head>`
-    const messages = HTMLHint.verify(code, ruleOptions)
-    expect(handleNoFavIcon(messages).length).to.be(3)
+      let messages = [HTMLHint.verify(code, ruleOptions)]
+      handleNoFavIcon(messages)
+      expect(messages[0].length).to.be(3)
   })
 
   it('Page without favicon must be reported', () => {
@@ -40,7 +42,8 @@ describe(`Rules: ${ruldId}`, () => {
       <title>Page Title</title>
       <link href="/images/favicon.ico" type="image/x-icon" />
     </head>`
-    const messages = HTMLHint.verify(code, ruleOptions)
-    expect(handleNoFavIcon(messages).length).to.be(1)
+    let messages = [HTMLHint.verify(code, ruleOptions)]
+    handleNoFavIcon(messages)
+    expect(messages[0].length).to.be(1)
   })
 })
