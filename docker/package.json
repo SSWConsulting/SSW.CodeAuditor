@@ -21,7 +21,7 @@
 		"expect.js": "^0.3.1",
 		"form-data": "^3.0.1",
 		"html5parser": "^1.2.1",
-		"htmlhint": "^1.1.4",
+		"htmlhint": "^0.11.0",
 		"js-beautify": "^1.15.1",
 		"libphonenumber-js": "^1.11.4",
 		"minimatch": "^3.1.2",

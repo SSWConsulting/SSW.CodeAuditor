@@ -1,5 +1,5 @@
 const expect = require("expect.js");
-const { HTMLHint } = require("htmlhint");
+const HTMLHint = require("htmlhint").default;
 
 const ruldId = "grammar-scrum-terms";
 
