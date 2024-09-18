@@ -101,19 +101,38 @@ func check(link Link, linkch chan LinkStatus, number int) {
 			linkch <- LinkStatus{link.url, link.srcUrl, "Unknown error", -1, link.anchor}
 		}
 	} else {
+		location, noLocError := resp.Location()
+		url := link.url
+
+		if noLocError == nil {
+			url = location.String()
+			fmt.Println("redirect:", link.url, "redirected to", url)
+		}
+
 		defer resp.Body.Close()
-		linkch <- LinkStatus{link.url, link.srcUrl, resp.Status, resp.StatusCode, link.anchor}
+
+		linkch <- LinkStatus{url, link.srcUrl, resp.Status, resp.StatusCode, link.anchor}
 	}
 }
 
 func crawl(link Link, ch chan Link, linkch chan LinkStatus, number int) {
 	fmt.Println("CRAW", number, link.url)
+	thisUrl := link.url
 
 	client := &http.Client{
 		Timeout: 1 * time.Minute,
 	}
 	resp, err := client.Get(link.url)
 	dnsErr := new(net.DNSError)
+
+	if err == nil {
+		location, noLocError := resp.Location()
+
+		if noLocError == nil {
+			thisUrl = location.String()
+			fmt.Println("redirect:", link.url, "redirected to", thisUrl)
+		}
+	}
 
 	defer func() {
 		if err != nil {
@@ -124,7 +143,7 @@ func crawl(link Link, ch chan Link, linkch chan LinkStatus, number int) {
 				linkch <- LinkStatus{link.url, link.srcUrl, "Unknown error", -1, link.anchor}
 			}
 		} else {
-			linkch <- LinkStatus{link.url, link.srcUrl, resp.Status, resp.StatusCode, link.anchor}
+			linkch <- LinkStatus{thisUrl, link.srcUrl, resp.Status, resp.StatusCode, link.anchor}
 		}
 	}()
 
@@ -153,7 +172,7 @@ func crawl(link Link, ch chan Link, linkch chan LinkStatus, number int) {
 		case html.TextToken:
 			if depth > 0 {
 				text := strings.TrimSpace(string(z.Text()))
-				ch <- Link{linkUrl, link.url, "a", text}
+				ch <- Link{linkUrl, thisUrl, "a", text}
 			}
 		case html.StartTagToken, html.SelfClosingTagToken, html.EndTagToken:
 			t := z.Token()
@@ -168,7 +187,7 @@ func crawl(link Link, ch chan Link, linkch chan LinkStatus, number int) {
 						depth--
 					}
 				} else {
-					ch <- Link{newUrl, link.url, t.Data, ""}
+					ch <- Link{newUrl, thisUrl, t.Data, ""}
 				}
 			}
 
