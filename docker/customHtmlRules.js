@@ -57,7 +57,6 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
           "specification review",
           "spec review",
           "specification review",
-          "spec review",
           "definition of done",
           "burn-down chart",
           "burn-up chart",
