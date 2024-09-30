@@ -55,7 +55,14 @@ exports.addCustomHtmlRule = async (apiToken, url) => {
           "sprint retrospective",
           "sprint retro",
           "specification review",
-          "spec review"
+          "spec review",
+          "specification review",
+          "spec review",
+          "definition of done",
+          "burn-down chart",
+          "burn-up chart",
+          "work item",
+          "backlog refinement"
         ];
 
         if (event.raw) {
