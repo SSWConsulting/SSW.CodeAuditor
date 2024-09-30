@@ -236,6 +236,12 @@ const customHtmlHintRules = [
     type: RuleType.Warning,
   },
   {
+    rule: 'scrum-should-be-capitalized',
+    displayName: 'Content - Do you know "Scrum" (and other Scrum terms) should be capitalized?',
+    ruleLink: 'https://www.ssw.com.au/rules/scrum-should-be-capitalized/',
+    type: RuleType.Warning,
+  },
+  {
     rule: 'anchor-names-must-be-valid',
     displayName: 'Links - Anchor links’ names must be valid',
     ruleLink: 'https://www.ssw.com.au/rules/chose-efficient-anchor-names',
