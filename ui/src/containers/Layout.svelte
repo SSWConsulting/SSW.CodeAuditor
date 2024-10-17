@@ -37,11 +37,11 @@
 <body class="flex flex-col min-h-screen">
   <main class="grow">
     <nav class="items-center justify-between p-4 bggrey mb-4">
-      <div class="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-1 items-center text-center">
+      <div class="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-1 items-center text-center top-nav">
         <div class="mx-auto">
           <Navigate to="/">
             <img
-              class="logo h-7 object-cover max-h-20"
+              class="logo object-cover max-h-20"
               src="/images/logo-dark.png"
               alt="CodeAuditor"
             />
@@ -50,7 +50,7 @@
         <div
           class="md:block justify-evenly pt-4 lg:pt-0 overflow-hidden"
         >
-          <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
+          <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2">
             <span
               class="header-item {currentRoute.path.includes('/howitworks')
                 ? 'textred'
@@ -59,7 +59,7 @@
               <Navigate to="/howItWorks" styles="hover:no-underline">How It Works</Navigate>
             </span>
           </span>
-          <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
+          <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2">
             <span
               class="header-item {currentRoute.path === '/explore'
                 ? 'textred'
@@ -68,7 +68,7 @@
               <Navigate to="/explore" styles="hover:no-underline">Explore</Navigate>
             </span>
           </span>
-          <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
+          <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2">
             <span
               class="header-item {currentRoute.path === '/rules'
                 ? 'textred'
@@ -77,7 +77,7 @@
               <Navigate to="/rules" styles="hover:no-underline">Rules</Navigate>
             </span>
           </span>
-          <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
+          <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2">
             <span
               class="header-item {currentRoute.path === '/about'
                 ? 'textred'
@@ -86,9 +86,9 @@
               <Navigate to="/about" styles="hover:no-underline">About</Navigate>
             </span>
           </span>
-          <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2 sm:mx-4">
+          <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2">
             <span class="header-item cursor-pointer">
-              <a target="_blank" href="https://ssw.com.au/company/contact-us" style="text-decoration: none">Contact SSW</a>
+              <a target="_blank" href="https://ssw.com.au/company/contact-us" style="text-decoration: none">Contact</a>
             </span>
           </span>
         </div>
@@ -101,7 +101,7 @@
                 <div
                   on:mouseenter={() => (menu = true)}
                   on:mouseleave={() => (menu = false)}
-                  class="inline-block relative text-l px-4 py-2 leading-none border rounded
+                  class="inline-block relative text-l p-2 leading-none border rounded
                     textdark borderdark header-item hover:bg-white cursor-default"
                 >
                   {$userName}
