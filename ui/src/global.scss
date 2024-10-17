@@ -148,5 +148,8 @@ button:focus {
 .logo {
   display: flex; 
   justify-content: space-around; 
-  margin: 2rem 0
+  margin: 1rem 0;
+  max-width:260px !important;
 }
+
+.top-nav {grid-template-columns: 1fr 3fr 1fr; !important;}
