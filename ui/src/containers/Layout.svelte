@@ -37,7 +37,7 @@
 <body class="flex flex-col min-h-screen">
   <main class="grow">
     <nav class="items-center justify-between p-4 bggrey mb-4">
-      <div class="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-1 items-center text-center top-nav">
+      <div class="grid grid-cols-1 lg:grid-cols-4 items-center text-center">
         <div class="mx-auto">
           <Navigate to="/">
             <img
@@ -48,7 +48,7 @@
           </Navigate>
         </div>
         <div
-          class="md:block justify-evenly pt-4 lg:pt-0 overflow-hidden"
+          class="md:block col-span-2 justify-evenly pt-4 lg:pt-0 overflow-hidden"
         >
           <span class="textdark text-sm uppercase font-bold lg:pt-0 mx-2">
             <span
