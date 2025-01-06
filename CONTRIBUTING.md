@@ -86,7 +86,9 @@ $ cd docker
 $ docker build -t sswconsulting/codeauditor .
 ```
 
-4. To run the Firebase API, first you need to login to Firebase, chat with the Sysadmin or CodeAuditor team to grant you access to Firebase Console
+4. To run the Firebase API, first you need to login to Firebase, chat with the Sysadmin or CodeAuditor team to grant you access to Firebase Console.
+- They will need to log into the firebase console using the SSW Developers gmail account, which can be found in Keeper
+- From there they can add you as a member under the [project settings](https://console.firebase.google.com/u/5/project/sswlinkauditor-c1131/settings/iam).
    
 Type the following in your terminal:
 ``` bash
