@@ -71,6 +71,34 @@ func addClientHeaders(r *http.Request) {
 	}
 }
 
+func isRedirect(resp *http.Response) bool{
+	return (resp.StatusCode > 300 && resp.StatusCode < 400)
+}
+
+func getRedirectLocation(url string, client *http.Client) string { 
+	resp, err := client.Get(url)
+	if err != nil {
+		fmt.Println("encountered error following redirect chain: ",url, err)
+		return url
+	}
+	if isRedirect(resp) {
+		var redirectLocation = resp.Header.Get("Location")
+		return getRedirectLocation(redirectLocation, client)
+	}
+	return url
+}
+
+func getRedirectChainFinalUrl(url string) string {
+	client := &http.Client{
+		// prevents the client from following redirects
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			return http.ErrUseLastResponse
+		},
+		Timeout: 1 * time.Minute,
+	}
+	return getRedirectLocation(url, client)
+}
+
 func check(link Link, linkch chan LinkStatus, number int) {
 	fmt.Println("CHEC", number, link.url)
 
@@ -106,10 +134,19 @@ func check(link Link, linkch chan LinkStatus, number int) {
 	}
 }
 
+func isSameOrigin(url1 string, url2 string) bool {
+	url1Parsed, _ := urlP.Parse(url1)
+	url2Parsed, _ := urlP.Parse(url2)
+	return url1Parsed.Host == url2Parsed.Host
+}
+
 func crawl(link Link, ch chan Link, linkch chan LinkStatus, number int) {
 	fmt.Println("CRAW", number, link.url)
-
 	client := &http.Client{
+		// prevents the client from following redirects to end of chain
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			return http.ErrUseLastResponse
+		},
 		Timeout: 1 * time.Minute,
 	}
 	resp, err := client.Get(link.url)
@@ -135,43 +172,66 @@ func crawl(link Link, ch chan Link, linkch chan LinkStatus, number int) {
 	b := resp.Body
 	defer b.Close()
 
-	z := html.NewTokenizer(b)
+	// check whether the response was a redirect
+	if isRedirect(resp) {
+		finalUrl := getRedirectChainFinalUrl(link.url)
 
+		if isSameOrigin(link.url, finalUrl) {
+			// if the url is on the same origin, add it to the channel to be scraped
+			ch <- Link{finalUrl, link.url, "a", link.anchor + " (redirected)"}
+		}
+
+        // check if the final page 404s or not
+		newResp, newErr := client.Get(finalUrl)
+
+		if newErr == nil {
+			// use the response from the end of the redirect chain to determine if the current link
+			// is valid
+			resp = newResp
+			err = newErr
+
+			// return prematurely to skip scraping the HTML from redirect urls
+			// if the destination of the redirect is on the same origin it will be scraped later
+			return 
+		}
+	}
+	scrapeLinksFromHtml(ch, link.url, b)
+}
+
+func scrapeLinksFromHtml(ch chan Link, pageFound string, htmlString io.ReadCloser) {
+	z := html.NewTokenizer(htmlString)
 	depth := 0
 	var linkUrl string
 	for {
 		tt := z.Next()
 		switch tt {
-		case html.ErrorToken:
-			err := z.Err()
-			if err == io.EOF {
-				return
-			}
-			fmt.Println("Error with tokenizer", err)
-			return
-
-		case html.TextToken:
-			if depth > 0 {
-				text := strings.TrimSpace(string(z.Text()))
-				ch <- Link{linkUrl, link.url, "a", text}
-			}
-		case html.StartTagToken, html.SelfClosingTagToken, html.EndTagToken:
-			t := z.Token()
-
-			if t.Data == "a" || t.Data == "img" || t.Data == "link" || t.Data == "iframe" {
-				_, newUrl := getHref(t)
-				if t.Data == "a" {
-					linkUrl = newUrl
-					if tt == html.StartTagToken {
-						depth++
-					} else if tt == html.EndTagToken {
-						depth--
-					}
-				} else {
-					ch <- Link{newUrl, link.url, t.Data, ""}
+			case html.ErrorToken:
+				err := z.Err()
+				if err == io.EOF {
+					return
 				}
-			}
-
+				fmt.Println("Error with tokenizer", err)
+				return
+			case html.TextToken:
+				if depth > 0 {
+					text := strings.TrimSpace(string(z.Text()))
+					ch <- Link{linkUrl, pageFound, "a", text}
+				}
+			case html.StartTagToken, html.SelfClosingTagToken, html.EndTagToken:
+				t := z.Token()
+				if t.Data == "a" || t.Data == "img" || t.Data == "link" || t.Data == "iframe" {
+					_, newUrl := getHref(t)
+					if t.Data == "a" {
+						linkUrl = newUrl
+						if tt == html.StartTagToken {
+							depth++
+						} else if tt == html.EndTagToken {
+							depth--
+						}
+					} else {
+						ch <- Link{newUrl, pageFound, t.Data, ""}
+					}
+				}
 		}
 	}
 }
