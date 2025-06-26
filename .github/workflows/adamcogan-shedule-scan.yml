@@ -1,0 +1,25 @@
+name: Scheduled Scan on adamcogan.com
+
+# Schedule scan for adamcogan.com at 9am every Thursday
+on: 
+  schedule:
+  - cron:  '0 9 * * 4' # Every Thursday at 9:00 AM UTC
+
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions: 
+      issues: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: CodeAuditor Workflow
+        uses: SSWConsulting/codeauditor-scan-site@1.0.0
+        with:
+          # Your CodeAuditor token
+          token: ${{ secrets.CODEAUDITOR_TOKEN }}
+          # Your Scan URL
+          url: https://adamcogan.com/
+          # Your GitHub Token
+          GitHub_Token: ${{ github.token }}
