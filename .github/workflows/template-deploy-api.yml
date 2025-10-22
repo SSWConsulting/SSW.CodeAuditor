@@ -42,10 +42,15 @@ jobs:
 
       - name: Deploy API to Firebase
         env:
-          FIREBASETOKEN: ${{ secrets.FIREBASETOKEN }}
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
         run: |
           cd api/functions
-          firebase use ${{ vars.FIREBASE_PROJECT }} --token ${{ secrets.FIREBASETOKEN }}
-          firebase projects:list --token ${{ secrets.FIREBASETOKEN }}
+          # Create service account key file
+          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}' > service-account-key.json
+          export GOOGLE_APPLICATION_CREDENTIALS="service-account-key.json"
+          firebase use ${{ vars.FIREBASE_PROJECT }}
+          firebase projects:list
           npm i
-          firebase deploy --token ${{ secrets.FIREBASETOKEN }} --only functions 
+          firebase deploy --only functions
+          # Clean up service account key file
+          rm service-account-key.json 

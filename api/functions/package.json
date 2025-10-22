@@ -7,7 +7,7 @@
 		"serve": "firebase serve -o 0.0.0.0 --only functions --port 5001",
 		"shell": "firebase functions:shell",
 		"start": "npm run shell",
-		"deploy": "firebase deploy --token $FIREBASETOKEN --only functions",
+		"deploy": "firebase deploy --only functions",
 		"deploydirect": "firebase deploy --only functions",
 		"logs": "firebase functions:log"
 	},
