@@ -50,6 +50,8 @@ jobs:
           firebase use ${{ vars.FIREBASE_PROJECT }}
           firebase projects:list
           npm i
-          firebase deploy --only functions
+          # Set up cleanup policy for container images
+          firebase functions:artifacts:setpolicy --confirm
+          firebase deploy --only functions --force
           # Clean up service account key file
           Remove-Item service-account-key.json 

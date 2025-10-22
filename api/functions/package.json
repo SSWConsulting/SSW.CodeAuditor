@@ -7,8 +7,8 @@
 		"serve": "firebase serve -o 0.0.0.0 --only functions --port 5001",
 		"shell": "firebase functions:shell",
 		"start": "npm run shell",
-		"deploy": "firebase deploy --only functions",
-		"deploydirect": "firebase deploy --only functions",
+		"deploy": "firebase deploy --only functions --force",
+		"deploydirect": "firebase deploy --only functions --force",
 		"logs": "firebase functions:log"
 	},
 	"engines": {
