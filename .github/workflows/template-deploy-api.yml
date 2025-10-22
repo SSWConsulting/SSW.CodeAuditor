@@ -34,23 +34,22 @@ jobs:
       - name: Create env file for NodeJS app
         run: |
           cd api/functions
-          touch .env
-          echo AZURE_STORAGE_ACCOUNT=${{ secrets.AZURE_STORAGE_ACCOUNT }} >> .env
-          echo AZURE_STORAGE_ACCESS_KEY=${{ secrets.AZURE_STORAGE_ACCESS_KEY }} >> .env 
-          echo WORKFLOW_ACCESS_TOKEN=${{ secrets.WORKFLOW_ACCESS_TOKEN }} >> .env
-          echo MAX_SCAN_SIZE=${{ vars.MAX_SCAN_SIZE }} >> .env 
+          New-Item -Path .env -ItemType File -Force
+          Add-Content -Path .env -Value "AZURE_STORAGE_ACCOUNT=${{ secrets.AZURE_STORAGE_ACCOUNT }}"
+          Add-Content -Path .env -Value "AZURE_STORAGE_ACCESS_KEY=${{ secrets.AZURE_STORAGE_ACCESS_KEY }}"
+          Add-Content -Path .env -Value "WORKFLOW_ACCESS_TOKEN=${{ secrets.WORKFLOW_ACCESS_TOKEN }}"
+          Add-Content -Path .env -Value "MAX_SCAN_SIZE=${{ vars.MAX_SCAN_SIZE }}" 
 
       - name: Deploy API to Firebase
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
+          GOOGLE_APPLICATION_CREDENTIALS: service-account-key.json
         run: |
           cd api/functions
           # Create service account key file
-          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}' > service-account-key.json
-          export GOOGLE_APPLICATION_CREDENTIALS="service-account-key.json"
+          '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}' | Out-File -FilePath service-account-key.json -Encoding utf8
           firebase use ${{ vars.FIREBASE_PROJECT }}
           firebase projects:list
           npm i
           firebase deploy --only functions
           # Clean up service account key file
-          rm service-account-key.json 
+          Remove-Item service-account-key.json 

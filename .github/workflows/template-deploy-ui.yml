@@ -34,24 +34,23 @@ jobs:
       - name: Create env file for Svelte UI
         run: |
           cd ui
-          touch .env
-          echo API=${{ vars.API }} >> .env
-          echo API2=${{ vars.API2 }} >> .env 
-          echo DEPLOYMENTS_URL=${{ vars.DEPLOYMENTS_URL }} >> .env 
-          echo MAX_SCAN_SIZE=${{ vars.MAX_SCAN_SIZE }} >> .env 
+          New-Item -Path .env -ItemType File -Force
+          Add-Content -Path .env -Value "API=${{ vars.API }}"
+          Add-Content -Path .env -Value "API2=${{ vars.API2 }}"
+          Add-Content -Path .env -Value "DEPLOYMENTS_URL=${{ vars.DEPLOYMENTS_URL }}"
+          Add-Content -Path .env -Value "MAX_SCAN_SIZE=${{ vars.MAX_SCAN_SIZE }}" 
 
       - name: Deploy Svelte UI to Firebase
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
+          GOOGLE_APPLICATION_CREDENTIALS: service-account-key.json
         run: |
           cd ui
           # Create service account key file
-          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}' > service-account-key.json
-          export GOOGLE_APPLICATION_CREDENTIALS="service-account-key.json"
+          '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}' | Out-File -FilePath service-account-key.json -Encoding utf8
           firebase use ${{ vars.FIREBASE_PROJECT }}
           firebase projects:list
           npm i
           npm run build
           firebase deploy --only hosting
           # Clean up service account key file
-          rm service-account-key.json
+          Remove-Item service-account-key.json
