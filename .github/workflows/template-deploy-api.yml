@@ -35,10 +35,10 @@ jobs:
         run: |
           cd api/functions
           New-Item -Path .env -ItemType File -Force
-          Add-Content -Path .env -Value "AZURE_STORAGE_ACCOUNT=${{ secrets.AZURE_STORAGE_ACCOUNT }}"
-          Add-Content -Path .env -Value "AZURE_STORAGE_ACCESS_KEY=${{ secrets.AZURE_STORAGE_ACCESS_KEY }}"
-          Add-Content -Path .env -Value "WORKFLOW_ACCESS_TOKEN=${{ secrets.WORKFLOW_ACCESS_TOKEN }}"
-          Add-Content -Path .env -Value "MAX_SCAN_SIZE=${{ vars.MAX_SCAN_SIZE }}" 
+          'AZURE_STORAGE_ACCOUNT=${{ secrets.AZURE_STORAGE_ACCOUNT }}' | Add-Content .env
+          'AZURE_STORAGE_ACCESS_KEY=${{ secrets.AZURE_STORAGE_ACCESS_KEY }}' | Add-Content .env
+          'WORKFLOW_ACCESS_TOKEN=${{ secrets.WORKFLOW_ACCESS_TOKEN }}' | Add-Content .env
+          'MAX_SCAN_SIZE=${{ vars.MAX_SCAN_SIZE }}' | Add-Content .env 
 
       - name: Deploy API to Firebase
         env:

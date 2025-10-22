@@ -35,10 +35,10 @@ jobs:
         run: |
           cd ui
           New-Item -Path .env -ItemType File -Force
-          Add-Content -Path .env -Value "API=${{ vars.API }}"
-          Add-Content -Path .env -Value "API2=${{ vars.API2 }}"
-          Add-Content -Path .env -Value "DEPLOYMENTS_URL=${{ vars.DEPLOYMENTS_URL }}"
-          Add-Content -Path .env -Value "MAX_SCAN_SIZE=${{ vars.MAX_SCAN_SIZE }}" 
+          'API=${{ vars.API }}' | Add-Content .env
+          'API2=${{ vars.API2 }}' | Add-Content .env
+          'DEPLOYMENTS_URL=${{ vars.DEPLOYMENTS_URL }}' | Add-Content .env
+          'MAX_SCAN_SIZE=${{ vars.MAX_SCAN_SIZE }}' | Add-Content .env 
 
       - name: Deploy Svelte UI to Firebase
         env:
