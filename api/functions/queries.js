@@ -1,19 +1,12 @@
 const slug = require('slug');
 const {
-	getService,
-} = require('./azurestorage');
-const {
 	getRun
 } = require('./firestore');
 const {
 	TABLE
 } = require('./consts');
-const { TableClient, AzureNamedKeyCredential, odata } = require('@azure/data-tables');
-
-const account = process.env.AZURE_STORAGE_ACCOUNT;
-const accountKey = process.env.AZURE_STORAGE_ACCESS_KEY;
-const credential = new AzureNamedKeyCredential(account, accountKey);
-const azureUrl = `https://${account}.table.core.windows.net`;
+const { odata } = require('@azure/data-tables');
+const { getTableClient } = require('./azureClientFactory');
 
 const getDateDifference = (a, b) => {
 	const date1 = new Date(a);
@@ -40,13 +33,13 @@ const getExistingBrokenLinkCount = async (runId) => {
 		filter = odata`PartitionKey eq ${scan.partitionKey} and src ge ${scan.url} and src le ${incrementString(scan.url)} and buildDate ge datetime'${startDate.toISOString()}' and buildDate le datetime'${scan.buildDate.toISOString()}'`;
 	}
 
-    const entity = new TableClient(azureUrl, TABLE.ScanResults, credential).listEntities({
-        queryOptions: { filter }
-    });
-    const result = [];
-    for await (const item of entity) {
-        result.push(item);
-    }
+	const entity = getTableClient(TABLE.ScanResults).listEntities({
+		queryOptions: { filter }
+	});
+	const result = [];
+	for await (const item of entity) {
+		result.push(item);
+	}
 	const previousFailures = new Set();
 	const sortedResult = result.sort((a, b) => a.buildDate - b.buildDate);
 
@@ -63,18 +56,17 @@ const getExistingBrokenLinkCount = async (runId) => {
     return existingCount;
 };
 
-exports.getConfig = (api) =>
-	new Promise((resolve, reject) => {
-		getService().retrieveEntity(
-			TABLE.Subscriptions,
-			api,
-			api,
-			(error, result, response) => {
-				if (!error) resolve(response.body);
-				else reject(error);
-			}
-		);
-	});
+exports.getConfig = async (api) => {
+	const client = getTableClient(TABLE.Subscriptions);
+	try {
+		return await client.getEntity(api, api);
+	} catch (error) {
+		if (error.statusCode === 404) {
+			return {};
+		}
+		throw error;
+	}
+};
 
 exports.getScanDetails = async (runId) => {
 	const scan = await exports.getSummaryById(runId);
@@ -89,13 +81,13 @@ exports.getScanDetails = async (runId) => {
 		filter = odata`PartitionKey eq ${scan.partitionKey} and src ge ${scan.url} and src le ${incrementString(scan.url)} and buildDate ge datetime'${startDate.toISOString()}' and buildDate le datetime'${scan.buildDate.toISOString()}'`;
 	}
 
-    const entity = new TableClient(azureUrl, TABLE.ScanResults, credential).listEntities({
-        queryOptions: { filter }
-    });
-    const result = [];
-    for await (const item of entity) {
-        result.push(item);
-    }
+	const entity = getTableClient(TABLE.ScanResults).listEntities({
+		queryOptions: { filter }
+	});
+	const result = [];
+	for await (const item of entity) {
+		result.push(item);
+	}
     const previousFailures = new Map();
 
     const filteredList = result.reduce((runLinks, item) => {
@@ -127,7 +119,7 @@ exports.getScanDetails = async (runId) => {
 
 exports.getIgnoredUrls = (api) =>
 	new Promise(async (resolve) => {
-		const entity = new TableClient(azureUrl, TABLE.IgnoredUrls, credential).listEntities({
+		const entity = getTableClient(TABLE.IgnoredUrls).listEntities({
 			queryOptions: { filter: odata`PartitionKey eq ${api}` }
 		});
 		let result = []
@@ -139,7 +131,7 @@ exports.getIgnoredUrls = (api) =>
 
 exports.getPerformanceThreshold = (api, url) => 
 	new Promise(async (resolve) => {
-		const entity = new TableClient(azureUrl, TABLE.PerformanceThreshold, credential).listEntities({
+		const entity = getTableClient(TABLE.PerformanceThreshold).listEntities({
 			queryOptions: { filter: odata`PartitionKey eq ${api} and RowKey eq ${slug(url)}` }
 		});
 		let result = []
@@ -151,7 +143,7 @@ exports.getPerformanceThreshold = (api, url) =>
 
 exports.getLoadThreshold = (api, url) => 
 	new Promise(async (resolve) => {
-		const entity = new TableClient(azureUrl, TABLE.LoadThreshold, credential).listEntities({
+		const entity = getTableClient(TABLE.LoadThreshold).listEntities({
 			queryOptions: { filter: odata`PartitionKey eq ${api} and RowKey eq ${slug(url)}` }
 		});
 		let result = []
@@ -163,7 +155,7 @@ exports.getLoadThreshold = (api, url) =>
 
 exports.getHTMLHintRules = (api, url, isGetAllRecords) => 
 	new Promise(async (resolve) => {
-		const entity = new TableClient(azureUrl, TABLE.htmlhintrules, credential).listEntities({
+		const entity = getTableClient(TABLE.htmlhintrules).listEntities({
 			queryOptions: { filter: odata`PartitionKey eq ${api} and slugUrl eq ${url}` }
 		});
 		let result = []
@@ -177,7 +169,7 @@ exports.getHTMLHintRules = (api, url, isGetAllRecords) =>
 
 exports.getHTMLHintRulesByRunId = async (runId) => {
 	const doc = await getRun(runId);
-	const entity = new TableClient(azureUrl, TABLE.htmlhintrules, credential).listEntities({
+	const entity = getTableClient(TABLE.htmlhintrules).listEntities({
 		queryOptions: { filter: odata`PartitionKey eq ${doc.apikey} and RowKey eq ${runId}` }
 	});
 	let result = []
@@ -190,7 +182,7 @@ exports.getHTMLHintRulesByRunId = async (runId) => {
 exports.getPersonalSummary = (api, showAll) =>
 	new Promise(async (resolve) => {
 		if (showAll === 'true') {
-			const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
+			const entity = getTableClient(TABLE.Scans).listEntities({
 				queryOptions: { filter: odata`PartitionKey eq ${api}` }
 			});
 			let result = []
@@ -203,7 +195,7 @@ exports.getPersonalSummary = (api, showAll) =>
 			var date = new Date();
 			date.setMonth(date.getMonth() - 24);
 
-			const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
+			const entity = getTableClient(TABLE.Scans).listEntities({
 				queryOptions: { filter: odata`PartitionKey eq ${api} and buildDate gt datetime'${date.toISOString()}'` }
 			});
 			const iterator = entity.byPage({ maxPageSize: parseInt(process.env.MAX_SCAN_SIZE) });
@@ -217,7 +209,7 @@ exports.getPersonalSummary = (api, showAll) =>
 exports.getAllPublicSummary = (showAll) =>
 	new Promise(async (resolve) => {
 		if (showAll === 'true') {
-			const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
+			const entity = getTableClient(TABLE.Scans).listEntities({
 				queryOptions: { filter: odata`isPrivate eq ${false}` }
 			});
 			let result = []
@@ -240,7 +232,7 @@ exports.getAllPublicSummary = (showAll) =>
 			var date = new Date();
 			date.setMonth(date.getMonth() - 12);
 
-			const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
+			const entity = getTableClient(TABLE.Scans).listEntities({
 				queryOptions: { filter: odata`isPrivate eq ${false} and buildDate gt datetime'${date.toISOString()}'` }
 			});
 			let result = []
@@ -267,7 +259,7 @@ exports.getSummaryById = (runId) =>
 	getRun(runId).then((doc) =>
 		new Promise(async (resolve) => {
 			const getSummary = async (filter) => {
-				const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
+				const entity = getTableClient(TABLE.Scans).listEntities({
 					queryOptions: { filter }
 				});
 				let result = []
@@ -296,7 +288,7 @@ exports.getLatestSummaryFromUrlAndApi = (url, api) =>
 			url = url + '/';
 		}
 		
-		const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
+		const entity = getTableClient(TABLE.Scans).listEntities({
 			queryOptions: { filter: odata`url eq ${url} and PartitionKey eq ${api}` }
 		});
 		const iterator = entity.byPage({ maxPageSize: 1 });
@@ -308,7 +300,7 @@ exports.getLatestSummaryFromUrlAndApi = (url, api) =>
 
 exports.getAlertEmailAddressesFromTokenAndUrl = (api, url) => 
 	new Promise(async (resolve) => {
-		const entity = new TableClient(azureUrl, TABLE.alertEmailAddresses, credential).listEntities({
+		const entity = getTableClient(TABLE.alertEmailAddresses).listEntities({
 			queryOptions: { filter: odata`url eq ${url} and PartitionKey eq ${api} and authorToken eq ${api}` }
 		});
 		let result = []
@@ -321,7 +313,7 @@ exports.getAlertEmailAddressesFromTokenAndUrl = (api, url) =>
 exports.getAllScanSummaryFromUrl = (url, api) =>
 	new Promise(async (resolve) => {
 		const getSummary = async (filter) => {
-			const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
+			const entity = getTableClient(TABLE.Scans).listEntities({
 				queryOptions: { filter }
 			});
 			const iterator = entity.byPage({ maxPageSize: 10 });
@@ -348,7 +340,7 @@ exports.getAllScanSummaryFromUrl = (url, api) =>
 
 exports.getUnscannableLinks = () =>
 	new Promise(async (resolve) => {
-		const entity = new TableClient(azureUrl, TABLE.UnscannableLinks, credential).listEntities();
+		const entity = getTableClient(TABLE.UnscannableLinks).listEntities();
 		let result = []
 		for await (const item of entity) {
 			result.push(item.url);
@@ -366,7 +358,7 @@ exports.compareScans = (api, url) =>
 			url = url + '/';
 		}
 
-		const entity = new TableClient(azureUrl, TABLE.Scans, credential).listEntities({
+		const entity = getTableClient(TABLE.Scans).listEntities({
 			queryOptions: { filter: odata`PartitionKey eq ${api} and url eq ${url}` }
 		});
 		let result = [];
@@ -394,7 +386,7 @@ exports.compareScans = (api, url) =>
 
 exports.getCustomHtmlRuleOptions = (api, url) => 
 	new Promise(async (resolve) => {
-		const entity = new TableClient(azureUrl, TABLE.HtmlRulesCustomOptions, credential).listEntities({
+		const entity = getTableClient(TABLE.HtmlRulesCustomOptions).listEntities({
 			queryOptions: { filter: odata`PartitionKey eq ${api} and url eq ${url}` }
 		});
 		let result = []

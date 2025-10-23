@@ -13,26 +13,24 @@ const {
 	newGuid,
 	getReversedTick
 } = require('./utils');
-const azure = require('azure-storage');
 const slug = require('slug');
 
 exports.insertScanResult = async (api, buildId, runId, data, buildDate, url) => {
-	const entGen = azure.TableUtilities.entityGenerator;
 	let entity = {
-		PartitionKey: entGen.String(api),
-		RowKey: entGen.String(`${api}-${newGuid()}`),
-		buildId: entGen.String(buildId),
-		runId: entGen.String(runId),
-		buildDate: entGen.DateTime(buildDate),
-		apiKey: entGen.String(api)
+		partitionKey: api,
+		rowKey: `${api}-${newGuid()}`,
+		buildId,
+		runId,
+		buildDate,
+		apiKey: api,
 	};
 	let entityRunIndexed = {
 		...entity,
-		PartitionKey: entGen.String(`${api}-${runId}`),
+		partitionKey: `${api}-${runId}`,
 	};
 	let entityUrlIndexed = {
 		...entity,
-		PartitionKey: entGen.String(`${api}-${slug(url)}`),
+		partitionKey: `${api}-${slug(url)}`,
 	};
 	await insertEntity(TABLE.ScanResults, replaceProp(data, entityRunIndexed));
 	await insertEntity(TABLE.ScanResults, replaceProp(data, entityUrlIndexed));
@@ -40,101 +38,89 @@ exports.insertScanResult = async (api, buildId, runId, data, buildDate, url) => 
 };
 
 exports.updateConfig = (api, data) => {
-	const entGen = azure.TableUtilities.entityGenerator;
-
 	let entity = {
-		PartitionKey: entGen.String(api),
-		RowKey: entGen.String(api),
+		partitionKey: api,
+		rowKey: api,
 	};
 	return updateEntity(TABLE.Subscriptions, replaceProp(data, entity));
 };
 
 exports.deleteIgnoreUrl = (api, url) => {
-	const entGen = azure.TableUtilities.entityGenerator;
-
 	let entity = {
-		PartitionKey: entGen.String(api),
-		RowKey: entGen.String(url),
+		partitionKey: api,
+		rowKey: url,
 	};
 	return deleteEntity(TABLE.IgnoredUrls, entity);
 };
 
 exports.addIgnoreUrl = (api, data) => {
-	const entGen = azure.TableUtilities.entityGenerator;
 	let entity = {
-		PartitionKey: entGen.String(api),
-		RowKey: entGen.String(
-			slug(data.urlToIgnore) + '_' + slug(data.ignoreOn)
-		),
+		partitionKey: api,
+		rowKey: slug(data.urlToIgnore) + '_' + slug(data.ignoreOn),
 	};
 	return updateEntity(TABLE.IgnoredUrls, replaceProp(data, entity));
 };
 
 exports.addPerformanceThreshold = (api, data) => {
-	const entGen = azure.TableUtilities.entityGenerator;
 	return updateEntity(
 		TABLE.PerformanceThreshold,
 		replaceProp(data, {
-			PartitionKey: entGen.String(api),
-			RowKey: entGen.String(slug(data.url)),
+			partitionKey: api,
+			rowKey: slug(data.url),
 		})
 	);
 };
 
 exports.addLoadThreshold = (api, data) => {
-	const entGen = azure.TableUtilities.entityGenerator;
 	return updateEntity(
 		TABLE.LoadThreshold,
 		replaceProp(data, {
-			PartitionKey: entGen.String(api),
-			RowKey: entGen.String(slug(data.url)),
+			partitionKey: api,
+			rowKey: slug(data.url),
 		})
 	);
 };
 
 exports.addHTMLHintRules = (api, data) => {
-	const entGen = azure.TableUtilities.entityGenerator;
 	const timeStamp = new Date().toISOString().toString();
 	return insertEntity(
 		TABLE.htmlhintrules,
 		replaceProp(data, {
-			PartitionKey: entGen.String(api),
-			RowKey: entGen.String(timeStamp),
+			partitionKey: api,
+			rowKey: timeStamp,
 			slugUrl: slug(data.url)
 		})
 	);
 };
 
 exports.addHTMLHintRulesForEachRun = (api, data) => {
-	const entGen = azure.TableUtilities.entityGenerator;
 	return insertEntity(
 		TABLE.htmlhintrules,
 		replaceProp(data, {
-			PartitionKey: entGen.String(api),
-			RowKey: entGen.String(slug(data.runId)),
+			partitionKey: api,
+			rowKey: slug(data.runId),
 		})
 	);
 };
 
 exports.insertScanSummary = async (api, buildId, runId, buildDate, data) => {
-	var entGen = azure.TableUtilities.entityGenerator;
 	// use Log tail pattern to get native sort from Table Storage
 	const entity = {
-		PartitionKey: entGen.String(api),
-		RowKey: entGen.String(getReversedTick()),
-		buildId: entGen.String(buildId),
-		runId: entGen.String(runId),
-		buildDate: entGen.DateTime(buildDate),
-		scanResultVersion: entGen.Int32(2),
-		apiKey: entGen.String(api)
+		partitionKey: api,
+		rowKey: getReversedTick(),
+		buildId,
+		runId,
+		buildDate,
+		scanResultVersion: 2,
+		apiKey: api,
 	};
 	const entityRunIndexed = {
 		...entity,
-		PartitionKey: entGen.String(`${api}-${runId}`),
+		partitionKey: `${api}-${runId}`,
 	};
 	let entityUrlIndexed = {
 		...entity,
-		PartitionKey: entGen.String(`${api}-${slug(data.url)}`),
+		partitionKey: `${api}-${slug(data.url)}`,
 	};
 	await insertEntity(TABLE.Scans, replaceProp(data, entityRunIndexed));
 	await insertEntity(TABLE.Scans, replaceProp(data, entityUrlIndexed));
@@ -142,33 +128,29 @@ exports.insertScanSummary = async (api, buildId, runId, buildDate, data) => {
 };
 
 exports.addAlertEmailAddresses = (api, data) => {
-	const entGen = azure.TableUtilities.entityGenerator;
 	return updateEntity(
 		TABLE.alertEmailAddresses,
 		replaceProp(data, {
-			PartitionKey: entGen.String(api),
-			RowKey: entGen.String(getReversedTick()),
+			partitionKey: api,
+			rowKey: getReversedTick(),
 		})
 	);
 };
 
 exports.removeAlertEmailAddress = (api, rowkey) => {
-	const entGen = azure.TableUtilities.entityGenerator;
-
 	let entity = {
-		PartitionKey: entGen.String(api),
-		RowKey: rowkey,
+		partitionKey: api,
+		rowKey: rowkey,
 	};
 	return deleteEntity(TABLE.alertEmailAddresses, entity);
 };
 
 exports.addCustomHtmlRuleOptions = (api, data) => {
-	const entGen = azure.TableUtilities.entityGenerator;
 	return updateEntity(
 		TABLE.HtmlRulesCustomOptions,
 		replaceProp(data, {
-			PartitionKey: entGen.String(api),
-			RowKey: entGen.String(data.ruleId),
+			partitionKey: api,
+			rowKey: data.ruleId,
 		})
 	);
 };
