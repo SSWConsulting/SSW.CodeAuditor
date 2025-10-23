@@ -4,7 +4,7 @@ const {
 	AzureCliCredential,
 } = require('@azure/identity');
 const {
-	TableClient,
+	TableServiceClient,
 	AzureNamedKeyCredential,
 } = require('@azure/data-tables');
 const {
@@ -66,11 +66,12 @@ const getTableClient = (tableName) => {
 		if (!connectionString) {
 			throw new Error('Azure named key credential requires AZURE_STORAGE_ACCOUNT and AZURE_STORAGE_ACCESS_KEY.');
 		}
-		return TableClient.fromConnectionString(connectionString, tableName);
+		return TableServiceClient.fromConnectionString(connectionString).getTableClient(tableName);
 	}
 
 	const endpoint = getEndpoint(process.env.AZURE_STORAGE_TABLE_ENDPOINT, 'table');
-	return new TableClient(endpoint, tableName, credential);
+	const service = new TableServiceClient(endpoint, credential);
+	return service.getTableClient(tableName);
 };
 
 const getBlobClient = (container) => {
