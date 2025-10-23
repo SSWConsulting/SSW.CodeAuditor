@@ -1,4 +1,4 @@
-const functions = require('firebase-functions');
+const { onRequest } = require('firebase-functions/v2/https');
 const express = require('express');
 const R = require('ramda');
 const fetch = require('node-fetch');
@@ -414,5 +414,18 @@ app.post('/createReportIssue', async (req, res) => {
 	}
 })
 
-exports.api = functions.runWith({ timeoutSeconds: 540 }).region('asia-east2').https.onRequest(app);
-exports.api2 = functions.runWith({ timeoutSeconds: 540 }).region('asia-northeast1').https.onRequest(app);
+exports.api = onRequest({
+	timeoutSeconds: 540,
+	region: 'asia-east2',
+	memory: '1GiB',
+	maxInstances: 10,
+	concurrency: 80  // Allow concurrent requests for better performance
+}, app);
+
+exports.api2 = onRequest({
+	timeoutSeconds: 540,
+	region: 'asia-northeast1',
+	memory: '1GiB',
+	maxInstances: 10,
+	concurrency: 80  // Allow concurrent requests for better performance
+}, app);
