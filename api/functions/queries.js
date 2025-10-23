@@ -255,34 +255,28 @@ exports.getAllPublicSummary = (showAll) =>
 		}
 	});
 
-exports.getSummaryById = async (runId) => {
-	const doc = await getRun(runId);
-	if (!doc) {
-		return {};
-	}
+exports.getSummaryById = (runId) => 
+	getRun(runId).then((doc) =>
+		new Promise(async (resolve) => {
+			const getSummary = async (filter) => {
+				const entity = getTableClient(TABLE.Scans).listEntities({
+					queryOptions: { filter }
+				});
+				let result = []
+				for await (const item of entity) {
+					result.push(item);
+				}
+				return result[0];
+			};
 
-	const apiKey = doc.apikey || doc.apiKey;
-	const docRunId = doc.runId || runId;
+			let summary = await getSummary(`PartitionKey eq '${doc.apikey}-${doc.runId}'`);
 
-	const getSummary = async (filter) => {
-		const entity = getTableClient(TABLE.Scans).listEntities({
-			queryOptions: { filter }
-		});
-		let result = [];
-		for await (const item of entity) {
-			result.push(item);
-		}
-		return result[0];
-	};
-
-	let summary = await getSummary(`PartitionKey eq '${apiKey}-${docRunId}'`);
-
-	if (!summary || summary.scanResultVersion !== 2) {
-		summary = await getSummary(odata`PartitionKey eq ${apiKey} and runId eq ${docRunId}`);
-	}
-
-	return summary || {};
-};
+			if (!summary || summary.scanResultVersion !== 2) {
+				summary = await getSummary(odata`PartitionKey eq ${doc.apikey} and runId eq ${doc.runId}`);
+			}
+			
+			resolve(summary || {});
+		}));
 
 exports.getLatestSummaryFromUrlAndApi = (url, api) => 
 	new Promise(async (resolve) => {
