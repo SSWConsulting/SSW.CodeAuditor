@@ -414,20 +414,5 @@ app.post('/createReportIssue', async (req, res) => {
 	}
 })
 
-exports.api = functions
-	.runWith({
-		timeoutSeconds: 540,
-		memory: '1GB'
-	})
-	.region('asia-east2')
-	.https
-	.onRequest(app);
-
-exports.api2 = functions
-	.runWith({
-		timeoutSeconds: 540,
-		memory: '1GB'
-	})
-	.region('asia-northeast1')
-	.https
-	.onRequest(app);
+exports.api = functions.runWith({ timeoutSeconds: 540 }).region('asia-east2').https.onRequest(app);
+exports.api2 = functions.runWith({ timeoutSeconds: 540 }).region('asia-northeast1').https.onRequest(app);
