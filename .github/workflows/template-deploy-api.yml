@@ -52,6 +52,6 @@ jobs:
           npm i
           # Set up cleanup policy for container images
           firebase functions:artifacts:setpolicy --confirm
-          firebase deploy --only functions --force
+          firebase deploy --only functions --force --debug
           # Clean up service account key file
           Remove-Item service-account-key.json 
