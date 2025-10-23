@@ -1,15 +1,15 @@
-const azure = require('azure-storage');
 const R = require('ramda');
 
 exports.replaceProp = (data, entity) => {
 	let toreturn = { ...entity };
-	const entGen = azure.TableUtilities.entityGenerator;
 	const convert = R.cond([
-		[R.is(Number), entGen.Int32],
-		[R.is(String), entGen.String],
-		[R.is(Date), entGen.DateTime],
-		[R.is(Object), (x) => entGen.String(JSON.stringify(x))],
-		[R.T, entGen.String],
+		[R.is(Number), R.identity],
+		[R.is(String), R.identity],
+		[R.is(Boolean), R.identity],
+		[R.is(Date), R.identity],
+		[R.is(Array), (x) => JSON.stringify(x)],
+		[R.is(Object), (x) => JSON.stringify(x)],
+		[R.T, R.identity],
 	]);
 	Object.keys(data).forEach((k) => {
 		toreturn = {
