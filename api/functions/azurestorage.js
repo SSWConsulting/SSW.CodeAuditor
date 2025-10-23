@@ -1,50 +1,96 @@
-const { getTableClient, getBlobClient } = require('./azureClientFactory');
+const azure = require('azure-storage');
 
-const ensureTableExists = async (client) => {
-	try {
-		await client.createTable();
-	} catch (error) {
-		if (error?.statusCode !== 409 && error?.code !== 'TableAlreadyExists') {
-			throw error;
-		}
-	}
-};
+const account = process.env.AZURE_STORAGE_ACCOUNT;
+const accountKey = process.env.AZURE_STORAGE_ACCESS_KEY;
 
-const ensureContainerExists = async (containerClient) => {
-	const response = await containerClient.createIfNotExists({ access: 'blob' });
-	return response.succeeded || response.errorCode === 'ContainerAlreadyExists';
-};
-
-exports.insertEntity = async (table, data) => {
-	const client = getTableClient(table);
-	await ensureTableExists(client);
-	await client.createEntity(data);
-	return 204;
-};
-
-exports.updateEntity = async (table, data) => {
-	const client = getTableClient(table);
-	await ensureTableExists(client);
-	await client.upsertEntity(data, 'Merge');
-	return 204;
-};
-
-exports.deleteEntity = async (table, data) => {
-	const client = getTableClient(table);
-	await ensureTableExists(client);
-	const partitionKey = data.partitionKey || data.PartitionKey;
-	const rowKey = data.rowKey || data.RowKey;
-	await client.deleteEntity(partitionKey, rowKey);
-};
-
-exports.uploadBlob = async (container, name, data) => {
-	const containerClient = getBlobClient(container);
-	await ensureContainerExists(containerClient);
-	const blockBlobClient = containerClient.getBlockBlobClient(name);
-	const body = typeof data === 'string' ? data : JSON.stringify(data);
-	const buffer = Buffer.from(body, 'utf-8');
-	await blockBlobClient.upload(buffer, buffer.length, {
-		blobHTTPHeaders: { blobContentType: 'application/json' },
+const _createTableIfNotExists = (table) =>
+	new Promise((resolve, reject) => {
+		const tbservice = _getService();
+		tbservice.createTableIfNotExists(table, (error) => {
+			if (!error) resolve(tbservice);
+			else reject(error);
+		});
 	});
-	return 201;
+
+const _createBlobContainerIfNotExists = (container) =>
+	new Promise((resolve, reject) => {
+		const svc = _getBlobService();
+		svc.createContainerIfNotExists(
+			container,
+			{
+				publicAccessLevel: 'blob',
+			},
+			(error) => {
+				if (!error) resolve(svc);
+				else reject(error);
+			}
+		);
+	});
+
+const _getService = () => {
+	return azure.createTableService(account, accountKey);
 };
+
+const _getBlobService = () => {
+	return azure.createBlobService(account, accountKey);
+};
+
+exports.getTableRows = (table, query) =>
+	new Promise((resolve, reject) => {
+		_getService().queryEntities(
+			table,
+			query,
+			null,
+			(error, _, response) => {
+				if (!error) resolve(response.body.value);
+				else reject(error);
+			}
+		);
+	});
+
+exports.insertEntity = (table, data) =>
+	new Promise((resolve, reject) =>
+		_createTableIfNotExists(table).then((service) =>
+			service.insertEntity(table, data, (error, _, response) => {
+				if (!error) resolve(response.statusCode);
+				else reject(error);
+			})
+		)
+	);
+
+exports.uploadBlob = (container, name, data) =>
+	new Promise((resolve, reject) =>
+		_createBlobContainerIfNotExists(container).then((service) =>
+			service.createBlockBlobFromText(
+				container,
+				name,
+				data,
+				(error, result, response) => {
+					if (!error) resolve(response.statusCode);
+					else reject(error);
+				}
+			)
+		)
+	);
+
+exports.updateEntity = (table, data) =>
+	new Promise((resolve, reject) =>
+		_createTableIfNotExists(table).then((service) =>
+			service.insertOrMergeEntity(table, data, (error, _, response) => {
+				if (!error) resolve(response.statusCode);
+				else reject(error);
+			})
+		)
+	);
+
+exports.deleteEntity = (table, data) =>
+	new Promise((resolve, reject) =>
+		_createTableIfNotExists(table).then((service) =>
+			service.deleteEntity(table, data, (error) => {
+				if (!error) resolve();
+				else reject(error);
+			})
+		)
+	);
+
+exports.getService = _getService;
