@@ -83,7 +83,18 @@ func getRedirectLocation(url string, client *http.Client) string {
 	}
 	if isRedirect(resp) {
 		var redirectLocation = resp.Header.Get("Location")
-		return getRedirectLocation(redirectLocation, client)
+		// Resolve relative URLs against the current URL
+		baseURL, err := urlP.Parse(url)
+		if err != nil {
+			fmt.Println("error parsing base URL:", url, err)
+			return url
+		}
+		resolvedURL, err := baseURL.Parse(redirectLocation)
+		if err != nil {
+			fmt.Println("error resolving redirect URL:", redirectLocation, err)
+			return url
+		}
+		return getRedirectLocation(resolvedURL.String(), client)
 	}
 	return url
 }
@@ -138,6 +149,14 @@ func isSameOrigin(url1 string, url2 string) bool {
 	url1Parsed, _ := urlP.Parse(url1)
 	url2Parsed, _ := urlP.Parse(url2)
 	return url1Parsed.Host == url2Parsed.Host
+}
+
+func isSameOriginAndPath(baseUrl string, targetUrl string) bool {
+	// Normalize URLs by ensuring they have trailing slashes for comparison
+	normalizedBase := strings.TrimRight(baseUrl, "/") + "/"
+	normalizedTarget := strings.TrimRight(targetUrl, "/") + "/"
+	
+	return strings.Index(normalizedTarget, normalizedBase) == 0
 }
 
 func crawl(link Link, ch chan Link, linkch chan LinkStatus, number int) {
@@ -371,7 +390,7 @@ func main() {
 						defer wg.Done()
 						concurrentGoroutines <- struct{}{}
 
-						if strings.Index(link.url, startUrl.url) == 0 && link.linkType == "a" && !isResourceFile(link.url) {
+						if isSameOriginAndPath(startUrl.url, link.url) && link.linkType == "a" && !isResourceFile(link.url) {
 							crawl(link, chUrls, chAllUrls, crawling)
 						} else {
 							check(link, chAllUrls, crawling)
@@ -381,7 +400,7 @@ func main() {
 					}()
 				} else {
 					// no limit
-					if strings.Index(link.url, startUrl.url) == 0 && link.linkType == "a" && !isResourceFile(link.url) {
+					if isSameOriginAndPath(startUrl.url, link.url) && link.linkType == "a" && !isResourceFile(link.url) {
 						go crawl(link, chUrls, chAllUrls, crawling)
 					} else {
 						go check(link, chAllUrls, crawling)
