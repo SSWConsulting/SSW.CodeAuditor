@@ -16,9 +16,43 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"golang.org/x/net/html"
+)
+
+// Pre-compiled regex patterns for performance
+var (
+	filenameRegex     = regexp.MustCompile(`(?P<file>\/[^\/]+\.[a-z0-9]+/*)$`)
+	protocolRegex     = regexp.MustCompile(`^[a-z]+:[^\/\/]`)
+	resourceFileRegex = regexp.MustCompile(`.*\.(mht|jpg|png|css|js|ico|gif|svg|mp3|ttf)`)
+)
+
+// Shared HTTP transport for connection pooling across all requests
+var sharedTransport = &http.Transport{
+	TLSNextProto: map[string]func(authority string, c *tls.Conn) http.RoundTripper{},
+	DialContext: (&net.Dialer{
+		Timeout:   30 * time.Second,
+		KeepAlive: 30 * time.Second,
+	}).DialContext,
+	TLSHandshakeTimeout:   10 * time.Second,
+	ResponseHeaderTimeout: 10 * time.Second,
+	ExpectContinueTimeout: 1 * time.Second,
+	MaxIdleConns:          100,
+	MaxIdleConnsPerHost:   10,
+	IdleConnTimeout:       90 * time.Second,
+}
+
+// Shared client
+var (
+	noRedirectsClient = &http.Client{
+		Timeout:   1 * time.Minute,
+		Transport: sharedTransport,
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			return http.ErrUseLastResponse
+		},
+	}
 )
 
 type LinkStatus struct {
@@ -46,21 +80,6 @@ func getHref(t html.Token) (ok bool, href string) {
 	return
 }
 
-func getClient() *http.Client {
-	return &http.Client{
-		Timeout: 1 * time.Minute,
-		Transport: &http.Transport{
-			TLSNextProto: map[string]func(authority string, c *tls.Conn) http.RoundTripper{},
-			Dial: (&net.Dialer{
-                Timeout:   30 * time.Second,
-                KeepAlive: 30 * time.Second,
-        	}).Dial,
-			TLSHandshakeTimeout:   10 * time.Second,
-			ResponseHeaderTimeout: 10 * time.Second,
-			ExpectContinueTimeout: 1 * time.Second,
-		},
-	}
-}
 
 func addClientHeaders(r *http.Request) {
 	if r != nil {
@@ -75,12 +94,27 @@ func isRedirect(resp *http.Response) bool{
 	return (resp.StatusCode > 300 && resp.StatusCode < 400)
 }
 
-func getRedirectLocation(url string, client *http.Client) string { 
+func getRedirectLocation(url string, client *http.Client, visited map[string]bool, depth int) string {
+	const maxRedirectDepth = 10
+	
+	if depth > maxRedirectDepth {
+		fmt.Println("max redirect depth exceeded for:", url)
+		return url
+	}
+	
+	if visited[url] {
+		fmt.Println("redirect loop detected:", url)
+		return url
+	}
+	visited[url] = true
+	
 	resp, err := client.Get(url)
 	if err != nil {
 		fmt.Println("encountered error following redirect chain: ",url, err)
 		return url
 	}
+	defer resp.Body.Close()
+	
 	if isRedirect(resp) {
 		var redirectLocation = resp.Header.Get("Location")
 		// Resolve relative URLs against the current URL
@@ -94,27 +128,18 @@ func getRedirectLocation(url string, client *http.Client) string {
 			fmt.Println("error resolving redirect URL:", redirectLocation, err)
 			return url
 		}
-		return getRedirectLocation(resolvedURL.String(), client)
+		return getRedirectLocation(resolvedURL.String(), client, visited, depth+1)
 	}
 	return url
 }
 
 func getRedirectChainFinalUrl(url string) string {
-	client := &http.Client{
-		// prevents the client from following redirects
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			return http.ErrUseLastResponse
-		},
-		Timeout: 1 * time.Minute,
-	}
-	return getRedirectLocation(url, client)
+	visited := make(map[string]bool)
+	return getRedirectLocation(url, noRedirectsClient, visited, 0)
 }
 
 func check(link Link, linkch chan LinkStatus, number int) {
 	fmt.Println("CHEC", number, link.url)
-
-	client := getClient()
-	defer client.CloseIdleConnections()
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -130,7 +155,8 @@ func check(link Link, linkch chan LinkStatus, number int) {
 		return
 	}
 
-	resp, err := client.Do(r)
+	// Use noRedirectsClient to report actual status codes (301/302) instead of following redirects
+	resp, err := noRedirectsClient.Do(r)
 
 	if err != nil {
 		fmt.Println("error: ", err)
@@ -139,9 +165,29 @@ func check(link Link, linkch chan LinkStatus, number int) {
 		} else {
 			linkch <- LinkStatus{link.url, link.srcUrl, "Unknown error", -1, link.anchor}
 		}
-	} else {
-		defer resp.Body.Close()
-		linkch <- LinkStatus{link.url, link.srcUrl, resp.Status, resp.StatusCode, link.anchor}
+		return
+	}
+	
+	defer resp.Body.Close()
+	
+	// Report the actual status code (including redirects)
+	linkch <- LinkStatus{link.url, link.srcUrl, resp.Status, resp.StatusCode, link.anchor}
+	
+	// If it's a redirect, verify the destination isn't broken
+	if isRedirect(resp) {
+		finalUrl := getRedirectChainFinalUrl(link.url)
+		
+		// Check if redirect destination is accessible
+		destResp, destErr := noRedirectsClient.Get(finalUrl)
+		if destErr != nil {
+			fmt.Printf("Warning: %s redirects to broken destination %s\n", link.url, finalUrl)
+		} else {
+			destResp.Body.Close()
+			// If destination is also a redirect or error, log it
+			if destResp.StatusCode >= 400 {
+				fmt.Printf("Warning: %s redirects to %s which returns %d\n", link.url, finalUrl, destResp.StatusCode)
+			}
+		}
 	}
 }
 
@@ -161,14 +207,7 @@ func isSameOriginAndPath(baseUrl string, targetUrl string) bool {
 
 func crawl(link Link, ch chan Link, linkch chan LinkStatus, number int) {
 	fmt.Println("CRAW", number, link.url)
-	client := &http.Client{
-		// prevents the client from following redirects to end of chain
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			return http.ErrUseLastResponse
-		},
-		Timeout: 1 * time.Minute,
-	}
-	resp, err := client.Get(link.url)
+	resp, err := noRedirectsClient.Get(link.url)
 	dnsErr := new(net.DNSError)
 
 	defer func() {
@@ -195,24 +234,24 @@ func crawl(link Link, ch chan Link, linkch chan LinkStatus, number int) {
 	if isRedirect(resp) {
 		finalUrl := getRedirectChainFinalUrl(link.url)
 
-		if isSameOrigin(link.url, finalUrl) {
-			// if the url is on the same origin, add it to the channel to be scraped
-			ch <- Link{finalUrl, link.url, "a", link.anchor + " (redirected)"}
-		}
-
         // check if the final page 404s or not
-		newResp, newErr := client.Get(finalUrl)
+		newResp, newErr := noRedirectsClient.Get(finalUrl)
 
 		if newErr == nil {
+			defer newResp.Body.Close()
 			// use the response from the end of the redirect chain to determine if the current link
 			// is valid
 			resp = newResp
 			err = newErr
 
-			// return prematurely to skip scraping the HTML from redirect urls
-			// if the destination of the redirect is on the same origin it will be scraped later
-			return 
+			// Scrape links from redirect destination to catch broken links on redirected pages
+			// This handles same-origin redirects without re-queuing them
+			if isSameOrigin(link.url, finalUrl) {
+				scrapeLinksFromHtml(ch, finalUrl, newResp.Body)
+			}
+			return
 		}
+		return
 	}
 	scrapeLinksFromHtml(ch, link.url, b)
 }
@@ -277,10 +316,8 @@ func parseUrl(startUrl string, url string) string {
 
 		UrlPath := sUrl.Path
 		// strip out the filename (e.g. .aspx  or .asp or .php) because .Join() method doesn't handle this correctly
-		r := regexp.MustCompile(`(?P<file>\/[^\/]+\.[a-z0-9]+/*)$`)
-
-		if len(r.FindStringSubmatch(UrlPath)) > 0 {
-			fileName := r.FindStringSubmatch(UrlPath)[0]
+		if len(filenameRegex.FindStringSubmatch(UrlPath)) > 0 {
+			fileName := filenameRegex.FindStringSubmatch(UrlPath)[0]
 			UrlPath = strings.ReplaceAll(UrlPath, fileName, "")
 		}
 
@@ -296,16 +333,14 @@ func parseUrl(startUrl string, url string) string {
 }
 
 func isProtocolUrl(url string) bool {
-	r := regexp.MustCompile(`^[a-z]+:[^\/\/]`)
-	if len(r.FindStringSubmatch(url)) > 0 {
+	if len(protocolRegex.FindStringSubmatch(url)) > 0 {
 		return true
 	}
 	return false
 }
 
 func isResourceFile(url string) bool {
-	r := regexp.MustCompile(`.*\.(mht|jpg|png|css|js|ico|gif|svg|mp3|ttf)`)
-	if len(r.FindStringSubmatch(url)) > 0 {
+	if len(resourceFileRegex.FindStringSubmatch(url)) > 0 {
 		return true
 	}
 	return false
@@ -343,6 +378,7 @@ func sanitizeString(s string) string {
 
 func main() {
 	allUrls := make(map[string]LinkStatus)
+	var allUrlsMutex sync.Mutex
 	startUrl := Link{os.Args[1], "", "a", ""}
 	maxThreadCount := -1
 	concurrentGoroutines := make(chan struct{}, 1)
@@ -353,17 +389,17 @@ func main() {
 	}
 
 	var wg sync.WaitGroup
+	var crawling int64 = 1
+	var max int64 = 1
 
 	start := time.Now()
 
-	chUrls := make(chan Link)
-	chAllUrls := make(chan LinkStatus)
+	chUrls := make(chan Link, 100)
+	chAllUrls := make(chan LinkStatus, 100)
 
-	max := 1
-	crawling := 1
-	go crawl(startUrl, chUrls, chAllUrls, crawling)
+	go crawl(startUrl, chUrls, chAllUrls, int(atomic.LoadInt64(&crawling)))
 
-	for crawling >= 1 {
+	for atomic.LoadInt64(&crawling) >= 1 {
 		select {
 		case link := <-chUrls:
 
@@ -375,44 +411,55 @@ func main() {
 			}
 
 			link.url = parseUrl(link.srcUrl, link.url)
+			
+			allUrlsMutex.Lock()
 			_, crawled := allUrls[link.url]
 
 			if !crawled {
 				allUrls[link.url] = LinkStatus{link.url, link.srcUrl, "", 0, link.anchor}
-				crawling++
-				if crawling > max {
-					max = crawling
+				allUrlsMutex.Unlock()
+				
+				current := atomic.AddInt64(&crawling, 1)
+				for {
+					currentMax := atomic.LoadInt64(&max)
+					if current <= currentMax || atomic.CompareAndSwapInt64(&max, currentMax, current) {
+						break
+					}
 				}
 
 				if maxThreadCount != -1 {
 					wg.Add(1)
-					go func() {
+					go func(l Link, count int) {
 						defer wg.Done()
 						concurrentGoroutines <- struct{}{}
 
-						if isSameOriginAndPath(startUrl.url, link.url) && link.linkType == "a" && !isResourceFile(link.url) {
-							crawl(link, chUrls, chAllUrls, crawling)
+						if isSameOriginAndPath(startUrl.url, l.url) && l.linkType == "a" && !isResourceFile(l.url) {
+							crawl(l, chUrls, chAllUrls, count)
 						} else {
-							check(link, chAllUrls, crawling)
+							check(l, chAllUrls, count)
 						}
 
 						<-concurrentGoroutines
-					}()
+					}(link, int(current))
 				} else {
 					// no limit
 					if isSameOriginAndPath(startUrl.url, link.url) && link.linkType == "a" && !isResourceFile(link.url) {
-						go crawl(link, chUrls, chAllUrls, crawling)
+						go crawl(link, chUrls, chAllUrls, int(current))
 					} else {
-						go check(link, chAllUrls, crawling)
+						go check(link, chAllUrls, int(current))
 					}
 				}
 
+			} else {
+				allUrlsMutex.Unlock()
 			}
 
 		case status := <-chAllUrls:
-			crawling = crawling - 1
-			fmt.Println("DONE", crawling, status.url)
+			current := atomic.AddInt64(&crawling, -1)
+			fmt.Println("DONE", current, status.url)
+			allUrlsMutex.Lock()
 			allUrls[status.url] = status
+			allUrlsMutex.Unlock()
 		}
 
 		// Pause for 3 milliseconds before each job completes
@@ -420,8 +467,13 @@ func main() {
 
 	}
 
+	// Wait for all goroutines to complete if using thread limit
+	if maxThreadCount != -1 {
+		wg.Wait()
+	}
+
 	elapse := time.Since(start)
-	fmt.Printf("\n Took %v, Checked %v URLs, max goroutines %v\n", elapse, len(allUrls), max)
+	fmt.Printf("\n Took %v, Checked %v URLs, max goroutines %v\n", elapse, len(allUrls), atomic.LoadInt64(&max))
 
 	fmt.Printf("\n Broken links: \n")
 
