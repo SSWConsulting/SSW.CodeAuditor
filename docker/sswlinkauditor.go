@@ -198,11 +198,24 @@ func isSameOrigin(url1 string, url2 string) bool {
 }
 
 func isSameOriginAndPath(baseUrl string, targetUrl string) bool {
-	// Normalize URLs by ensuring they have trailing slashes for comparison
-	normalizedBase := strings.TrimRight(baseUrl, "/") + "/"
-	normalizedTarget := strings.TrimRight(targetUrl, "/") + "/"
+	// Normalize URLs by removing trailing slashes for comparison
+	normalizedBase := strings.TrimRight(baseUrl, "/")
+	normalizedTarget := strings.TrimRight(targetUrl, "/")
 	
-	return strings.Index(normalizedTarget, normalizedBase) == 0
+	// Check if target starts with base
+	if !strings.HasPrefix(normalizedTarget, normalizedBase) {
+		return false
+	}
+	
+	// If exact match, return true
+	if normalizedTarget == normalizedBase {
+		return true
+	}
+	
+	// Check that what comes after the base is a path separator, query, or fragment
+	// This prevents false positives like "/api" matching "/api-v2"
+	remainder := normalizedTarget[len(normalizedBase):]
+	return strings.HasPrefix(remainder, "/") || strings.HasPrefix(remainder, "?") || strings.HasPrefix(remainder, "#")
 }
 
 func crawl(link Link, ch chan Link, linkch chan LinkStatus, number int) {
@@ -319,13 +332,17 @@ func parseUrl(startUrl string, url string) string {
 		if len(filenameRegex.FindStringSubmatch(UrlPath)) > 0 {
 			fileName := filenameRegex.FindStringSubmatch(UrlPath)[0]
 			UrlPath = strings.ReplaceAll(UrlPath, fileName, "")
+		} else if !strings.HasSuffix(UrlPath, "/") && UrlPath != "" {
+			// If the path doesn't end with / and isn't empty, it's a document not a directory
+			// Get the parent directory for relative link resolution
+			lastSlash := strings.LastIndex(UrlPath, "/")
+			if lastSlash >= 0 {
+				UrlPath = UrlPath[:lastSlash+1]
+			}
 		}
 
 		baseUrl := sUrl.Scheme + "://" + sUrl.Hostname() + UrlPath
-		if !strings.HasSuffix(baseUrl, "/") {
-			baseUrl = baseUrl + "/"
-		}
-
+		
 		u, _ := urlP.Parse(baseUrl)
 		u.Path = path.Join(u.Path, url)
 		return u.String()
