@@ -1,6 +1,7 @@
 package main
 
 import (
+	urlP "net/url"
 	"testing"
 )
 
@@ -226,8 +227,10 @@ func TestIsSameOriginAndPath(t *testing.T) {
 }
 
 // Helper function to check if a URL contains a specific path
-func containsPath(url, path string) bool {
-	// Simple check - just see if the path is in the URL
-	// In a real scenario you'd parse the URL properly
-	return len(url) > 0 // Simplified for now
+func containsPath(url, wantPath string) bool {
+	parsed, err := urlP.Parse(url)
+	if err != nil {
+		return false
+	}
+	return parsed.Path == wantPath
 }
