@@ -84,6 +84,12 @@ func TestParseUrl(t *testing.T) {
 			url:      "set-language-on-code-blocks",
 			expected: "https://www.ssw.com.au/rules/set-language-on-code-blocks",
 		},
+		{
+			name:     "Root level page - relative link",
+			startUrl: "https://example.com/page",
+			url:      "other",
+			expected: "https://example.com/other",
+		},
 	}
 
 	for _, tt := range tests {
