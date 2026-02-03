@@ -80,6 +80,21 @@ func getHref(t html.Token) (ok bool, href string) {
 	return
 }
 
+func stripTrailingSlash(url string) string {
+	if url == "" {
+		return url
+	}
+	
+	parsed, err := urlP.Parse(url)
+	if err != nil {
+		// If parsing fails, do simple string trim
+		return strings.TrimRight(url, "/")
+	}
+	
+	// Strip trailing slash from path
+	parsed.Path = strings.TrimRight(parsed.Path, "/")
+	return parsed.String()
+}
 
 func addClientHeaders(r *http.Request) {
 	if r != nil {
@@ -141,9 +156,11 @@ func getRedirectChainFinalUrl(url string) string {
 func check(link Link, linkch chan LinkStatus, number int) {
 	fmt.Println("CHEC", number, link.url)
 
+	normalizedUrl := stripTrailingSlash(link.url)
+
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	r, e := http.NewRequestWithContext(ctx, "GET", link.url, nil)
+	r, e := http.NewRequestWithContext(ctx, "GET", normalizedUrl, nil)
 	if r != nil {
 		addClientHeaders(r)
 		r.Header.Add("Accept", "*/*")
@@ -220,7 +237,9 @@ func isSameOriginAndPath(baseUrl string, targetUrl string) bool {
 
 func crawl(link Link, ch chan Link, linkch chan LinkStatus, number int) {
 	fmt.Println("CRAW", number, link.url)
-	resp, err := noRedirectsClient.Get(link.url)
+	
+	normalizedUrl := stripTrailingSlash(link.url)
+	resp, err := noRedirectsClient.Get(normalizedUrl)
 	dnsErr := new(net.DNSError)
 
 	defer func() {
