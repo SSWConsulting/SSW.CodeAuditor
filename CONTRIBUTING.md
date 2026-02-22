@@ -119,7 +119,7 @@ In order to test your code changes in Docker
 In order to test your code changes in the API
 - Make the changes in the **api** folder
 - Run the api (`npm run serve`)
-- Run the API locally via `localhost:5000` (contact @tombui99 for authentication)
+- Run the API locally via `localhost:5000`
 
 ## Adding your own custom HTML rule
 1. In your local repo, go to ```docker/customHtmlRules.js```
@@ -155,3 +155,4 @@ E.g:
 ];
 ```
 6. Make a Pull Request and have it checked by CodeAuditor Team
+
