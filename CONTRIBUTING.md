@@ -2,35 +2,37 @@
 
 ## General
 
- - The goal of this guide is to help you start contributing to CodeAuditor
+- The goal of this guide is to help you start contributing to CodeAuditor
 
 ## System Pre-reqs
 
- - OS
+- OS
     - Windows 11
     - Mac OS Sonoma
- - Language runtimes
+- Language runtimes
     - Javascript
- - Editor
+- Editor
     - Visual Studio or Visual Studio Code (latest version recommended)
-    
+
 ## Required Tools
+
 - Install Node.js v20 via [NodeJs](https://nodejs.org/en/)
 - Install Docker Desktop via [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 ## Change flow
 
 The general flow for making a change to the script host is:
+
 1. 👍🏻 Make sure your Github account is in SSW Organization
 2. 🍴 Clone the repo (clone the project via `git clone https://github.com/SSWConsulting/SSW.CodeAuditor.git`
 3. 🌳 Create a branch for your change (generally use dev) (`git checkout -b my-change`)
 4. 🛠 Make your change
 5. ✔️ Test your changes
 6. 📌 Commit your changes (`git commit -am 'your commit message'`)
-6. ⬆️ Push your changes to your fork (`git push me my-change`)
-7. 💌 Open a PR to the dev branch
-8. 📢 Address feedback and make sure tests pass (yes even if it's an "unrelated" test failure)
-9. ✂️ Delete your branch (optional) 
+7. ⬆️ Push your changes to your fork (`git push me my-change`)
+8. 💌 Open a PR to the dev branch
+9. 📢 Address feedback and make sure tests pass (yes even if it's an "unrelated" test failure)
+10. ✂️ Delete your branch (optional)
 
 ## Definition of Done
 
@@ -39,7 +41,7 @@ The general flow for making a change to the script host is:
 - Code is squash-merged to main via a pull request that was approved by a 2nd developer.
 - Another team member agrees it’s ready for Production.
 - Pushed to Production.
-- Use @Mention (**OR** Send email) to notify Product Owner/PBI stakeholder that PBI is done (be sure to include screenshots/done video as proof) 
+- Use @Mention (**OR** Send email) to notify Product Owner/PBI stakeholder that PBI is done (be sure to include screenshots/done video as proof)
 
 > <As per rule: [Done - Do you go beyond 'Done' and follow a 'Definition of Done'](https://rules.ssw.com.au/done-do-you-go-beyond-done-and-follow-a-definition-of-done)?>
 
@@ -51,11 +53,11 @@ The first step in our deployment process is to ensure that all changes are prope
 
 #### Step 2: Approval and Merge to Main
 
-Once your Pull Request is created, it will go through a review process. During this time, your team members will review the code, provide feedback, and request any necessary changes. After your PR has been approved, it is ready to be merged into the ```main``` branch.
+Once your Pull Request is created, it will go through a review process. During this time, your team members will review the code, provide feedback, and request any necessary changes. After your PR has been approved, it is ready to be merged into the `main` branch.
 
 #### Step 3: Deployment to Staging via GitHub Workflow
 
-As soon as your changes are merged into the ```main``` branch, our CI/CD pipeline kicks in. We have set up a GitHub Workflow that listens for changes to the ```main``` branch and will build and deploy to our Staging and Production environments pending approval. This will first trigger an approval request to the project admins to deploy to Staging. Once approved, the changes will be deployed to the Staging site on Firebase.
+As soon as your changes are merged into the `main` branch, our CI/CD pipeline kicks in. We have set up a GitHub Workflow that listens for changes to the `main` branch and will build and deploy to our Staging and Production environments pending approval. This will first trigger an approval request to the project admins to deploy to Staging. Once approved, the changes will be deployed to the Staging site on Firebase.
 
 #### Step 4: Verify Changes on Staging Site
 
@@ -73,58 +75,70 @@ After the deployment to Production, monitor the site closely on Firebase Console
 
 1. Go to SSW Keeper and look for "SSW CodeAuditor Secrets" to find the values for the `env` files for both the UI and API.
 
-2. To run the web UI, open your terminal in Visual Studio or Visual Studio Code and type the following:  
-``` bash
+2. To run the web UI, open your terminal in Visual Studio or Visual Studio Code and type the following:
+
+```bash
 $ cd ui
 $ npm i
 $ npm run dev
 ```
 
 3. To build your docker image, first make sure that Docker is running then type the following in your terminal:
-``` bash
+
+```bash
 $ cd docker
 $ docker build -t sswconsulting/codeauditor .
 ```
 
 4. To run the Firebase API, first you need to login to Firebase, chat with the Sysadmin or CodeAuditor team to grant you access to Firebase Console.
+
 - They will need to log into the firebase console using the SSW Developers gmail account, which can be found in Keeper
 - From there they can add you as a member under the [project settings](https://console.firebase.google.com/u/5/project/sswlinkauditor-c1131/settings/iam).
-   
+
 Type the following in your terminal:
-``` bash
+
+```bash
 $ npm i -g firebase-tools
 $ firebase login
 ```
+
 After successful login, type the following:
-``` bash
+
+```bash
 $ cd api/functions
 $ npm i
 $ npm run serve
 ```
 
-## Testing your changes locally 
+## Testing your changes locally
+
 1. Front-End UI  
-In order to test your code changes in the UI
+   In order to test your code changes in the UI
+
 - Make the changes in the **ui** folder
 - Make sure the ui is already running (`npm run dev`)
 - View the changes in your browser via `localhost:4200`
 
 2. Docker  
-In order to test your code changes in Docker 
+   In order to test your code changes in Docker
+
 - Make the changes in the **docker** folder
 - Rebuild the Docker image (`docker build -t sswconsulting/codeauditor .`)
-- Run CodeAuditor code in Powershell to see the changes (`$ docker run sswconsulting/codeauditor --token 3c34a549-dfb3-442c-b0e3-45942104a8bf --url <URL>`) 
+- Run CodeAuditor code in Powershell to see the changes (`$ docker run sswconsulting/codeauditor --token <TOKEN> --url <URL>`)
 
 3. Firebase API  
-In order to test your code changes in the API
+   In order to test your code changes in the API
+
 - Make the changes in the **api** folder
 - Run the api (`npm run serve`)
 - Run the API locally via `localhost:5000`
 
 ## Adding your own custom HTML rule
-1. In your local repo, go to ```docker/customHtmlRules.js```
+
+1. In your local repo, go to `docker/customHtmlRules.js`
 2. Have a look at [HtmlHint Rules](https://github.com/htmlhint/HTMLHint/tree/master/src/core/rules) to see how you can code your own custom rule
-3. Add your custom Rule under ```// Add new custom rule below``` using the following template:
+3. Add your custom Rule under `// Add new custom rule below` using the following template:
+
 ```javascript
  HTMLHint.addRule({
         id: "your-custom-rule-id",
@@ -135,24 +149,30 @@ In order to test your code changes in the API
         },
       })
 ```
-**Important:** 
-- Use ``` reporter.warn ``` if you want to report your custom rule violation as **warning**
-- Use ``` reporter.error ``` if you want to report your custom rule violation as **error**
-4. Go to ```docker/api.js```: On the last export named ```htmlHintConfig```, add your new custom rule id to the list using the following format:
-E.g: 
+
+**Important:**
+
+- Use `reporter.warn` if you want to report your custom rule violation as **warning**
+- Use `reporter.error` if you want to report your custom rule violation as **error**
+
+4. Go to `docker/api.js`: On the last export named `htmlHintConfig`, add your new custom rule id to the list using the following format:
+   E.g:
+
 ```javascript
  exports.htmlHintConfig = {
    your-custom-rule-id: true,
    ...
  }
 ```
-5. Go to ```docker/rules.js```: On the last export named ```customHtmlHintRules```, add your new custom rule id to the list using the following format:
-E.g: 
+
+5. Go to `docker/rules.js`: On the last export named `customHtmlHintRules`, add your new custom rule id to the list using the following format:
+   E.g:
+
 ```javascript
  export const customHtmlHintRules = [
-   { rule: "your-custom-rule-id" },	
+   { rule: "your-custom-rule-id" },
    ...
 ];
 ```
-6. Make a Pull Request and have it checked by CodeAuditor Team
 
+6. Make a Pull Request and have it checked by CodeAuditor Team

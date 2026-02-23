@@ -34,10 +34,10 @@ WORKDIR /home/lhci/app
 COPY --from=builder /go/bin/sswlinkauditor /home/lhci/app/sswlinkauditor
 
 # Install k6
-RUN apt-get update && apt-get install -y wget gnupg
-RUN wget -q https://dl.k6.io/key.gpg -O- | apt-key add -
-RUN echo "deb https://dl.k6.io/deb stable main" | tee -a /etc/apt/sources.list
-RUN apt-get update && apt-get install -y k6
+RUN wget -q https://github.com/grafana/k6/releases/download/v0.49.0/k6-v0.49.0-linux-amd64.tar.gz && \
+    tar -xzf k6-v0.49.0-linux-amd64.tar.gz && \
+    mv k6-v0.49.0-linux-amd64/k6 /usr/local/bin/ && \
+    rm -rf k6-v0.49.0-linux-amd64*
 
 # copy k6 scripts
 COPY k6-scripts /home/lhci/app/k6-scripts
