@@ -27,7 +27,7 @@
     "rollup-plugin-livereload": "^2.0.5",
     "rollup-plugin-svelte": "^7.2.2",
     "sass": "^1.85.1",
-    "svelte": "^3.59.2",
+    "svelte": "^5.51.5",
     "tailwindcss": "^3.4.4"
   },
   "dependencies": {
@@ -37,11 +37,11 @@
     "date-fns": "^2.30.0",
     "export-to-csv": "^1.4.0",
     "firebase": "^11.4.0",
-    "firebase-tools": "^13.32.0",
+    "firebase-tools": "^15.6.0",
     "github-markdown-css": "^5.8.1",
     "js-beautify": "^1.15.4",
     "lighthouse-viewer": "^0.1.235",
-    "minimatch": "^9.0.4",
+    "minimatch": "^10.2.1",
     "pace-js": "^1.2.4",
     "query-string": "^8.2.0",
     "ramda": "^0.29.1",
